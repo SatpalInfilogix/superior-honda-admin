@@ -5,3 +5,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index']);
 Route::get('/login', [UserController::class, 'login_in']);
+Route::post('/admin-login', [UserController::class, 'login']);

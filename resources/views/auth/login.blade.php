@@ -76,7 +76,8 @@
             <div class="row">
                 <div class="col-sm-12">
 
-                    <form class="md-float-material form-material">
+                    <form class="md-float-material form-material" action="{{ route('admin-login') }}" method="post">
+                        @csrf
                         <div class="text-center">
                             <img src="{{ asset('assets/images/logo.png') }}">
                         </div>
@@ -88,7 +89,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group form-primary">
-                                    <input type="text" name="user-name" class="form-control" required="">
+                                    <input type="text" name="email" class="form-control" required="">
                                     <span class="form-bar"></span>
                                     <label class="float-label">Username</label>
                                 </div>
@@ -115,7 +116,7 @@
                                 </div>
                                 <div class="row m-t-30">
                                     <div class="col-md-12">
-                                        <button type="button"
+                                        <button type="submit"
                                             class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">LOGIN</button>
                                     </div>
                                 </div>

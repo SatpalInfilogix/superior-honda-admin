@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facade\Validator;
 
 class UserController extends Controller
 {
@@ -65,5 +66,26 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+
+    public function login(Request $request)
+    {
+        echo"<pre>"; print_r($request->all()); die();
+        // $validator =  Validator::make($request->all(), [
+        //     'email'     => 'required',
+        //     'password'  => 'required'
+        // ]);
+
+        $user = User::where('email', $request->email)->first();
+        if ($user) {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+                $user->token = $user->createToken('MyApp')->plainTextToken;
+                return redirect(route('/dashboard'));
+            } else {
+                return Redirect::route("/login")->with('error-message','Invalid Credential.');
+            }
+        } else {
+            return Redirect::route("/login")->with('error-message','User Not found.');
+        }
     }
 }
