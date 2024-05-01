@@ -10,11 +10,10 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     ]);
 });
 
-
 Route::get('/', function (){
     return redirect()->route('dashboard.index');
 });
 
-Route::get('/login', [AuthController::class, 'login_in'])->name('login');
+Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
-Route::get('/logout', [UserController::class, 'login_out'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

@@ -16,7 +16,7 @@
                     </button>
                 </div>
             @endif
-            
+
             <div class="card">
                 <div class="card-block">
                     <div class="row m-b-20">
@@ -25,7 +25,7 @@
                         </div>
                     </div>
                     <div class="form-group form-primary">
-                        <input type="email" name="email-address" class="form-control" required="">
+                        <input type="email" name="email" class="form-control" required="">
                         <span class="form-bar"></span>
                         <label class="float-label">Email Address</label>
                     </div>

@@ -9,7 +9,11 @@ class AuthController extends Controller
     /**
      * Show the login form.
      */
-    public function login_in(){
+    public function login(){
+        if(Auth::user()){
+            return redirect()->route('dashboard.index');
+        }
+
         return view('auth.login');
     }
 
@@ -22,6 +26,7 @@ class AuthController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
+
  
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
@@ -32,5 +37,16 @@ class AuthController extends Controller
         return back()->withErrors([
             'message' => 'The provided credentials do not match our records.',
         ]);
+    }
+
+    /**
+     * Log the user out of the application.
+     */
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('login');
     }
 }
