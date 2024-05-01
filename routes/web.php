@@ -1,7 +1,20 @@
 <?php
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [DashboardController::class, 'index']);
-Route::get('/login', [UserController::class, 'login_in']);
+Route::middleware(['auth', 'auth.session'])->group(function () {
+    Route::resources([
+        'dashboard' => DashboardController::class
+    ]);
+});
+
+
+Route::get('/', function (){
+    return redirect()->route('dashboard.index');
+});
+
+Route::get('/login', [AuthController::class, 'login_in'])->name('login');
+Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
+Route::get('/logout', [UserController::class, 'login_out'])->name('logout');

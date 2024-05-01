@@ -24,13 +24,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for login to the user.
-     */
-    public function login_in(){
-        return view('auth.login');
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)

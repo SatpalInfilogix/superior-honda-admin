@@ -3,8 +3,8 @@
         <div class="pcoded-inner-navbar main-menu">
             <div class="pcoded-navigation-label">Dashboard</div>
             <ul class="pcoded-item pcoded-left-item">
-                <li class=" ">
-                    <a href="" class="waves-effect waves-dark">
+                <li @class(['active' => Request::is('dashboard')])>
+                    <a href="{{ route('dashboard.index') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
                             <i class="feather icon-home"></i>
                         </span>
@@ -28,6 +28,14 @@
                             <i class="fas fa-cube"></i>
                         </span>
                         <span class="pcoded-mtext">Manage Products</span>
+                    </a>
+                </li>
+                <li class=" ">
+                    <a href="" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="fas fa-cube"></i>
+                        </span>
+                        <span class="pcoded-mtext">Manage Orders</span>
                     </a>
                 </li>
             </ul>

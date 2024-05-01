@@ -84,7 +84,6 @@
         </div>
     </section>
 
-
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('assets/js/popper.min.js') }}"></script>
@@ -94,7 +93,8 @@
     <script src="{{ asset('assets/js/modernizr.js') }}"></script>
     <script src="{{ asset('assets/js/css-scrollbars.js') }}"></script>
     <script src="{{ asset('assets/js/common-pages.js') }}"></script>
-
     <script src="{{ asset('assets/js/rocket-loader.min.js') }}" defer=""></script>
+
+    @yield('footer')
 </body>
 </html>
