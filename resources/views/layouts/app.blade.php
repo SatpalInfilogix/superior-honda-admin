@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Admindek | Admin Template</title>
+    <title>Superior Honda</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
@@ -44,9 +44,8 @@
                             <li class="user-profile header-notification">
                                 <div class="dropdown-primary dropdown">
                                     <div class="dropdown-toggle" data-toggle="dropdown">
-                                        <img src="{{ asset('assets/images/avatar-4.jpg') }}" class="img-radius"
-                                            alt="User-Profile-Image">
-                                        <span>John Doe</span>
+                                        <img src="{{ asset('assets/images/avatar-4.jpg') }}" class="img-radius" alt="{{ Auth::user()->name }}">
+                                        <span>{{ Auth::user()->name }}</span>
                                         <i class="feather icon-chevron-down"></i>
                                     </div>
                                     <ul class="show-notification profile-notification dropdown-menu"
