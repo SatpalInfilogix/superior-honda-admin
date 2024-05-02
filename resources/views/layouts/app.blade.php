@@ -56,7 +56,7 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">
+                                            <a href="{{ route('profile.index') }}">
                                                 <i class="feather icon-user"></i> Profile
                                             </a>
                                         </li>
