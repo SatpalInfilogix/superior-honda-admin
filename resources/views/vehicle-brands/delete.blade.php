@@ -1,6 +1,6 @@
 <script>
     $(function() {
-        $('.delete-car-brand').click(function() {
+        $('.delete-vehicle-brand').click(function() {
             swal({
                 title: "Are you sure?",
                 text: "You really want to remove this brand?",

@@ -68,7 +68,7 @@
                 <li @class(['pcoded-hasmenu', 'pcoded-trigger active' => Request::is('vehicle-types', 'vehicle-brands', 'vehicle-models')])>
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="fas fa-car"></i></span>
-                        <span class="pcoded-mtext">Car Configuration</span>
+                        <span class="pcoded-mtext">Vehicle Configuration</span>
                     </a>
                     <ul class="pcoded-submenu">
                         <li @class(['active' => Request::is('vehicle-types')])>
