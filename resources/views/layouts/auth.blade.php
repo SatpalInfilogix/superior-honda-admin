@@ -94,7 +94,8 @@
     <script src="{{ asset('assets/js/css-scrollbars.js') }}"></script>
     <script src="{{ asset('assets/js/common-pages.js') }}"></script>
     <script src="{{ asset('assets/js/rocket-loader.min.js') }}" defer=""></script>
+    <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
 
-    @yield('footer')
+    @yield('script')
 </body>
 </html>

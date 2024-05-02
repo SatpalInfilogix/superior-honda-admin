@@ -16,9 +16,11 @@
     <link rel="stylesheet" href="{{ asset('assets/css/font-awesome-n.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
+    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
+
     @yield('head')
 </head>
-
 <body>
     <div class="loader-bg">
         <div class="loader-bar"></div>
@@ -90,7 +92,6 @@
         </div>
     </div>
 
-    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('assets/js/popper.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>

@@ -58,8 +58,7 @@
 @endsection
 
 
-@section('footer')
-    <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
+@section('script')
     <script>
         $(function() {
             $("form").validate({
