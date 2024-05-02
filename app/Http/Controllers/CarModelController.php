@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CarBrand;
+use App\Models\CarModel;
 use Illuminate\Http\Request;
 
-class CarBrandController extends Controller
+class CarModelController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('car-brands.index');
+        return view('car-models.index');
     }
 
     /**
@@ -34,7 +34,7 @@ class CarBrandController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CarBrand $carBrand)
+    public function show(CarModel $carModel)
     {
         //
     }
@@ -42,7 +42,7 @@ class CarBrandController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CarBrand $carBrand)
+    public function edit(CarModel $carModel)
     {
         //
     }
@@ -50,7 +50,7 @@ class CarBrandController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CarBrand $carBrand)
+    public function update(Request $request, CarModel $carModel)
     {
         //
     }
@@ -58,7 +58,7 @@ class CarBrandController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CarBrand $carBrand)
+    public function destroy(CarModel $carModel)
     {
         //
     }

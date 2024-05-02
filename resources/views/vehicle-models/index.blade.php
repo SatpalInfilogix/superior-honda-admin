@@ -10,21 +10,21 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Car Brands</h5>
+                                    <h5>Car Models</h5>
                                     <div class="float-right">
                                         <button class="btn btn-primary btn-md" data-toggle="modal"
-                                            data-target="#add-car-brand">Add Car Brand</button>
+                                            data-target="#add-car-model">Add Car Model</button>
                                     </div>
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
-                                        <table id="car-types-list" class="table table-striped table-bordered nowrap">
+                                        <table id="car-models-list" class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Car Type</th>
                                                     <th>Brand Name</th>
-                                                    <th>Brand Logo</th>
+                                                    <th>Model Name</th>
+                                                    <th>Image</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -37,10 +37,10 @@
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
                                                             <button class="btn btn-primary waves-effect waves-light mr-2"
-                                                                data-toggle="modal" data-target="#edit-car-brand">
+                                                                data-toggle="modal" data-target="#edit-car-model">
                                                                 <i class="feather icon-edit m-0"></i>
                                                             </button>
-                                                            <button class="delete-car-brand btn btn-danger waves-effect waves-light">
+                                                            <button class="delete-car-model btn btn-danger waves-effect waves-light">
                                                                 <i class="feather icon-trash m-0"></i>
                                                             </button>
                                                         </div>
@@ -56,7 +56,7 @@
                                                             <button class="btn btn-primary waves-effect waves-light mr-2">
                                                                 <i class="feather icon-edit m-0"></i>
                                                             </button>
-                                                            <button class="delete-car-brand btn btn-danger waves-effect waves-light">
+                                                            <button class="delete-car-model btn btn-danger waves-effect waves-light">
                                                                 <i class="feather icon-trash m-0"></i>
                                                             </button>
                                                         </div>
@@ -75,9 +75,9 @@
         </div>
     </div>
 
-    @include('car-brands.create')
-    @include('car-brands.edit')
-    @include('car-brands.delete')
+    @include('car-models.create')
+    @include('car-models.edit')
+    @include('car-models.delete')
 @endsection
 
 @section('head')
@@ -91,7 +91,7 @@
 
     <script>
         $(function() {
-            $('#car-types-list').DataTable();
+            $('#car-models-list').DataTable();
         })
     </script>
 @endsection

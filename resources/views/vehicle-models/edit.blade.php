@@ -1,4 +1,4 @@
-<div class="modal fade" id="edit-car-brand" tabindex="-1" role="dialog">
+<div class="modal fade" id="edit-car-model" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,28 +7,28 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('car-types.store') }}" name="edit-car-brand" method="POST">
+            <form action="{{ route('car-models.store') }}" name="edit-car-model" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12 form-group">
-                            <label for="edit-brand-name">Car Type</label>
-                            <select id="edit-brand-car-type" name="edit_brand_car_type" class="form-control">
-                                <option value="">-- Select Car Type --</option>
+                            <label for="edit-brand-id">Brand Name</label>
+                            <select id="edit-brand-id" name="edit_brand_id" class="form-control">
+                                <option value="" disabled>-- Select Brand --</option>
                                 <option value="ss">ss</option>
                                 <option value="ss">ss</option>
                                 <option value="ss">ss</option>
                             </select>
                         </div>
                         <div class="col-12 form-group">
-                            <label for="edit-brand-name">Brand Name</label>
-                            <input type="text" id="edit-brand-name" name="edit_brand_name" class="form-control">
+                            <label for="edit-model-name">Model Name</label>
+                            <input type="text" id="edit-model-name" name="edit_model_name" class="form-control">
                         </div>
                         <div class="col-12 form-group">
-                            <label for="edit-brand-logo">Brand Logo</label>
+                            <label for="edit-model-image">Image</label>
                             <div class="custom-file">
-                                <input type="file" name="edit_brand_logo" class="custom-file-input" id="edit-brand-logo">
-                                <label class="custom-file-label" for="edit-brand-logo">Choose Brand Logo</label>
+                                <input type="file" name="edit_model_image" class="custom-file-input" id="edit-model-image">
+                                <label class="custom-file-label" for="edit-brand-logo">Choose Image</label>
                             </div>
                         </div>
                     </div>
@@ -44,16 +44,16 @@
 
 <script>
     $(function() {
-        $('[name="edit-car-brand"]').validate({
+        $('[name="edit-car-model"]').validate({
             rules: {
                 edit_brand_car_type: "required",
-                edit_brand_name: "required",
-                edit_brand_logo: "required"
+                edit_model_name: "required",
+                edit_model_image: "required"
             },
             messages: {
                 edit_brand_car_type: "Please select car type",
-                edit_brand_name: "Please enter brand name",
-                edit_brand_logo: "Please choose brand logo"
+                edit_model_name: "Please enter brand name",
+                edit_model_image: "Please choose image"
             },
             errorClass: "text-danger f-12",
             errorElement: "span",

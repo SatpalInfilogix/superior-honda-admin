@@ -65,30 +65,30 @@
                         <span class="pcoded-mtext">Car Management</span>
                     </a>
                 </li>
-                <li @class(['pcoded-hasmenu', 'pcoded-trigger active' => Request::is('car-types', 'car-brands')])>
+                <li @class(['pcoded-hasmenu', 'pcoded-trigger active' => Request::is('vehicle-types', 'vehicle-brands', 'vehicle-models')])>
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="fas fa-car"></i></span>
                         <span class="pcoded-mtext">Car Configuration</span>
                     </a>
                     <ul class="pcoded-submenu">
-                        <li @class(['active' => Request::is('car-types')])>
-                            <a href="{{ route('car-types.index') }}" class="waves-effect waves-dark">
-                                <span class="pcoded-mtext">Car Types</span>
+                        <li @class(['active' => Request::is('vehicle-types')])>
+                            <a href="{{ route('vehicle-types.index') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-mtext">Vehicle Types</span>
                             </a>
                         </li>
-                        <li @class(['active' => Request::is('car-brands')])>
-                            <a href="{{ route('car-brands.index') }}" class="waves-effect waves-dark">
-                                <span class="pcoded-mtext">Car Brands</span>
+                        <li @class(['active' => Request::is('vehicle-brands')])>
+                            <a href="{{ route('vehicle-brands.index') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-mtext">Vehicle Brands</span>
+                            </a>
+                        </li>
+                        <li @class(['active' => Request::is('vehicle-models')])>
+                            <a href="{{ route('vehicle-models.index') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-mtext">Vehicle Models</span>
                             </a>
                         </li>
                         <li class="">
                             <a href="" class="waves-effect waves-dark">
-                                <span class="pcoded-mtext">Car Models</span>
-                            </a>
-                        </li>
-                        <li class="">
-                            <a href="" class="waves-effect waves-dark">
-                                <span class="pcoded-mtext">Car Model Variants</span>
+                                <span class="pcoded-mtext">Vehicle Model Variants</span>
                             </a>
                         </li>
                     </ul>

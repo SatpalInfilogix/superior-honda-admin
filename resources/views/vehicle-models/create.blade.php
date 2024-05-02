@@ -1,34 +1,34 @@
-<div class="modal fade" id="add-car-brand" tabindex="-1" role="dialog">
+<div class="modal fade" id="add-car-model" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title font-weight-bold">Add Brand</h5>
+                <h5 class="modal-title font-weight-bold">Add Model</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('car-types.store') }}" name="add-car-brand" method="POST">
+            <form action="{{ route('car-models.store') }}" name="add-car-model" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12 form-group">
-                            <label for="add-brand-name">Car Type</label>
-                            <select id="add-brand-car-type" name="add_brand_car_type" class="form-control">
-                                <option value="">-- Select Car Type --</option>
+                            <label for="add-brand-id">Brand Name</label>
+                            <select id="add-brand-id" name="add_brand_id" class="form-control">
+                                <option value="" disabled selected>-- Select Brand --</option>
                                 <option value="ss">ss</option>
                                 <option value="ss">ss</option>
                                 <option value="ss">ss</option>
                             </select>
                         </div>
                         <div class="col-12 form-group">
-                            <label for="add-brand-name">Brand Name</label>
-                            <input type="text" id="add-brand-name" name="add_brand_name" class="form-control">
+                            <label for="add-model-name">Model Name</label>
+                            <input type="text" id="add-model-name" name="add_model_name" class="form-control">
                         </div>
                         <div class="col-12 form-group">
-                            <label for="add-brand-logo">Brand Logo</label>
+                            <label for="add-model-image">Image</label>
                             <div class="custom-file">
-                                <input type="file" name="add_brand_logo" class="custom-file-input" id="add-brand-logo">
-                                <label class="custom-file-label" for="add-brand-logo">Choose Brand Logo</label>
+                                <input type="file" name="add_model_image" class="custom-file-input" id="add-model-image">
+                                <label class="custom-file-label" for="add-model-image">Choose Image</label>
                             </div>
                         </div>
                     </div>
@@ -44,16 +44,16 @@
 
 <script>
     $(function() {
-        $('[name="add-car-brand"]').validate({
+        $('[name="add-car-model"]').validate({
             rules: {
-                add_brand_car_type: "required",
-                add_brand_name: "required",
-                add_brand_logo: "required"
+                add_brand_id: "required",
+                add_model_name: "required",
+                add_model_image: "required"
             },
             messages: {
-                add_brand_car_type: "Please select car type",
-                add_brand_name: "Please enter brand name",
-                add_brand_logo: "Please choose brand logo"
+                add_brand_id: "Please select brand of the model",
+                add_model_name: "Please enter model name",
+                add_model_image: "Please choose image"
             },
             errorClass: "text-danger f-12",
             errorElement: "span",
