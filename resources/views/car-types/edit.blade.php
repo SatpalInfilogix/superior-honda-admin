@@ -7,7 +7,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="" name="edit-car-type">
+            <form action="{{ route('car-types.store') }}" name="edit-car-type" method="post">
+                @method('patch')
                 @csrf
                 <div class="modal-body">
                     <div class="row">

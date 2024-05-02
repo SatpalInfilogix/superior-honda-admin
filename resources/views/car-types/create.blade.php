@@ -7,9 +7,12 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('car-types.store') }}" name="add-car-type" method="POST">
+            <form action="{{ route('car-types.store') }}" name="add-car-type" method="post">
                 @csrf
                 <div class="modal-body">
+                    
+                    <div class="error"></div>
+
                     <div class="row">
                         <div class="col-12">
                             <label for="add-car-type">Car Type</label>
@@ -44,7 +47,30 @@
                 $(element).removeClass("form-control-danger");
             },
             submitHandler: function(form) {
-                console.log(form)
+                $.ajax({
+                    url: form.action,
+                    type: form.method,
+                    data: $(form).serialize(),
+                    success: function(response) {
+                        if(response.success == true){
+                            $('div#add-car-type').addClass('d-none');
+                            swal({
+                                title: "Success!",
+                                text: "Car type created successfully!",
+                                icon: "success",
+                                buttons: false,
+                                timer: 2000
+                            });
+                            
+                            setTimeout(() => {
+                                location.reload();
+                            }, 2000);
+                        } else {
+                            $('.error').text(response.message);
+                            $('.error').addClass('text-danger');
+                        }
+                    }
+                });
             }
         });
     })

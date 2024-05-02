@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CarType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CarTypeController extends Controller
 {
@@ -12,7 +13,9 @@ class CarTypeController extends Controller
      */
     public function index()
     {
-        return view('car-types.index');
+        $carTypes = CarType::latest()->get();
+
+        return view('car-types.index', compact('carTypes'));
     }
 
     /**
@@ -28,7 +31,25 @@ class CarTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validation = Validator::make($request->all(),[ 
+            'add_car_type' => 'required|unique:car_types,car_type',
+        ]);
+    
+        if($validation->fails()){
+            return response()->json([
+                'success' => false,
+                'message'  => $validation->errors()->first()
+            ]);
+        }
+
+        CarType::create([
+            'car_type' => $request->add_car_type
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Car type created successfully.'
+        ]);
     }
 
     /**

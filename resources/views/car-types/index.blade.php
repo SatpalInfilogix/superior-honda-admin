@@ -7,6 +7,11 @@
                 <div class="page-body">
 
                     <div class="row">
+                        @if (session()->has('message'))
+                            <div class="alert alert-success">
+                                {{ session()->get('message') }}
+                            </div>
+                        @endif
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header">
@@ -27,35 +32,24 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @foreach($carTypes as $key => $carType)
                                                 <tr>
-                                                    <td>1</td>
-                                                    <td>SUV</td>
+                                                    <td>{{ ++$key}}</td>
+                                                    <td>{{ $carType->car_type }}</td>
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
-                                                            <button class="btn btn-primary waves-effect waves-light mr-2"
-                                                                data-toggle="modal" data-target="#edit-car-type">
+                                                            <a href="" class="btn btn-primary waves-effect waves-light mr-2"
+                                                                data-toggle="modal" data-target="#edit-car-type" data-id="{{ $carType->id }}" data-name="{{ $carType->car_type }}">
                                                                 <i class="feather icon-edit m-0"></i>
-                                                            </button>
-                                                            <button class="delete-car-type btn btn-danger waves-effect waves-light">
+                                                            </a>
+                                                            <button
+                                                                class="delete-car-type btn btn-danger waves-effect waves-light">
                                                                 <i class="feather icon-trash m-0"></i>
                                                             </button>
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Sedan</td>
-                                                    <td>
-                                                        <div class="btn-group btn-group-sm">
-                                                            <button class="btn btn-primary waves-effect waves-light mr-2">
-                                                                <i class="feather icon-edit m-0"></i>
-                                                            </button>
-                                                            <button class="delete-car-type btn btn-danger waves-effect waves-light">
-                                                                <i class="feather icon-trash m-0"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>

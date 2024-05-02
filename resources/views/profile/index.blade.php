@@ -7,6 +7,11 @@
                 <div class="page-body">
 
                     <div class="row">
+                        @if(session()->has('message'))
+                            <div class="alert alert-success">
+                                {{ session()->get('message') }}
+                            </div>
+                        @endif
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header">
