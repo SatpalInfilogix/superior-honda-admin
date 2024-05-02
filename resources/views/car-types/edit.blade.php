@@ -12,8 +12,8 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12">
-                            <label for="add-car-type">Car Type</label>
-                            <input type="text" id="add-car-type" name="name" class="form-control" required>
+                            <label for="edit-car-type">Car Type</label>
+                            <input type="text" id="edit-car-type" name="edit_car_type" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -29,6 +29,16 @@
 <script>
     $(function() {
         $('[name="edit-car-type"]').validate({
+            rules: {
+                edit_car_type: {
+                    required: true,
+                }
+            },
+            messages: {
+                edit_car_type: {
+                    required: "Please enter car type",
+                }
+            },
             errorClass: "text-danger f-12",
             errorElement: "span",
             highlight: function(element, errorClass, validClass) {
