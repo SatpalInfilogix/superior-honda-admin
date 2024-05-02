@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CarType;
+use App\Models\VehicleType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class CarTypeController extends Controller
+class VehicleTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('car-types.index');
+        $vehicle_types = VehicleType::latest()->get();
+
+        return view('vehicle-types.index', compact('vehicle_types'));
     }
 
     /**
@@ -28,7 +31,25 @@ class CarTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validation = Validator::make($request->all(),[ 
+            'add_vehicle_type' => 'required|unique:vehicle_types,vehicle_type',
+        ]);
+    
+        if($validation->fails()){
+            return response()->json([
+                'success' => false,
+                'message'  => $validation->errors()->first()
+            ]);
+        }
+
+        VehicleType::create([
+            'vehicle_type' => $request->add_vehicle_type
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Vehicle type added successfully.'
+        ]);
     }
 
     /**

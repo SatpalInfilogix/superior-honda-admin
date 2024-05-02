@@ -3,7 +3,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CarTypeController;
+use App\Http\Controllers\VehicleTypeController;
 use App\Http\Controllers\VehicleBrandController;
 use App\Http\Controllers\VehicleModelController;
 use Illuminate\Support\Facades\Route;
@@ -12,7 +12,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::resources([
         'dashboard' => DashboardController::class,
         'profile' => ProfileController::class,
-        'vehicle-types' => CarTypeController::class,
+        'vehicle-types' => VehicleTypeController::class,
         'vehicle-brands' => VehicleBrandController::class,
         'vehicle-models' => VehicleModelController::class
     ]);
