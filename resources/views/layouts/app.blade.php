@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/font-awesome-n.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+
+    @yield('head')
 </head>
 
 <body>
@@ -97,4 +99,6 @@
     <script src="{{ asset('assets/js/pcoded.min.js') }}"></script>
     <script src="{{ asset('assets/js/vertical-layout.min.js') }}"></script>
     <script src="{{ asset('assets/js/script.min.js') }}"></script>
+
+    @yield('script')
 </html>

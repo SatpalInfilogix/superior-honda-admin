@@ -60,10 +60,38 @@
                 <li class=" ">
                     <a href="" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
-                            <i class="ti-car"></i>
+                            <i class="fas fa-car"></i>
                         </span>
                         <span class="pcoded-mtext">Car Management</span>
                     </a>
+                </li>
+                <li class="pcoded-hasmenu active pcoded-trigger" dropdown-icon="style1" subitem-icon="style1">
+                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="fas fa-car"></i></span>
+                        <span class="pcoded-mtext">Car Configuration</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li class="active">
+                            <a href="{{ route('car-types.index') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-mtext">Car Types</span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="" class="waves-effect waves-dark">
+                                <span class="pcoded-mtext">Car Brands</span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="" class="waves-effect waves-dark">
+                                <span class="pcoded-mtext">Car Models</span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a href="" class="waves-effect waves-dark">
+                                <span class="pcoded-mtext">Car Model Variants</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class=" ">
                     <a href="" class="waves-effect waves-dark">
