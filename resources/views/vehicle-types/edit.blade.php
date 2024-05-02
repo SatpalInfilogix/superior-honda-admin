@@ -12,9 +12,10 @@
                 @csrf
                 <div class="modal-body">
                     <div class="row">
+                        <input type="hidden" id="vehicle_Id" value="" name="vehicle_Id">
                         <div class="col-12">
                             <label for="edit-vehicle-type">Vehicle Type</label>
-                            <input type="text" id="edit-vehicle-type" name="edit_vehicle_type" class="form-control">
+                            <input type="text" id="edit-vehicle-type" name="edit_vehicle_type" class="form-control" value="">
                         </div>
                     </div>
                 </div>
@@ -29,6 +30,11 @@
 
 <script>
     $(function() {
+        $('.edit-vehicle-type').click(function() {
+            $('#vehicle_Id').val($(this).data('id'));
+            $('#edit-vehicle-type').val($(this).data('name'));
+        });
+
         $('[name="edit-vehicle-type"]').validate({
             rules: {
                 edit_vehicle_type: "required"

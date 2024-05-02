@@ -7,11 +7,6 @@
                 <div class="page-body">
 
                     <div class="row">
-                        @if (session()->has('message'))
-                            <div class="alert alert-success">
-                                {{ session()->get('message') }}
-                            </div>
-                        @endif
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header">
@@ -27,21 +22,21 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Car Type</th>
+                                                    <th>Vehicle Type</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($carTypes as $key => $carType)
+                                                @foreach($vehicle_types as $key => $vehicle_type)
                                                 <tr>
-                                                    <td>{{ ++$key}}</td>
-                                                    <td>{{ $carType->car_type }}</td>
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>{{ $vehicle_type->vehicle_type }}</td>
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
-                                                            <a href="" class="btn btn-primary waves-effect waves-light mr-2"
-                                                                data-toggle="modal" data-target="#edit-vehicle-type" data-id="{{ $carType->id }}" data-name="{{ $carType->car_type }}">
+                                                            <button class="btn btn-primary waves-effect waves-light mr-2 edit-vehicle-type"
+                                                                data-toggle="modal" data-target="#edit-vehicle-type" data-vehicle-type="{{ json_encode($vehicle_type) }}">
                                                                 <i class="feather icon-edit m-0"></i>
-                                                            </a>
+                                                        </button>
                                                             <button
                                                                 class="delete-vehicle-type btn btn-danger waves-effect waves-light">
                                                                 <i class="feather icon-trash m-0"></i>
