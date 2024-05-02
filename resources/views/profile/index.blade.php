@@ -45,8 +45,7 @@
                                                 <label for="profile-picture">Profile Picture</label>
                                                 <div class="custom-file">
                                                     <input type="file" name="profile_image" value="{{ old('profile_image') }}" class="custom-file-input" id="profile-picture">
-                                                    <label class="custom-file-label" for="profile-picture">Choose
-                                                        file</label>
+                                                    <label class="custom-file-label" for="profile-picture">Choose Image</label>
                                                 </div>
                                             </div>
                                         </div>
