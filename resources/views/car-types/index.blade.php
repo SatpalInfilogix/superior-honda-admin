@@ -10,9 +10,10 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <div class="">
-                                        <h5>Car Types</h5>
-                                        <button class="btn btn-primary">Add Car Type</button>
+                                    <h5>Car Types</h5>
+                                    <div class="float-right">
+                                        <button class="btn btn-primary btn-md" data-toggle="modal"
+                                            data-target="#add-car-type">Add Car Type</button>
                                     </div>
                                 </div>
                                 <div class="card-block">
@@ -31,10 +32,11 @@
                                                     <td>SUV</td>
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
-                                                            <button class="btn btn-primary waves-effect waves-light mr-2">
+                                                            <button class="btn btn-primary waves-effect waves-light mr-2"
+                                                                data-toggle="modal" data-target="#edit-car-type">
                                                                 <i class="feather icon-edit m-0"></i>
                                                             </button>
-                                                            <button class="btn btn-danger waves-effect waves-light">
+                                                            <button class="delete-car-type btn btn-danger waves-effect waves-light">
                                                                 <i class="feather icon-trash m-0"></i>
                                                             </button>
                                                         </div>
@@ -42,13 +44,13 @@
                                                 </tr>
                                                 <tr>
                                                     <td>2</td>
-                                                    <td>Sudan</td>
+                                                    <td>Sedan</td>
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
                                                             <button class="btn btn-primary waves-effect waves-light mr-2">
                                                                 <i class="feather icon-edit m-0"></i>
                                                             </button>
-                                                            <button class="btn btn-danger waves-effect waves-light">
+                                                            <button class="delete-car-type btn btn-danger waves-effect waves-light">
                                                                 <i class="feather icon-trash m-0"></i>
                                                             </button>
                                                         </div>
@@ -66,6 +68,10 @@
             </div>
         </div>
     </div>
+
+    @include('car-types.create')
+    @include('car-types.edit')
+    @include('car-types.delete')
 @endsection
 
 @section('head')
