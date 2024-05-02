@@ -21,13 +21,7 @@
                                     <form action="{{ route('vehicle-categories.store') }}" method="POST">
                                         @csrf
                                         <div class="form-group">
-                                            <label for="category-name">Category Name</label>
-                                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="category-name"
-                                                value="{{ old('name') }}">
-
-                                            @error('name')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                            <x-input-text name="name" label="Category Name" value="{{ old('name') }}"></x-input-text>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Save</button>
                                     </form>
