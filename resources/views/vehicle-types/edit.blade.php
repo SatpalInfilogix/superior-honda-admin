@@ -7,7 +7,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('vehicle-types.store') }}" name="edit-vehicle-type" method="post">
+            <form action="" name="edit-vehicle-type" method="post">
                 @method('patch')
                 @csrf
                 <div class="modal-body">
@@ -15,7 +15,7 @@
                         <input type="hidden" id="vehicle_Id" value="" name="vehicle_Id">
                         <div class="col-12">
                             <label for="edit-vehicle-type">Vehicle Type</label>
-                            <input type="text" id="edit-vehicle-type" name="edit_vehicle_type" class="form-control" value="">
+                            <input type="text" id="vehicle-type" name="edit_vehicle_type" class="form-control" value="">
                         </div>
                     </div>
                 </div>
@@ -31,8 +31,9 @@
 <script>
     $(function() {
         $('.edit-vehicle-type').click(function() {
-            $('#vehicle_Id').val($(this).data('id'));
-            $('#edit-vehicle-type').val($(this).data('name'));
+            let vehicle_detail = $(this).data('vehicle-type');
+            $('#vehicle_Id').val(vehicle_detail.id);
+            $('#vehicle-type').val(vehicle_detail.vehicle_type);
         });
 
         $('[name="edit-vehicle-type"]').validate({
