@@ -15,15 +15,15 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Car Types</h5>
+                                    <h5>Vehicle Types</h5>
                                     <div class="float-right">
                                         <button class="btn btn-primary btn-md" data-toggle="modal"
-                                            data-target="#add-car-type">Add Car Type</button>
+                                            data-target="#add-vehicle-type">Add Vehicle Type</button>
                                     </div>
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
-                                        <table id="car-types-list" class="table table-striped table-bordered nowrap">
+                                        <table id="vehicle-types-list" class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -39,11 +39,11 @@
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
                                                             <a href="" class="btn btn-primary waves-effect waves-light mr-2"
-                                                                data-toggle="modal" data-target="#edit-car-type" data-id="{{ $carType->id }}" data-name="{{ $carType->car_type }}">
+                                                                data-toggle="modal" data-target="#edit-vehicle-type" data-id="{{ $carType->id }}" data-name="{{ $carType->car_type }}">
                                                                 <i class="feather icon-edit m-0"></i>
                                                             </a>
                                                             <button
-                                                                class="delete-car-type btn btn-danger waves-effect waves-light">
+                                                                class="delete-vehicle-type btn btn-danger waves-effect waves-light">
                                                                 <i class="feather icon-trash m-0"></i>
                                                             </button>
                                                         </div>
@@ -63,9 +63,9 @@
         </div>
     </div>
 
-    @include('car-types.create')
-    @include('car-types.edit')
-    @include('car-types.delete')
+    @include('vehicle-types.create')
+    @include('vehicle-types.edit')
+    @include('vehicle-types.delete')
 @endsection
 
 @section('head')
@@ -79,7 +79,7 @@
 
     <script>
         $(function() {
-            $('#car-types-list').DataTable();
+            $('#vehicle-types-list').DataTable();
         })
     </script>
 @endsection

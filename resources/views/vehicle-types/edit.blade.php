@@ -1,20 +1,20 @@
-<div class="modal fade" id="edit-car-type" tabindex="-1" role="dialog">
+<div class="modal fade" id="edit-vehicle-type" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title font-weight-bold">Edit Car Type</h5>
+                <h5 class="modal-title font-weight-bold">Edit Vehicle Type</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('car-types.store') }}" name="edit-car-type" method="post">
+            <form action="{{ route('vehicle-types.store') }}" name="edit-vehicle-type" method="post">
                 @method('patch')
                 @csrf
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-12">
-                            <label for="edit-car-type">Car Type</label>
-                            <input type="text" id="edit-car-type" name="edit_car_type" class="form-control">
+                            <label for="edit-vehicle-type">Vehicle Type</label>
+                            <input type="text" id="edit-vehicle-type" name="edit_vehicle_type" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -29,12 +29,12 @@
 
 <script>
     $(function() {
-        $('[name="edit-car-type"]').validate({
+        $('[name="edit-vehicle-type"]').validate({
             rules: {
-                edit_car_type: "required"
+                edit_vehicle_type: "required"
             },
             messages: {
-                edit_car_type: "Please enter car type"
+                edit_vehicle_type: "Please enter vehicle type"
             },
             errorClass: "text-danger f-12",
             errorElement: "span",

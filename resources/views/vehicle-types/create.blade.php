@@ -1,13 +1,13 @@
-<div class="modal fade" id="add-car-type" tabindex="-1" role="dialog">
+<div class="modal fade" id="add-vehicle-type" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title font-weight-bold">Add Car Type</h5>
+                <h5 class="modal-title font-weight-bold">Add Vehicle Type</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('car-types.store') }}" name="add-car-type" method="post">
+            <form action="{{ route('vehicle-types.store') }}" name="add-vehicle-type" method="post">
                 @csrf
                 <div class="modal-body">
                     
@@ -15,8 +15,8 @@
 
                     <div class="row">
                         <div class="col-12">
-                            <label for="add-car-type">Car Type</label>
-                            <input type="text" id="add-car-type" name="add_car_type" class="form-control">
+                            <label for="add-vehicle-type">Vehicle Type</label>
+                            <input type="text" id="add-vehicle-type" name="add_vehicle_type" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -31,12 +31,12 @@
 
 <script>
     $(function() {
-        $('[name="add-car-type"]').validate({
+        $('[name="add-vehicle-type"]').validate({
             rules: {
-                add_car_type: "required"
+                add_vehicle_type: "required"
             },
             messages: {
-                add_car_type: "Please enter car type"
+                add_vehicle_type: "Please enter vehicle type"
             },
             errorClass: "text-danger f-12",
             errorElement: "span",
@@ -53,10 +53,10 @@
                     data: $(form).serialize(),
                     success: function(response) {
                         if(response.success == true){
-                            $('div#add-car-type').addClass('d-none');
+                            $('div#add-vehicle-type').addClass('d-none');
                             swal({
                                 title: "Success!",
-                                text: "Car type created successfully!",
+                                text: "Vehicle type created successfully!",
                                 icon: "success",
                                 buttons: false,
                                 timer: 2000
