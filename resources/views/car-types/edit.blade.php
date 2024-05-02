@@ -30,14 +30,10 @@
     $(function() {
         $('[name="edit-car-type"]').validate({
             rules: {
-                edit_car_type: {
-                    required: true,
-                }
+                edit_car_type: "required"
             },
             messages: {
-                edit_car_type: {
-                    required: "Please enter car type",
-                }
+                edit_car_type: "Please enter car type"
             },
             errorClass: "text-danger f-12",
             errorElement: "span",

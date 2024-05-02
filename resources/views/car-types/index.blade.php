@@ -36,7 +36,7 @@
                                                                 data-toggle="modal" data-target="#edit-car-type">
                                                                 <i class="feather icon-edit m-0"></i>
                                                             </button>
-                                                            <button class="btn btn-danger waves-effect waves-light">
+                                                            <button class="delete-car-type btn btn-danger waves-effect waves-light">
                                                                 <i class="feather icon-trash m-0"></i>
                                                             </button>
                                                         </div>
@@ -50,7 +50,7 @@
                                                             <button class="btn btn-primary waves-effect waves-light mr-2">
                                                                 <i class="feather icon-edit m-0"></i>
                                                             </button>
-                                                            <button class="btn btn-danger waves-effect waves-light">
+                                                            <button class="delete-car-type btn btn-danger waves-effect waves-light">
                                                                 <i class="feather icon-trash m-0"></i>
                                                             </button>
                                                         </div>
@@ -71,6 +71,7 @@
 
     @include('car-types.create')
     @include('car-types.edit')
+    @include('car-types.delete')
 @endsection
 
 @section('head')
