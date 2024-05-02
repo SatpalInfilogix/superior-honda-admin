@@ -65,19 +65,19 @@
                         <span class="pcoded-mtext">Car Management</span>
                     </a>
                 </li>
-                <li class="pcoded-hasmenu active pcoded-trigger" dropdown-icon="style1" subitem-icon="style1">
+                <li @class(['pcoded-hasmenu', 'pcoded-trigger active' => Request::is('car-types', 'car-brands')])>
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="fas fa-car"></i></span>
                         <span class="pcoded-mtext">Car Configuration</span>
                     </a>
                     <ul class="pcoded-submenu">
-                        <li class="active">
+                        <li @class(['active' => Request::is('car-types')])>
                             <a href="{{ route('car-types.index') }}" class="waves-effect waves-dark">
                                 <span class="pcoded-mtext">Car Types</span>
                             </a>
                         </li>
-                        <li class="">
-                            <a href="" class="waves-effect waves-dark">
+                        <li @class(['active' => Request::is('car-brands')])>
+                            <a href="{{ route('car-brands.index') }}" class="waves-effect waves-dark">
                                 <span class="pcoded-mtext">Car Brands</span>
                             </a>
                         </li>
