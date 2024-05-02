@@ -15,6 +15,7 @@
                                 <div class="card-block">
                                     <form action="{{ route('profile.update', Auth::id()) }}" method="post">
                                         @method('patch')
+                                        @csrf
                                         <div class="row">
                                             <div class="col-md-3 form-group">
                                                 <label for="first-name">First Name</label>
@@ -42,6 +43,27 @@
                                                     <label class="custom-file-label" for="profile-picture">Choose
                                                         file</label>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3 form-group">
+                                                <label for="designation">Designation</label>
+                                                <input type="text" name="designation" class="form-control">
+                                            </div>
+                                            <div class="col-md-3 form-group">
+                                                <label for="role">Role</label>
+                                                <select name="role" id="role" class="form-control">
+                                                    <option value="Super Admin">Super Admin</option>
+                                                    <option value="Admin">Admin</option>
+                                                    <option value="Customer Service">Customer Service</option>
+                                                    <option value="Accountant">Accountant</option>
+                                                    <option value="Inspection Manager">Inspection Manager</option>
+                                                    <option value="Technician">Technician</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label for="dob">Date of Birth</label>
+                                                <input type="text" name="dob" class="form-control">
                                             </div>
                                         </div>
                                         <div class="row">
