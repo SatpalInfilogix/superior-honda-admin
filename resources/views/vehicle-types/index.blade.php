@@ -39,8 +39,8 @@
                                                                     data-vehicle-type="{{ json_encode($vehicle_type) }}">
                                                                     <i class="feather icon-edit m-0"></i>
                                                                 </button>
-                                                                <button data-id="{{ $vehicle_type->id }}" data-name="vechile type"
-                                                                    class="delete-vehicle-type btn btn-danger waves-effect waves-light">
+                                                                <button data-source="vehicle type" data-endpoint="{{ route('vehicle-types.destroy', $vehicle_type->id) }}"
+                                                                    class="delete-btn btn btn-danger waves-effect waves-light">
                                                                     <i class="feather icon-trash m-0"></i>
                                                                 </button>
                                                             </div>
@@ -62,7 +62,6 @@
 
     @include('vehicle-types.create')
     @include('vehicle-types.edit')
-    @include('vehicle-types.delete')
 @endsection
 
 @section('head')

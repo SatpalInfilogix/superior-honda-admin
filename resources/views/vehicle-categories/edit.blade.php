@@ -18,10 +18,12 @@
                                     </div>
                                 </div>
                                 <div class="card-block">
-                                    <form action="{{ route('vehicle-categories.store') }}">
+                                    <form action="{{ route('vehicle-categories.update', $vehicle_category->id) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
                                         <div class="form-group">
                                             <label for="category-name">Category Name</label>
-                                            <input type="text" class="form-control" id="category-name">
+                                            <input type="text" class="form-control" name="name" id="category-name" value="{{ $vehicle_category->name }}">
                                         </div>
                                         <button type="submit" class="btn btn-primary">Save</button>
                                     </form>

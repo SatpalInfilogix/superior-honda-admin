@@ -7,11 +7,18 @@
                 <div class="page-body">
                     <div class="row">
                         <div class="col-sm-12">
+                            @if (session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
+
                             <div class="card">
                                 <div class="card-header">
                                     <h5>Vehicle Categories</h5>
                                     <div class="float-right">
-                                        <a href="{{ route('vehicle-categories.create') }}" class="btn btn-primary btn-md">Add
+                                        <a href="{{ route('vehicle-categories.create') }}"
+                                            class="btn btn-primary btn-md">Add
                                             Vehicle Category</a>
                                     </div>
                                 </div>
@@ -27,21 +34,24 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @foreach($categories as $index => $category)
                                                 <tr>
-                                                    <td>1</td>
-                                                    <td>ass</td>
+                                                    <td>{{ $index + 1 }}</td>
+                                                    <td>{{ $category->name }}</td>
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
-                                                            <a href="{{ route('vehicle-categories.edit', 1) }}" class="btn btn-primary waves-effect waves-light mr-2 edit-vehicle-type">
+                                                            <a href="{{ route('vehicle-categories.edit', $category->id) }}"
+                                                                class="btn btn-primary waves-effect waves-light mr-2 edit-vehicle-type">
                                                                 <i class="feather icon-edit m-0"></i>
                                                             </a>
-                                                            <button
-                                                                class="delete-vehicle-type btn btn-danger waves-effect waves-light">
+                                                            <button data-source="category" data-endpoint="{{ route('vehicle-categories.destroy', $category->id) }}"
+                                                                class="delete-btn btn btn-danger waves-effect waves-light">
                                                                 <i class="feather icon-trash m-0"></i>
                                                             </button>
                                                         </div>
                                                     </td>
                                                 </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -54,8 +64,6 @@
             </div>
         </div>
     </div>
-
-    @include('vehicle-types.delete')
 @endsection
 
 @section('head')

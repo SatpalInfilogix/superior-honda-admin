@@ -85,7 +85,7 @@ class VehicleTypeController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Vehicle Type deleted successfully.'
+            'message' => 'Vehicle type deleted successfully.'
         ]);
     }
 }

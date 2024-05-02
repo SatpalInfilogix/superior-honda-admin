@@ -18,10 +18,11 @@
                                     </div>
                                 </div>
                                 <div class="card-block">
-                                    <form action="{{ route('vehicle-categories.store') }}">
+                                    <form action="{{ route('vehicle-categories.store') }}" method="POST">
+                                        @csrf
                                         <div class="form-group">
                                             <label for="category-name">Category Name</label>
-                                            <input type="text" class="form-control" id="category-name">
+                                            <input type="text" name="name" class="form-control" id="category-name">
                                         </div>
                                         <button type="submit" class="btn btn-primary">Save</button>
                                     </form>
@@ -33,4 +34,28 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(function() {
+            $('form').validate({
+                rules: {
+                    name: "required"
+                },
+                messages: {
+                    name: "Please enter category name"
+                },
+                errorClass: "text-danger f-12",
+                errorElement: "span",
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass("form-control-danger");
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass("form-control-danger");
+                },
+                submitHandler: function(form) {
+                    form.submit();
+                }
+            });
+        })
+    </script>
 @endsection

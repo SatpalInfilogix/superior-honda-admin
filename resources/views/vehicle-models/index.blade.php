@@ -77,7 +77,6 @@
 
     @include('car-models.create')
     @include('car-models.edit')
-    @include('car-models.delete')
 @endsection
 
 @section('head')

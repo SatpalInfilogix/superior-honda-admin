@@ -74,7 +74,6 @@
 
     @include('vehicle-brands.create')
     @include('vehicle-brands.edit')
-    @include('vehicle-brands.delete')
 @endsection
 
 @section('head')
