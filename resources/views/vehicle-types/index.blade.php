@@ -27,23 +27,25 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($vehicle_types as $key => $vehicle_type)
-                                                <tr>
-                                                    <td>{{ $key + 1 }}</td>
-                                                    <td>{{ $vehicle_type->vehicle_type }}</td>
-                                                    <td>
-                                                        <div class="btn-group btn-group-sm">
-                                                            <button class="btn btn-primary waves-effect waves-light mr-2 edit-vehicle-type"
-                                                                data-toggle="modal" data-target="#edit-vehicle-type" data-vehicle-type="{{ json_encode($vehicle_type) }}">
-                                                                <i class="feather icon-edit m-0"></i>
-                                                        </button>
-                                                            <button
-                                                                class="delete-vehicle-type btn btn-danger waves-effect waves-light">
-                                                                <i class="feather icon-trash m-0"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                @foreach ($vehicle_types as $key => $vehicle_type)
+                                                    <tr>
+                                                        <td>{{ $key + 1 }}</td>
+                                                        <td>{{ $vehicle_type->vehicle_type }}</td>
+                                                        <td>
+                                                            <div class="btn-group btn-group-sm">
+                                                                <button
+                                                                    class="btn btn-primary waves-effect waves-light mr-2 edit-vehicle-type"
+                                                                    data-toggle="modal" data-target="#edit-vehicle-type"
+                                                                    data-vehicle-type="{{ json_encode($vehicle_type) }}">
+                                                                    <i class="feather icon-edit m-0"></i>
+                                                                </button>
+                                                                <button data-id="{{ $vehicle_type->id }}" data-name="vechile type"
+                                                                    class="delete-vehicle-type btn btn-danger waves-effect waves-light">
+                                                                    <i class="feather icon-trash m-0"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>

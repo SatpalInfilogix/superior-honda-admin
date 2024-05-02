@@ -55,7 +55,7 @@ class VehicleTypeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CarType $carType)
+    public function show(VehicleType $vehicleType)
     {
         //
     }
@@ -63,7 +63,7 @@ class VehicleTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CarType $carType)
+    public function edit(VehicleType $vehicleType)
     {
         //
     }
@@ -71,7 +71,7 @@ class VehicleTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CarType $carType)
+    public function update(Request $request, VehicleType $vehicleType)
     {
         //
     }
@@ -79,8 +79,13 @@ class VehicleTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CarType $carType)
+    public function destroy(VehicleType $vehicleType)
     {
-        //
+        VehicleType::where('id', $vehicleType->id)->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Vehicle Type deleted successfully.'
+        ]);
     }
 }
