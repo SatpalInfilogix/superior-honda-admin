@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -12,7 +14,9 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        return view('profile.index');
+        $user = User::where('id', Auth::id())->first();
+
+        return view('profile.index', compact('user'));
     }
 
     /**
@@ -52,7 +56,33 @@ class ProfileController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $user = User::where('id', Auth::id())->first();
+        $oldProfile = NULL;
+        if($user != '') {
+            $oldProfile = $user->profile_picture;
+        }
+
+        if ($request->hasFile('profile_image'))
+        {
+            $file = $request->file('profile_image');
+            $filename = time().'.'.$file->getClientOriginalExtension();
+            $file->move(public_path('uploads/profile-image/'), $filename);
+        }
+
+        $user->update([
+            'first_name'      => $request->first_name,
+            'last_name'       => $request->last_name,
+            'date_of_birth'   => $request->date_of_birth,
+            'profile_picture' => isset($filename) ? 'uploads/profile-pic/'. $filename : $oldProfile,
+        ]);
+
+        if($request->password && $request->password == $request->confirm_password) {
+            $user->update([
+                'password' => Hash::make($request->password),
+            ]);
+        }
+
+        return redirect()->route('profile.index');
     }
 
     /**

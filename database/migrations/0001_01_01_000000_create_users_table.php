@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('emp_id')->nullable();
+            $table->string('first_name', 50)->nullable();
+            $table->string('last_name', 50)->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->enum('role', ['Super Admin', 'Admin', 'Customer Service', 'Accountant', 'Inspection Manager', 'Technician'])->default('Customer Service');
@@ -21,6 +23,7 @@ return new class extends Migration
             $table->string('additional_details')->nullable();
             $table->string('profile_picture')->nullable();
             $table->string('branch')->nullable();
+            $table->string('designation')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
