@@ -30,7 +30,7 @@ class VehicleCategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:25'
+            'name' => 'required|unique:vehicle_categories|max:25'
         ]);
 
         $category = new VehicleCategory();
