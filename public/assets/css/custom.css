@@ -1,0 +1,4 @@
+.ui-state-active, .accordion-msg:focus, .accordion-msg:hover{
+    background-color: #4680ff;
+    color: #fff;
+}
