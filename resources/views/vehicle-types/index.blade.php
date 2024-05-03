@@ -12,8 +12,7 @@
                                 <div class="card-header">
                                     <h5>Vehicle Types</h5>
                                     <div class="float-right">
-                                        <button class="btn btn-primary btn-md" data-toggle="modal"
-                                            data-target="#add-vehicle-type">Add Vehicle Type</button>
+                                        <a href="{{ route('vehicle-types.create') }}" class="btn btn-primary btn-md">Add Vehicle Type</a>
                                     </div>
                                 </div>
                                 <div class="card-block">
@@ -60,7 +59,6 @@
         </div>
     </div>
 
-    @include('vehicle-types.create')
     @include('vehicle-types.edit')
 @endsection
 
