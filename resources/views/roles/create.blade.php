@@ -21,7 +21,8 @@
                                     <form action="{{ route('roles.store') }}" method="POST">
                                         @csrf
                                         <div class="form-group">
-                                            <x-input-text name="name" label="Name" value="{{ old('role') }}"></x-input-text>
+                                            <x-input-text name="name" label="Name"
+                                                value="{{ old('role') }}"></x-input-text>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Save</button>
                                     </form>
@@ -33,15 +34,17 @@
             </div>
         </div>
     </div>
+@endsection
 
+@section('script')
     <script>
         $(function() {
             $('form').validate({
                 rules: {
-                    role: "required"
+                    name: "required"
                 },
                 messages: {
-                    role: "Please enter role"
+                    name: "Please enter role"
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",

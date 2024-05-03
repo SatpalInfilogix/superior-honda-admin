@@ -42,14 +42,6 @@
             <div class="pcoded-navigation-label">Administrator</div>
             <ul class="pcoded-item pcoded-left-item">
                 <li class=" ">
-                    <a href="{{ route('roles.index')}}" class="waves-effect waves-dark">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-user"></i>
-                        </span>
-                        <span class="pcoded-mtext">Manage Role</span>
-                    </a>
-                </li>
-                <li class=" ">
                     <a href="" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
                             <i class="feather icon-user"></i>
@@ -157,13 +149,23 @@
                         <span class="pcoded-mtext">Settings</span>
                     </a>
                 </li>
-                <li class=" ">
-                    <a href="{{ route('roles-and-permissions.index') }}" class="waves-effect waves-dark">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-clipboard"></i>
-                        </span>
+                <li @class(['pcoded-hasmenu', 'pcoded-trigger active' => Request::is('roles', 'roles-and-permissions')])>
+                    <a href="javascript:void(0)" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="fas fa-car"></i></span>
                         <span class="pcoded-mtext">Roles & Permissions</span>
                     </a>
+                    <ul class="pcoded-submenu">
+                        <li @class(['active' => Request::is('roles')])>
+                            <a href="{{ route('roles.index') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-mtext">Manage Roles</span>
+                            </a>
+                        </li>
+                        <li @class(['active' => Request::is('roles-and-permissions')])>
+                            <a href="{{ route('roles-and-permissions.index') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-mtext">Roles & Permissions</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
