@@ -151,7 +151,7 @@
                 </li>
                 <li @class(['pcoded-hasmenu', 'pcoded-trigger active' => Request::is('roles', 'roles-and-permissions')])>
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
-                        <span class="pcoded-micon"><i class="fas fa-car"></i></span>
+                        <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span>
                         <span class="pcoded-mtext">Roles & Permissions</span>
                     </a>
                     <ul class="pcoded-submenu">

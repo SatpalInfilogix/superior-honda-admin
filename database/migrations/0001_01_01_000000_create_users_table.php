@@ -18,11 +18,9 @@ return new class extends Migration
             $table->string('last_name', 50)->nullable();
             $table->string('name');
             $table->string('email')->unique();
-            $table->enum('role', ['Super Admin', 'Admin', 'Customer Service', 'Accountant', 'Inspection Manager', 'Technician'])->default('Customer Service');
             $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->string('additional_details')->nullable();
             $table->string('profile_picture')->nullable();
-            $table->string('branch')->nullable();
             $table->string('designation')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->timestamp('email_verified_at')->nullable();
