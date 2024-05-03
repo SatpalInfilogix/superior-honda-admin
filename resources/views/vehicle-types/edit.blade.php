@@ -19,7 +19,7 @@
                                 </div>
 
                                 <div class="card-block">
-                                    <form action="{{ route('vehicle-types.update', $vehicleType->id) }}" method="POST">
+                                    <form action="{{ route('vehicle-types.update', $vehicleType->id) }}" method="POST" name="edit-vehicle-type">
                                         @csrf
                                         @method('PATCH')
                                         <div class="form-group">
@@ -49,10 +49,10 @@
         $(function() {
             $('[name="edit-vehicle-type"]').validate({
             rules: {
-                edit_vehicle_type: "required"
+                vehicle_type: "required"
             },
             messages: {
-                edit_vehicle_type: "Please enter vehicle type"
+                vehicle_type: "Please enter vehicle type"
             },
             errorClass: "text-danger f-12",
             errorElement: "span",
