@@ -6,6 +6,7 @@ use App\Models\VehicleType;
 use App\Models\VehicleCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class VehicleTypeController extends Controller
 {
@@ -33,17 +34,22 @@ class VehicleTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $validation = Validator::make($request->all(),[ 
+        $request->validate([
             'category_id' => 'required',
-            'vehicle_type' => 'required|unique:vehicle_types,vehicle_type',
-        ]);
-    
-        VehicleType::create([
-            'category_id' => $request->category_id,
-            'vehicle_type' => $request->vehicle_type
+            'vehicle_type' => [
+                'required',
+                Rule::unique('vehicle_types')->where(function ($query) use ($request) {
+                    return $query->where('category_id', $request->category_id);
+                }),
+            ],
         ]);
 
-        return redirect()->route('vehicle-types.index')->with('success', 'Vehicle type saved successfully');
+            VehicleType::create([
+                'category_id' => $request->category_id,
+                'vehicle_type' => $request->vehicle_type
+            ]);
+
+            return redirect()->route('vehicle-types.index')->with('success', 'Vehicle type saved successfully');
     }
 
     /**
@@ -70,9 +76,14 @@ class VehicleTypeController extends Controller
      */
     public function update(Request $request, VehicleType $vehicleType)
     {
-        $validation = Validator::make($request->all(),[
+        $request->validate([
             'category_id' => 'required',
-            'vehicle_type' => 'required|unique:vehicle_types,vehicle_type',
+            'vehicle_type' => [
+                'required',
+                Rule::unique('vehicle_types')->where(function ($query) use ($request) {
+                    return $query->where('category_id', $request->category_id);
+                })->ignore($vehicleType->id),
+            ],
         ]);
 
         $vehicleType = VehicleType::where('id', $vehicleType->id)->update([
