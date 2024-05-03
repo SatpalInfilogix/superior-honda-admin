@@ -21,6 +21,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
+                                                    <th>Category</th>
                                                     <th>Vehicle Type</th>
                                                     <th>Actions</th>
                                                 </tr>
@@ -29,15 +30,14 @@
                                                 @foreach ($vehicle_types as $key => $vehicle_type)
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
+                                                        <td>{{ $vehicle_type->category->name }}</td>
                                                         <td>{{ $vehicle_type->vehicle_type }}</td>
                                                         <td>
                                                             <div class="btn-group btn-group-sm">
-                                                                <button
-                                                                    class="btn btn-primary waves-effect waves-light mr-2 edit-vehicle-type"
-                                                                    data-toggle="modal" data-target="#edit-vehicle-type"
-                                                                    data-vehicle-type="{{ json_encode($vehicle_type) }}">
+                                                                <a href="{{ route('vehicle-types.edit', $vehicle_type->id) }}"
+                                                                    class="btn btn-primary waves-effect waves-light mr-2">
                                                                     <i class="feather icon-edit m-0"></i>
-                                                                </button>
+                                                                </a>
                                                                 <button data-source="vehicle type" data-endpoint="{{ route('vehicle-types.destroy', $vehicle_type->id) }}"
                                                                     class="delete-btn btn btn-danger waves-effect waves-light">
                                                                     <i class="feather icon-trash m-0"></i>
@@ -59,7 +59,6 @@
         </div>
     </div>
 
-    @include('vehicle-types.edit')
 @endsection
 
 @section('head')

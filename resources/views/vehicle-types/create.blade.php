@@ -18,10 +18,6 @@
                                     </div>
                                 </div>
 
-                                @php
-                                    print_r($errors);
-                                @endphp
-
                                 <div class="card-block">
                                     <form action="{{ route('vehicle-types.store') }}" method="POST">
                                         @csrf

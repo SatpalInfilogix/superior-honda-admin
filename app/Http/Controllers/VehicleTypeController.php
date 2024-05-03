@@ -14,7 +14,7 @@ class VehicleTypeController extends Controller
      */
     public function index()
     {
-        $vehicle_types = VehicleType::latest()->get();
+        $vehicle_types = VehicleType::with('category')->latest()->get();
 
         return view('vehicle-types.index', compact('vehicle_types'));
     }
@@ -43,7 +43,7 @@ class VehicleTypeController extends Controller
             'vehicle_type' => $request->vehicle_type
         ]);
 
-        return redirect()->route('vehicle-categories.index')->with('success', 'Vehicle type saved successfully');
+        return redirect()->route('vehicle-types.index')->with('success', 'Vehicle type saved successfully');
     }
 
     /**
@@ -59,7 +59,10 @@ class VehicleTypeController extends Controller
      */
     public function edit(VehicleType $vehicleType)
     {
-        //
+        $categories = VehicleCategory::all();
+        $vehicleType = VehicleType::with('category')->where('id', $vehicleType->id)->first();
+
+        return view('vehicle-types.edit', compact('vehicleType', 'categories'));
     }
 
     /**
@@ -67,7 +70,17 @@ class VehicleTypeController extends Controller
      */
     public function update(Request $request, VehicleType $vehicleType)
     {
-        //
+        $validation = Validator::make($request->all(),[
+            'category_id' => 'required',
+            'vehicle_type' => 'required|unique:vehicle_types,vehicle_type',
+        ]);
+
+        $vehicleType = VehicleType::where('id', $vehicleType->id)->update([
+            'category_id' => $request->category_id,
+            'vehicle_type' => $request->vehicle_type
+        ]);
+
+        return redirect()->route('vehicle-types.index')->with('success', 'Vehicle type updated successfully');
     }
 
     /**
