@@ -19,70 +19,57 @@
                                 </div>
                                 <div class="card-block">
                                     <div class="roles-and-permissions">
-                                        <a class="accordion-msg b-none waves-effect waves-light">Lorem Message 1</a>
-                                        <div class="accordion-desc p-0 b-default">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Module Name</th>
-                                                        <th>View</th>
-                                                        <th>Add</th>
-                                                        <th>Update</th>
-                                                        <th>Delete</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">1</th>
-                                                        <td>Mark</td>
-                                                        <td>Otto</td>
-                                                        <td>@mdo</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">2</th>
-                                                        <td>Jacob</td>
-                                                        <td>Thornton</td>
-                                                        <td>@fat</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">3</th>
-                                                        <td>Larry</td>
-                                                        <td>the Bird</td>
-                                                        <td>@twitter</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <a class="accordion-msg b-none waves-effect waves-light">Lorem
-                                            Message
-                                            2</a>
-                                        <div class="accordion-desc">
-                                            <p>
-                                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                                Lorem Ipsum has been the industry's standard dummy text ever since the
-                                                1500s, when an unknown printer took a galley of type and scrambled it to
-                                                make a type specimen book. It has
-                                                survived not only five centuries, but also the leap into electronic
-                                                typesetting, remaining essentially unchanged. It was popularised in the
-                                                1960s with the release of Letraset sheets containing
-                                                Lorem Ipsum passages, and more .
-                                            </p>
-                                        </div>
-                                        <a class="accordion-msg b-none waves-effect waves-light">Lorem
-                                            Message
-                                            3</a>
-                                        <div class="accordion-desc">
-                                            <p>
-                                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                                Lorem Ipsum has been the industry's standard dummy text ever since the
-                                                1500s, when an unknown printer took a galley of type and scrambled it to
-                                                make a type specimen book. It has
-                                                survived not only five centuries, but also the leap into electronic
-                                                typesetting, remaining essentially unchanged. It was popularised in the
-                                                1960s with the release of Letraset sheets containing
-                                                Lorem Ipsum passages, and more .
-                                            </p>
-                                        </div>
+                                        @foreach ($roles as $key => $role)
+                                            <a class="accordion-msg b-none waves-effect waves-light">{{ $role->name }}</a>
+                                            <div class="accordion-desc p-0 b-default">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Module Name</th>
+                                                            <th>View</th>
+                                                            <th>Add</th>
+                                                            <th>Update</th>
+                                                            <th>Delete</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($modules as $module)
+                                                            <tr>
+                                                                <th scope="row">{{ $module }}</th>
+                                                                <td>
+                                                                    <x-input-checkbox
+                                                                        name="{{ $role->name }}-{{ Str::lower($module) }}.view"
+                                                                        checked="{{ $role->permissions->contains('name', Str::lower($module) . '.view') }}"
+                                                                        data-role-id="{{ $role->id }}"
+                                                                        data-permission="{{ Str::lower($module) . '.view' }}" />
+                                                                </td>
+                                                                <td>
+                                                                    <x-input-checkbox
+                                                                        name="{{ $role->name }}-{{ Str::lower($module) }}.create"
+                                                                        checked="{{ $role->permissions->contains('name', Str::lower($module) . '.create') }}"
+                                                                        data-role-id="{{ $role->id }}"
+                                                                        data-permission="{{ Str::lower($module) . '.create' }}" />
+                                                                </td>
+                                                                <td>
+                                                                    <x-input-checkbox
+                                                                        name="{{ $role->name }}-{{ Str::lower($module) }}.update"
+                                                                        checked="{{ $role->permissions->contains('name', Str::lower($module) . '.update') }}"
+                                                                        data-role-id="{{ $role->id }}"
+                                                                        data-permission="{{ Str::lower($module) . '.update' }}" />
+                                                                </td>
+                                                                <td>
+                                                                    <x-input-checkbox
+                                                                        name="{{ $role->name }}-{{ Str::lower($module) }}.delete"
+                                                                        checked="{{ $role->permissions->contains('name', Str::lower($module) . '.delete') }}"
+                                                                        data-role-id="{{ $role->id }}"
+                                                                        data-permission="{{ Str::lower($module) . '.delete' }}" />
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -95,7 +82,13 @@
     </div>
 @endsection
 
+@section('head')
+    <link rel="stylesheet" href="{{ asset('assets/css/notification.css') }}">
+@endsection
+
 @section('script')
+    <script src="{{ asset('assets/js/bootstrap-growl.min.js') }}"></script>
+
     <script>
         $(function() {
             var icons = {
@@ -107,6 +100,36 @@
                 heightStyle: "content",
                 icons: icons
             });
+
+
+            $('[data-permission]').click(function() {
+                let role_id = $(this).data('role-id');
+                let permission_name = $(this).data('permission');
+
+                $.ajax({
+                    url: `{{ route('roles-and-permissions.index') }}/${ role_id }`,
+                    method: 'PATCH',
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        role_id: role_id,
+                        permission_name: permission_name
+                    },
+                    success: function(response) {
+                        $.growl({
+                            message: response.message
+                        }, {
+                            type: 'inverse',
+                            allow_dismiss: false,
+                            label: 'Cancel',
+                            className: 'btn-xs btn-inverse',
+                            placement: {
+                                from: 'bottom',
+                                align: 'right'
+                            }
+                        });
+                    }
+                })
+            })
         })
     </script>
 @endsection

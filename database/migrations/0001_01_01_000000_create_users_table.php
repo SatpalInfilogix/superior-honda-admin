@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('emp_id')->nullable();
             $table->string('first_name', 50)->nullable();
             $table->string('last_name', 50)->nullable();
-            $table->string('name');
             $table->string('email')->unique();
             $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->string('additional_details')->nullable();

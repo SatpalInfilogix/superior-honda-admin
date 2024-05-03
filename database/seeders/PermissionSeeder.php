@@ -13,33 +13,33 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        // Define roles
-        $roles = [
-            'Super Admin',
-            'Admin',
-            'Customer Service',
-            'Accountant',
-            'Inspection Manager',
-            'Technician'
-        ];
+        $roles = Role::get();
 
-        // Define permissions for CRUD operations on each entity
         $permissions = [
-            'users' => ['view user', 'create user', 'update user', 'delete user'],
-            'customers' => ['view customer', 'create customer', 'update customer', 'delete customer'],
-            'cars' => ['view car', 'create car', 'update car', 'delete car'],
-            'branches' => ['view branch', 'create branch', 'update branch', 'delete branch'],
-            'inquiries' => ['view inquiry', 'create inquiry', 'update inquiry', 'delete inquiry'],
+            'users' => ['view', 'create', 'update', 'delete'],
+            'customers' => ['view', 'create', 'update', 'delete'],
+            'cars' => ['view', 'create', 'update', 'delete'],
+            'branches' => ['view', 'create', 'update', 'delete'],
+            'inquiries' => ['view', 'create', 'update', 'delete'],
+            'inspection' => ['view', 'create', 'update', 'delete'],
+            'jobs' => ['view', 'create', 'update', 'delete'],
+            'invoices' => ['view', 'create', 'update', 'delete'],
+            'products' => ['view', 'create', 'update', 'delete'],
+            'services' => ['view', 'create', 'update', 'delete'],
+            'towing request' => ['view', 'create', 'update', 'delete'],
+            'orders' => ['view', 'create', 'update', 'delete'],
+            'copons' => ['view', 'create', 'update', 'delete'],
+            'payments' => ['view', 'create', 'update', 'delete'],
+            'email templates' => ['view', 'create', 'update', 'delete'],
         ];
 
-        // Create permissions and assign them to roles
         foreach ($permissions as $entity => $entityPermissions) {
             foreach ($entityPermissions as $permission) {
                 $permissionName = $entity . '.' . $permission;
                 Permission::create(['name' => $permissionName]);
 
                 foreach ($roles as $role) {
-                    Role::where('name', $role)->first()->assignPermission($permissionName);
+                    Role::where('name', $role->name)->first()->assignPermission($permissionName);
                 }
             }
         }
