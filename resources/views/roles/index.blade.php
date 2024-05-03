@@ -17,14 +17,13 @@
                                 <div class="card-header">
                                     <h5>Role</h5>
                                     <div class="float-right">
-                                        <a href="{{ route('user-roles.create') }}"
-                                            class="btn btn-primary btn-md">Add
-                                            Role</a>
+                                        <a href="{{ route('roles.create') }}"
+                                            class="btn btn-primary btn-md">Add Role</a>
                                     </div>
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
-                                        <table id="user-roles-list"
+                                        <table id="roles-list"
                                             class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
@@ -37,14 +36,14 @@
                                                 @foreach($roles as $index => $role)
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
-                                                    <td>{{ $role->role }}</td>
+                                                    <td>{{ $role->name }}</td>
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
-                                                            <a href="{{ route('user-roles.edit', $role->id) }}"
+                                                            <a href="{{ route('roles.edit', $role->id) }}"
                                                                 class="btn btn-primary waves-effect waves-light mr-2">
                                                                 <i class="feather icon-edit m-0"></i>
                                                             </a>
-                                                            <button data-source="role" data-endpoint="{{ route('user-roles.destroy', $role->id) }}"
+                                                            <button data-source="role" data-endpoint="{{ route('roles.destroy', $role->id) }}"
                                                                 class="delete-btn btn btn-danger waves-effect waves-light">
                                                                 <i class="feather icon-trash m-0"></i>
                                                             </button>
@@ -77,7 +76,7 @@
 
     <script>
         $(function() {
-            $('#user-roles-list').DataTable();
+            $('#roles-list').DataTable();
         })
     </script>
 @endsection

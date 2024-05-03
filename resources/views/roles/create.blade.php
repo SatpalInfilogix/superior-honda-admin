@@ -11,17 +11,17 @@
                                 <div class="card-header">
                                     <h5>Add Role</h5>
                                     <div class="float-right">
-                                        <a href="{{ route('user-roles.index') }}" class="btn btn-primary btn-md">
+                                        <a href="{{ route('roles.index') }}" class="btn btn-primary btn-md">
                                             <i class="feather icon-arrow-left"></i>
                                             Go Back
                                         </a>
                                     </div>
                                 </div>
                                 <div class="card-block">
-                                    <form action="{{ route('user-roles.store') }}" method="POST">
+                                    <form action="{{ route('roles.store') }}" method="POST">
                                         @csrf
                                         <div class="form-group">
-                                            <x-input-text name="role" label="role" value="{{ old('role') }}"></x-input-text>
+                                            <x-input-text name="name" label="Name" value="{{ old('role') }}"></x-input-text>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Save</button>
                                     </form>

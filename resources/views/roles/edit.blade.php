@@ -11,19 +11,19 @@
                                 <div class="card-header">
                                     <h5>Edit Role</h5>
                                     <div class="float-right">
-                                        <a href="{{ route('user-roles.index') }}" class="btn btn-primary btn-md">
+                                        <a href="{{ route('roles.index') }}" class="btn btn-primary btn-md">
                                             <i class="feather icon-arrow-left"></i>
                                             Go Back
                                         </a>
                                     </div>
                                 </div>
                                 <div class="card-block">
-                                    <form action="{{ route('user-roles.update', $user_role->id) }}" method="POST">
+                                    <form action="{{ route('roles.update', $role->id) }}" method="POST">
                                         @csrf
                                         @method('PATCH')
                                         <div class="form-group">
-                                            <label for="role">Role</label>
-                                            <input type="text" class="form-control" name="role" id="role" value="{{ $user_role->role }}">
+                                            <label for="role">Name</label>
+                                            <input type="text" class="form-control" name="name" id="role" value="{{ $role->name }}">
                                         </div>
                                         <button type="submit" class="btn btn-primary">Save</button>
                                     </form>

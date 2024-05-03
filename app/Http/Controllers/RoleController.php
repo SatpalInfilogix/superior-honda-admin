@@ -3,18 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\UserRole;
+use App\Models\Role;
 
-class UserRoleController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $roles = UserRole::latest()->get();
+        $roles = Role::latest()->get();
 
-        return view('user-roles.index', compact('roles'));
+        return view('roles.index', compact('roles'));
     }
 
     /**
@@ -22,7 +22,7 @@ class UserRoleController extends Controller
      */
     public function create()
     {
-        return view('user-roles.create');
+        return view('roles.create');
     }
 
     /**
@@ -31,14 +31,14 @@ class UserRoleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'role' => 'required|unique:user_roles|max:25'
+            'name' => 'required|unique:roles|max:25'
         ]);
 
-        UserRole::create([
-            'role' => $request->role
+        Role::create([
+            'name' => $request->name
         ]);
         
-        return redirect()->route('user-roles.index')->with('success', 'Role saved successfully'); 
+        return redirect()->route('roles.index')->with('success', 'Role saved successfully'); 
     }
 
     /**
@@ -52,29 +52,29 @@ class UserRoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(UserRole $user_role)
+    public function edit(Role $role)
     {
-        return view('user-roles.edit', compact('user_role'));
+        return view('roles.edit', compact('role'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, UserRole $user_role)
+    public function update(Request $request, Role $role)
     {
-        $role = UserRole::find($user_role->id)->update([
-            'role' => $request->role
+        Role::find($role->id)->update([
+            'name' => $request->name
         ]);
 
-        return redirect()->route('user-roles.index')->with('success', 'Role update successfully');
+        return redirect()->route('roles.index')->with('success', 'Role update successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UserRole $user_role)
+    public function destroy(Role $role)
     {
-        UserRole::where('id', $user_role->id)->delete();
+        Role::where('id', $role->id)->delete();
 
         return response()->json([
             'success' => true,
