@@ -150,7 +150,7 @@
                     </a>
                 </li>
                 <li class=" ">
-                    <a href="" class="waves-effect waves-dark">
+                    <a href="{{ route('roles-and-permissions.index') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
                             <i class="feather icon-clipboard"></i>
                         </span>

@@ -7,6 +7,7 @@ use App\Http\Controllers\VehicleCategoryController;
 use App\Http\Controllers\VehicleTypeController;
 use App\Http\Controllers\VehicleBrandController;
 use App\Http\Controllers\VehicleModelController;
+use App\Http\Controllers\RoleAndPermisionController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'auth.session'])->group(function () {
@@ -16,7 +17,8 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
         'vehicle-categories' => VehicleCategoryController::class,
         'vehicle-types' => VehicleTypeController::class,
         'vehicle-brands' => VehicleBrandController::class,
-        'vehicle-models' => VehicleModelController::class
+        'vehicle-models' => VehicleModelController::class,
+        'roles-and-permissions' => RoleAndPermisionController::class
     ]);
 });
 
