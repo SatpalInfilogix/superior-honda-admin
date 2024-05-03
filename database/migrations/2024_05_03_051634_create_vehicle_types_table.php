@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('vehicle_types', function (Blueprint $table) {
             $table->id();
-            $table->string('vehicle_type', 25)->unique();
+            $table->unsignedBigInteger('category_id');
+            $table->string('vehicle_type');
             $table->timestamps();
+
+            $table->foreign('category_id')->references('id')->on('vehicle_categories');
         });
     }
 

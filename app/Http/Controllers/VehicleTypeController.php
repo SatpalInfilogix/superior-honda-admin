@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\VehicleType;
+use App\Models\VehicleCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -23,7 +24,8 @@ class VehicleTypeController extends Controller
      */
     public function create()
     {
-        //
+        $categories = VehicleCategory::all();
+        return view('vehicle-types.create', compact('categories'));
     }
 
     /**
@@ -32,24 +34,16 @@ class VehicleTypeController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(),[ 
-            'add_vehicle_type' => 'required|unique:vehicle_types,vehicle_type',
+            'category_id' => 'required',
+            'vehicle_type' => 'required|unique:vehicle_types,vehicle_type',
         ]);
     
-        if($validation->fails()){
-            return response()->json([
-                'success' => false,
-                'message'  => $validation->errors()->first()
-            ]);
-        }
-
         VehicleType::create([
-            'vehicle_type' => $request->add_vehicle_type
+            'category_id' => $request->category_id,
+            'vehicle_type' => $request->vehicle_type
         ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Vehicle type added successfully.'
-        ]);
+        return redirect()->route('vehicle-categories.index')->with('success', 'Vehicle type saved successfully');
     }
 
     /**
