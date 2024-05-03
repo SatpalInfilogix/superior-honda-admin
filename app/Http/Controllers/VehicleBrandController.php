@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CarBrand;
+use App\Models\VehicleBrand;
+use App\Models\VehicleCategory;
 use Illuminate\Http\Request;
 
 class VehicleBrandController extends Controller
@@ -12,7 +13,9 @@ class VehicleBrandController extends Controller
      */
     public function index()
     {
-        return view('vehicle-brands.index');
+        $vehicleBrands = VehicleBrand::with('category')->latest()->get();
+
+        return view('vehicle-brands.index', compact('vehicleBrands'));
     }
 
     /**
@@ -20,7 +23,9 @@ class VehicleBrandController extends Controller
      */
     public function create()
     {
-        //
+        $vehicleCategories = VehicleCategory::all();
+
+        return view('vehicle-brands.create', compact('vehicleCategories'));
     }
 
     /**
@@ -28,13 +33,32 @@ class VehicleBrandController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'category_id' => 'required',
+            'brand_name'  => 'required',
+            'brand_logo'  => 'required'
+        ]);
+
+        if ($request->hasFile('brand_logo'))
+        {
+            $file = $request->file('brand_logo');
+            $filename = time().'.'.$file->getClientOriginalExtension();
+            $file->move(public_path('uploads/brand-logo/'), $filename);
+        }
+
+        VehicleBrand::create([
+            'category_id' => $request->category_id,
+            'brand_name'  => $request->brand_name,
+            'brand_logo' => 'uploads/brand-logo/'. $filename,
+        ]);
+        
+        return redirect()->route('vehicle-brands.index')->with('success', 'Vehicle brand saved successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(CarBrand $carBrand)
+    public function show(VehicleBrand $vehicleBrand)
     {
         //
     }
@@ -42,24 +66,55 @@ class VehicleBrandController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CarBrand $carBrand)
+    public function edit(VehicleBrand $vehicleBrand)
     {
-        //
+        $vehicleCategories = VehicleCategory::all();
+
+        return view('vehicle-brands.edit', compact('vehicleBrand', 'vehicleCategories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CarBrand $carBrand)
+    public function update(Request $request, VehicleBrand $vehicleBrand)
     {
-        //
+        $request->validate([
+            'category_id' => 'required',
+            'brand_name'  => 'required',
+        ]);
+
+        $brandLogo = VehicleBrand::where('id', $vehicleBrand->id)->first();
+        $oldBrandLogo = NULL;
+        if($brandLogo != '') {
+            $oldBrandLogo = $brandLogo->brand_logo;
+        }
+
+        if ($request->hasFile('brand_logo'))
+        {
+            $file = $request->file('brand_logo');
+            $filename = time().'.'.$file->getClientOriginalExtension();
+            $file->move(public_path('uploads/brand-logo/'), $filename);
+        }
+
+        VehicleBrand::where('id', $vehicleBrand->id)->update([
+            'category_id' => $request->category_id,
+            'brand_name'  => $request->brand_name,
+            'brand_logo' => isset($filename) ? 'uploads/brand-logo/'. $filename : $oldProfile,
+        ]);
+
+        return redirect()->route('vehicle-brands.index')->with('success', 'Vehicle brand updated successfully'); 
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CarBrand $carBrand)
+    public function destroy(VehicleBrand $vehicleBrand)
     {
-        //
+        VehicleBrand::where('id', $vehicleBrand->id)->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Vehicle brand deleted successfully.'
+        ]);
     }
 }

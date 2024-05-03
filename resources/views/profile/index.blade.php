@@ -23,22 +23,18 @@
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-3 form-group">
-                                                <label for="first-name">First Name</label>
-                                                <input type="text" name="first_name" class="form-control" value="{{ old('first-name', $user->first_name) }}">
+                                                <x-input-text name="first_name" label="First Name" value="{{ old('first_name', $user->first_name) }}"></x-input-text>
                                             </div>
                                             <div class="col-md-3 form-group">
-                                                <label for="last-name">Last Name</label>
-                                                <input type="text" name="last_name" class="form-control" value="{{ old('last-name', $user->last_name) }}">
+                                                <x-input-text name="last_name" label="Last Name" value="{{ old('last_name', $user->last_name) }}"></x-input-text>
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <label for="email-address">Email Address</label>
-                                                <input type="email" name="email" class="form-control" value="{{ ($user->email) }}" readonly>
+                                                <x-input-text name="email" label="Email Address" value="{{ old('email', $user->email) }}" readonly></x-input-text>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <label for="employee-id">Emp ID</label>
-                                                <input type="text" name="employee_id" class="form-control"  value="{{ ($user->emp_id) }}" readonly>
+                                                <x-input-text name="employee_id" label="Emp ID" value="{{ old('employee_id', $user->emp_id) }}" readonly></x-input-text>
                                             </div>
 
                                             <div class="col-md-6 form-group">
@@ -51,8 +47,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-3 form-group">
-                                                <label for="designation">Designation</label>
-                                                <input type="text" name="designation" class="form-control">
+                                                <x-input-text name="designation" label="Designation" value="{{ old('designation') }}" readonly></x-input-text>
                                             </div>
                                             <div class="col-md-3 form-group">
                                                 <label for="role">Role</label>
@@ -70,12 +65,10 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <label for="password">Password</label>
-                                                <input type="text" name="password" id="password" class="form-control">
+                                                <x-input-text name="password" label="Password" value="{{ old('password') }}" ></x-input-text>
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <label for="confirm-password">Confirm Password</label>
-                                                <input type="text" name="confirm_password" class="form-control">
+                                                <x-input-text name="confirm_password" label="Confirm Password" value="{{ old('confirm_password') }}" ></x-input-text>
                                             </div>
                                         </div>
 
