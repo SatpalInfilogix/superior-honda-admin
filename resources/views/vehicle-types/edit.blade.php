@@ -1,47 +1,58 @@
-<div class="modal fade" id="edit-vehicle-type" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title font-weight-bold">Edit Vehicle Type</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="" name="edit-vehicle-type" method="post">
-                @method('patch')
-                @csrf
-                <div class="modal-body">
+@extends('layouts.app')
+
+@section('content')
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="page-body">
                     <div class="row">
-                        <input type="hidden" id="vehicle_Id" value="" name="vehicle_Id">
-                        <div class="col-12">
-                            <label for="edit-vehicle-type">Vehicle Type</label>
-                            <input type="text" id="vehicle-type" name="edit_vehicle_type" class="form-control" value="">
+                        <div class="col-sm-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Edit Vehicle Type</h5>
+                                    <div class="float-right">
+                                        <a href="{{ route('vehicle-types.index') }}" class="btn btn-primary btn-md">
+                                            <i class="feather icon-arrow-left"></i>
+                                            Go Back
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="card-block">
+                                    <form action="{{ route('vehicle-types.update', $vehicleType->id) }}" method="POST" name="edit-vehicle-type">
+                                        @csrf
+                                        @method('PATCH')
+                                        <div class="form-group">
+                                            <label for="category_id">Select Category</label>
+                                            <select name="category_id" id="category_id" class="form-control">
+                                                <option value="" disabled>Select Category</option>
+                                                @foreach($categories as $category)
+                                                    <option value="{{ $category->id }}" @selected($vehicleType->category_id ==  $category->id) >{{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <x-input-text name="vehicle_type" label="Vehicle Type" value="{{ old('vehicle_type', $vehicleType->vehicle_type) }}"></x-input-text>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    $(function() {
-        $('.edit-vehicle-type').click(function() {
-            let vehicle_detail = $(this).data('vehicle-type');
-            $('#vehicle_Id').val(vehicle_detail.id);
-            $('#vehicle-type').val(vehicle_detail.vehicle_type);
-        });
-
-        $('[name="edit-vehicle-type"]').validate({
+    <script>
+        $(function() {
+            $('[name="edit-vehicle-type"]').validate({
             rules: {
-                edit_vehicle_type: "required"
+                vehicle_type: "required"
             },
             messages: {
-                edit_vehicle_type: "Please enter vehicle type"
+                vehicle_type: "Please enter vehicle type"
             },
             errorClass: "text-danger f-12",
             errorElement: "span",
@@ -52,8 +63,9 @@
                 $(element).removeClass("form-control-danger");
             },
             submitHandler: function(form) {
-                console.log(form)
+                form.submit();
             }
         });
-    })
-</script>
+        })
+    </script>
+@endsection

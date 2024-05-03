@@ -4,15 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\VehicleCategory;
 
-class VehicleType extends Model
+class UserRole extends Model
 {
     use HasFactory;
     protected $guarded = [];
-
-    public function category()
-    {
-        return $this->belongsTo(VehicleCategory::class);
-    }
 }

@@ -42,6 +42,14 @@
             <div class="pcoded-navigation-label">Administrator</div>
             <ul class="pcoded-item pcoded-left-item">
                 <li class=" ">
+                    <a href="{{ route('user-roles.index')}}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-user"></i>
+                        </span>
+                        <span class="pcoded-mtext">Manage Role</span>
+                    </a>
+                </li>
+                <li class=" ">
                     <a href="" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
                             <i class="feather icon-user"></i>

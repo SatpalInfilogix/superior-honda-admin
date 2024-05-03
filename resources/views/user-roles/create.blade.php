@@ -9,28 +9,19 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Add Vehicle Type</h5>
+                                    <h5>Add Role</h5>
                                     <div class="float-right">
-                                        <a href="{{ route('vehicle-types.index') }}" class="btn btn-primary btn-md">
+                                        <a href="{{ route('user-roles.index') }}" class="btn btn-primary btn-md">
                                             <i class="feather icon-arrow-left"></i>
                                             Go Back
                                         </a>
                                     </div>
                                 </div>
-
                                 <div class="card-block">
-                                    <form action="{{ route('vehicle-types.store') }}" method="POST">
+                                    <form action="{{ route('user-roles.store') }}" method="POST">
                                         @csrf
                                         <div class="form-group">
-                                            <label for="category_id">Select Category</label>
-                                            <select name="category_id" id="category_id" class="form-control">
-                                                @foreach($categories as $category)
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <x-input-text name="vehicle_type" label="Vehicle Type" value="{{ old('vehicle_type') }}"></x-input-text>
+                                            <x-input-text name="role" label="role" value="{{ old('role') }}"></x-input-text>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Save</button>
                                     </form>
@@ -47,10 +38,10 @@
         $(function() {
             $('form').validate({
                 rules: {
-                    vehicle_type: "required"
+                    role: "required"
                 },
                 messages: {
-                    vehicle_type: "Please enter category name"
+                    role: "Please enter role"
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",
