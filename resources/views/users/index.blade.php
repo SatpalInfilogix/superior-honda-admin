@@ -12,7 +12,9 @@
                                 <div class="card-header">
                                     <h5>User Management</h5>
                                     <div class="float-right">
+                                        @if(Auth::user()->can('create user'))
                                         <a href="{{ route('users.create') }}" class="btn btn-primary btn-md">Add User</a>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="card-block">
@@ -25,7 +27,9 @@
                                                     <th>Designation </th>
                                                     <th>Emai</th>
                                                     <th>Role</th>
+                                                    @canany(['edit user', 'delete user'])
                                                     <th>Actions</th>
+                                                    @endcanany
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -35,19 +39,25 @@
                                                     <td>{{ $user->first_name . $user->last_names }}</td>
                                                     <td>{{ $user->designation }}</td>
                                                     <td>{{ $user->email }}</td>
-                                                    <td>{{ $user->role }}</td>
+                                                    <td>{{ $user->roles->pluck('name')[0] }}</td>
+                                                    @canany(['edit user', 'delete user'])
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
+                                                            @if(Auth::user()->can('edit user'))
                                                             <a href="{{ route('users.edit', $user->id) }}"
                                                                 class="btn btn-primary waves-effect waves-light mr-2">
                                                                 <i class="feather icon-edit m-0"></i>
                                                             </a>
+                                                            @endif
+                                                            @if(Auth::user()->can('delete user'))
                                                             <button data-source="User" data-endpoint="{{ route('users.destroy', $user->id) }}"
                                                                 class="delete-btn btn btn-danger waves-effect waves-light">
                                                                 <i class="feather icon-trash m-0"></i>
                                                             </button>
+                                                            @endif
                                                         </div>
                                                     </td>
+                                                    @endcanany
                                                 </tr>
                                                 @endforeach
                                             </tbody>

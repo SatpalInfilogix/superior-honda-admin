@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class ProfileController extends Controller
 {
@@ -15,8 +16,9 @@ class ProfileController extends Controller
     public function index()
     {
         $user = User::where('id', Auth::id())->first();
+        $roles = Role::latest()->get();
 
-        return view('profile.index', compact('user'));
+        return view('profile.index', compact('user', 'roles'));
     }
 
     /**

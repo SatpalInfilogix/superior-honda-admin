@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Branch;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facade\Validator;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Str;
 
@@ -18,7 +20,11 @@ class UserController extends Controller
     {
         $users = user::latest()->get();
 
-        return view('users.index', compact('users'));
+        if (Auth::user()->can('view user')){
+            return view('users.index', compact('users'));
+        } else {
+            return redirect()->route('dashboard.index');
+        }
     }
 
     /**
@@ -27,8 +33,12 @@ class UserController extends Controller
     public function create()
     {
         $branches = Branch::latest()->get();
-
-        return view('users.create', compact('branches'));
+        $roles = Role::latest()->get();
+        if (Auth::user()->can('create user')){
+            return view('users.create', compact('branches', 'roles'));
+        } else {
+            return redirect()->route('dashboard.index');
+        }
     }
 
     /**
@@ -54,7 +64,7 @@ class UserController extends Controller
             'emp_id'     => $empId,
             'additional_details' => $request->additional_details,
             'password'   => Hash::make(Str::random(10)),
-        ]);
+        ])->assignRole($request->role);
 
         return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
@@ -72,7 +82,11 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        if (Auth::user()->can('edit user')){
+            return view('users.edit', compact('user'));
+        } else {
+            return redirect()->route('dashboard.index');
+        }
     }
 
     /**
@@ -99,9 +113,13 @@ class UserController extends Controller
     {
         $user = User::where('id', $user->id)->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'User deleted successfully.'
-        ]);
+        if(Auth::user()->can('delete user')) {
+            return response()->json([
+                'success' => true,
+                'message' => 'User deleted successfully.'
+            ]);
+        } else {
+            return redirect()->route('dashboard.index');
+        }
     }
 }

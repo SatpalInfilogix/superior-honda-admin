@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BranchController extends Controller
 {
@@ -14,7 +15,11 @@ class BranchController extends Controller
     {
         $branches = Branch::latest()->get();
 
-        return view('branches.index', compact('branches'));
+        if (Auth::user()->can('view branch')) {
+            return view('branches.index', compact('branches'));
+        } else {
+            return redirect()->route('dashboard.index');
+        }
     }
 
     /**
@@ -22,7 +27,11 @@ class BranchController extends Controller
      */
     public function create()
     {
-        return view('branches.create');
+        if (Auth::user()->can('create branch')) {
+            return view('branches.create');
+        } else {
+            return redirect()->route('dashboard.index');
+        }
     }
 
     /**
@@ -74,7 +83,11 @@ class BranchController extends Controller
     {
         $branch = Branch::where('id', $branch->id)->first();
 
-        return view('branches.edit', compact('branch'));
+        if (Auth::user()->can('edit branch')) {
+            return view('branches.edit', compact('branch'));
+        } else {
+            return redirect()->route('dashboard.index');
+        }
     }
 
     /**
@@ -108,9 +121,13 @@ class BranchController extends Controller
     {
         Branch::where('id', $branch->id)->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Branch deleted successfully.'
-        ]);
+        if (Auth::user()->can('delete branch')) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Branch deleted successfully.'
+            ]);
+        } else {
+            return redirect()->route('dashboard.index');
+        }
     }
 }

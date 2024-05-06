@@ -51,10 +51,9 @@
                                             </div>
                                             <div class="col-md-3 form-group">
                                                 <label for="role">Role</label>
-                                                @php $roles =['Super Admin', 'Admin', 'Customer Service', 'Accountant', 'Inspection Manager', 'Technician'] @endphp
                                                 <select name="role" id="role" class="form-control" disabled>
                                                     @foreach ($roles as $key => $role)
-                                                        <option value="{{$role}}" @selected($user->role == $role)>{{ $role }}</option>
+                                                        <option value="{{$role->id}}" @selected($user->role_id == $role->id)>{{ $role->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

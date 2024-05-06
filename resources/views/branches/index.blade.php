@@ -12,7 +12,9 @@
                                 <div class="card-header">
                                     <h5>Branches</h5>
                                     <div class="float-right">
+                                        @if(Auth::user()->can('create branch'))
                                         <a href="{{ route('branches.create') }}" class="btn btn-primary btn-md">Add Branch</a>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="card-block">
@@ -25,7 +27,9 @@
                                                     <th>Name</th>
                                                     <th>Address</th>
                                                     <th>Pincode</th>
+                                                    @canany(['edit branch', 'delete branch'])
                                                     <th>Actions</th>
+                                                    @endcanany
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -36,18 +40,24 @@
                                                         <td>{{ $branch->name }}</td>
                                                         <td>{{ $branch->address }}</td>
                                                         <td>{{ $branch->pincode }}</td>
+                                                        @canany(['edit branch', 'delete branch'])
                                                         <td>
                                                             <div class="btn-group btn-group-sm">
+                                                                @if(Auth::user()->can('edit branch'))
                                                                 <a href="{{ route('branches.edit', $branch->id) }}"
                                                                     class="btn btn-primary waves-effect waves-light mr-2">
                                                                     <i class="feather icon-edit m-0"></i>
                                                                 </a>
+                                                                @endif
+                                                                @if(Auth::user()->can('delete branch'))
                                                                 <button data-source="Branch" data-endpoint="{{ route('branches.destroy', $branch->id) }}"
                                                                     class="delete-btn btn btn-danger waves-effect waves-light">
                                                                     <i class="feather icon-trash m-0"></i>
                                                                 </button>
                                                             </div>
+                                                            @endif
                                                         </td>
+                                                        @endcanany
                                                     </tr>
                                                 @endforeach
                                             </tbody>
