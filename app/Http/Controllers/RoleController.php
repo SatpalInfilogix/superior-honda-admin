@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-use App\Models\Role;
+use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
@@ -12,8 +11,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::latest()->get();
-
+        $roles = Role::get();
         return view('roles.index', compact('roles'));
     }
 
@@ -31,7 +29,7 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:roles|max:25'
+            'name' => 'required|unique:roles'
         ]);
 
         Role::create([
@@ -44,7 +42,7 @@ class RoleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Role $role)
     {
         //
     }
@@ -62,11 +60,15 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        Role::find($role->id)->update([
+        $request->validate([
+            'name' => 'required|unique:roles'
+        ]);
+
+        Role::where('id', $role->id)->update([
             'name' => $request->name
         ]);
 
-        return redirect()->route('roles.index')->with('success', 'Role update successfully');
+        return redirect()->route('roles.index')->with('success', 'Role updated successfully'); 
     }
 
     /**

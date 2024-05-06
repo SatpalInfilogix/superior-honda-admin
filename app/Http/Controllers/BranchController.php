@@ -38,11 +38,11 @@ class BranchController extends Controller
 
         $branch = Branch::orderByDesc('unique_code')->first();
         if (!$branch) {
-            $uniqueCode =  'Br0001';
+            $uniqueCode =  'BR0001';
         } else {
             $numericPart = (int)substr($branch->unique_code, 3);
             $nextNumericPart = str_pad($numericPart + 1, 4, '0', STR_PAD_LEFT);
-            $uniqueCode = 'Br' . $nextNumericPart;
+            $uniqueCode = 'BR' . $nextNumericPart;
         }
     
         Branch::create([
@@ -89,13 +89,13 @@ class BranchController extends Controller
         ]);
 
         Branch::where('id', $branch->id)->update([
-            'name'          => $request->name,
-            'timing'        => $request->timing,
+            'name'            => $request->name,
+            'timing'          => $request->timing,
             'operating_hours' => $request->operating_hours,
-            'branch_head'   => $request->branch_head,
-            'address'       => $request->address,
-            'pincode'       => $request->pincode,
-            'status'        => $request->status,
+            'branch_head'     => $request->branch_head,
+            'address'         => $request->address,
+            'pincode'         => $request->pincode,
+            'status'          => $request->status,
         ]);
 
         return redirect()->route('branches.index')->with('success', 'Branch updated successfully'); 

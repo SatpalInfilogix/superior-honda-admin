@@ -53,8 +53,8 @@
                                 <div class="dropdown-primary dropdown">
                                     <div class="dropdown-toggle" data-toggle="dropdown">
                                         <img src="{{ asset('assets/images/avatar-4.jpg') }}" class="img-radius"
-                                            alt="{{ Auth::user()->name }}">
-                                        <span>{{ Auth::user()->name }}</span>
+                                            alt="{{ Auth::user()->first_name }}">
+                                        <span>{{ Auth::user()->first_name }}</span>
                                         <i class="feather icon-chevron-down"></i>
                                     </div>
                                     <ul class="show-notification profile-notification dropdown-menu"
@@ -107,7 +107,7 @@
     <script src="{{ asset('assets/js/script.min.js') }}"></script>
 
     <script>
-        $(function() {
+        $(function() {            
             $('.delete-btn').click(function() {
                 let source = $(this).data('source');
                 let deleteApiEndpoint = $(this).data('endpoint');

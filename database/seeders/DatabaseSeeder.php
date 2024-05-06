@@ -1,10 +1,6 @@
 <?php
 namespace Database\Seeders;
-
-use App\Models\User;
-use App\Models\VehicleCategory;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,15 +9,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'first_name' => 'Admin',
-            'last_name' => 'Admin',
-            'email' => 'admin@gmail.com',
-            'role' => 'Super Admin',
-            'password' => Hash::make('123456')
+        $this->call([
+            ModuleSeeder::class,
+            RolesAndPermissionsSeeder::class,
+            UserSeeder::class,
+            VehicleCategorySeeder::class,
         ]);
-
-        VehicleCategory::factory()->create(['name' => 'Bike']);
-        VehicleCategory::factory()->create(['name' => 'Car']);
     }
 }

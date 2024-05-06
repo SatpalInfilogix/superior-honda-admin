@@ -36,3 +36,29 @@
         </div>
     </div>
 @endsection
+
+@section('script')
+    <script>
+        $(function() {
+            $('form').validate({
+                rules: {
+                    name: "required"
+                },
+                messages: {
+                    name: "Please enter role"
+                },
+                errorClass: "text-danger f-12",
+                errorElement: "span",
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass("form-control-danger");
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass("form-control-danger");
+                },
+                submitHandler: function(form) {
+                    form.submit();
+                }
+            });
+        })
+    </script>
+@endsection

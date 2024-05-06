@@ -8,7 +8,7 @@ use App\Http\Controllers\VehicleTypeController;
 use App\Http\Controllers\VehicleBrandController;
 use App\Http\Controllers\VehicleModelController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\RoleAndPermisionController;
+use App\Http\Controllers\RoleAndPermissionController;
 use App\Http\COntrollers\BranchController;
 use Illuminate\Support\Facades\Route;
 
