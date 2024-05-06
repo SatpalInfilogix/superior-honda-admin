@@ -14,53 +14,60 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        $user = User::create([
             'first_name' => 'Super',
             'last_name' => 'Admin',
             'email' => 'superadmin@gmail.com',
             'password' => Hash::make('123456')
         ]);
+        $user->assignRole('Super Admin');
         
-        User::create([
+        $user = User::create([
             'first_name' => 'Admin',
             'last_name' => 'Test',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('123456')
         ]);
+        $user->assignRole('Admin');
 
-        User::create([
+        $user = User::create([
             'first_name' => 'Customer',
             'last_name' => 'Service',
             'email' => 'customerservice@gmail.com',
             'password' => Hash::make('123456')
         ]);
+        $user->assignRole('Customer Service');
 
-        User::create([
+        $user = User::create([
             'first_name' => 'Accoutant',
             'last_name' => 'test',
             'email' => 'accoutant@gmail.com',
             'password' => Hash::make('123456')
         ]);
+        $user->assignRole('Accountant');
 
-        User::create([
+        $user = User::create([
             'first_name' => 'Inspection',
             'last_name' => 'Manager',
             'email' => 'inspection.manager@gmail.com',
             'password' => Hash::make('123456')
         ]);
+        $user->assignRole('Inspection Manager');
 
-        User::create([
+        $user = User::create([
             'first_name' => 'Technician',
             'last_name' => 'Test',
             'email' => 'technician@gmail.com',
             'password' => Hash::make('123456')
         ]);
+        $user->assignRole('Technician');
 
-        User::create([
+        $user = User::create([
             'first_name' => 'Satpal',
             'last_name' => 'Singh',
             'email' => 'customer@gmail.com',
             'password' => Hash::make('123456')
         ]);
+        $user->assignRole('Customer');
     }
 }
