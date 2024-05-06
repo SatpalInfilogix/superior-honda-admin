@@ -22,7 +22,8 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
         'vehicle-models' => VehicleModelController::class,
         'roles'          => RoleController::class,
         'roles-and-permissions' => RoleAndPermisionController::class,
-        'branches'       => BranchController::class
+        'branches'       => BranchController::class,
+        'users'          => UserController::class
     ]);
 });
 

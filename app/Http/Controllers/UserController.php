@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Branch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facade\Validator;
+use Illuminate\Support\Facades\Hash;
+use Str;
 
 class UserController extends Controller
 {
@@ -13,7 +16,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = user::latest()->get();
+
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -21,7 +26,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $branches = Branch::latest()->get();
+
+        return view('users.create', compact('branches'));
     }
 
     /**
@@ -29,7 +36,27 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = User::orderByDesc('emp_id')->first();
+        if (!$user) {
+            $empId =  'Em0001';
+        } else {
+            $numericPart = (int)substr($user->emp_id, 3);
+            $nextNumericPart = str_pad($numericPart + 1, 4, '0', STR_PAD_LEFT);
+            $empId = 'Em' . $nextNumericPart;
+        }
+
+        user::create([
+            'first_name' => $request->first_name,
+            'last_name'  => $request->last_name,
+            'email'      => $request->email,
+            'designation'=> $request->designation,
+            'branch'     => $request->branch,
+            'emp_id'     => $empId,
+            'additional_details' => $request->additional_details,
+            'password'   => Hash::make(Str::random(10)),
+        ]);
+
+        return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
 
     /**
@@ -45,7 +72,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('users.edit', compact('user'));
     }
 
     /**
@@ -53,7 +80,16 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        user::where('id', $user->id)->update([
+            'first_name' => $request->first_name,
+            'last_name'  => $request->last_name,
+            'email'      => $request->email,
+            'designation'=> $request->designation,
+            'branch'     => $request->branch,
+            'additional_details' => $request->additional_details,
+        ]);
+
+        return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
 
     /**
@@ -61,27 +97,11 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
-    }
+        $user = User::where('id', $user->id)->delete();
 
-    public function login(Request $request)
-    {
-        echo"<pre>"; print_r($request->all()); die();
-        // $validator =  Validator::make($request->all(), [
-        //     'email'     => 'required',
-        //     'password'  => 'required'
-        // ]);
-
-        $user = User::where('email', $request->email)->first();
-        if ($user) {
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-                $user->token = $user->createToken('MyApp')->plainTextToken;
-                return redirect(route('/dashboard'));
-            } else {
-                return Redirect::route("/login")->with('error-message','Invalid Credential.');
-            }
-        } else {
-            return Redirect::route("/login")->with('error-message','User Not found.');
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'User deleted successfully.'
+        ]);
     }
 }
