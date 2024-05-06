@@ -4,6 +4,7 @@
     $errorClass = '';
 @endphp
 
+
 @unset($attributes['label'])
 @unset($attributes['checked'])
 
@@ -15,11 +16,11 @@
 
 <div class="border-checkbox-section">
     <div class="border-checkbox-group border-checkbox-group-primary">
-        <input class="border-checkbox" type="checkbox" id="{{ $attributes['name'] }}"
+        <input class="border-checkbox" type="checkbox" id="{{ $id }}"
             {{ $attributes->merge(['class' => 'form-control '.$errorClass]) }} 
             {{ $checked ? 'checked': '' }}
         >
 
-        <label class="border-checkbox-label" for="{{ $attributes['name'] }}">{{ $label }}</label>
+        <label class="border-checkbox-label" for="{{ $id }}">{{ $label }}</label>
     </div>
 </div>
