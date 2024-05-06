@@ -66,7 +66,7 @@ class ProfileController extends Controller
         {
             $file = $request->file('profile_image');
             $filename = time().'.'.$file->getClientOriginalExtension();
-            $file->move(public_path('uploads/profile-image/'), $filename);
+            $file->move(public_path('uploads/profile-pic/'), $filename);
         }
 
         $user->update([
