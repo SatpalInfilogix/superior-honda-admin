@@ -56,7 +56,10 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'edit inspection']);
         Permission::create(['name' => 'delete inspection']);
 
-        Permission::create(['name' => 'roles & permissions']);
+        Permission::create(['name' => 'view roles & permissions']);
+        Permission::create(['name' => 'create roles & permissions']);
+        Permission::create(['name' => 'edit roles & permissions']);
+        Permission::create(['name' => 'delete roles & permissions']);
 
         $role = Role::create(['name' => 'Super Admin']);
         $role->givePermissionTo(Permission::all());

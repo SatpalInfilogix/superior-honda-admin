@@ -23,16 +23,9 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
         'vehicle-models' => VehicleModelController::class,
         'vehicle-model-variants'=> VehicleModelVariantController::class,
         'branches'       => BranchController::class,
-        'users'          => UserController::class
-    ]);
-
-    Route::post('get-vehicle-brand', [ VehicleModelController::class, 'getVehicleBrand']);
-    Route::post('get-vehicle-model', [ VehicleModelVariantController::class, 'getVehicleModel']);
-});
-Route::middleware(['isAuthorized'])->group(function () {
-    Route::resources([
+        'users'          => UserController::class,
         'roles'          => RoleController::class,
-        'roles-and-permissions' => RoleAndPermissionController::class,
+        'roles-and-permissions' => RoleAndPermissionController::class
     ]);
 });
 
@@ -43,3 +36,7 @@ Route::get('/', function (){
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+/* Routes for Ajax calls */
+Route::post('get-vehicle-brand', [ VehicleModelController::class, 'getVehicleBrand']);
+Route::post('get-vehicle-model', [ VehicleModelVariantController::class, 'getVehicleModel']);

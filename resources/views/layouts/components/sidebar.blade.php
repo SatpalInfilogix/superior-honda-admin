@@ -66,6 +66,7 @@
                         </a>
                     </li>
                 @endcan
+                @can('view vehicle management')
                 <li @class([
                     'pcoded-hasmenu',
                     'pcoded-trigger active' => Request::is(
@@ -106,6 +107,7 @@
                         </li>
                     </ul>
                 </li>
+                @endcan
                 @can('view vehicle')
                     <li class=" ">
                         <a href="" class="waves-effect waves-dark">
@@ -177,7 +179,7 @@
                     </a>
                 </li>
 
-                @if (Auth::user()->roles->pluck('name')[0] == 'Super Admin')
+                @can('view roles & permissions')
                     <li @class([
                         'pcoded-hasmenu',
                         'pcoded-trigger active' => Request::is('roles', 'roles-and-permissions'),
@@ -199,7 +201,7 @@
                             </li>
                         </ul>
                     </li>
-                @endif
+                @endcan
             </ul>
         </div>
     </div>

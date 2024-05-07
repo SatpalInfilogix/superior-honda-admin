@@ -8,9 +8,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             @if (session('success'))
-                                <div class="alert alert-success">
-                                    {{ session('success') }}
-                                </div>
+                                <x-alert message="{{ session('success') }}"></x-alert>
                             @endif
 
                             <div class="card">
@@ -20,7 +18,8 @@
                                 <div class="card-block">
                                     <div class="roles-and-permissions">
                                         @foreach ($roles as $key => $role)
-                                            <a class="accordion-msg b-none waves-effect waves-light">{{ $role->name }}</a>
+                                            <a
+                                                class="accordion-msg b-none waves-effect waves-light {{ $key == 3 ? 'active' : '' }}">{{ $role->name }}</a>
 
                                             <form action="{{ route('roles-and-permissions.store') }}" method="POST">
                                                 @csrf
@@ -42,25 +41,25 @@
                                                                     <th scope="row">{{ $module->name }}</th>
                                                                     <td>
                                                                         <x-input-checkbox name="permissions[]"
-                                                                            id="{{ $role->id.'view_' . $module->slug }}"
+                                                                            id="{{ $role->id . 'view_' . $module->slug }}"
                                                                             value="{{ 'view ' . $module->slug }}"
                                                                             checked="{{ $role->permissions->contains('name', 'view ' . $module->slug) }}" />
                                                                     </td>
                                                                     <td>
                                                                         <x-input-checkbox name="permissions[]"
-                                                                            id="{{ $role->id.'create_' . $module->slug }}"
+                                                                            id="{{ $role->id . 'create_' . $module->slug }}"
                                                                             value="{{ 'create ' . $module->slug }}"
                                                                             checked="{{ $role->permissions->contains('name', 'create ' . $module->slug) }}" />
                                                                     </td>
                                                                     <td>
                                                                         <x-input-checkbox name="permissions[]"
-                                                                            id="{{ $role->id.'edit_' . $module->slug }}"
+                                                                            id="{{ $role->id . 'edit_' . $module->slug }}"
                                                                             value="{{ 'edit ' . $module->slug }}"
                                                                             checked="{{ $role->permissions->contains('name', 'edit ' . $module->slug) }}" />
                                                                     </td>
                                                                     <td>
                                                                         <x-input-checkbox name="permissions[]"
-                                                                            id="{{ $role->id.'delete_' . $module->slug }}"
+                                                                            id="{{ $role->id . 'delete_' . $module->slug }}"
                                                                             value="{{ 'delete ' . $module->slug }}"
                                                                             checked="{{ $role->permissions->contains('name', 'delete ' . $module->slug) }}" />
                                                                     </td>
@@ -103,7 +102,6 @@
                 heightStyle: "content",
                 icons: icons
             });
-
 
             $('[data-permission]').click(function() {
                 let role_id = $(this).data('role-id');

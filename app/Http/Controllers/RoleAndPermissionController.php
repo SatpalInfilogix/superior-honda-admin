@@ -50,7 +50,7 @@ class RoleAndPermissionController extends Controller
         }
         $role->syncPermissions($request->permissions);
 
-        return redirect()->to(route('roles-and-permissions.index'));
+        return redirect()->to(route('roles-and-permissions.index'))->with('success', 'Permissions updated successfully');
     }
 
     /**
