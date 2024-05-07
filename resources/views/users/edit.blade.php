@@ -43,7 +43,34 @@
                                                 <input type="text" name="date_of_birth" class="form-control" value="{{ old('date_of_birth', $user->date_of_birth) }}" placeholder="YYYY-MM-DD">
                                             </div>
                                         </div>
-                                        
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label for="branch">Branch</label>
+                                                <select name="branch" id="branch" class="form-control">
+                                                    <option value="" selected disabled>Select Branch</option>
+                                                    @foreach ($branches as $key => $branch)
+                                                        <option value="{{$branch->id}}" @selected($user->branch_id == $branch->id)>{{ $branch->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-6 form-group">
+                                                <label for="role">Role</label>
+                                                <select name="role" id="role" class="form-control" disabled>
+                                                    <option value="" selected disabled>Select Role</option>
+                                                    @foreach ($roles as $key => $role)
+                                                        <option value="{{$role->id}}" @selected( $user->roles->pluck('name')[0] == $role->name)>{{ $role->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label for="branch">Additional Detail</label>
+                                                <textarea id="additional_detail" name="additional_detail" class="form-control" rows="2" cols="50">{{ $user->additional_details }}</textarea>
+                                            </div>
+                                        </div>
                                         
                                         <button type="submit" class="btn btn-primary">Save</button>
                                     </form>
@@ -62,12 +89,16 @@
                 rules: {
                     first_name: "required",
                     last_name: "required",
-                    email:      "required",
+                    designation: "required",
+                    email: "required",
+                    role: "required"
                 },
                 messages: {
                     first_name: "Please enter first name",
                     last_name: "Please enter last name",
-                    email: "Please enter your email",
+                    designation: "Please enter designation",
+                    email: "Please enter email",
+                    role: "Please enter role"
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",

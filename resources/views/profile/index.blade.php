@@ -53,7 +53,7 @@
                                                 <label for="role">Role</label>
                                                 <select name="role" id="role" class="form-control" disabled>
                                                     @foreach ($roles as $key => $role)
-                                                        <option value="{{$role->id}}" @selected($user->role_id == $role->id)>{{ $role->name }}</option>
+                                                        <option value="{{$role->id}}" @selected( Auth::user()->roles->pluck('name')[0] == $role->name)>{{ $role->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

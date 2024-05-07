@@ -10,10 +10,9 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Car Models</h5>
+                                    <h5>Vehicle Models</h5>
                                     <div class="float-right">
-                                        <button class="btn btn-primary btn-md" data-toggle="modal"
-                                            data-target="#add-car-model">Add Car Model</button>
+                                        <a href="{{ route('vehicle-models.create') }}" class="btn btn-primary btn-md">Add Vehicle Model</a>
                                     </div>
                                 </div>
                                 <div class="card-block">
@@ -22,46 +21,35 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
+                                                    <th>Category</th>
                                                     <th>Brand Name</th>
                                                     <th>Model Name</th>
-                                                    <th>Image</th>
+                                                    <th>Model Image</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @foreach($vehicleModels as $key => $vehicleModel)
                                                 <tr>
-                                                    <td>1</td>
-                                                    <td>SUV</td>
-                                                    <td>SUV</td>
-                                                    <td>SUV</td>
+                                                    <td>{{ ++$key }}</td>
+                                                    <td>{{ $vehicleModel->category->name }}</td>
+                                                    <td>{{ optional($vehicleModel->brand)->brand_name ?? 'N/A' }}</td>
+                                                    <td>{{ $vehicleModel->model_name }}</td>
+                                                    <td><img src="{{ asset($vehicleModel->model_image) }}" width="50" height="50"></td>
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
-                                                            <button class="btn btn-primary waves-effect waves-light mr-2"
-                                                                data-toggle="modal" data-target="#edit-car-model">
+                                                            <a href="{{ route('vehicle-models.edit', $vehicleModel->id) }}"
+                                                                class="btn btn-primary waves-effect waves-light mr-2">
                                                                 <i class="feather icon-edit m-0"></i>
-                                                            </button>
-                                                            <button class="delete-car-model btn btn-danger waves-effect waves-light">
+                                                            </a>
+                                                            <button data-source="vehicle model" data-endpoint="{{ route('vehicle-models.destroy', $vehicleModel->id) }}"
+                                                                class="delete-btn btn btn-danger waves-effect waves-light">
                                                                 <i class="feather icon-trash m-0"></i>
                                                             </button>
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Sedan</td>
-                                                    <td>Sedan</td>
-                                                    <td>Sedan</td>
-                                                    <td>
-                                                        <div class="btn-group btn-group-sm">
-                                                            <button class="btn btn-primary waves-effect waves-light mr-2">
-                                                                <i class="feather icon-edit m-0"></i>
-                                                            </button>
-                                                            <button class="delete-car-model btn btn-danger waves-effect waves-light">
-                                                                <i class="feather icon-trash m-0"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -75,8 +63,6 @@
         </div>
     </div>
 
-    @include('car-models.create')
-    @include('car-models.edit')
 @endsection
 
 @section('head')

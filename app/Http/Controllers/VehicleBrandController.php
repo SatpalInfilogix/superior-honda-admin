@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\VehicleBrand;
 use App\Models\VehicleCategory;
 use Illuminate\Http\Request;
+use File;
 
 class VehicleBrandController extends Controller
 {
@@ -94,12 +95,17 @@ class VehicleBrandController extends Controller
             $file = $request->file('brand_logo');
             $filename = time().'.'.$file->getClientOriginalExtension();
             $file->move(public_path('uploads/brand-logo/'), $filename);
+
+            $image_path = public_path($oldBrandLogo);
+            if(File::exists($image_path)) {
+                File::delete($image_path);
+            }
         }
 
         VehicleBrand::where('id', $vehicleBrand->id)->update([
             'category_id' => $request->category_id,
             'brand_name'  => $request->brand_name,
-            'brand_logo' => isset($filename) ? 'uploads/brand-logo/'. $filename : $oldProfile,
+            'brand_logo' => isset($filename) ? 'uploads/brand-logo/'. $filename : $oldBrandLogo,
         ]);
 
         return redirect()->route('vehicle-brands.index')->with('success', 'Vehicle brand updated successfully'); 

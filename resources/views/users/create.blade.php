@@ -39,6 +39,7 @@
                                             <div class="col-md-3 form-group">
                                                 <label for="role">Role</label>
                                                 <select name="role" id="role" class="form-control">
+                                                    <option value="" selected disabled>Select Role</option>
                                                     @foreach ($roles as $key => $role)
                                                         <option value="{{$role->name}}">{{ $role->name }}</option>
                                                     @endforeach
@@ -53,10 +54,15 @@
                                             <div class="col-md-6 form-group">
                                                 <label for="branch">Branch</label>
                                                 <select name="branch" id="branch" class="form-control">
+                                                    <option value="" selected disabled>Select Branch</option>
                                                     @foreach ($branches as $key => $branch)
                                                         <option value="{{$branch->id}}">{{ $branch->name }}</option>
                                                     @endforeach
                                                 </select>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label for="branch">Additional Detail</label>
+                                                <textarea id="additional_detail" name="additional_detail" class="form-control" rows="2" cols="50"></textarea>
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Save</button>
@@ -77,13 +83,15 @@
                     first_name: "required",
                     last_name: "required",
                     designation: "required",
-                    email:"required"
+                    email: "required",
+                    role: "required"
                 },
                 messages: {
                     first_name: "Please enter first name",
                     last_name: "Please enter last name",
                     designation: "Please enter designation",
                     email: "Please enter email",
+                    role: "Please enter role"
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",

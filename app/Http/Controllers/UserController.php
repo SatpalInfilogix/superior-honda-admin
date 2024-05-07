@@ -34,7 +34,8 @@ class UserController extends Controller
     {
         $branches = Branch::latest()->get();
         $roles = Role::latest()->get();
-        if (Auth::user()->can('create user')){
+        if (Auth::user()->can('create user'))
+        {
             return view('users.create', compact('branches', 'roles'));
         } else {
             return redirect()->route('dashboard.index');
@@ -46,6 +47,14 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'first_name'    => 'required',
+            'last_name'     => 'required',
+            'email'         => 'required',
+            'designation'   => 'required',
+            'role'          => 'required'
+        ]);
+
         $user = User::orderByDesc('emp_id')->first();
         if (!$user) {
             $empId =  'Em0001';
@@ -56,14 +65,15 @@ class UserController extends Controller
         }
 
         user::create([
-            'first_name' => $request->first_name,
-            'last_name'  => $request->last_name,
-            'email'      => $request->email,
-            'designation'=> $request->designation,
-            'branch'     => $request->branch,
-            'emp_id'     => $empId,
-            'additional_details' => $request->additional_details,
-            'password'   => Hash::make(Str::random(10)),
+            'first_name'    => $request->first_name,
+            'last_name'     => $request->last_name,
+            'email'         => $request->email,
+            'designation'   => $request->designation,
+            'branch_id'     => $request->branch,
+            'emp_id'        => $empId,
+            'additional_details' => $request->additional_detail,
+            'date_of_birth' => $request->date_of_birth,
+            'password'      => Hash::make(Str::random(10)),
         ])->assignRole($request->role);
 
         return redirect()->route('users.index')->with('success', 'User created successfully.');
@@ -83,7 +93,9 @@ class UserController extends Controller
     public function edit(User $user)
     {
         if (Auth::user()->can('edit user')){
-            return view('users.edit', compact('user'));
+            $branches = Branch::latest()->get();
+            $roles = Role::latest()->get();
+            return view('users.edit', compact('user', 'branches', 'roles'));
         } else {
             return redirect()->route('dashboard.index');
         }
@@ -94,13 +106,18 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $request->validate([
+            'first_name'    => 'required',
+            'last_name'     => 'required',
+            'designation'   => 'required',
+            'role'          => 'required'
+        ]);
         user::where('id', $user->id)->update([
-            'first_name' => $request->first_name,
-            'last_name'  => $request->last_name,
-            'email'      => $request->email,
-            'designation'=> $request->designation,
-            'branch'     => $request->branch,
-            'additional_details' => $request->additional_details,
+            'first_name'    => $request->first_name,
+            'last_name'     => $request->last_name,
+            'branch_id'     => $request->branch,
+            'date_of_birth' => $request->date_of_birth,
+            'additional_details' => $request->additional_detail,
         ]);
 
         return redirect()->route('users.index')->with('success', 'User updated successfully.');

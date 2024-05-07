@@ -23,6 +23,8 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
         'branches'       => BranchController::class,
         'users'          => UserController::class
     ]);
+
+    Route::post('get-vehicle-brand', [ VehicleModelController::class, 'getVehicleBrand']);
 });
 Route::middleware(['isAuthorized'])->group(function () {
     Route::resources([

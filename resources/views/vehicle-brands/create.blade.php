@@ -38,7 +38,7 @@
                                                 <input type="file" name="brand_logo" class="custom-file-input" id="add-brand-logo">
                                                 <label class="custom-file-label" for="add-brand-logo">Choose Brand Logo</label>
                                             </div>
-                                        </div>  
+                                        </div>
                                         <button type="submit" class="btn btn-primary">Save</button>
                                     </form>
                                 </div>
