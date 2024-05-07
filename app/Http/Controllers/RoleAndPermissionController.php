@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Permission;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Module;
 
 class RoleAndPermissionController extends Controller
@@ -17,6 +18,7 @@ class RoleAndPermissionController extends Controller
             ->where('name', '!=', 'Customer')
             ->get();
         $modules = Module::get();
+
         return view('roles-and-permissions.index', compact('roles', 'modules'));
     }
 
@@ -33,8 +35,19 @@ class RoleAndPermissionController extends Controller
      */
     public function store(Request $request)
     {
-        $role_id = $request->role_id;
-        $role = Role::find($role_id);
+        $role = Role::find($request->role_id);
+
+        if($request->permissions) {
+            foreach($request->permissions as $permission){
+                $existingPermission = Permission::where('name', $permission)->first();
+                if(!$existingPermission){
+                    Permission::create(['name' => $permission]);
+
+                    $super_admin_role = Role::where('name', 'Super Admin')->first();
+                    $super_admin_role->givePermissionTo($permission);
+                }
+            }
+        }
         $role->syncPermissions($request->permissions);
 
         return redirect()->to(route('roles-and-permissions.index'));

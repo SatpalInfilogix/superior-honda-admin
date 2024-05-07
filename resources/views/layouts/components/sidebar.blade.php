@@ -22,41 +22,51 @@
                         <span class="pcoded-mtext">Invoices</span>
                     </a>
                 </li>
-                <li class=" ">
-                    <a href="" class="waves-effect waves-dark">
-                        <span class="pcoded-micon">
-                            <i class="fas fa-cube"></i>
-                        </span>
-                        <span class="pcoded-mtext">Manage Products</span>
-                    </a>
-                </li>
-                <li class=" ">
-                    <a href="" class="waves-effect waves-dark">
-                        <span class="pcoded-micon">
-                            <i class="fas fa-cube"></i>
-                        </span>
-                        <span class="pcoded-mtext">Manage Orders</span>
-                    </a>
-                </li>
+                @can('view product')
+                    <li class=" ">
+                        <a href="" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="fas fa-cube"></i>
+                            </span>
+                            <span class="pcoded-mtext">Manage Products</span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('view order')
+                    <li class=" ">
+                        <a href="" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="fas fa-cube"></i>
+                            </span>
+                            <span class="pcoded-mtext">Manage Orders</span>
+                        </a>
+                    </li>
+                @endcan
             </ul>
             <div class="pcoded-navigation-label">Administrator</div>
             <ul class="pcoded-item pcoded-left-item">
-                <li class=" ">
-                    <a href="" class="waves-effect waves-dark">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-user"></i>
-                        </span>
-                        <span class="pcoded-mtext">User Management</span>
-                    </a>
-                </li>
-                <li class=" ">
-                    <a href="" class="waves-effect waves-dark">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-users"></i>
-                        </span>
-                        <span class="pcoded-mtext">Customer Management</span>
-                    </a>
-                </li>
+                @can('view user')
+                    <li class=" ">
+                        <a href="{{ route('users.index') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-user"></i>
+                            </span>
+                            <span class="pcoded-mtext">User Management</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('view customer')
+                    <li class=" ">
+                        <a href="" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-users"></i>
+                            </span>
+                            <span class="pcoded-mtext">Customer Management</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('view car')
                 <li class=" ">
                     <a href="" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
@@ -65,7 +75,16 @@
                         <span class="pcoded-mtext">Car Management</span>
                     </a>
                 </li>
-                <li @class(['pcoded-hasmenu', 'pcoded-trigger active' => Request::is('vehicle-categories', 'vehicle-types', 'vehicle-brands', 'vehicle-models')])>
+                @endcan
+                <li @class([
+                    'pcoded-hasmenu',
+                    'pcoded-trigger active' => Request::is(
+                        'vehicle-categories',
+                        'vehicle-types',
+                        'vehicle-brands',
+                        'vehicle-models'
+                    ),
+                ])>
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="fas fa-car"></i></span>
                         <span class="pcoded-mtext">Vehicle Configuration</span>
@@ -98,6 +117,8 @@
                         </li>
                     </ul>
                 </li>
+
+                @can('view branch')
                 <li class=" ">
                     <a href="{{ route('branches.index') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
@@ -106,6 +127,8 @@
                         <span class="pcoded-mtext">Branch Management</span>
                     </a>
                 </li>
+                @endcan
+                @can('view inquiry')
                 <li class=" ">
                     <a href="" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
@@ -114,6 +137,7 @@
                         <span class="pcoded-mtext">Inquiries</span>
                     </a>
                 </li>
+                @endcan
                 <li class=" ">
                     <a href="" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
@@ -122,6 +146,7 @@
                         <span class="pcoded-mtext">Inspection</span>
                     </a>
                 </li>
+                @can('view job')
                 <li class=" ">
                     <a href="" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
@@ -130,10 +155,12 @@
                         <span class="pcoded-mtext">Job Management</span>
                     </a>
                 </li>
+                @endcan
             </ul>
             <div class="pcoded-navigation-label">Settings</div>
             <ul class="pcoded-item pcoded-left-item">
-                <li class=" ">
+                @can('view job')
+                <li class="view email template ">
                     <a href="" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
                             <i class="feather icon-mail"></i>
@@ -141,6 +168,7 @@
                         <span class="pcoded-mtext">Email Template</span>
                     </a>
                 </li>
+                @endcan
                 <li class=" ">
                     <a href="" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
@@ -149,7 +177,12 @@
                         <span class="pcoded-mtext">Settings</span>
                     </a>
                 </li>
-                <li @class(['pcoded-hasmenu', 'pcoded-trigger active' => Request::is('roles', 'roles-and-permissions')])>
+
+                @if( Auth::user()->roles->pluck('name')[0] == 'Super Admin')
+                <li @class([
+                    'pcoded-hasmenu',
+                    'pcoded-trigger active' => Request::is('roles', 'roles-and-permissions'),
+                ])>
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span>
                         <span class="pcoded-mtext">Roles & Permissions</span>
@@ -167,6 +200,7 @@
                         </li>
                     </ul>
                 </li>
+                @endif
             </ul>
         </div>
     </div>

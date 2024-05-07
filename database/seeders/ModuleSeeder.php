@@ -14,6 +14,18 @@ class ModuleSeeder extends Seeder
     public function run(): void
     {
         Module::create([
+            'name' => 'Invoice',
+            'slug' => 'invoice'
+        ]);
+        Module::create([
+            'name' => 'Manage Products',
+            'slug' => 'manage products'
+        ]);
+        Module::create([
+            'name' => 'Manage Order',
+            'slug' => 'manage Order'
+        ]);
+        Module::create([
             'name' => 'User',
             'slug' => 'user'
         ]);

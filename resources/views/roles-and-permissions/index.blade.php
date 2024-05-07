@@ -42,25 +42,25 @@
                                                                     <th scope="row">{{ $module->name }}</th>
                                                                     <td>
                                                                         <x-input-checkbox name="permissions[]"
-                                                                            id="{{ 'view_' . $module->slug }}"
+                                                                            id="{{ $role->id.'view_' . $module->slug }}"
                                                                             value="{{ 'view ' . $module->slug }}"
                                                                             checked="{{ $role->permissions->contains('name', 'view ' . $module->slug) }}" />
                                                                     </td>
                                                                     <td>
                                                                         <x-input-checkbox name="permissions[]"
-                                                                            id="{{ 'create_' . $module->slug }}"
+                                                                            id="{{ $role->id.'create_' . $module->slug }}"
                                                                             value="{{ 'create ' . $module->slug }}"
                                                                             checked="{{ $role->permissions->contains('name', 'create ' . $module->slug) }}" />
                                                                     </td>
                                                                     <td>
                                                                         <x-input-checkbox name="permissions[]"
-                                                                            id="{{ 'update_' . $module->slug }}"
+                                                                            id="{{ $role->id.'update_' . $module->slug }}"
                                                                             value="{{ 'update ' . $module->slug }}"
                                                                             checked="{{ $role->permissions->contains('name', 'update ' . $module->slug) }}" />
                                                                     </td>
                                                                     <td>
                                                                         <x-input-checkbox name="permissions[]"
-                                                                            id="{{ 'delete_' . $module->slug }}"
+                                                                            id="{{ $role->id.'delete_' . $module->slug }}"
                                                                             value="{{ 'delete ' . $module->slug }}"
                                                                             checked="{{ $role->permissions->contains('name', 'delete ' . $module->slug) }}" />
                                                                     </td>
@@ -70,7 +70,7 @@
                                                     </table>
                                                 </div>
 
-                                                <button type="submit">Save</button>
+                                                <button type="submit" class="btn btn-primary mt-2">Save</button>
                                             </form>
                                         @endforeach
                                     </div>

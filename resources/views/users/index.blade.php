@@ -10,44 +10,54 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Vehicle Models</h5>
+                                    <h5>User Management</h5>
                                     <div class="float-right">
-                                        <a href="{{ route('vehicle-models.create') }}" class="btn btn-primary btn-md">Add Vehicle Model</a>
+                                        @if(Auth::user()->can('create user'))
+                                        <a href="{{ route('users.create') }}" class="btn btn-primary btn-md">Add User</a>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
-                                        <table id="car-models-list" class="table table-striped table-bordered nowrap">
+                                        <table id="user-management-list" class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Category</th>
-                                                    <th>Brand Name</th>
-                                                    <th>Model Name</th>
-                                                    <th>Model Image</th>
+                                                    <th>Name</th>
+                                                    <th>Designation </th>
+                                                    <th>Emai</th>
+                                                    <th>Role</th>
+                                                    @canany(['edit user', 'delete user'])
                                                     <th>Actions</th>
+                                                    @endcanany
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($vehicleModels as $key => $vehicleModel)
+                                                @foreach($users as $key => $user)
                                                 <tr>
-                                                    <td>{{ ++$key }}</td>
-                                                    <td>{{ $vehicleModel->category->name }}</td>
-                                                    <td>{{ optional($vehicleModel->brand)->brand_name ?? 'N/A' }}</td>
-                                                    <td>{{ $vehicleModel->model_name }}</td>
-                                                    <td><img src="{{ asset($vehicleModel->model_image) }}" width="50" height="50"></td>
+                                                    <td>{{ $key +1 }}</td>
+                                                    <td>{{ $user->first_name . $user->last_names }}</td>
+                                                    <td>{{ $user->designation }}</td>
+                                                    <td>{{ $user->email }}</td>
+                                                    <td>{{ $user->roles->pluck('name')[0] }}</td>
+                                                    @canany(['edit user', 'delete user'])
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
-                                                            <a href="{{ route('vehicle-models.edit', $vehicleModel->id) }}"
+                                                            @if(Auth::user()->can('edit user'))
+                                                            <a href="{{ route('users.edit', $user->id) }}"
                                                                 class="btn btn-primary waves-effect waves-light mr-2">
                                                                 <i class="feather icon-edit m-0"></i>
                                                             </a>
-                                                            <button data-source="vehicle model" data-endpoint="{{ route('vehicle-models.destroy', $vehicleModel->id) }}"
+                                                            @endif
+                                                            @if(Auth::user()->can('delete user'))
+                                                            <button data-source="User" data-endpoint="{{ route('users.destroy', $user->id) }}"
                                                                 class="delete-btn btn btn-danger waves-effect waves-light">
                                                                 <i class="feather icon-trash m-0"></i>
                                                             </button>
+                                                            @endif
                                                         </div>
                                                     </td>
+                                                    @endcanany
                                                 </tr>
                                                 @endforeach
                                             </tbody>
@@ -76,7 +86,7 @@
 
     <script>
         $(function() {
-            $('#car-models-list').DataTable();
+            $('#user-management-list').DataTable();
         })
     </script>
 @endsection

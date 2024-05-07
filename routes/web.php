@@ -14,15 +14,22 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::resources([
-        'dashboard'             => DashboardController::class,
-        'profile'               => ProfileController::class,
-        'vehicle-categories'    => VehicleCategoryController::class,
-        'vehicle-types'         => VehicleTypeController::class,
-        'vehicle-brands'        => VehicleBrandController::class,
-        'vehicle-models'        => VehicleModelController::class,
-        'roles'                 => RoleController::class,
+        'dashboard'     => DashboardController::class,
+        'profile'       => ProfileController::class,
+        'vehicle-categories' => VehicleCategoryController::class,
+        'vehicle-types'  => VehicleTypeController::class,
+        'vehicle-brands' => VehicleBrandController::class,
+        'vehicle-models' => VehicleModelController::class,
+        'branches'       => BranchController::class,
+        'users'          => UserController::class
+    ]);
+
+    Route::post('get-vehicle-brand', [ VehicleModelController::class, 'getVehicleBrand']);
+});
+Route::middleware(['isAuthorized'])->group(function () {
+    Route::resources([
+        'roles'          => RoleController::class,
         'roles-and-permissions' => RoleAndPermissionController::class,
-        'branches'              => BranchController::class
     ]);
 });
 
