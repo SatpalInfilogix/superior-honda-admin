@@ -22,7 +22,7 @@
                                         @csrf
                                         <div class="form-group">
                                             <x-input-text name="name" label="Name"
-                                                value="{{ old('role') }}"></x-input-text>
+                                                value="{{ old('name') }}"></x-input-text>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Save</button>
                                     </form>

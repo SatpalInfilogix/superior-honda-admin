@@ -25,6 +25,10 @@ class RoleController extends Controller
      */
     public function create()
     {
+        if(!Gate::allows('create roles & permissions')) {
+            abort(403);
+        }
+
         return view('roles.create');
     }
 
@@ -33,6 +37,10 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Gate::allows('create roles & permissions')) {
+            abort(403);
+        }
+
         $request->validate([
             'name' => 'required|unique:roles'
         ]);
@@ -57,6 +65,10 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+        if(!Gate::allows('edit roles & permissions')) {
+            abort(403);
+        }
+
         return view('roles.edit', compact('role'));
     }
 
@@ -65,6 +77,10 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+        if(!Gate::allows('edit roles & permissions')) {
+            abort(403);
+        }
+
         $request->validate([
             'name' => 'required|unique:roles'
         ]);
@@ -81,6 +97,10 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        if(!Gate::allows('delete roles & permissions')) {
+            abort(403);
+        }
+
         Role::where('id', $role->id)->delete();
 
         return response()->json([
