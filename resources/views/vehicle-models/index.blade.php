@@ -8,6 +8,9 @@
 
                     <div class="row">
                         <div class="col-sm-12">
+                            @if (session('success'))
+                                <x-alert message="{{ session('success') }}"></x-alert>
+                            @endif
                             <div class="card">
                                 <div class="card-header">
                                     <h5>Vehicle Models</h5>
