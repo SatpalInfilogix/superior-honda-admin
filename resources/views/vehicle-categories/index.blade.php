@@ -8,9 +8,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             @if (session('success'))
-                                <div class="alert alert-success">
-                                    {{ session('success') }}
-                                </div>
+                                <x-alert message="{{ session('success') }}"></x-alert>
                             @endif
 
                             <div class="card">
@@ -34,23 +32,24 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach($categories as $index => $category)
-                                                <tr>
-                                                    <td>{{ $index + 1 }}</td>
-                                                    <td>{{ $category->name }}</td>
-                                                    <td>
-                                                        <div class="btn-group btn-group-sm">
-                                                            <a href="{{ route('vehicle-categories.edit', $category->id) }}"
-                                                                class="btn btn-primary waves-effect waves-light mr-2 edit-vehicle-type">
-                                                                <i class="feather icon-edit m-0"></i>
-                                                            </a>
-                                                            <button data-source="category" data-endpoint="{{ route('vehicle-categories.destroy', $category->id) }}"
-                                                                class="delete-btn btn btn-danger waves-effect waves-light">
-                                                                <i class="feather icon-trash m-0"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                @foreach ($categories as $index => $category)
+                                                    <tr>
+                                                        <td>{{ $index + 1 }}</td>
+                                                        <td>{{ $category->name }}</td>
+                                                        <td>
+                                                            <div class="btn-group btn-group-sm">
+                                                                <a href="{{ route('vehicle-categories.edit', $category->id) }}"
+                                                                    class="btn btn-primary waves-effect waves-light mr-2 edit-vehicle-type">
+                                                                    <i class="feather icon-edit m-0"></i>
+                                                                </a>
+                                                                <button data-source="category"
+                                                                    data-endpoint="{{ route('vehicle-categories.destroy', $category->id) }}"
+                                                                    class="delete-btn btn btn-danger waves-effect waves-light">
+                                                                    <i class="feather icon-trash m-0"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>
