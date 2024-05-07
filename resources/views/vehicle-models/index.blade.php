@@ -42,7 +42,7 @@
                                                                 class="btn btn-primary waves-effect waves-light mr-2">
                                                                 <i class="feather icon-edit m-0"></i>
                                                             </a>
-                                                            <button data-source="vehicle model" data-endpoint="{{ route('vehicle-models.destroy', $vehicleModel->id) }}"
+                                                            <button data-source="vehicle model variant" data-endpoint="{{ route('vehicle-models.destroy', $vehicleModel->id) }}"
                                                                 class="delete-btn btn btn-danger waves-effect waves-light">
                                                                 <i class="feather icon-trash m-0"></i>
                                                             </button>
