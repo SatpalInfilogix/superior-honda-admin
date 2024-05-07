@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Branch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class BranchController extends Controller
 {
@@ -13,13 +14,12 @@ class BranchController extends Controller
      */
     public function index()
     {
-        $branches = Branch::latest()->get();
-
-        if (Auth::user()->can('view branch')) {
-            return view('branches.index', compact('branches'));
-        } else {
-            return redirect()->route('dashboard.index');
+        if (! Gate::allows('view branch')) {
+            abort(403);
         }
+
+        $branches = Branch::latest()->get();
+        return view('branches.index', compact('branches'));
     }
 
     /**
@@ -27,11 +27,11 @@ class BranchController extends Controller
      */
     public function create()
     {
-        if (Auth::user()->can('create branch')) {
-            return view('branches.create');
-        } else {
-            return redirect()->route('dashboard.index');
+        if (! Gate::allows('create branch')) {
+            abort(403);
         }
+
+        return view('branches.create');
     }
 
     /**
@@ -39,6 +39,10 @@ class BranchController extends Controller
      */
     public function store(Request $request)
     {
+        if (! Gate::allows('create branch')) {
+            abort(403);
+        }
+
         $request->validate([
             'name'    => 'required',
             'address' => 'required',
@@ -81,13 +85,12 @@ class BranchController extends Controller
      */
     public function edit(Branch $branch)
     {
-        $branch = Branch::where('id', $branch->id)->first();
-
-        if (Auth::user()->can('edit branch')) {
-            return view('branches.edit', compact('branch'));
-        } else {
-            return redirect()->route('dashboard.index');
+        if (! Gate::allows('edit branch')) {
+            abort(403);
         }
+
+        $branch = Branch::where('id', $branch->id)->first();
+        return view('branches.edit', compact('branch'));
     }
 
     /**
@@ -95,6 +98,10 @@ class BranchController extends Controller
      */
     public function update(Request $request, Branch $branch)
     {
+        if (! Gate::allows('edit branch')) {
+            abort(403);
+        }
+
         $request->validate([
             'name'    => 'required',
             'address' => 'required',
@@ -119,15 +126,15 @@ class BranchController extends Controller
      */
     public function destroy(Branch $branch)
     {
+        if (! Gate::allows('delete branch')) {
+            abort(403);
+        }
+
         Branch::where('id', $branch->id)->delete();
 
-        if (Auth::user()->can('delete branch')) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Branch deleted successfully.'
-            ]);
-        } else {
-            return redirect()->route('dashboard.index');
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Branch deleted successfully.'
+        ]);
     }
 }

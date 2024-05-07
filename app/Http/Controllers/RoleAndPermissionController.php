@@ -6,6 +6,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Module;
+use Illuminate\Support\Facades\Gate;
 
 class RoleAndPermissionController extends Controller
 {
@@ -14,6 +15,10 @@ class RoleAndPermissionController extends Controller
      */
     public function index()
     {
+        if (!Gate::allows('view roles & permissions')) {
+            abort(403);
+        }
+
         $roles = Role::where('name', '!=', 'Super Admin')
             ->where('name', '!=', 'Customer')
             ->get();
@@ -50,7 +55,7 @@ class RoleAndPermissionController extends Controller
         }
         $role->syncPermissions($request->permissions);
 
-        return redirect()->to(route('roles-and-permissions.index'));
+        return redirect()->to(route('roles-and-permissions.index'))->with('success', 'Permissions updated successfully');
     }
 
     /**

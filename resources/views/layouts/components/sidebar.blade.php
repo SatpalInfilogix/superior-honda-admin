@@ -66,24 +66,14 @@
                         </a>
                     </li>
                 @endcan
-                @can('view car')
-                <li class=" ">
-                    <a href="" class="waves-effect waves-dark">
-                        <span class="pcoded-micon">
-                            <i class="fas fa-car"></i>
-                        </span>
-                        <span class="pcoded-mtext">Car Management</span>
-                    </a>
-                </li>
-                @endcan
+                @can('view vehicle management')
                 <li @class([
                     'pcoded-hasmenu',
                     'pcoded-trigger active' => Request::is(
                         'vehicle-categories',
                         'vehicle-types',
                         'vehicle-brands',
-                        'vehicle-models'
-                    ),
+                        'vehicle-models'),
                 ])>
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="fas fa-car"></i></span>
@@ -117,26 +107,37 @@
                         </li>
                     </ul>
                 </li>
+                @endcan
+                @can('view vehicle')
+                    <li class=" ">
+                        <a href="" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="fas fa-car"></i>
+                            </span>
+                            <span class="pcoded-mtext">Vehicles Management</span>
+                        </a>
+                    </li>
+                @endcan
 
                 @can('view branch')
-                <li class=" ">
-                    <a href="{{ route('branches.index') }}" class="waves-effect waves-dark">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-file-text"></i>
-                        </span>
-                        <span class="pcoded-mtext">Branch Management</span>
-                    </a>
-                </li>
+                    <li class=" ">
+                        <a href="{{ route('branches.index') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-file-text"></i>
+                            </span>
+                            <span class="pcoded-mtext">Branch Management</span>
+                        </a>
+                    </li>
                 @endcan
                 @can('view inquiry')
-                <li class=" ">
-                    <a href="" class="waves-effect waves-dark">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-file-text"></i>
-                        </span>
-                        <span class="pcoded-mtext">Inquiries</span>
-                    </a>
-                </li>
+                    <li class=" ">
+                        <a href="" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-file-text"></i>
+                            </span>
+                            <span class="pcoded-mtext">Inquiries</span>
+                        </a>
+                    </li>
                 @endcan
                 <li class=" ">
                     <a href="" class="waves-effect waves-dark">
@@ -147,27 +148,27 @@
                     </a>
                 </li>
                 @can('view job')
-                <li class=" ">
-                    <a href="" class="waves-effect waves-dark">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-briefcase"></i>
-                        </span>
-                        <span class="pcoded-mtext">Job Management</span>
-                    </a>
-                </li>
+                    <li class=" ">
+                        <a href="" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-briefcase"></i>
+                            </span>
+                            <span class="pcoded-mtext">Job Management</span>
+                        </a>
+                    </li>
                 @endcan
             </ul>
             <div class="pcoded-navigation-label">Settings</div>
             <ul class="pcoded-item pcoded-left-item">
                 @can('view job')
-                <li class="view email template ">
-                    <a href="" class="waves-effect waves-dark">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-mail"></i>
-                        </span>
-                        <span class="pcoded-mtext">Email Template</span>
-                    </a>
-                </li>
+                    <li class="view email template ">
+                        <a href="" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-mail"></i>
+                            </span>
+                            <span class="pcoded-mtext">Email Template</span>
+                        </a>
+                    </li>
                 @endcan
                 <li class=" ">
                     <a href="" class="waves-effect waves-dark">
@@ -178,29 +179,29 @@
                     </a>
                 </li>
 
-                @if( Auth::user()->roles->pluck('name')[0] == 'Super Admin')
-                <li @class([
-                    'pcoded-hasmenu',
-                    'pcoded-trigger active' => Request::is('roles', 'roles-and-permissions'),
-                ])>
-                    <a href="javascript:void(0)" class="waves-effect waves-dark">
-                        <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span>
-                        <span class="pcoded-mtext">Roles & Permissions</span>
-                    </a>
-                    <ul class="pcoded-submenu">
-                        <li @class(['active' => Request::is('roles')])>
-                            <a href="{{ route('roles.index') }}" class="waves-effect waves-dark">
-                                <span class="pcoded-mtext">Manage Roles</span>
-                            </a>
-                        </li>
-                        <li @class(['active' => Request::is('roles-and-permissions')])>
-                            <a href="{{ route('roles-and-permissions.index') }}" class="waves-effect waves-dark">
-                                <span class="pcoded-mtext">Roles & Permissions</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                @endif
+                @can('view roles & permissions')
+                    <li @class([
+                        'pcoded-hasmenu',
+                        'pcoded-trigger active' => Request::is('roles', 'roles-and-permissions'),
+                    ])>
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span>
+                            <span class="pcoded-mtext">Roles & Permissions</span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li @class(['active' => Request::is('roles')])>
+                                <a href="{{ route('roles.index') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Manage Roles</span>
+                                </a>
+                            </li>
+                            <li @class(['active' => Request::is('roles-and-permissions')])>
+                                <a href="{{ route('roles-and-permissions.index') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Roles & Permissions</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endcan
             </ul>
         </div>
     </div>

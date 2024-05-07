@@ -41,17 +41,31 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'edit inquiry']);
         Permission::create(['name' => 'delete inquiry']);
 
-        Permission::create(['name' => 'view car']);
-        Permission::create(['name' => 'create car']);
-        Permission::create(['name' => 'edit car']);
-        Permission::create(['name' => 'delete car']);
-        
+        Permission::create(['name' => 'view vehicle']);
+        Permission::create(['name' => 'create vehicle']);
+        Permission::create(['name' => 'edit vehicle']);
+        Permission::create(['name' => 'delete vehicle']);
+
+        Permission::create(['name' => 'view vehicle configuration']);
+        Permission::create(['name' => 'create vehicle configuration']);
+        Permission::create(['name' => 'edit vehicle configuration']);
+        Permission::create(['name' => 'delete vehicle configuration']);
+
+        Permission::create(['name' => 'view inspection']);
+        Permission::create(['name' => 'create inspection']);
+        Permission::create(['name' => 'edit inspection']);
+        Permission::create(['name' => 'delete inspection']);
+
+        Permission::create(['name' => 'view roles & permissions']);
+        Permission::create(['name' => 'create roles & permissions']);
+        Permission::create(['name' => 'edit roles & permissions']);
+        Permission::create(['name' => 'delete roles & permissions']);
 
         $role = Role::create(['name' => 'Super Admin']);
         $role->givePermissionTo(Permission::all());
 
         $role = Role::create(['name' => 'Admin']);
-        $role->givePermissionTo('view user', 'create user', 'edit user', 'delete user', 'view car', 'create car', 'edit car', 'delete car');
+        $role->givePermissionTo('view user', 'create user', 'edit user', 'delete user', 'view vehicle', 'create vehicle', 'edit vehicle', 'delete vehicle');
  
         $role = Role::create(['name' => 'Customer Service'])
             ->givePermissionTo(['view user', 'create user']);
