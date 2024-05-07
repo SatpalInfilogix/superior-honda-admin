@@ -18,12 +18,12 @@ class ModuleSeeder extends Seeder
             'slug' => 'invoice'
         ]);
         Module::create([
-            'name' => 'Manage Products',
-            'slug' => 'manage products'
+            'name' => 'Product',
+            'slug' => 'product'
         ]);
         Module::create([
-            'name' => 'Manage Order',
-            'slug' => 'manage Order'
+            'name' => 'Order',
+            'slug' => 'Order'
         ]);
         Module::create([
             'name' => 'User',
@@ -38,16 +38,12 @@ class ModuleSeeder extends Seeder
             'slug' => 'product'
         ]);
         Module::create([
-            'name' => 'Order',
-            'slug' => 'order'
-        ]);
-        Module::create([
             'name' => 'Vehicle',
             'slug' => 'Vehicle'
         ]);
         Module::create([
-            'name' => 'Vehicle Management',
-            'slug' => 'Vehicle Management'
+            'name' => 'Vehicle Configuration',
+            'slug' => 'vehicle configuration'
         ]);
         Module::create([
             'name' => 'Branch',

@@ -40,6 +40,10 @@ class RoleAndPermissionController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Gate::allows('edit roles & permissions')) {
+            abort(403);
+        }
+
         $role = Role::find($request->role_id);
 
         if($request->permissions) {
