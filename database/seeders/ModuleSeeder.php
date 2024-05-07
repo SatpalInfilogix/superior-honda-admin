@@ -42,8 +42,12 @@ class ModuleSeeder extends Seeder
             'slug' => 'order'
         ]);
         Module::create([
-            'name' => 'Car',
-            'slug' => 'car'
+            'name' => 'Vehicle',
+            'slug' => 'Vehicle'
+        ]);
+        Module::create([
+            'name' => 'Vehicle Management',
+            'slug' => 'Vehicle Management'
         ]);
         Module::create([
             'name' => 'Branch',
@@ -60,6 +64,10 @@ class ModuleSeeder extends Seeder
         Module::create([
             'name' => 'Email Template',
             'slug' => 'email template'
+        ]);
+        Module::create([
+            'name' => 'Roles & Permissions',
+            'slug' => 'roles & permissions'
         ]);
     }
 }
