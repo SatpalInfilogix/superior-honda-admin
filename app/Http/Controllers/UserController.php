@@ -37,7 +37,7 @@ class UserController extends Controller
         }
 
         $branches = Branch::latest()->get();
-        $roles = Role::latest()->get();
+        $roles = Role::where('name', '!=', 'Customer')->latest()->get();
         return view('users.create', compact('branches', 'roles'));
     }
 
@@ -100,7 +100,7 @@ class UserController extends Controller
         }
 
         $branches = Branch::latest()->get();
-        $roles = Role::latest()->get();
+        $roles = Role::where('name', '!=', 'Customer')->latest()->get();
         return view('users.edit', compact('user', 'branches', 'roles'));
     }
 

@@ -13,8 +13,9 @@
                 </li>
             </ul>
 
-            <div class="pcoded-navigation-label">Sales</div>
-
+            @canany(['view invoice', 'view product', 'view order'])
+                <div class="pcoded-navigation-label">Sales</div>
+            @endcanany
             <ul class="pcoded-item pcoded-left-item">
                 @can('view invoice')
                     <li class="">
@@ -49,8 +50,10 @@
                 @endcan
             </ul>
 
-            <div class="pcoded-navigation-label">Administrator</div>
-            
+            @canany(['view user', 'view customer', 'view vehicle configuration', 'view vehicle', 'view branch', 'view
+                inquiry', 'view inspection', 'view job'])
+                <div class="pcoded-navigation-label">Administrator</div>
+            @endcanany
             <ul class="pcoded-item pcoded-left-item">
                 @can('view user')
                     <li @class([
@@ -150,14 +153,14 @@
                     </li>
                 @endcan
                 @can('view inspection')
-                <li class=" ">
-                    <a href="" class="waves-effect waves-dark">
-                        <span class="pcoded-micon">
-                            <i class="feather icon-file-text"></i>
-                        </span>
-                        <span class="pcoded-mtext">Inspection</span>
-                    </a>
-                </li>
+                    <li class=" ">
+                        <a href="" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-file-text"></i>
+                            </span>
+                            <span class="pcoded-mtext">Inspection</span>
+                        </a>
+                    </li>
                 @endcan
                 @can('view job')
                     <li class=" ">
