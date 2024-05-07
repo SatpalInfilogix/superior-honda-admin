@@ -16,7 +16,7 @@ class RoleController extends Controller
             abort(403);
         }
 
-        $roles = Role::get();
+        $roles = Role::where('name', '!=', 'Customer')->get();
         return view('roles.index', compact('roles'));
     }
 
