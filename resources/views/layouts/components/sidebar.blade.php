@@ -100,7 +100,7 @@
                             </a>
                         </li>
                         <li class="">
-                            <a href="" class="waves-effect waves-dark">
+                            <a href="{{ route('vehicle-model-variants.index')}}" class="waves-effect waves-dark">
                                 <span class="pcoded-mtext">Vehicle Model Variants</span>
                             </a>
                         </li>

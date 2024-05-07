@@ -57,11 +57,11 @@ class UserController extends Controller
 
         $user = User::orderByDesc('emp_id')->first();
         if (!$user) {
-            $empId =  'Em0001';
+            $empId =  'EMP0001';
         } else {
             $numericPart = (int)substr($user->emp_id, 3);
             $nextNumericPart = str_pad($numericPart + 1, 4, '0', STR_PAD_LEFT);
-            $empId = 'Em' . $nextNumericPart;
+            $empId = 'EMP' . $nextNumericPart;
         }
 
         user::create([

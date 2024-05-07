@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('brand_id')->nullable();
             $table->unsignedBigInteger('model_id')->nullable();
             $table->unsignedBigInteger('type_id')->nullable();
-            $table->string('vriant_name');
+            $table->string('variant_name');
             $table->string('fuel_type');
             $table->string('model_variant_image')->nullable();
             $table->timestamps();
