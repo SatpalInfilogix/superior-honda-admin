@@ -7,6 +7,7 @@ use App\Models\VehicleCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Gate;
 
 class VehicleTypeController extends Controller
 {
@@ -15,8 +16,11 @@ class VehicleTypeController extends Controller
      */
     public function index()
     {
-        $vehicle_types = VehicleType::with('category')->latest()->get();
+        if(!Gate::allows('view vehicle configuration')) {
+            abort(403);
+        }
 
+        $vehicle_types = VehicleType::with('category')->latest()->get();
         return view('vehicle-types.index', compact('vehicle_types'));
     }
 
@@ -25,6 +29,10 @@ class VehicleTypeController extends Controller
      */
     public function create()
     {
+        if(!Gate::allows('create vehicle configuration')) {
+            abort(403);
+        }
+
         $categories = VehicleCategory::all();
         return view('vehicle-types.create', compact('categories'));
     }
@@ -34,6 +42,10 @@ class VehicleTypeController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Gate::allows('create vehicle configuration')) {
+            abort(403);
+        }
+
         $request->validate([
             'category_id' => 'required',
             'vehicle_type' => [
@@ -65,9 +77,12 @@ class VehicleTypeController extends Controller
      */
     public function edit(VehicleType $vehicleType)
     {
+        if(!Gate::allows('edit vehicle configuration')) {
+            abort(403);
+        }
+
         $categories = VehicleCategory::all();
         $vehicleType = VehicleType::with('category')->where('id', $vehicleType->id)->first();
-
         return view('vehicle-types.edit', compact('vehicleType', 'categories'));
     }
 
@@ -76,6 +91,10 @@ class VehicleTypeController extends Controller
      */
     public function update(Request $request, VehicleType $vehicleType)
     {
+        if(!Gate::allows('edit vehicle configuration')) {
+            abort(403);
+        }
+
         $request->validate([
             'category_id' => 'required',
             'vehicle_type' => [
@@ -99,8 +118,12 @@ class VehicleTypeController extends Controller
      */
     public function destroy(VehicleType $vehicleType)
     {
-        VehicleType::where('id', $vehicleType->id)->delete();
+        if(!Gate::allows('delete vehicle configuration')) {
+            abort(403);
+        }
 
+        VehicleType::where('id', $vehicleType->id)->delete();
+        
         return response()->json([
             'success' => true,
             'message' => 'Vehicle type deleted successfully.'
