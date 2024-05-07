@@ -54,9 +54,9 @@
                                                                     </td>
                                                                     <td>
                                                                         <x-input-checkbox name="permissions[]"
-                                                                            id="{{ $role->id.'update_' . $module->slug }}"
-                                                                            value="{{ 'update ' . $module->slug }}"
-                                                                            checked="{{ $role->permissions->contains('name', 'update ' . $module->slug) }}" />
+                                                                            id="{{ $role->id.'edit_' . $module->slug }}"
+                                                                            value="{{ 'edit ' . $module->slug }}"
+                                                                            checked="{{ $role->permissions->contains('name', 'edit ' . $module->slug) }}" />
                                                                     </td>
                                                                     <td>
                                                                         <x-input-checkbox name="permissions[]"

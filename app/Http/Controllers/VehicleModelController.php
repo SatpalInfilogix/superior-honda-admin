@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\VehicleModel;
 use App\Models\VehicleCategory;
 use App\Models\VehicleBrand;
+use App\Models\VehicleType;
 use Illuminate\Http\Request;
 use File;
 
@@ -131,15 +132,27 @@ class VehicleModelController extends Controller
     public function getVehicleBrand(Request $request)
     {
         $vehicleBrands = VehicleBrand::where('category_id', $request->category_id)->get();
+        $vehicleTypes = VehicleType::where('category_id', $request->category_id)->get();
+
         $options='<option value="">Select Brand </option>';
-        foreach($vehicleBrands as $brand)
-        {
-            $options .= '<option value="'.  $brand->id .'">'. $brand->brand_name	 .'</option>';
+        if($vehicleBrands) {
+            foreach($vehicleBrands as $brand)
+            {
+                $options .= '<option value="'.  $brand->id .'">'. $brand->brand_name	 .'</option>';
+            }
+        }
+
+        $vehicleTypeOption = '<option value="">Select Vehicle Type</option>';
+        if($vehicleTypes) {
+            foreach($vehicleTypes as $vehicleType)
+            {
+                $vehicleTypeOption .= '<option value="'.  $vehicleType->id .'">'. $vehicleType->vehicle_type	 .'</option>';
+            }
         }
 
         return response()->json([
-            'length' => count($vehicleBrands),
-            'options' => $options
+            'options' => $options,
+            'vehicleTypeOption' => $vehicleTypeOption
         ]);
     }
 }

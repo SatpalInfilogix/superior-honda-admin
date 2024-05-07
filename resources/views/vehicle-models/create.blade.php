@@ -18,7 +18,7 @@
                                     </div>
                                 </div>
                                 <div class="card-block">
-                                    <form action="{{ route('vehicle-models.store') }}" method="POST"  enctype="multipart/form-data">
+                                    <form action="{{ route('vehicle-models.store') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div class="form-group">
                                             <label for="category_id">Category</label>
@@ -42,7 +42,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="add-car-model">Car Image</label>
+                                            <label for="add-car-model">Model Image</label>
                                             <div class="custom-file">
                                                 <input type="file" name="model_image" class="custom-file-input" id="add-model-image">
                                                 <label class="custom-file-label" for="add-car-image">Choose Car Image</label>
@@ -75,7 +75,6 @@
                     dataType: 'json',
                     success: function(result) {
                         $('#brand_name').html(result.options);
-                        $('#category_length').val(result.length);
                     }
                 });
             });
