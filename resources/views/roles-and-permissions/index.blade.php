@@ -18,9 +18,7 @@
                                 <div class="card-block">
                                     <div class="roles-and-permissions">
                                         @foreach ($roles as $key => $role)
-                                            <a
-                                                class="accordion-msg b-none waves-effect waves-light {{ $key == 3 ? 'active' : '' }}">{{ $role->name }}</a>
-
+                                            <a class="accordion-msg b-none waves-effect waves-light">{{ $role->name }}</a>
                                             <form action="{{ route('roles-and-permissions.store') }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="role_id" value="{{ $role->id }}">
@@ -102,35 +100,6 @@
                 heightStyle: "content",
                 icons: icons
             });
-
-            $('[data-permission]').click(function() {
-                let role_id = $(this).data('role-id');
-                let permission_name = $(this).data('permission');
-
-                $.ajax({
-                    url: `{{ route('roles-and-permissions.index') }}/${ role_id }`,
-                    method: 'PATCH',
-                    data: {
-                        '_token': '{{ csrf_token() }}',
-                        role_id: role_id,
-                        permission_name: permission_name
-                    },
-                    success: function(response) {
-                        $.growl({
-                            message: response.message
-                        }, {
-                            type: 'inverse',
-                            allow_dismiss: false,
-                            label: 'Cancel',
-                            className: 'btn-xs btn-inverse',
-                            placement: {
-                                from: 'bottom',
-                                align: 'right'
-                            }
-                        });
-                    }
-                })
-            })
         })
     </script>
 @endsection
