@@ -6,6 +6,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Module;
+use Illuminate\Support\Facades\Gate;
 
 class RoleAndPermissionController extends Controller
 {
@@ -14,6 +15,10 @@ class RoleAndPermissionController extends Controller
      */
     public function index()
     {
+        if (!Gate::allows('view roles & permissions')) {
+            abort(403);
+        }
+
         $roles = Role::where('name', '!=', 'Super Admin')
             ->where('name', '!=', 'Customer')
             ->get();

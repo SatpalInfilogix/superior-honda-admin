@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Gate;
 
 class RoleController extends Controller
 {
@@ -11,6 +12,10 @@ class RoleController extends Controller
      */
     public function index()
     {
+        if(!Gate::allows('view roles & permissions')) {
+            abort(403);
+        }
+
         $roles = Role::get();
         return view('roles.index', compact('roles'));
     }
