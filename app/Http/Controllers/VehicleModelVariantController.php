@@ -8,7 +8,9 @@ use App\Models\VehicleModel;
 use App\Models\VehicleBrand;
 use App\Models\VehicleType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use File;
+
 class VehicleModelVariantController extends Controller
 {
     /**
@@ -16,8 +18,11 @@ class VehicleModelVariantController extends Controller
      */
     public function index()
     {
-        $vehicleModelVariants = VehicleModelVariant::latest()->get();
+        if(!Gate::allows('view vehicle configuration')) {
+            abort(403);
+        }
 
+        $vehicleModelVariants = VehicleModelVariant::latest()->get();
         return view('vehicle-model-variants.index', compact('vehicleModelVariants'));
     }
 
@@ -26,8 +31,11 @@ class VehicleModelVariantController extends Controller
      */
     public function create()
     {
-        $categories = VehicleCategory::all();
+        if(!Gate::allows('create vehicle configuration')) {
+            abort(403);
+        }
 
+        $categories = VehicleCategory::all();
         return view('vehicle-model-variants.create', compact('categories'));
     }
 
@@ -36,6 +44,10 @@ class VehicleModelVariantController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Gate::allows('create vehicle configuration')) {
+            abort(403);
+        }
+
         $request->validate([
             'category_id'  => 'required',
             'variant_name' => 'required',

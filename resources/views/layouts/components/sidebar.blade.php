@@ -50,8 +50,17 @@
                 @endcan
             </ul>
 
-            @canany(['view user', 'view customer', 'view vehicle configuration', 'view vehicle', 'view branch', 'view
-                inquiry', 'view inspection', 'view job'])
+            @canany([
+                'view user',
+                'view customer',
+                'view vehicle configuration',
+                'view vehicle',
+                'view branch',
+                'view
+                inquiry',
+                'view inspection',
+                'view job',
+                ])
                 <div class="pcoded-navigation-label">Administrator</div>
             @endcanany
             <ul class="pcoded-item pcoded-left-item">
@@ -82,36 +91,69 @@
                         'pcoded-hasmenu',
                         'pcoded-trigger active' => Request::is(
                             'vehicle-categories',
+                            'vehicle-categories/create',
+                            'vehicle-categories/*/edit',
                             'vehicle-types',
+                            'vehicle-types/create',
+                            'vehicle-types/*/edit',
                             'vehicle-brands',
-                            'vehicle-models'),
+                            'vehicle-brands/create',
+                            'vehicle-brands/*/edit',
+                            'vehicle-models',
+                            'vehicle-models/create',
+                            'vehicle-models/*/edit',
+                            'vehicle-model-variants',
+                            'vehicle-model-variants/create',
+                            'vehicle-model-variants/*/edit'),
                     ])>
                         <a href="javascript:void(0)" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="fas fa-car"></i></span>
                             <span class="pcoded-mtext">Vehicle Configuration</span>
                         </a>
                         <ul class="pcoded-submenu">
-                            <li @class(['active' => Request::is('vehicle-categories')])>
+                            <li @class([
+                                'active' => Request::is(
+                                    'vehicle-categories',
+                                    'vehicle-categories/create',
+                                    'vehicle-categories/*/edit'),
+                            ])>
                                 <a href="{{ route('vehicle-categories.index') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-mtext">Vehicle Categories</span>
                                 </a>
                             </li>
-                            <li @class(['active' => Request::is('vehicle-types')])>
+                            <li @class([
+                                'active' => Request::is('vehicle-types', 'vehicle-types/create', 'vehicle-types/*/edit'),
+                            ])>
                                 <a href="{{ route('vehicle-types.index') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-mtext">Vehicle Types</span>
                                 </a>
                             </li>
-                            <li @class(['active' => Request::is('vehicle-brands')])>
+                            <li @class([
+                                'active' => Request::is(
+                                    'vehicle-brands',
+                                    'vehicle-brands/create',
+                                    'vehicle-brands/*/edit'),
+                            ])>
                                 <a href="{{ route('vehicle-brands.index') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-mtext">Vehicle Brands</span>
                                 </a>
                             </li>
-                            <li @class(['active' => Request::is('vehicle-models')])>
+                            <li @class([
+                                'active' => Request::is(
+                                    'vehicle-models',
+                                    'vehicle-models/create',
+                                    'vehicle-models/*/edit'),
+                            ])>
                                 <a href="{{ route('vehicle-models.index') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-mtext">Vehicle Models</span>
                                 </a>
                             </li>
-                            <li class="">
+                            <li @class([
+                                'active' => Request::is(
+                                    'vehicle-model-variants',
+                                    'vehicle-model-variants/create',
+                                    'vehicle-model-variants/*/edit'),
+                            ])>
                                 <a href="{{ route('vehicle-model-variants.index') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-mtext">Vehicle Model Variants</span>
                                 </a>

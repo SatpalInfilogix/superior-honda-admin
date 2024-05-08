@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\VehicleBrand;
 use App\Models\VehicleCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use File;
 
 class VehicleBrandController extends Controller
@@ -14,8 +15,11 @@ class VehicleBrandController extends Controller
      */
     public function index()
     {
-        $vehicleBrands = VehicleBrand::with('category')->latest()->get();
+        if(!Gate::allows('view vehicle configuration')) {
+            abort(403);
+        }
 
+        $vehicleBrands = VehicleBrand::with('category')->latest()->get();
         return view('vehicle-brands.index', compact('vehicleBrands'));
     }
 
@@ -24,8 +28,11 @@ class VehicleBrandController extends Controller
      */
     public function create()
     {
-        $vehicleCategories = VehicleCategory::all();
+        if(!Gate::allows('create vehicle configuration')) {
+            abort(403);
+        }
 
+        $vehicleCategories = VehicleCategory::all();
         return view('vehicle-brands.create', compact('vehicleCategories'));
     }
 
@@ -34,6 +41,10 @@ class VehicleBrandController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Gate::allows('create vehicle configuration')) {
+            abort(403);
+        }
+
         $request->validate([
             'category_id' => 'required',
             'brand_name'  => 'required',
@@ -69,8 +80,11 @@ class VehicleBrandController extends Controller
      */
     public function edit(VehicleBrand $vehicleBrand)
     {
-        $vehicleCategories = VehicleCategory::all();
+        if(!Gate::allows('edit vehicle configuration')) {
+            abort(403);
+        }
 
+        $vehicleCategories = VehicleCategory::all();
         return view('vehicle-brands.edit', compact('vehicleBrand', 'vehicleCategories'));
     }
 
@@ -79,6 +93,10 @@ class VehicleBrandController extends Controller
      */
     public function update(Request $request, VehicleBrand $vehicleBrand)
     {
+        if(!Gate::allows('edit vehicle configuration')) {
+            abort(403);
+        }
+
         $request->validate([
             'category_id' => 'required',
             'brand_name'  => 'required',
@@ -116,6 +134,10 @@ class VehicleBrandController extends Controller
      */
     public function destroy(VehicleBrand $vehicleBrand)
     {
+        if(!Gate::allows('delete vehicle configuration')) {
+            abort(403);
+        }
+        
         VehicleBrand::where('id', $vehicleBrand->id)->delete();
 
         return response()->json([
