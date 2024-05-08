@@ -88,6 +88,10 @@ class VehicleModelVariantController extends Controller
      */
     public function edit(VehicleModelVariant $vehicleModelVariant)
     {
+        if(!Gate::allows('edit vehicle configuration')) {
+            abort(403);
+        }
+
         $categories = VehicleCategory::all();
         $brands = VehicleBrand::all();
         $vehicleModels = VehicleModel::all();

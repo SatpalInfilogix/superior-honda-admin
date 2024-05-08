@@ -158,23 +158,35 @@ class UserController extends Controller
         if ($validator->fails()) {
             return back()->with('error', $validator);
         }
+
         $file = $request->file('file');
         $path = $file->getRealPath();
         $data = array_map('str_getcsv', file($path));
-        $header = array_shift($data);
+        unset($data[0]);
+        $header = [
+            'first_name', 'last_name', 'email', 'designation','additional_details','dob','role'
+        ];
 
         $errors = [];
+        $user = User::orderByDesc('emp_id')->first();
+        if (!$user) {
+            $empId =  'EMP0001';
+        } else {
+            $numericPart = (int)substr($user->emp_id, 3);
+            $nextNumericPart = str_pad($numericPart + 1, 4, '0', STR_PAD_LEFT);
+            $empId = 'EMP' . $nextNumericPart;
+        }
         foreach ($data as $key => $row) {
             $row = array_combine($header, $row);
-             echo"<pre>"; print_r($row); die();
+
             $validator = Validator::make($row, [
-                'First Name' => 'required',
-                'Last Name'  => 'required',
-                'Role'       => 'required',
-                'Email' => 'required|email|unique:users,email',
+                'first_name' => 'required',
+                'last_name'  => 'required',
+                'email'      => 'required|email|unique:users,email',
+                'role'       => 'required',
             ],
             [
-                'Email.unique' => 'The email '. $row['Email'] .' has already been taken.',
+                'email.unique' => 'The email '. $row['email'] .' has already been taken.',
             ]);
 
             if ($validator->fails()) {
@@ -183,11 +195,15 @@ class UserController extends Controller
             }
 
             User::create([
-                'first_name'=> $row['First Name'],
-                'last_name' => $row['Last Name'],
-                'email'     => $row['Email'],
-                'password'  => Hash::make(Str::random(10)),
-            ])->assignRole($row['Role']);
+                'first_name'         => $row['first_name'],
+                'last_name'          => $row['last_name'],
+                'email'              => $row['email'],
+                'designation'        => $row['designation'],
+                'emp_id'             => $empId,
+                'password'           => Hash::make(Str::random(10)),
+                'additional_details' => $row['additional_details'],
+                'date_of_birth'      => $row['dob'],
+            ])->assignRole($row['role']);
         }
 
         if (!empty($errors)) {

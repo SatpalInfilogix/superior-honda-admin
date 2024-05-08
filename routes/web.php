@@ -10,6 +10,7 @@ use App\Http\Controllers\VehicleModelController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoleAndPermissionController;
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VehicleModelVariantController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +26,8 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
         'branches'              => BranchController::class,
         'users'                 => UserController::class,
         'roles'                 => RoleController::class,
-        'roles-and-permissions' => RoleAndPermissionController::class
+        'roles-and-permissions' => RoleAndPermissionController::class,
+        'products'              => ProductController::class
     ]);
 });
 

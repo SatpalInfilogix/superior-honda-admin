@@ -28,8 +28,10 @@
                     </li>
                 @endcan
                 @can('view product')
-                    <li class=" ">
-                        <a href="" class="waves-effect waves-dark">
+                    <li @class([
+                        'active' => Request::is('products', 'products/create', 'products/*/edit'),
+                    ])>
+                        <a href="{{ route('products.index') }}" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
                                 <i class="fas fa-cube"></i>
                             </span>

@@ -24,7 +24,7 @@
                                     <div class="float-right">
                                         <form action="{{ route('users.import') }}" method="POST" enctype="multipart/form-data">
                                             @csrf
-                                            <input type="file" name="file" accept=".csv">
+                                            <input type="file" name="file" accept=".csv" required>
                                             <button type="submit" class="btn btn-primary btn-md">Import CSV</button>
                                         </form>
                                         @if(Auth::user()->can('create user'))
