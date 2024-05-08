@@ -15,16 +15,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::resources([
-        'dashboard'     => DashboardController::class,
-        'profile'       => ProfileController::class,
-        'vehicle-categories' => VehicleCategoryController::class,
-        'vehicle-types'  => VehicleTypeController::class,
-        'vehicle-brands' => VehicleBrandController::class,
-        'vehicle-models' => VehicleModelController::class,
+        'dashboard'             => DashboardController::class,
+        'profile'               => ProfileController::class,
+        'vehicle-categories'    => VehicleCategoryController::class,
+        'vehicle-types'         => VehicleTypeController::class,
+        'vehicle-brands'        => VehicleBrandController::class,
+        'vehicle-models'        => VehicleModelController::class,
         'vehicle-model-variants'=> VehicleModelVariantController::class,
-        'branches'       => BranchController::class,
-        'users'          => UserController::class,
-        'roles'          => RoleController::class,
+        'branches'              => BranchController::class,
+        'users'                 => UserController::class,
+        'roles'                 => RoleController::class,
         'roles-and-permissions' => RoleAndPermissionController::class
     ]);
 });
@@ -38,5 +38,7 @@ Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('aut
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /* Routes for Ajax calls */
-Route::post('get-vehicle-brand', [ VehicleModelController::class, 'getVehicleBrand']);
-Route::post('get-vehicle-model', [ VehicleModelVariantController::class, 'getVehicleModel']);
+Route::post('get-vehicle-brand', [ VehicleModelController::class, 'getVehicleBrand']);  // get vechicle brands according to category
+Route::post('get-vehicle-model', [ VehicleModelVariantController::class, 'getVehicleModel']); // get vechicle models according to category
+
+Route::post('users/import', [UserController::class, 'import'])->name('users.import');  // import users csv file

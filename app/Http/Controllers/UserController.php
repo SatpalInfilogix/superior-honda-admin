@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Gate;
 use Str;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -68,15 +70,15 @@ class UserController extends Controller
         }
 
         user::create([
-            'first_name'    => $request->first_name,
-            'last_name'     => $request->last_name,
-            'email'         => $request->email,
-            'designation'   => $request->designation,
-            'branch_id'     => $request->branch,
-            'emp_id'        => $empId,
+            'first_name'         => $request->first_name,
+            'last_name'          => $request->last_name,
+            'email'              => $request->email,
+            'designation'        => $request->designation,
+            'branch_id'          => $request->branch,
+            'emp_id'             => $empId,
             'additional_details' => $request->additional_detail,
-            'date_of_birth' => $request->date_of_birth,
-            'password'      => Hash::make(Str::random(10)),
+            'date_of_birth'      => $request->date_of_birth,
+            'password'           => Hash::make(Str::random(10)),
         ])->assignRole($request->role);
 
         return redirect()->route('users.index')->with('success', 'User created successfully.');
@@ -114,17 +116,17 @@ class UserController extends Controller
         }
 
         $request->validate([
-            'first_name'    => 'required',
-            'last_name'     => 'required',
-            'designation'   => 'required',
-            'role'          => 'required'
+            'first_name'  => 'required',
+            'last_name'   => 'required',
+            'designation' => 'required',
+            'role'        => 'required'
         ]);
 
         user::where('id', $user->id)->update([
-            'first_name'    => $request->first_name,
-            'last_name'     => $request->last_name,
-            'branch_id'     => $request->branch,
-            'date_of_birth' => $request->date_of_birth,
+            'first_name'         => $request->first_name,
+            'last_name'          => $request->last_name,
+            'branch_id'          => $request->branch,
+            'date_of_birth'      => $request->date_of_birth,
             'additional_details' => $request->additional_detail,
         ]);
 
@@ -145,5 +147,53 @@ class UserController extends Controller
             'success' => true,
             'message' => 'User deleted successfully.'
         ]);
+    }
+
+    public function import(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:csv,txt',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with('error', $validator);
+        }
+        $file = $request->file('file');
+        $path = $file->getRealPath();
+        $data = array_map('str_getcsv', file($path));
+        $header = array_shift($data);
+
+        $errors = [];
+        foreach ($data as $key => $row) {
+            $row = array_combine($header, $row);
+             echo"<pre>"; print_r($row); die();
+            $validator = Validator::make($row, [
+                'First Name' => 'required',
+                'Last Name'  => 'required',
+                'Role'       => 'required',
+                'Email' => 'required|email|unique:users,email',
+            ],
+            [
+                'Email.unique' => 'The email '. $row['Email'] .' has already been taken.',
+            ]);
+
+            if ($validator->fails()) {
+                $errors[$key] = $validator->errors()->all();
+                continue;
+            }
+
+            User::create([
+                'first_name'=> $row['First Name'],
+                'last_name' => $row['Last Name'],
+                'email'     => $row['Email'],
+                'password'  => Hash::make(Str::random(10)),
+            ])->assignRole($row['Role']);
+        }
+
+        if (!empty($errors)) {
+            return redirect()->route('users.index')->with('error', $errors);
+        }
+
+        return redirect()->route('users.index')->with('success', 'CSV file imported successfully.');
     }
 }
