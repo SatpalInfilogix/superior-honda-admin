@@ -44,3 +44,4 @@ Route::post('get-vehicle-brand', [ VehicleModelController::class, 'getVehicleBra
 Route::post('get-vehicle-model', [ VehicleModelVariantController::class, 'getVehicleModel']); // get vechicle models according to category
 
 Route::post('users/import', [UserController::class, 'import'])->name('users.import');  // import users csv file
+Route::post('products/import', [ProductController::class, 'import'])->name('products.import');  // import products csv file

@@ -2,3 +2,15 @@
     background-color: #4680ff;
     color: #fff;
 }
+.file-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.input-field {
+    position: absolute;
+    font-size: 50px;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
