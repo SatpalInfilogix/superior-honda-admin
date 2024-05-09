@@ -180,7 +180,7 @@
                     ])>
                         <a href="{{ route('branches.index') }}" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
-                                <i class="feather icon-file-text"></i>
+                                <i class="ti-direction"></i>
                             </span>
                             <span class="pcoded-mtext">Branch Management</span>
                         </a>
@@ -190,7 +190,7 @@
                     <li class=" ">
                         <a href="" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
-                                <i class="feather icon-file-text"></i>
+                                <i class="ti-notepad"></i>
                             </span>
                             <span class="pcoded-mtext">Inquiries</span>
                         </a>
