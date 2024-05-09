@@ -170,10 +170,11 @@ class UserController extends Controller
         $data = array_map('str_getcsv', file($path));
         unset($data[0]);
         $header = [
-            'first_name', 'last_name', 'email', 'designation','additional_details','dob','role'
+            'first_name', 'last_name', 'email', 'designation','additional_details','dob','branch_id','role'
         ];
 
         $errors = [];
+        $branch_ids = [];
         $user = User::orderByDesc('emp_id')->first();
         if (!$user) {
             $empId =  'EMP0001';
@@ -189,7 +190,10 @@ class UserController extends Controller
                 'first_name' => 'required',
                 'last_name'  => 'required',
                 'email'      => 'required|email|unique:users,email',
-                'role'       => 'required',
+                'designation'=> 'required',
+                'dob'        => 'required',
+                'branch_id'  => 'required',
+                'role'       => 'required'
             ],
             [
                 'email.unique' => 'The email '. $row['email'] .' has already been taken.',
@@ -197,6 +201,12 @@ class UserController extends Controller
 
             if ($validator->fails()) {
                 $errors[$key] = $validator->errors()->all();
+                continue;
+            }
+
+            $branch = Branch::where('id', $row['branch_id'])->first();
+            if(!$branch){
+                $branch_ids[$key][] = 'Branch id '. $row['branch_id'] .' not match.';
                 continue;
             }
 
@@ -214,6 +224,10 @@ class UserController extends Controller
 
         if (!empty($errors)) {
             return redirect()->route('users.index')->with('error', $errors);
+        }
+
+        if(!empty($branch_ids)) {
+            return redirect()->route('users.index')->with('error', $branch_ids);
         }
 
         return redirect()->route('users.index')->with('success', 'CSV file imported successfully.');
