@@ -91,14 +91,12 @@
                     last_name: "required",
                     designation: "required",
                     email: "required",
-                    role: "required"
                 },
                 messages: {
                     first_name: "Please enter first name",
                     last_name: "Please enter last name",
                     designation: "Please enter designation",
                     email: "Please enter email",
-                    role: "Please enter role"
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",

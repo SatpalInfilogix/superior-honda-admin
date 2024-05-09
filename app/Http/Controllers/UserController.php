@@ -119,7 +119,6 @@ class UserController extends Controller
             'first_name'  => 'required',
             'last_name'   => 'required',
             'designation' => 'required',
-            'role'        => 'required'
         ]);
 
         user::where('id', $user->id)->update([
