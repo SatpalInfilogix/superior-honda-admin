@@ -143,4 +143,69 @@ class ProductController extends Controller
             'message' => 'Product deleted successfully.'
         ]);
     }
+
+    public function import(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:csv,txt',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with('error', $validator);
+        }
+
+        $file = $request->file('file');
+        $path = $file->getRealPath();
+        $data = array_map('str_getcsv', file($path));
+        unset($data[0]);
+        $header = [
+            'first_name', 'last_name', 'email', 'designation','additional_details','dob','role'
+        ];
+
+        $errors = [];
+        $user = User::orderByDesc('emp_id')->first();
+        if (!$user) {
+            $empId =  'EMP0001';
+        } else {
+            $numericPart = (int)substr($user->emp_id, 3);
+            $nextNumericPart = str_pad($numericPart + 1, 4, '0', STR_PAD_LEFT);
+            $empId = 'EMP' . $nextNumericPart;
+        }
+
+        foreach ($data as $key => $row) {
+            $row = array_combine($header, $row);
+
+            $validator = Validator::make($row, [
+                'first_name' => 'required',
+                'last_name'  => 'required',
+                'email'      => 'required|email|unique:users,email',
+                'role'       => 'required',
+            ],
+            [
+                'email.unique' => 'The email '. $row['email'] .' has already been taken.',
+            ]);
+
+            if ($validator->fails()) {
+                $errors[$key] = $validator->errors()->all();
+                continue;
+            }
+
+            User::create([
+                'first_name'         => $row['first_name'],
+                'last_name'          => $row['last_name'],
+                'email'              => $row['email'],
+                'designation'        => $row['designation'],
+                'emp_id'             => $empId,
+                'password'           => Hash::make(Str::random(10)),
+                'additional_details' => $row['additional_details'],
+                'date_of_birth'      => $row['dob'],
+            ])->assignRole($row['role']);
+        }
+
+        if (!empty($errors)) {
+            return redirect()->route('users.index')->with('error', $errors);
+        }
+
+        return redirect()->route('users.index')->with('success', 'CSV file imported successfully.');
+    }
 }

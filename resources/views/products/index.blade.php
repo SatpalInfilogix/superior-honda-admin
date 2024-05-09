@@ -14,13 +14,23 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h5>Products</h5>
-                                    @can('create vehicle configuration')
-                                        <div class="float-right">
+
+                                    <div class="float-right">
+                                        <div class="file-button btn btn-primary">
+                                            <form action="{{ route('products.import') }}" method="POST"
+                                                enctype="multipart/form-data">
+                                                @csrf
+                                                Import CSV
+                                                <input type="file" name="file" accept=".csv" class="input-field" />
+                                            </form>
+                                        </div>
+
+                                        @can('create product')
                                             <a href="{{ route('products.create') }}"
                                                 class="btn btn-primary btn-md">Add product
                                             </a>
-                                        </div>
-                                    @endcan
+                                        @endcan
+                                    </div>
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
