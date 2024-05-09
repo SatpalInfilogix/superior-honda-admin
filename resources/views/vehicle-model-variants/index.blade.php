@@ -8,6 +8,9 @@
 
                     <div class="row">
                         <div class="col-sm-12">
+                            @if (session('success'))
+                                <x-alert message="{{ session('success') }}"></x-alert>
+                            @endif
                             <div class="card">
                                 <div class="card-header">
                                     <h5>Vehicle Model variants</h5>
@@ -42,8 +45,7 @@
                                                     <tr>
                                                         <td>{{ ++$key }}</td>
                                                         <td>{{ $vehicleModelVariant->category->name }}</td>
-                                                        <td>{{ optional($vehicleModelVariant->brand)->brand_name ?? 'N/A' }}
-                                                        </td>
+                                                        <td>{{ optional($vehicleModelVariant->brand)->brand_name ?? 'N/A' }}</td>
                                                         <td>{{ optional($vehicleModelVariant->model)->model_name }}</td>
                                                         <td>{{ optional($vehicleModelVariant->type)->vehicle_type }}</td>
                                                         <td>{{ $vehicleModelVariant->variant_name }}</td>

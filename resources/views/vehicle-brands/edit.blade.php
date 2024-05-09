@@ -9,7 +9,7 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Edit Vehicle Type</h5>
+                                    <h5>Edit Vehicle brand</h5>
                                     <div class="float-right">
                                         <a href="{{ route('vehicle-brands.index') }}" class="btn btn-primary btn-md">
                                             <i class="feather icon-arrow-left"></i>
@@ -57,12 +57,10 @@
                 rules: {
                     category_id: "required",
                     brand_name: "required",
-                    brand_logo: "required"
                 },
                 messages: {
                     category_id: "Please enter category name",
                     brand_name: "Please enter brand name",
-                    brand_logo: "Please choose brand logo"
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",

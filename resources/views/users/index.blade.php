@@ -8,10 +8,25 @@
 
                     <div class="row">
                         <div class="col-sm-12">
+                            @if (session('success'))
+                                <x-alert message="{{ session('success') }}"></x-alert>
+                            @endif
+                            @if (session('error'))
+                                @foreach((session('error')) as $key => $error)
+                                    @foreach($error as $errorKey => $value)
+                                        <x-alert type="error" message="{{ $value }}"></x-alert>
+                                    @endforeach
+                                @endforeach
+                            @endif
                             <div class="card">
                                 <div class="card-header">
                                     <h5>User Management</h5>
                                     <div class="float-right">
+                                        <form action="{{ route('users.import') }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="file" name="file" accept=".csv" required>
+                                            <button type="submit" class="btn btn-primary btn-md">Import CSV</button>
+                                        </form>
                                         @if(Auth::user()->can('create user'))
                                         <a href="{{ route('users.create') }}" class="btn btn-primary btn-md">Add User</a>
                                         @endif
@@ -25,7 +40,7 @@
                                                     <th>#</th>
                                                     <th>Name</th>
                                                     <th>Designation </th>
-                                                    <th>Emai</th>
+                                                    <th>Email</th>
                                                     <th>Role</th>
                                                     @canany(['edit user', 'delete user'])
                                                     <th>Actions</th>

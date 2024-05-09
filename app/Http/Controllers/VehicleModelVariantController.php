@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\VehicleModelVariant;
 use App\Models\VehicleCategory;
 use App\Models\VehicleModel;
+use App\Models\VehicleBrand;
+use App\Models\VehicleType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use File;
 
 class VehicleModelVariantController extends Controller
 {
@@ -85,15 +88,59 @@ class VehicleModelVariantController extends Controller
      */
     public function edit(VehicleModelVariant $vehicleModelVariant)
     {
-        //
-    }
+        if(!Gate::allows('edit vehicle configuration')) {
+            abort(403);
+        }
+
+        $categories = VehicleCategory::all();
+        $brands = VehicleBrand::all();
+        $vehicleModels = VehicleModel::all();
+        $vehicleTypes = VehicleType::all();
+
+        return view('vehicle-model-variants.edit', compact('vehicleModelVariant', 'categories', 'brands', 'vehicleModels', 'vehicleTypes'));
+    }   
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, VehicleModelVariant $vehicleModelVariant)
     {
-        //
+        $request->validate([
+            'category_id'  => 'required',
+            'variant_name' => 'required',
+            'fuel_type'    => 'required',
+        ]);
+
+        $oldImage = NULL;
+        $vehicleModelVariant = VehicleModelVariant::findOrFail($vehicleModelVariant->id)->first();
+        if($vehicleModelVariant != '') {
+            $oldImage = $vehicleModelVariant->model_variant_image;
+        }
+
+        if ($request->hasFile('model_variant_image'))
+        {
+            $file = $request->file('model_variant_image');
+            $filename = time().'.'.$file->getClientOriginalExtension();
+            $file->move(public_path('uploads/variant_image/'), $filename);
+
+            $image_path = public_path($oldImage);
+            if(File::exists($image_path)) {
+                File::delete($image_path);
+            }
+        }
+
+        $vehicleModelVariant->update([
+            'category_id'   =>$request->category_id,
+            'brand_id'      =>$request->brand_name,
+            'model_id'      => $request->model_name,
+            'type_id'       => $request->vehicle_type,
+            'variant_name'  => $request->variant_name,
+            'fuel_type'     => $request->fuel_type,
+            'model_variant_image' => isset($filename) ? 'uploads/variant_image/'. $filename : $oldImage,
+        ]);
+
+        return redirect()->route('vehicle-model-variants.index')->with('success', 'Vehicle model Variant updated successfully');
+
     }
 
     /**
@@ -101,7 +148,12 @@ class VehicleModelVariantController extends Controller
      */
     public function destroy(VehicleModelVariant $vehicleModelVariant)
     {
-        //
+        VehicleModelVariant::where('id', $vehicleModelVariant->id)->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Vehicle model variant deleted successfully.'
+        ]);
     }
 
     public function getVehicleModel(Request $request)
