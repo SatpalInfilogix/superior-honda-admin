@@ -50,44 +50,7 @@
                         </a>
                     </li>
                 @endcan
-            </ul>
-
-            @canany([
-                'view user',
-                'view customer',
-                'view vehicle configuration',
-                'view vehicle',
-                'view branch',
-                'view
-                inquiry',
-                'view inspection',
-                'view job',
-                ])
-                <div class="pcoded-navigation-label">Administrator</div>
-            @endcanany
-            <ul class="pcoded-item pcoded-left-item">
-                @can('view user')
-                    <li @class([
-                        'active' => Request::is('users', 'users/create', 'users/*/edit'),
-                    ])>
-                        <a href="{{ route('users.index') }}" class="waves-effect waves-dark">
-                            <span class="pcoded-micon">
-                                <i class="feather icon-user"></i>
-                            </span>
-                            <span class="pcoded-mtext">User Management</span>
-                        </a>
-                    </li>
-                @endcan
-                @can('view customer')
-                    <li class=" ">
-                        <a href="" class="waves-effect waves-dark">
-                            <span class="pcoded-micon">
-                                <i class="feather icon-users"></i>
-                            </span>
-                            <span class="pcoded-mtext">Customer Management</span>
-                        </a>
-                    </li>
-                @endcan
+                
                 @can('view vehicle configuration')
                     <li @class([
                         'pcoded-hasmenu',
@@ -173,7 +136,44 @@
                         </a>
                     </li>
                 @endcan
+            </ul>
 
+            @canany([
+                'view user',
+                'view customer',
+                'view vehicle configuration',
+                'view vehicle',
+                'view branch',
+                'view
+                inquiry',
+                'view inspection',
+                'view job',
+                ])
+                <div class="pcoded-navigation-label">Administrator</div>
+            @endcanany
+            <ul class="pcoded-item pcoded-left-item">
+                @can('view user')
+                    <li @class([
+                        'active' => Request::is('users', 'users/create', 'users/*/edit'),
+                    ])>
+                        <a href="{{ route('users.index') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-user"></i>
+                            </span>
+                            <span class="pcoded-mtext">User Management</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('view customer')
+                    <li class=" ">
+                        <a href="" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-users"></i>
+                            </span>
+                            <span class="pcoded-mtext">Customer Management</span>
+                        </a>
+                    </li>
+                @endcan
                 @can('view branch')
                     <li @class([
                         'active' => Request::is('branches', 'branches/create', 'branches/*/edit'),
@@ -200,7 +200,7 @@
                     <li class=" ">
                         <a href="" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
-                                <i class="feather icon-file-text"></i>
+                                <i class="ti-write"></i>
                             </span>
                             <span class="pcoded-mtext">Inspection</span>
                         </a>
@@ -210,7 +210,7 @@
                     <li class=" ">
                         <a href="" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
-                                <i class="feather icon-briefcase"></i>
+                                <i class="ti-id-badge f-16"></i>
                             </span>
                             <span class="pcoded-mtext">Job Management</span>
                         </a>
