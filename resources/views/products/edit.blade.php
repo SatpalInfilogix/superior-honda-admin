@@ -9,7 +9,7 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>EditProduct</h5>
+                                    <h5>Edit Product</h5>
                                     <div class="float-right">
                                         <a href="{{ route('products.index') }}" class="btn btn-primary btn-md">
                                             <i class="feather icon-arrow-left"></i>
@@ -55,7 +55,7 @@
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <label for="model_name" class>Model Name</label>
+                                                <label for="model" class>Model Name</label>
                                                 <select class="form-control" id="model_name" name="model_name">
                                                     <option value="" selected disabled>Select Model</option>
                                                     @if($vehicleModels)
@@ -67,6 +67,19 @@
                                             </div>
 
                                             <div class="col-md-6 form-group">
+                                                <label for="model_variant_name" class>Model Variant Name</label>
+                                                <select class="form-control" id="model_variant_name" name="model_variant_name">
+                                                    <option value="" selected disabled>Select Model Variant Name</option>
+                                                    @if($modelVariants)
+                                                    @foreach($modelVariants as $modelVariants)
+                                                        <option value="{{$modelVariants->id}}" @selected($product->varient_model_id == $modelVariants->id)>{{ $modelVariants->variant_name }}</option>
+                                                    @endforeach
+                                                @endif
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
                                                 <label for="model_name" class>Vehicle Type</label>
                                                 <select class="form-control" id="vehicle_type" name="vehicle_type">
                                                     <option value="" selected disabled>Select Vehicle Type</option>
@@ -77,14 +90,26 @@
                                                 @endif
                                                 </select>
                                             </div>
-                                        </div>
-                                        <div class="row">
+
                                             <div class="col-md-6 form-group">
                                                 <x-input-text name="supplier" label="Supplier" value="{{ old('supplier', $product->supplier) }}"></x-input-text>
                                             </div>
 
+                                        </div>
+                                        <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="quantity" label="Quantity" value="{{ old('quantity', $product->quantity) }}"></x-input-text>
+                                                <label for="" class>Quantity</label>
+                                                <input type="number" id="quantity" name="quantity" class="form-control"value="{{ old('quantity',$product->quantity) }}">
+                                            </div>
+
+                                            <div class="col-md-3 form-group">
+                                                <label for="oem" class>OEM</label>
+                                                <input type="checkbox" id="oem" name="oem" value="{{ $product->is_oem }}" @checked($product->is_oem == 1) onclick='oemClick(this);'>
+                                            </div>
+
+                                            <div class="col-md-3 form-group">
+                                                <label for="service" class>Service</label>
+                                                <input type="checkbox" id="is_service" name="is_service" value="{{ $product->is_service }}" @checked($product->is_service == 1) onclick='serviceClick(this);'>
                                             </div>
                                         </div>
 
@@ -100,11 +125,22 @@
     </div>
 
     <script>
+        function oemClick(e) {
+            e.value = e.checked ? 1 : 0;
+            $('#oem').val(e.value);
+        }
+
+        function serviceClick(e) {
+            e.value = e.checked ? 1 : 0;
+            $('#is_service').val(e.value);
+        }
         $(function() {
             $('#category_id').on('change', function() {
                 var category_id = this.value;
                 $("#brand_name").html('');
                 $("#vehicle_type").html('');
+                $("#model_name").html('');
+                $("#model_variant_name").html('');
                 $.ajax({
                     url: "{{ url('get-vehicle-brand') }}",
                     type: "POST",
@@ -122,7 +158,6 @@
 
             $('#brand_name').on('change', function() {
                 var brand_id = this.value;
-                console.log(brand_id); 
                 $("#model_name").html('');
                 $.ajax({
                     url: "{{ url('get-vehicle-model') }}",
@@ -134,6 +169,24 @@
                     dataType: 'json',
                     success: function(result) {
                         $('#model_name').html(result.options);
+                    }
+                });
+            });
+
+            $('#model_name').on('change', function() {
+                var model_id = this.value;
+                console.log(model_id); 
+                $("#model_variant_name").html('');
+                $.ajax({
+                    url: "{{ url('get-vehicle-model-variant') }}",
+                    type: "POST",
+                    data: {
+                        model_id: model_id,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        $('#model_variant_name').html(result.options);
                     }
                 });
             });

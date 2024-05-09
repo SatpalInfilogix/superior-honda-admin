@@ -20,8 +20,10 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('brand_id')->nullable();
             $table->unsignedBigInteger('model_id')->nullable();
+            $table->unsignedBigInteger('varient_model_id')->nullable();
             $table->unsignedBigInteger('type_id')->nullable();
             $table->integer('quantity')->nullable();
+            $table->boolean('is_oem')->default(0);
             $table->boolean('out_of_stock')->default(0);
             $table->boolean('is_service')->default(0);
             $table->timestamps();
@@ -29,6 +31,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('vehicle_categories');
             $table->foreign('brand_id')->references('id')->on('vehicle_brands');
             $table->foreign('model_id')->references('id')->on('vehicle_models');
+            $table->foreign('varient_model_id')->references('id')->on('vehicle_model_variants');
             $table->foreign('type_id')->references('id')->on('vehicle_types');
         });
     }

@@ -76,7 +76,13 @@
                                             </div>
 
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="fuel_type" label="Fuel Type" value="{{ old('fuel_type', $vehicleModelVariant->fuel_type) }}"></x-input-text>
+                                                <label for="fuel_type">Fuel Type</label>
+                                                <select name="fuel_type" id="fuel_type" class="form-control">
+                                                    <option value="" selected disabled>Select Fuel Type</option>
+                                                    @foreach($fuelValues as $fuelValue)
+                                                        <option value="{{ $fuelValue }}" @selected($vehicleModelVariant->fuel_type == $fuelValue)>{{ $fuelValue }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
 

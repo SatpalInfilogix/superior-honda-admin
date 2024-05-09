@@ -42,6 +42,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 /* Routes for Ajax calls */
 Route::post('get-vehicle-brand', [ VehicleModelController::class, 'getVehicleBrand']);  // get vechicle brands according to category
 Route::post('get-vehicle-model', [ VehicleModelVariantController::class, 'getVehicleModel']); // get vechicle models according to category
+Route::post('get-vehicle-model-variant', [ProductController::class, 'getVehicleModelVariant']); //get vehicle model variant through model.
 
 Route::post('users/import', [UserController::class, 'import'])->name('users.import');  // import users csv file
 Route::post('products/import', [ProductController::class, 'import'])->name('products.import');  // import products csv file

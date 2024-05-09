@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Gate;
 use Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use App\Models\MasterConfiguration;
 
 class UserController extends Controller
 {
@@ -38,9 +39,12 @@ class UserController extends Controller
             abort(403);
         }
 
+        $designationType = MasterConfiguration::where('key', 'designations')->first();
+        $designations = json_decode($designationType->value);
         $branches = Branch::latest()->get();
         $roles = Role::where('name', '!=', 'Customer')->latest()->get();
-        return view('users.create', compact('branches', 'roles'));
+
+        return view('users.create', compact('branches', 'roles', 'designations'));
     }
 
     /**
@@ -102,8 +106,11 @@ class UserController extends Controller
         }
 
         $branches = Branch::latest()->get();
+        $designationType = MasterConfiguration::where('key', 'designations')->first();
+        $designations = json_decode($designationType->value);
         $roles = Role::where('name', '!=', 'Customer')->latest()->get();
-        return view('users.edit', compact('user', 'branches', 'roles'));
+
+        return view('users.edit', compact('user', 'branches', 'roles', 'designations'));
     }
 
     /**

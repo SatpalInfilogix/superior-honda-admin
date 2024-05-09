@@ -34,7 +34,13 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-3 form-group">
-                                                <x-input-text name="designation" label="Designation" value="{{ old('designation') }}" ></x-input-text>
+                                                <label for="designation">Designation</label>
+                                                <select name="designation" id="designation" class="form-control">
+                                                    <option value="" selected disabled>Select Designation</option>
+                                                    @foreach($designations as $designation)
+                                                        <option value="{{ $designation }}">{{ $designation }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                             <div class="col-md-3 form-group">
                                                 <label for="role">Role</label>
@@ -47,7 +53,7 @@
                                             </div>
                                             <div class="col-md-6 form-group">
                                                 <label for="dob">Date of Birth</label>
-                                                <input type="text" name="date_of_birth" class="form-control" value="{{ old('date_of_birth') }}" placeholder="YYYY-MM-DD">
+                                                <input type="date" name="date_of_birth" class="form-control" value="{{ old('date_of_birth') }}" placeholder="YYYY-MM-DD">
                                             </div>
                                         </div>
                                         <div class="row">

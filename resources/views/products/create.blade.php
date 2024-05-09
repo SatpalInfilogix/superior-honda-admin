@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
     <div class="pcoded-inner-content">
         <div class="main-body">
             <div class="page-wrapper">
@@ -56,19 +57,39 @@
                                             </div>
 
                                             <div class="col-md-6 form-group">
-                                                <label for="model_name" class>Vehicle Type</label>
-                                                <select class="form-control" id="vehicle_type" name="vehicle_type">
-                                                    <option value="" selected disabled>Select Vehicle Type</option>
+                                                <label for="model_variant_name" class>Model Variant Name</label>
+                                                <select class="form-control" id="model_variant_name" name="model_variant_name">
+                                                    <option value="" selected disabled>Select Model Variant Name</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="supplier" label="Supplier" value="{{ old('supplier') }}"></x-input-text>
+                                                <label for="model_name" class>Vehicle Type</label>
+                                                <select class="form-control" id="vehicle_type" name="vehicle_type">
+                                                    <option value="" selected disabled>Select Vehicle Type</option>
+                                                </select>
                                             </div>
 
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="quantity" label="Quantity" value="{{ old('quantity') }}"></x-input-text>
+                                                <x-input-text name="supplier" label="Supplier" value="{{ old('supplier') }}"></x-input-text>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label for="model_name" class>Quantity</label>
+                                                <input type="number" id="quantity" name="quantity" class="form-control"value="{{ old('quantity') }}">
+                                            </div>
+
+                                            <div class="col-md-3 form-group">
+                                                <label for="oem" class>OEM</label>
+                                                <input type="checkbox" id="oem" name="oem" value="0" onclick='oemClick(this);'>
+                                            </div>
+
+                                            <div class="col-md-3 form-group">
+                                                <label for="service" class>Service</label>
+                                                <input type="checkbox" id="is_service" name="is_service" value="0" onclick='serviceClick(this);'>
                                             </div>
                                         </div>
 
@@ -84,11 +105,22 @@
     </div>
 
     <script>
+        function oemClick(e) {
+            e.value = e.checked ? 1 : 0;
+            $('#oem').val(e.value);
+        }
+
+        function serviceClick(e) {
+            e.value = e.checked ? 1 : 0;
+        }
+
         $(function() {
             $('#category_id').on('change', function() {
                 var category_id = this.value;
                 $("#brand_name").html('');
                 $("#vehicle_type").html('');
+                $("#model_name").html('');
+                $("#model_variant_name").html('');
                 $.ajax({
                     url: "{{ url('get-vehicle-brand') }}",
                     type: "POST",
@@ -118,6 +150,24 @@
                     dataType: 'json',
                     success: function(result) {
                         $('#model_name').html(result.options);
+                    }
+                });
+            });
+
+            $('#model_name').on('change', function() {
+                var model_id = this.value;
+                console.log(model_id); 
+                $("#model_variant_name").html('');
+                $.ajax({
+                    url: "{{ url('get-vehicle-model-variant') }}",
+                    type: "POST",
+                    data: {
+                        model_id: model_id,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        $('#model_variant_name').html(result.options);
                     }
                 });
             });
