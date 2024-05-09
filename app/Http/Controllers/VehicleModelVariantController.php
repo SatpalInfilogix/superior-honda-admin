@@ -59,7 +59,7 @@ class VehicleModelVariantController extends Controller
         {
             $file = $request->file('model_variant_image');
             $filename = time().'.'.$file->getClientOriginalExtension();
-            $file->move(public_path('uploads/variant_image/'), $filename);
+            $file->move(public_path('uploads/variants/'), $filename);
         }
 
         VehicleModelVariant::create([
@@ -69,7 +69,7 @@ class VehicleModelVariantController extends Controller
             'type_id'       => $request->vehicle_type,
             'variant_name'  => $request->variant_name,
             'fuel_type'     => $request->fuel_type,
-            'model_variant_image' => 'uploads/variant_image/'. $filename,
+            'model_variant_image' => 'uploads/variants/'. $filename,
         ]);
 
         return redirect()->route('vehicle-model-variants.index')->with('success', 'Vehicle model Variant saved successfully');
@@ -121,7 +121,7 @@ class VehicleModelVariantController extends Controller
         {
             $file = $request->file('model_variant_image');
             $filename = time().'.'.$file->getClientOriginalExtension();
-            $file->move(public_path('uploads/variant_image/'), $filename);
+            $file->move(public_path('uploads/variants/'), $filename);
 
             $image_path = public_path($oldImage);
             if(File::exists($image_path)) {
@@ -136,7 +136,7 @@ class VehicleModelVariantController extends Controller
             'type_id'       => $request->vehicle_type,
             'variant_name'  => $request->variant_name,
             'fuel_type'     => $request->fuel_type,
-            'model_variant_image' => isset($filename) ? 'uploads/variant_image/'. $filename : $oldImage,
+            'model_variant_image' => isset($filename) ? 'uploads/variants/'. $filename : $oldImage,
         ]);
 
         return redirect()->route('vehicle-model-variants.index')->with('success', 'Vehicle model Variant updated successfully');

@@ -13,7 +13,10 @@ class DatabaseSeeder extends Seeder
             ModuleSeeder::class,
             RolesAndPermissionsSeeder::class,
             UserSeeder::class,
+            VehicleTypeSeeder::class,
             VehicleCategorySeeder::class,
+            VehicleBrandSeeder::class,
+            VehicleModelVariantSeeder::class,
         ]);
     }
 }

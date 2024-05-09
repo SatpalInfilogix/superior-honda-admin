@@ -55,13 +55,13 @@ class VehicleBrandController extends Controller
         {
             $file = $request->file('brand_logo');
             $filename = time().'.'.$file->getClientOriginalExtension();
-            $file->move(public_path('uploads/brand-logo/'), $filename);
+            $file->move(public_path('uploads/brands/'), $filename);
         }
 
         VehicleBrand::create([
             'category_id' => $request->category_id,
             'brand_name'  => $request->brand_name,
-            'brand_logo' => 'uploads/brand-logo/'. $filename,
+            'brand_logo' => 'uploads/brands/'. $filename,
         ]);
         
         return redirect()->route('vehicle-brands.index')->with('success', 'Vehicle brand saved successfully');
@@ -112,7 +112,7 @@ class VehicleBrandController extends Controller
         {
             $file = $request->file('brand_logo');
             $filename = time().'.'.$file->getClientOriginalExtension();
-            $file->move(public_path('uploads/brand-logo/'), $filename);
+            $file->move(public_path('uploads/brands/'), $filename);
 
             $image_path = public_path($oldBrandLogo);
             if(File::exists($image_path)) {
@@ -123,7 +123,7 @@ class VehicleBrandController extends Controller
         VehicleBrand::where('id', $vehicleBrand->id)->update([
             'category_id' => $request->category_id,
             'brand_name'  => $request->brand_name,
-            'brand_logo' => isset($filename) ? 'uploads/brand-logo/'. $filename : $oldBrandLogo,
+            'brand_logo' => isset($filename) ? 'uploads/brands/'. $filename : $oldBrandLogo,
         ]);
 
         return redirect()->route('vehicle-brands.index')->with('success', 'Vehicle brand updated successfully'); 
