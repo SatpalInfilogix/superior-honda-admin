@@ -50,7 +50,7 @@
                         </a>
                     </li>
                 @endcan
-                
+
                 @can('view vehicle configuration')
                     <li @class([
                         'pcoded-hasmenu',
@@ -87,7 +87,10 @@
                                 </a>
                             </li>
                             <li @class([
-                                'active' => Request::is('vehicle-types', 'vehicle-types/create', 'vehicle-types/*/edit'),
+                                'active' => Request::is(
+                                    'vehicle-types',
+                                    'vehicle-types/create',
+                                    'vehicle-types/*/edit'),
                             ])>
                                 <a href="{{ route('vehicle-types.index') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-mtext">Vehicle Types</span>
@@ -165,8 +168,10 @@
                     </li>
                 @endcan
                 @can('view customer')
-                    <li class=" ">
-                        <a href="" class="waves-effect waves-dark">
+                    <li @class([
+                        'active' => Request::is('customers', 'customers/create', 'customers/*/edit'),
+                    ])>
+                        <a href="{{ route('customers.index') }}" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
                                 <i class="feather icon-users"></i>
                             </span>
