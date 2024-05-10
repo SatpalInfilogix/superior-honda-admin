@@ -139,8 +139,6 @@
                 var category_id = this.value;
                 $("#brand_name").html('');
                 $("#vehicle_type").html('');
-                $("#model_name").html('');
-                $("#model_variant_name").html('');
                 $.ajax({
                     url: "{{ url('get-vehicle-brand') }}",
                     type: "POST",

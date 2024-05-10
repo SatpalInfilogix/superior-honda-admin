@@ -119,8 +119,8 @@
                 var category_id = this.value;
                 $("#brand_name").html('');
                 $("#vehicle_type").html('');
-                $("#model_name").html('');
-                $("#model_variant_name").html('');
+                $("#model_name").html('<option value="">Select Model</option>');
+                $("#model_variant_name").html('<option value="">Select Model Variant</option>');
                 $.ajax({
                     url: "{{ url('get-vehicle-brand') }}",
                     type: "POST",
@@ -138,7 +138,6 @@
 
             $('#brand_name').on('change', function() {
                 var brand_id = this.value;
-                console.log(brand_id); 
                 $("#model_name").html('');
                 $.ajax({
                     url: "{{ url('get-vehicle-model') }}",
@@ -156,7 +155,6 @@
 
             $('#model_name').on('change', function() {
                 var model_id = this.value;
-                console.log(model_id); 
                 $("#model_variant_name").html('');
                 $.ajax({
                     url: "{{ url('get-vehicle-model-variant') }}",
