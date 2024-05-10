@@ -45,7 +45,12 @@ class UserController extends Controller
         }
 
         $designationType = MasterConfiguration::where('key', 'designations')->first();
-        $designations = json_decode($designationType->value);
+        if($designationType && $designationType->value){
+            $designations = json_decode($designationType->value);
+        } else{
+            $designations = [];
+        }
+
         $branches = Branch::latest()->get();
         $roles = Role::where('name', '!=', 'Customer')->latest()->get();
 
