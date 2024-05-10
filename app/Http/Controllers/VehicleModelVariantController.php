@@ -8,6 +8,7 @@ use App\Models\VehicleModel;
 use App\Models\VehicleBrand;
 use App\Models\VehicleType;
 use Illuminate\Http\Request;
+use App\Models\MasterConfiguration;
 use Illuminate\Support\Facades\Gate;
 use File;
 
@@ -35,8 +36,11 @@ class VehicleModelVariantController extends Controller
             abort(403);
         }
 
+        $fuelType = MasterConfiguration::where('key', 'fuel_types')->first();
+        $fuelValues = json_decode($fuelType->value);
         $categories = VehicleCategory::all();
-        return view('vehicle-model-variants.create', compact('categories'));
+
+        return view('vehicle-model-variants.create', compact('categories', 'fuelValues'));
     }
 
     /**
@@ -96,8 +100,10 @@ class VehicleModelVariantController extends Controller
         $brands = VehicleBrand::all();
         $vehicleModels = VehicleModel::all();
         $vehicleTypes = VehicleType::all();
+        $fuelType = MasterConfiguration::where('key', 'fuel_types')->first();
+        $fuelValues = json_decode($fuelType->value);
 
-        return view('vehicle-model-variants.edit', compact('vehicleModelVariant', 'categories', 'brands', 'vehicleModels', 'vehicleTypes'));
+        return view('vehicle-model-variants.edit', compact('vehicleModelVariant', 'categories', 'brands', 'vehicleModels', 'vehicleTypes', 'fuelValues'));
     }   
 
     /**
@@ -159,7 +165,7 @@ class VehicleModelVariantController extends Controller
     public function getVehicleModel(Request $request)
     {
         $vehicleModels = VehicleModel::where('brand_id', $request->brand_id)->get();
-        $options='<option value="">Select Model</option>';
+        $options ='<option value="">Select Model</option>';
         foreach($vehicleModels as $model)
         {
             $options .= '<option value="'.  $model->id .'">'. $model->model_name	 .'</option>';

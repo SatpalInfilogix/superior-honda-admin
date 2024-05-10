@@ -9,11 +9,17 @@ use App\Models\VehicleBrand;
 use App\Models\VehicleModel;
 use App\Models\VehicleType;
 use App\Models\VehicleModelVariant;
+use App\Models\User;
 
-class Product extends Model
+class Vehicle extends Model
 {
     use HasFactory;
-    protected $guarded=[];
+    protected $guarded = [];
+
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'cus_id', 'id');
+    }
 
     public function category()
     {

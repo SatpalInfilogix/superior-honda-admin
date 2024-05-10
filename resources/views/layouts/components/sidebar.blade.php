@@ -131,7 +131,7 @@
                 @endcan
                 @can('view vehicle')
                     <li class=" ">
-                        <a href="" class="waves-effect waves-dark">
+                        <a href="{{ route('vehicles.index') }}" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
                                 <i class="fas fa-car"></i>
                             </span>

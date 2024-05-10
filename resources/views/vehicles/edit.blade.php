@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
     <div class="pcoded-inner-content">
         <div class="main-body">
             <div class="page-wrapper">
@@ -10,86 +9,117 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Add Products</h5>
+                                    <h5>Edit Vehicle</h5>
                                     <div class="float-right">
-                                        <a href="{{ route('products.index') }}" class="btn btn-primary btn-md">
+                                        <a href="{{ route('vehicles.index') }}" class="btn btn-primary btn-md">
                                             <i class="feather icon-arrow-left"></i>
                                             Go Back
                                         </a>
                                     </div>
                                 </div>
                                 <div class="card-block">
-                                    <form action="{{ route('products.store') }}" method="POST">
+                                    <form action="{{ route('vehicles.update',$vehicle->id) }}" method="POST"  enctype="multipart/form-data">
                                         @csrf
+                                        @method('PATCH')
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="product_name" label="Product Name" value="{{ old('product_name') }}"></x-input-text>
+                                                <label for="customer_id">Customer</label>
+                                                <select name="customer_id" id="customer_id" class="form-control">
+                                                    <option value="" selected disabled>Select Customer</option>
+                                                    @foreach($customers as $customer)
+                                                        <option value="{{ $customer->id }}" @selected($vehicle->cus_id == $customer->id)>{{ $customer->first_name.' '. $customer->last_name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
 
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="manufacture_name" label="Manufacture Name" value="{{ old('manufacture_name') }}"></x-input-text>
+                                                <label for="category_id">Category</label>
+                                                <select name="category_id" id="category_id" class="form-control">
+                                                    <option value="" selected disabled>Select Category</option>
+                                                    @foreach($categories as $category)
+                                                        <option value="{{ $category->id }}" @selected($vehicle->category_id == $category->id)>{{ $category->name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-6 form-group">
-                                            <label for="category_id">Category</label>
-                                            <select name="category_id" id="category_id" class="form-control">
-                                                <option value="" selected disabled>Select Category</option>
-                                                @foreach($categories as $category)
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            </div>
                                             <div class="col-md-6 form-group">
                                                 <label for="brand_name" class>Brand Name</label>
-                                                <select class="form-control" id="brand_name" name="brand_name">
+                                                <select class="form-control" id="brand_name" name="brand_name" placeholder="Select Brand">
                                                     <option value="" selected disabled>Select Brand</option>
+                                                   @if($brands)
+                                                        @foreach($brands as $brand)
+                                                            <option value="{{$brand->id}}" @selected($vehicle->brand_id == $brand->id)>{{ $brand->brand_name }}</option>
+                                                        @endforeach
+                                                   @endif
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label for="model" class>Model Name</label>
+                                                <select class="form-control" id="model_name" name="model_name">
+                                                    <option value="" selected disabled>Select Model</option>
+                                                    @if($vehicleModels)
+                                                        @foreach($vehicleModels as $vehicleModel)
+                                                            <option value="{{$vehicleModel->id}}" @selected($vehicle->model_id == $vehicleModel->id)>{{ $vehicleModel->model_name }}</option>
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-6 form-group">
-                                                <label for="model_name" class>Model Name</label>
-                                                <select class="form-control" id="model_name" name="model_name">
-                                                    <option value="" selected disabled>Select Model</option>
-                                                </select>
-                                            </div>
-
                                             <div class="col-md-6 form-group">
                                                 <label for="model_variant_name" class>Model Variant Name</label>
                                                 <select class="form-control" id="model_variant_name" name="model_variant_name">
                                                     <option value="" selected disabled>Select Model Variant Name</option>
+                                                    @if($modelVariants)
+                                                        @foreach($modelVariants as $modelVariants)
+                                                            <option value="{{$modelVariants->id}}" @selected($vehicle->varient_model_id == $modelVariants->id)>{{ $modelVariants->variant_name }}</option>
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
-                                        </div>
-                                        <div class="row">
+
                                             <div class="col-md-6 form-group">
                                                 <label for="model_name" class>Vehicle Type</label>
                                                 <select class="form-control" id="vehicle_type" name="vehicle_type">
                                                     <option value="" selected disabled>Select Vehicle Type</option>
+                                                    @if($vehicleTypes)
+                                                        @foreach($vehicleTypes as $vehicleType)
+                                                            <option value="{{$vehicleType->id}}" @selected($vehicle->type_id == $vehicleType->id)>{{ $vehicleType->vehicle_type }}</option>
+                                                        @endforeach
+                                                    @endif
                                                 </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="vehicle_no" label="Vehicle No" value="{{ old('vehicle_no', $vehicle->vehicle_no) }}"></x-input-text>
                                             </div>
 
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="supplier" label="Supplier" value="{{ old('supplier') }}"></x-input-text>
+                                                <x-input-text name="year" label="Year" value="{{ old('year', $vehicle->year) }}"></x-input-text>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="color" label="Color" value="{{ old('color', $vehicle->color) }}"></x-input-text>
+                                            </div>
+
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="chasis_no" label="Chasis No" value="{{ old('chasis_no', $vehicle->chasis_no) }}"></x-input-text>
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <label for="model_name" class>Quantity</label>
-                                                <input type="number" id="quantity" name="quantity" class="form-control"value="{{ old('quantity') }}">
+                                                <x-input-text name="engine_no" label="Engine No" value="{{ old('engine_no', $vehicle->engine_no) }}"></x-input-text>
                                             </div>
 
-                                            <div class="col-md-3 form-group">
-                                                <label for="oem" class>OEM</label>
-                                                <input type="checkbox" id="oem" name="oem" value="0" onclick='oemClick(this);'>
-                                            </div>
-
-                                            <div class="col-md-3 form-group">
-                                                <label for="service" class>Service</label>
-                                                <input type="checkbox" id="is_service" name="is_service" value="0" onclick='serviceClick(this);'>
+                                            <div class="col-md-6 form-group">
+                                                <label for="branch">Additional Detail</label>
+                                                <textarea id="additional_detail" name="additional_detail" class="form-control" rows="2" cols="50">{{ $vehicle->additional_details }}</textarea>
                                             </div>
                                         </div>
 
@@ -112,15 +142,13 @@
 
         function serviceClick(e) {
             e.value = e.checked ? 1 : 0;
+            $('#is_service').val(e.value);
         }
-
         $(function() {
             $('#category_id').on('change', function() {
                 var category_id = this.value;
                 $("#brand_name").html('');
                 $("#vehicle_type").html('');
-                $("#model_name").html('<option value="">Select Model</option>');
-                $("#model_variant_name").html('<option value="">Select Model Variant</option>');
                 $.ajax({
                     url: "{{ url('get-vehicle-brand') }}",
                     type: "POST",
@@ -155,6 +183,7 @@
 
             $('#model_name').on('change', function() {
                 var model_id = this.value;
+                console.log(model_id); 
                 $("#model_variant_name").html('');
                 $.ajax({
                     url: "{{ url('get-vehicle-model-variant') }}",

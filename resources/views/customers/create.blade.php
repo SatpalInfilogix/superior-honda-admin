@@ -34,18 +34,24 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="designation" label="Designation" value="{{ old('designation') }}" ></x-input-text>
+                                                <x-input-text name="phone_digicel" label="Phone (Digicel)" value="{{ old('phone_digicel') }}" ></x-input-text>
                                             </div>
-                                          
                                             <div class="col-md-6 form-group">
-                                                <label for="dob">Date of Birth</label>
-                                                <input type="text" name="date_of_birth" class="form-control" value="{{ old('date_of_birth') }}" placeholder="YYYY-MM-DD">
+                                                <x-input-text name="phone_lime" label="Phone (Lime)" value="{{ old('phone_lime') }}" ></x-input-text>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <label for="branch">Additional Detail</label>
-                                                <textarea id="additional_detail" name="additional_detail" class="form-control" rows="2" cols="50"></textarea>
+                                                <label for="dob">Date of Birth</label>
+                                                <input type="date" name="date_of_birth" class="form-control" value="{{ old('date_of_birth') }}" placeholder="YYYY-MM-DD">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="lic_no" label="Lic No" value="{{ old('lic_no') }}" ></x-input-text>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="address" label="Address" value="{{ old('address') }}" ></x-input-text>
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Save</button>
@@ -65,16 +71,16 @@
                 rules: {
                     first_name: "required",
                     last_name: "required",
-                    designation: "required",
                     email: "required",
-                    role: "required"
+                    phone_digicel: "required"
+
                 },
                 messages: {
                     first_name: "Please enter first name",
                     last_name: "Please enter last name",
-                    designation: "Please enter designation",
                     email: "Please enter email",
-                    role: "Please enter role"
+                    phone_digicel: "Please enter phone digicel",
+
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",

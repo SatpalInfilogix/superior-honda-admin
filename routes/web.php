@@ -13,6 +13,7 @@ use App\Http\Controllers\RoleAndPermissionController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VehicleModelVariantController;
+use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'auth.session'])->group(function () {
@@ -29,7 +30,8 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
         'customers'             => CustomerController::class,
         'roles'                 => RoleController::class,
         'roles-and-permissions' => RoleAndPermissionController::class,
-        'products'              => ProductController::class
+        'products'              => ProductController::class,
+        'vehicles'              => VehicleController::class,
     ]);
 });
 
@@ -44,6 +46,8 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 /* Routes for Ajax calls */
 Route::post('get-vehicle-brand', [ VehicleModelController::class, 'getVehicleBrand']);  // get vechicle brands according to category
 Route::post('get-vehicle-model', [ VehicleModelVariantController::class, 'getVehicleModel']); // get vechicle models according to category
+Route::post('get-vehicle-model-variant', [ProductController::class, 'getVehicleModelVariant']); //get vehicle model variant through model.
 
 Route::post('users/import', [UserController::class, 'import'])->name('users.import');  // import users csv file
 Route::post('products/import', [ProductController::class, 'import'])->name('products.import');  // import products csv file
+Route::post('customers/import', [CustomerController::class, 'import'])->name('customers.import');  //import customers csv file 

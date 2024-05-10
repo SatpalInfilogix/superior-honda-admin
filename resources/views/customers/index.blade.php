@@ -23,14 +23,14 @@
                                     <h5>Customer Management</h5>
                                     <div class="float-right">
 
-                                        {{-- <div class="file-button btn btn-primary">
+                                        <div class="file-button btn btn-primary">
                                             <form action="{{ route('customers.import') }}" method="POST"
                                                 enctype="multipart/form-data">
                                                 @csrf
                                                 Import CSV
                                                 <input type="file" name="file" accept=".csv" class="input-field" />
                                             </form>
-                                        </div> --}}
+                                        </div>
 
                                         @can('create customer')
                                             <a href="{{ route('customers.create') }}" class="btn btn-primary btn-md">Add
@@ -57,7 +57,7 @@
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $customer->first_name . $customer->last_names }}</td>
-                                                        <td>{{ $customer->designation }}</td>
+                                                        <td>{{ $customer->phone_digicel }}</td>
                                                         <td>{{ $customer->email }}</td>
                                                         @canany(['edit customer', 'delete customer'])
                                                             <td>
@@ -93,16 +93,7 @@
         </div>
     </div>
 
-@endsection
-
-@section('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/datatables.bootstrap4.min.css') }}">
-@endsection
-
-@section('script')
-    <script src="{{ asset('assets/js/jquery.datatables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatables.responsive.min.js') }}"></script>
+    <x-include-plugins dataTable></x-include-plugins>
 
     <script>
         $(function() {

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Gate;
 use Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use App\Models\MasterConfiguration;
 
 class UserController extends Controller
 {
@@ -43,9 +44,12 @@ class UserController extends Controller
             abort(403);
         }
 
+        $designationType = MasterConfiguration::where('key', 'designations')->first();
+        $designations = json_decode($designationType->value);
         $branches = Branch::latest()->get();
         $roles = Role::where('name', '!=', 'Customer')->latest()->get();
-        return view('users.create', compact('branches', 'roles'));
+
+        return view('users.create', compact('branches', 'roles', 'designations'));
     }
 
     /**
@@ -107,8 +111,11 @@ class UserController extends Controller
         }
 
         $branches = Branch::latest()->get();
+        $designationType = MasterConfiguration::where('key', 'designations')->first();
+        $designations = json_decode($designationType->value);
         $roles = Role::where('name', '!=', 'Customer')->latest()->get();
-        return view('users.edit', compact('user', 'branches', 'roles'));
+
+        return view('users.edit', compact('user', 'branches', 'roles', 'designations'));
     }
 
     /**
@@ -124,7 +131,6 @@ class UserController extends Controller
             'first_name'  => 'required',
             'last_name'   => 'required',
             'designation' => 'required',
-            'role'        => 'required'
         ]);
 
         user::where('id', $user->id)->update([
@@ -169,10 +175,11 @@ class UserController extends Controller
         $data = array_map('str_getcsv', file($path));
         unset($data[0]);
         $header = [
-            'first_name', 'last_name', 'email', 'designation','additional_details','dob','role'
+            'first_name', 'last_name', 'email', 'designation','additional_details','dob','branch_id','role'
         ];
 
         $errors = [];
+        $branch_ids = [];
         $user = User::orderByDesc('emp_id')->first();
         if (!$user) {
             $empId =  'EMP0001';
@@ -188,7 +195,10 @@ class UserController extends Controller
                 'first_name' => 'required',
                 'last_name'  => 'required',
                 'email'      => 'required|email|unique:users,email',
-                'role'       => 'required',
+                'designation'=> 'required',
+                'dob'        => 'required',
+                'branch_id'  => 'required',
+                'role'       => 'required'
             ],
             [
                 'email.unique' => 'The email '. $row['email'] .' has already been taken.',
@@ -196,6 +206,12 @@ class UserController extends Controller
 
             if ($validator->fails()) {
                 $errors[$key] = $validator->errors()->all();
+                continue;
+            }
+
+            $branch = Branch::where('id', $row['branch_id'])->first();
+            if(!$branch){
+                $branch_ids[$key][] = 'Branch id '. $row['branch_id'] .' not match.';
                 continue;
             }
 
@@ -213,6 +229,10 @@ class UserController extends Controller
 
         if (!empty($errors)) {
             return redirect()->route('users.index')->with('error', $errors);
+        }
+
+        if(!empty($branch_ids)) {
+            return redirect()->route('users.index')->with('error', $branch_ids);
         }
 
         return redirect()->route('users.index')->with('success', 'CSV file imported successfully.');

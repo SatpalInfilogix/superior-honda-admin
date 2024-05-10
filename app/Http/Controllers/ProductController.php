@@ -8,6 +8,7 @@ use App\Models\VehicleCategory;
 use App\Models\VehicleModel;
 use App\Models\VehicleBrand;
 use App\Models\VehicleType;
+use App\Models\VehicleModelVariant;
 use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
@@ -55,15 +56,18 @@ class ProductController extends Controller
         ]);
 
         Product::create([
-            'product_name'  => $request->product_name,
-            'category_id'   =>$request->category_id,
-            'brand_id'      =>$request->brand_name,
-            'model_id'      => $request->model_name,
-            'type_id'       => $request->vehicle_type,
-            'manufacture_name' => $request->manufacture_name,
-            'supplier'      => $request->supplier,
-            'quantity'      => $request->quantity,
-            'hsn_no'        => $request->hsn_no
+            'product_name'      => $request->product_name,
+            'category_id'       =>$request->category_id,
+            'brand_id'          =>$request->brand_name,
+            'model_id'          => $request->model_name,
+            'varient_model_id'  =>$request->model_variant_name,
+            'type_id'           => $request->vehicle_type,
+            'manufacture_name'  => $request->manufacture_name,
+            'supplier'          => $request->supplier,
+            'quantity'          => $request->quantity,
+            'hsn_no'            => $request->hsn_no,
+            'is_oem'            => $request->oem ?? 0,
+            'is_service'        => $request->is_service ?? 0
         ]);
 
         return redirect()->route('products.index')->with('success', 'Product saved successfully');
@@ -90,8 +94,9 @@ class ProductController extends Controller
         $brands = VehicleBrand::all();
         $vehicleModels = VehicleModel::all();
         $vehicleTypes = VehicleType::all();
+        $modelVariants = VehicleModelVariant::all();
 
-        return view('products.edit', compact('product', 'categories', 'brands', 'vehicleModels', 'vehicleTypes'));
+        return view('products.edit', compact('product', 'categories', 'brands', 'vehicleModels', 'vehicleTypes','modelVariants'));
 
     }
 
@@ -118,11 +123,14 @@ class ProductController extends Controller
             'category_id'   => $request->category_id,
             'brand_id'      => $request->brand_name,
             'model_id'      => $request->model_name,
+            'varient_model_id'=>$request->model_variant_name,
             'type_id'       => $request->vehicle_type,
             'manufacture_name' => $request->manufacture_name,
             'supplier'      => $request->supplier,
             'quantity'      => $request->quantity,
-            'hsn_no'        => $request->hsn_no
+            'hsn_no'        => $request->hsn_no,
+            'is_oem'        => $request->oem ?? 0,
+            'is_service'    => $request->is_service ?? 0
         ]);
 
         return redirect()->route('products.index')->with('success', 'Product updated successfully');
@@ -141,6 +149,20 @@ class ProductController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Product deleted successfully.'
+        ]);
+    }
+
+    public function getVehicleModelVariant(Request $request)
+    {
+        $vehicleModelVariants = VehicleModelVariant::where('model_id', $request->model_id)->get();
+        $options='<option value="">Select Model Variant</option>';
+        foreach($vehicleModelVariants as $modelVariants)
+        {
+            $options .= '<option value="'.  $modelVariants->id .'">'. $modelVariants->variant_name	 .'</option>';
+        }
+
+        return response()->json([
+            'options' => $options
         ]);
     }
 

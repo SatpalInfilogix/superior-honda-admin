@@ -41,9 +41,10 @@
                                                     <th>#</th>
                                                     <th>Product Name</th>
                                                     <th>Manufacture Name</th>
-                                                    <th>Category</th>
+                                                    <th>Vehicle Category</th>
                                                     <th>Brand Name</th>
                                                     <th>Model Name</th>
+                                                    <th>Variant Name</th>
                                                     <th>Vehicle Type</th>
                                                     @canany(['edit product', 'delete product'])
                                                         <th>Actions</th>
@@ -59,6 +60,7 @@
                                                         <td>{{ $product->category->name }}</td>
                                                         <td>{{ optional($product->brand)->brand_name }}</td>
                                                         <td>{{ optional($product->model)->model_name }}</td>
+                                                        <td>{{ optional($product->variant)->variant_name }}</td>
                                                         <td>{{ optional($product->type)->vehicle_type }}</td>
                                                         @canany([
                                                             'edit product',
@@ -97,17 +99,8 @@
             </div>
         </div>
     </div>
-@endsection
 
-@section('head')
-    <link rel="stylesheet" href="{{ asset('assets/css/datatables.bootstrap4.min.css') }}">
-@endsection
-
-@section('script')
-    <script src="{{ asset('assets/js/jquery.datatables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatables.responsive.min.js') }}"></script>
-
+    <x-include-plugins dataTable></x-include-plugins>
     <script>
         $(function() {
             $('#products-list').DataTable();
