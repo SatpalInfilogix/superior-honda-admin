@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VehicleCategoryController;
@@ -25,6 +26,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
         'vehicle-model-variants'=> VehicleModelVariantController::class,
         'branches'              => BranchController::class,
         'users'                 => UserController::class,
+        'customers'             => CustomerController::class,
         'roles'                 => RoleController::class,
         'roles-and-permissions' => RoleAndPermissionController::class,
         'products'              => ProductController::class

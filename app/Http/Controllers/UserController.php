@@ -26,7 +26,12 @@ class UserController extends Controller
             abort(403);
         }
 
-        $users = user::latest()->get();
+        $customerRole = Role::where('name', 'Customer')->first();
+
+        $users = User::whereDoesntHave('roles', function ($query) use ($customerRole) {
+            $query->where('role_id', $customerRole->id);
+        })->latest()->get();
+        
         return view('users.index', compact('users'));
     }
 

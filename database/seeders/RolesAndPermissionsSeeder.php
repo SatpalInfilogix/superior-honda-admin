@@ -21,6 +21,11 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'edit user']);
         Permission::create(['name' => 'delete user']);
 
+        Permission::create(['name' => 'view customer']);
+        Permission::create(['name' => 'create customer']);
+        Permission::create(['name' => 'edit customer']);
+        Permission::create(['name' => 'delete customer']);
+
         Permission::create(['name' => 'view invoice']);
         Permission::create(['name' => 'create invoice']);
         Permission::create(['name' => 'edit invoice']);
@@ -55,6 +60,16 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'create inspection']);
         Permission::create(['name' => 'edit inspection']);
         Permission::create(['name' => 'delete inspection']);
+
+        Permission::create(['name' => 'view job']);
+        Permission::create(['name' => 'create job']);
+        Permission::create(['name' => 'edit job']);
+        Permission::create(['name' => 'delete job']);
+
+        Permission::create(['name' => 'view email template']);
+        Permission::create(['name' => 'create email template']);
+        Permission::create(['name' => 'edit email template']);
+        Permission::create(['name' => 'delete email template']);
 
         Permission::create(['name' => 'view roles & permissions']);
         Permission::create(['name' => 'create roles & permissions']);

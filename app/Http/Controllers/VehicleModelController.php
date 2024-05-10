@@ -57,14 +57,14 @@ class VehicleModelController extends Controller
         {
             $file = $request->file('model_image');
             $filename = time().'.'.$file->getClientOriginalExtension();
-            $file->move(public_path('uploads/model_image/'), $filename);
+            $file->move(public_path('uploads/models/'), $filename);
         }
 
         VehicleModel::create([
             'category_id'   =>$request->category_id,
             'brand_id'      =>$request->brand_name,
             'model_name'    => $request->model_name,
-            'model_image'   => 'uploads/model_image/'. $filename,
+            'model_image'   => 'uploads/models/'. $filename,
         ]);
 
         return redirect()->route('vehicle-models.index')->with('success', 'Vehicle model saved successfully');
@@ -117,7 +117,7 @@ class VehicleModelController extends Controller
         {
            $file = $request->file('model_image');
            $filename = time().'.'.$file->getClientOriginalExtension();
-           $file->move(public_path('uploads/model_image/'), $filename);
+           $file->move(public_path('uploads/models/'), $filename);
 
            $image_path = public_path($oldImage);
             if(File::exists($image_path)) {
@@ -129,7 +129,7 @@ class VehicleModelController extends Controller
             'category_id' => $request->category_id,
             'brand_id'    => $request->brand_name,
             'model_name'  => $request->model_name,
-            'model_image' => isset($filename) ? 'uploads/model_image/'. $filename : $oldImage,
+            'model_image' => isset($filename) ? 'uploads/models/'. $filename : $oldImage,
         ]);
 
         return redirect()->route('vehicle-models.index')->with('success', 'Vehicle model updated successfully');

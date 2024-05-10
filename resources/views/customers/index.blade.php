@@ -18,61 +18,59 @@
                                     @endforeach
                                 @endforeach
                             @endif
-
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>User Management</h5>
+                                    <h5>Customer Management</h5>
                                     <div class="float-right">
-                                        <div class="file-button btn btn-primary">
-                                            <form action="{{ route('users.import') }}" method="POST"
+
+                                        {{-- <div class="file-button btn btn-primary">
+                                            <form action="{{ route('customers.import') }}" method="POST"
                                                 enctype="multipart/form-data">
                                                 @csrf
                                                 Import CSV
                                                 <input type="file" name="file" accept=".csv" class="input-field" />
                                             </form>
-                                        </div>
+                                        </div> --}}
 
-                                        @can('create user')
-                                            <a href="{{ route('users.create') }}" class="btn btn-primary btn-md">Add
-                                                User</a>
+                                        @can('create customer')
+                                            <a href="{{ route('customers.create') }}" class="btn btn-primary btn-md">Add
+                                                customer</a>
                                         @endif
                                     </div>
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
-                                        <table id="user-management-list" class="table table-striped table-bordered nowrap">
+                                        <table id="customers-list" class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Name</th>
-                                                    <th>Designation </th>
+                                                    <th>Phone Number</th>
                                                     <th>Email</th>
-                                                    <th>Role</th>
-                                                    @canany(['edit user', 'delete user'])
+                                                    @canany(['edit customer', 'delete customer'])
                                                         <th>Actions</th>
                                                     @endcanany
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($users as $key => $user)
+                                                @foreach ($customers as $key => $customer)
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
-                                                        <td>{{ $user->first_name . $user->last_names }}</td>
-                                                        <td>{{ $user->designation }}</td>
-                                                        <td>{{ $user->email }}</td>
-                                                        <td>{{ $user->roles->pluck('name')[0] }}</td>
-                                                        @canany(['edit user', 'delete user'])
+                                                        <td>{{ $customer->first_name . $customer->last_names }}</td>
+                                                        <td>{{ $customer->designation }}</td>
+                                                        <td>{{ $customer->email }}</td>
+                                                        @canany(['edit customer', 'delete customer'])
                                                             <td>
                                                                 <div class="btn-group btn-group-sm">
-                                                                    @can('edit user')
-                                                                        <a href="{{ route('users.edit', $user->id) }}"
+                                                                    @can('edit customer')
+                                                                        <a href="{{ route('customers.edit', $customer->id) }}"
                                                                             class="btn btn-primary waves-effect waves-light mr-2">
                                                                             <i class="feather icon-edit m-0"></i>
                                                                         </a>
                                                                     @endcan
-                                                                    @can('delete user')
-                                                                        <button data-source="User"
-                                                                            data-endpoint="{{ route('users.destroy', $user->id) }}"
+                                                                    @can('delete customer')
+                                                                        <button data-source="customer"
+                                                                            data-endpoint="{{ route('customers.destroy', $customer->id) }}"
                                                                             class="delete-btn btn btn-danger waves-effect waves-light">
                                                                             <i class="feather icon-trash m-0"></i>
                                                                         </button>
@@ -112,7 +110,7 @@
                 $(this).parents('form').submit();
             });
 
-            $('#users-list').DataTable();
+            $('#customers-list').DataTable();
         })
     </script>
 @endsection
