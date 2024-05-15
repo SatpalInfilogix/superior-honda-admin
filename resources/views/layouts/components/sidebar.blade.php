@@ -139,6 +139,16 @@
                         </a>
                     </li>
                 @endcan
+                {{-- @can('view vehicle') --}}
+                    <li class=" ">
+                        <a href="{{ route('coupons.index') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="fas fa-car"></i>
+                            </span>
+                            <span class="pcoded-mtext">Coupon/Offers</span>
+                        </a>
+                    </li>
+                {{-- @endcan --}}
             </ul>
 
             @canany([
@@ -234,8 +244,10 @@
                         </a>
                     </li>
                 @endcan
-                <li class=" ">
-                    <a href="" class="waves-effect waves-dark">
+                <li @class([
+                    'active' => Request::is('settings', 'settings/general-setting'),
+                ])>
+                    <a href="{{ route('settings.index')}}" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
                             <i class="feather icon-settings"></i>
                         </span>

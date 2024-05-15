@@ -39,7 +39,7 @@ class ModuleSeeder extends Seeder
         ]);
         Module::create([
             'name' => 'Vehicle',
-            'slug' => 'Vehicle'
+            'slug' => 'vehicle'
         ]);
         Module::create([
             'name' => 'Vehicle Configuration',

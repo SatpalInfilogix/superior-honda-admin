@@ -20,9 +20,9 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        // if(!Gate::allows('view vehicles')) {
-        //     abort(403);
-        // }
+        if(!Gate::allows('view vehicle')) {
+            abort(403);
+        }
 
         $vehicles = Vehicle::with('customer')->latest()->get();
 
@@ -34,9 +34,9 @@ class VehicleController extends Controller
      */
     public function create()
     {
-        // if(!Gate::allows('create vehicles')) {
-        //     abort(403);
-        // }
+        if(!Gate::allows('create vehicle')) {
+            abort(403);
+        }
 
         $customerRole = Role::where('name', 'Customer')->first();
 
@@ -54,9 +54,9 @@ class VehicleController extends Controller
      */
     public function store(Request $request)
     {
-        // if(!Gate::allows('create vehicles')) {
-        //     abort(403);
-        // }
+        if(!Gate::allows('create vehicle')) {
+            abort(403);
+        }
 
         $request->validate([
             'customer_id'  => 'required',
@@ -96,6 +96,10 @@ class VehicleController extends Controller
      */
     public function edit(Vehicle $vehicle)
     {
+        if(!Gate::allows('edit vehicle')) {
+            abort(403);
+        }
+
         $customerRole = Role::where('name', 'Customer')->first();
 
         $customers = User::whereHas('roles', function ($query) use ($customerRole) {
@@ -116,6 +120,9 @@ class VehicleController extends Controller
      */
     public function update(Request $request, Vehicle $vehicle)
     {
+        if(!Gate::allows('edit vehicle')) {
+            abort(403);
+        }
         $request->validate([
             'customer_id'  => 'required',
             'category_id'  => 'required',
@@ -141,7 +148,6 @@ class VehicleController extends Controller
         ]);
 
         return redirect()->route('vehicles.index')->with('success', 'Vehicle updated successfully');
-  
     }
 
     /**
@@ -149,6 +155,10 @@ class VehicleController extends Controller
      */
     public function destroy(Vehicle $Vehicle)
     {
+        if(!Gate::allows('delete vehicle')) {
+            abort(403);
+        }
+
         Vehicle::where('id', $Vehicle->id)->delete();
 
         return response()->json([
