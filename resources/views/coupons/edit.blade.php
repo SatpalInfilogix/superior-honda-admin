@@ -23,7 +23,7 @@
                                         @csrf
                                         @method('patch')
                                         <div class="form-group">
-                                            <x-input-text name="coupon_code" label="Coupon Code" value="{{ old('coupon_code', $coupon->coupon_code) }}"></x-input-text>
+                                            <x-input-text name="coupon_code" label="Coupon Code" value="{{ old('coupon_code', $coupon->coupong_code) }}"></x-input-text>
                                         </div>
                                         <div class="form-group">
                                             <label for="discount_type">Discount Type</label>
@@ -34,6 +34,16 @@
                                         </div>
                                         <div class="form-group">
                                             <x-input-text name="discount_amount" label="Discount Amount" value="{{ old('discount_amount', $coupon->discount_amount) }}"></x-input-text>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label for="discount_type">Start Date</label>
+                                                <input type="date" name="start_date" value="{{ old('start_date', $coupon->start_date) }}">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label for="discount_type">End Date</label>
+                                                <input type="date" name="end_date" value="{{ old('end_date', $coupon->end_date) }}">
+                                            </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Save</button>
                                     </form>

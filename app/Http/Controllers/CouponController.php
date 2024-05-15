@@ -37,9 +37,11 @@ class CouponController extends Controller
         ]);
 
         Coupon::create([
-            'coupon_code'    => $request->coupon_code,
+            'coupon_code'     => $request->coupon_code,
             'discount_type'   => $request->discount_type,
-            'discount_amount' => $request->discount_amount
+            'discount_amount' => $request->discount_amount,
+            'start_date'      => $request->start_date,
+            'end_date'        => $request->end_date,
         ]);
 
         return redirect()->route('coupons.index')->with('success', 'Coupon created successfully');
@@ -77,7 +79,9 @@ class CouponController extends Controller
         $coupon->update([
             'coupon_code'    => $request->coupon_code,
             'discount_type'   => $request->discount_type,
-            'discount_amount' => $request->discount_amount
+            'discount_amount' => $request->discount_amount,
+            'start_date'      => $request->start_date,
+            'end_date'        => $request->end_date,
         ]);
 
         return redirect()->route('coupons.index')->with('success', 'Coupon updated successfully.');            

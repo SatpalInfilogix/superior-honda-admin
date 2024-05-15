@@ -34,6 +34,16 @@
                                         <div class="form-group">
                                             <x-input-text name="discount_amount" label="Discount Amount" value="{{ old('discount_amount') }}"></x-input-text>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label for="discount_type">Start Date</label>
+                                                <input type="date" name="start_date" class="form-control" value="{{ old('start_date') }}">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label for="discount_type">End Date</label>
+                                                <input type="date" name="end_date" class="form-control" value="{{ old('end_date') }}">
+                                            </div>
+                                        </div>
                                         <button type="submit" class="btn btn-primary">Save</button>
                                     </form>
                                 </div>

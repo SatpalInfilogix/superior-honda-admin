@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('coupon_code');
             $table->enum('discount_type', ['percentage', 'fixed'])->Default('percentage');
             $table->string('discount_amount');
-            $table->timestamp('end_date')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->string('use_limit')->nullable();
             $table->enum('status',['Active', 'Inactive'])->default('Active');
             $table->timestamps();
