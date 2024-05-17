@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('branch_id')->nullable();
-            $table->integer('phone_Digicel')->nullable();
-            $table->integer('phone_Lime')->nullable();
+            $table->integer('phone_digicel')->nullable();
+            $table->integer('phone_lime')->nullable();
             $table->string('lic_no')->nullable();
             $table->string('address')->nullable();
             $table->string('cus_code')->nullable();
@@ -30,7 +30,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['branch_id', 'phone_Digicel', 'phone_Lime', 'lic_no', 'address', 'cus_code']);
+            $table->dropColumn(['branch_id', 'phone_digicel', 'phone_lime', 'lic_no', 'address', 'cus_code']);
         });
     }
 };

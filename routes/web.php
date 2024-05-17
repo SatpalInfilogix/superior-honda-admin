@@ -14,6 +14,8 @@ use App\Http\Controllers\BranchController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VehicleModelVariantController;
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\CouponController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'auth.session'])->group(function () {
@@ -32,6 +34,8 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
         'roles-and-permissions' => RoleAndPermissionController::class,
         'products'              => ProductController::class,
         'vehicles'              => VehicleController::class,
+        'settings'              => SettingController::class,
+        'coupons'               => CouponController::class,
     ]);
 });
 
@@ -50,4 +54,6 @@ Route::post('get-vehicle-model-variant', [ProductController::class, 'getVehicleM
 
 Route::post('users/import', [UserController::class, 'import'])->name('users.import');  // import users csv file
 Route::post('products/import', [ProductController::class, 'import'])->name('products.import');  // import products csv file
-Route::post('customers/import', [CustomerController::class, 'import'])->name('customers.import');  //import customers csv file 
+Route::post('customers/import', [CustomerController::class, 'import'])->name('customers.import');  //import customers csv file
+
+Route::post('general-setting',[SettingController::class, 'generalSetting'])->name('settings.general-setting');

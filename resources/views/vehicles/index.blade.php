@@ -16,7 +16,7 @@
                                     <h5>Vehicles</h5>
 
                                     <div class="float-right">
-                                        @can('create product')
+                                        @can('create vehicle')
                                             <a href="{{ route('vehicles.create') }}"
                                                 class="btn btn-primary btn-md">Add Vehicle
                                             </a>
