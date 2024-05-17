@@ -212,6 +212,31 @@
                     heightStyle: "content",
                     icons: icons
                 });
+
+                $('form').validate({
+                    rules: {
+                        coupon_code: "required",
+                        discount_type: "required",
+                        discount_amount: "required"
+                    },
+                    messages: {
+                        coupon_code: "Please enter coupon code",
+                        discount_type: "Please enter discount type",
+                        discount_amount: "Please choose discount amount"
+                    },
+                    errorClass: "text-danger f-12",
+                    errorElement: "span",
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass("form-control-danger");
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass("form-control-danger");
+                    },
+                    submitHandler: function(form) {
+                        form.submit();
+                    }
+                });
+            })
             })
         </script>
     @endsection
