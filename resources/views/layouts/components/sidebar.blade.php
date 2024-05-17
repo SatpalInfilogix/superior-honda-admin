@@ -149,6 +149,15 @@
                         </a>
                     </li>
                 {{-- @endcan --}}
+
+                <li class=" ">
+                        <a href="{{ route('inquiries.index') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="fas fa-car"></i>
+                            </span>
+                            <span class="pcoded-mtext">Inquery</span>
+                        </a>
+                    </li>
             </ul>
 
             @canany([

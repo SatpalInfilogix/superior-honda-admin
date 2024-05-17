@@ -23,7 +23,7 @@
                                         @csrf
                                         @method('patch')
                                         <div class="form-group">
-                                            <x-input-text name="coupon_code" label="Coupon Code" value="{{ old('coupon_code', $coupon->coupong_code) }}"></x-input-text>
+                                            <x-input-text name="coupon_code" label="Coupon Code" value="{{ old('coupon_code', $coupon->coupon_code) }}"></x-input-text>
                                         </div>
                                         <div class="form-group">
                                             <label for="discount_type">Discount Type</label>
