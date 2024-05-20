@@ -38,7 +38,7 @@
                 <div class="navbar-wrapper">
                     <div class="navbar-logo">
                         <a href="{{ route('dashboard.index') }}">
-                            <img class="img-fluid" src="{{ asset('assets/images/logo.png') }}" alt="Theme-Logo" />
+                            SUPERIOR HONDA
                         </a>
                         <a class="mobile-menu" id="mobile-collapse" href="#!">
                             <i class="feather icon-menu icon-toggle-right"></i>
