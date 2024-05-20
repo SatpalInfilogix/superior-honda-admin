@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('dob')->nullable();
             $table->string('chassis')->nullable();
             $table->string('engine')->nullable();
-            $table->json('conditions')->nullable();
+            $table->text('conditions')->nullable();
             $table->string('sign')->nullable();
             $table->date('sign_date')->nullable();
 
