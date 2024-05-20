@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Inquery;
+use App\Models\inquiry;
 use Illuminate\Http\Request;
 
-class InqueryController extends Controller
+class InquiryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class InqueryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Inquery $inquery)
+    public function show(inquiry $inquiry)
     {
         //
     }
@@ -42,7 +42,7 @@ class InqueryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Inquery $inquery)
+    public function edit(inquiry $inquiry)
     {
         //
     }
@@ -50,7 +50,7 @@ class InqueryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Inquery $inquery)
+    public function update(Request $request, inquiry $inquiry)
     {
         //
     }
@@ -58,7 +58,7 @@ class InqueryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Inquery $inquery)
+    public function destroy(inquiry $inquiry)
     {
         //
     }
