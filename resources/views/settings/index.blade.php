@@ -79,12 +79,19 @@
                                                                     <input type="file" name="logo"
                                                                         class="custom-file-input" id="add-logo">
                                                                     <label class="custom-file-label" for="add-logo">Choose Logo</label>
-                                                                    @if(App\Helpers\SettingHelper::setting('logo') != '')
+                                                                    @if(App\Helpers\SettingHelper::setting('logo'))
                                                                     <img src="{{ asset(App\Helpers\SettingHelper::setting('logo')) }}"  id="preview-Img" class="img-preview" width="50" height="50">
                                                                     @else 
                                                                         <img src="" id="preview-Img" height="50" width="50" name="image" hidden>
                                                                     @endif
                                                                 </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="currency">Currency</label>
+                                                                <select class="form-control" id="currency" name="currency">
+                                                                    <option value="INR" @selected(App\Helpers\SettingHelper::setting('currency') == 'INR')>INR</option>
+                                                                    <option value="USD" @selected(App\Helpers\SettingHelper::setting('currency') == 'USD')>USD</option>
+                                                                </select>
                                                             </div>
                                                             <button type="submit" class="btn btn-primary">Save</button>
                                                         </form>
