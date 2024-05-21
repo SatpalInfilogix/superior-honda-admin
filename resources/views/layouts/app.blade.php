@@ -52,8 +52,13 @@
                             <li class="user-profile header-notification">
                                 <div class="dropdown-primary dropdown">
                                     <div class="dropdown-toggle" data-toggle="dropdown">
-                                        <img src="{{ asset('assets/images/avatar-4.jpg') }}" class="img-radius"
+                                        @if(!Auth::user()->profile_picture)
+                                        <img src="{{ asset('assets/images/user-default.png') }}" class="img-radius"
                                             alt="{{ Auth::user()->first_name }}">
+                                        @else
+                                            <img src="{{ asset(Auth::user()->profile_picture ) }}" class="img-radius"
+                                                alt="{{ Auth::user()->first_name }}">
+                                        @endif
                                         <span>{{ Auth::user()->first_name }}</span>
                                         <i class="feather icon-chevron-down"></i>
                                     </div>
