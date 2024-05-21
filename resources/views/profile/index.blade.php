@@ -42,14 +42,27 @@
                                             </div>
 
                                             <div class="col-md-6 form-group">
-                                                <label for="profile-picture">Profile Picture</label>
-                                                <div class="custom-file">
-                                                    <input type="file" name="profile_image"
-                                                        value="{{ old('profile_image') }}" class="custom-file-input"
-                                                        id="profile-picture">
-                                                    <label class="custom-file-label" for="profile-picture">Choose
-                                                        Image</label>
-                                                </div>
+                                                <div class="row image-preview">
+                                                    <div class="col-md-10 form-group">
+                                                    <label for="profile-picture">Profile Picture</label>
+                                                    <div class="custom-file">
+                                                        <input type="file" name="profile_image"
+                                                            value="{{ old('profile_image') }}" class="custom-file-input"
+                                                            id="profile-picture" id="imageInput" accept="image/*">
+                                                        <label class="custom-file-label" for="profile-picture">Choose
+                                                            Image</label>
+                                                    </div>
+                                                    </div>
+                                                    <div class="col-md-2 form-group">
+                                                        <div id="imagePreview">
+                                                            @if(!$user->profile_picture)
+                                                                <img class="preview-img" width="50px" height="50px" src="{{ asset('assets/images/user-default.png') }}" alt="Selected Image">
+                                                            @else
+                                                                <img class="preview-img" width="50px" height="50px" src="{{ asset($user->profile_picture) }}" alt="Selected Image">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>    
                                             </div>
                                         </div>
                                         <div class="row">
@@ -68,7 +81,7 @@
                                             </div>
                                             <div class="col-md-6 form-group">
                                                 <label for="dob">Date of Birth</label>
-                                                <input type="text" name="date_of_birth" class="form-control"
+                                                <input type="date" name="date_of_birth" class="form-control"
                                                     value="{{ old('date_of_birth', $user->date_of_birth) }}"
                                                     placeholder="YYYY-MM-DD">
                                             </div>
@@ -134,6 +147,18 @@
                 },
                 submitHandler: function(form) {
                     form.submit();
+                }
+            });
+        });
+        $(document).ready(function(){
+            $('#profile-picture').change(function(){
+                var file = this.files[0];
+                if(file){
+                var reader = new FileReader();
+                reader.onload = function(e){
+                    $('#imagePreview').html('<img class="preview-img" width="50px" height="50px" src="' + e.target.result + '" alt="Selected Image">');
+                }
+                reader.readAsDataURL(file);
                 }
             });
         });

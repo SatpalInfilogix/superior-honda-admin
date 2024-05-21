@@ -14,3 +14,18 @@
     right: 0;
     top: 0;
 }
+
+#sig-canvas {
+    border: 2px dotted #CCCCCC;
+    border-radius: 15px;
+    cursor: crosshair;
+}
+
+.row.image-preview {
+    display: flex;
+    align-items: end;
+}
+
+img.preview-img {
+    border-radius: 50%;
+}
