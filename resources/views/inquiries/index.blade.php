@@ -23,15 +23,6 @@
                                     <h5>Inquiries</h5>
                                     <div class="float-right">
 
-                                        {{-- <div class="file-button btn btn-primary">
-                                            <form action="{{ route('customers.import') }}" method="POST"
-                                                enctype="multipart/form-data">
-                                                @csrf
-                                                Import CSV
-                                                <input type="file" name="file" accept=".csv" class="input-field" />
-                                            </form>
-                                        </div> --}}
-
                                         <a href="{{ route('inquiries.create') }}" class="btn btn-primary btn-md">Add
                                             Inquery</a>
                                     </div>
@@ -43,31 +34,35 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Name</th>
-                                                    <th>Phone Number</th>
-                                                    <th>Email</th>
+                                                    <th>Vehicle</th>
+                                                    <th>Year</th>
+                                                    <th>Date</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @foreach($inquiries as $key => $inquiry)
                                                     <tr>
-                                                        <td>1</td>
-                                                        <td>sdasd</td>
-                                                        <td>asd</td>
-                                                        <td>fgd</td>
-                                                            <td>
-                                                                <div class="btn-group btn-group-sm">
-                                                                    <a href=""
-                                                                        class="btn btn-primary waves-effect waves-light mr-2">
-                                                                        <i class="feather icon-edit m-0"></i>
-                                                                    </a>
-                                                                    <button data-source="customer"
-                                                                        data-endpoint=""
-                                                                        class="delete-btn btn btn-danger waves-effect waves-light">
-                                                                        <i class="feather icon-trash m-0"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </td>
+                                                        <td>{{ ++$key }}</td>
+                                                        <td>{{ ucwords($inquiry->name) }}</td>
+                                                        <td>{{ $inquiry->vehicle }}</td>
+                                                        <td>{{ $inquiry->year }}</td>
+                                                        <td>{{ $inquiry->date }}</td>
+                                                        <td>
+                                                            <div class="btn-group btn-group-sm">
+                                                                <a href="#"
+                                                                    class="btn btn-primary waves-effect waves-light mr-2">
+                                                                    <i class="feather icon-edit m-0"></i>
+                                                                </a>
+                                                                <button data-source="Inquiry"
+                                                                    data-endpoint="{{ route('inquiries.destroy', $inquiry->id) }}"
+                                                                    class="delete-btn btn btn-danger waves-effect waves-light">
+                                                                    <i class="feather icon-trash m-0"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
                                                     </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>

@@ -17,10 +17,22 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/sweetalert.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/datedropper.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/daterangepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/themify-icons.css') }}">
 
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('assets/js/moment.js') }}"></script>
+    <script src="{{ asset('assets/js/moment.min.js') }}"></script>
+    <script src="{{ asset('assets/js/moment.min-2.js') }}"></script>
+    <script src="{{ asset('assets/js/moment-with-locales.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ asset('assets/js/daterangepicker.js') }}"></script>
+    <script src="{{ asset('assets/js/datedropper.min.js') }}"></script>
 
     @yield('head')
 </head>
@@ -38,7 +50,7 @@
                 <div class="navbar-wrapper">
                     <div class="navbar-logo">
                         <a href="{{ route('dashboard.index') }}">
-                            <img class="img-fluid" src="{{ asset('assets/images/logo.png') }}" alt="Theme-Logo" />
+                            SUPERIOR HONDA
                         </a>
                         <a class="mobile-menu" id="mobile-collapse" href="#!">
                             <i class="feather icon-menu icon-toggle-right"></i>
