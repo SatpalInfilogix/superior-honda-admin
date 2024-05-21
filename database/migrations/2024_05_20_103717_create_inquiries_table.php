@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('chassis')->nullable();
             $table->string('engine')->nullable();
             $table->text('conditions')->nullable();
-            $table->string('sign')->nullable();
+            $table->text('sign')->nullable();
             $table->date('sign_date')->nullable();
 
             $table->timestamps();

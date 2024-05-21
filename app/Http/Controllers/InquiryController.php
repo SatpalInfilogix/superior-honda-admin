@@ -12,7 +12,9 @@ class InquiryController extends Controller
      */
     public function index()
     {
-        return view('inquiries.index');
+        $inquiries = Inquiry::latest()->get();
+
+        return view('inquiries.index', compact('inquiries'));
     }
 
     /**
@@ -28,7 +30,42 @@ class InquiryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $productConditions = NULL;
+
+        if ($request->products != '') {
+            foreach ($request->products as $key => $product) {
+                $productConditions[] = [
+                    'product' => $key,
+                    'condition' => $product['condition']
+                ];
+            }
+        }
+
+        $request->validate([
+            'name' => 'required',
+        ]);
+
+        Inquiry::create([
+            'name'          => $request->name,
+            'date'          => $request->date,
+            'mileage'       => $request->mileage,
+            'vehicle'       => $request->vehicle,
+            'year'          => $request->year,
+            'lic_no'        => $request->lic_no,
+            'address'       => $request->address,
+            'returning'     => $request->returning,
+            'color'         => $request->color,
+            'tel_digicel'   => $request->tel_digicel,
+            'tel_lime'      => $request->tel_lime,
+            'dob'           => $request->dob,
+            'chassis'       => $request->chassis,
+            'engine'        => $request->engine,
+            'conditions'    => isset($productConditions) ? json_encode($productConditions) : NULL,
+            'sign'          => $request->signature,
+            'sign_date'     =>  $request->sign_date
+        ]);
+
+        return redirect()->route('inquiries.index')->with('success', 'Inquiry created successfully.');
     }
 
     /**
@@ -60,6 +97,11 @@ class InquiryController extends Controller
      */
     public function destroy(inquiry $inquiry)
     {
-        //
+        $product = inquiry::where('id', $inquiry->id)->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Inquiry deleted successfully.'
+        ]);
     }
 }

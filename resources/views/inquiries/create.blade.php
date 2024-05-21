@@ -19,220 +19,370 @@
                                 </div>
 
                                 <div class="card-block">
-                                    <form action="{{ route('customers.store') }}" method="POST"
-                                        enctype="multipart/form-data">
+                                    <form method="post" action="{{ route('inquiries.store') }}">
                                         @csrf
-                                        <div class="row">
-                                            <div class="col-md-6 form-group">
-                                                <x-input-text name="name" label="Name"
-                                                    value="{{ old('name') }}"></x-input-text>
-                                            </div>
-                                            <div class="col-md-3 form-group">
-                                                <x-input-text name="date" label="Date"
-                                                    value="{{ old('date') }}"></x-input-text>
-                                            </div>
-                                            <div class="col-md-3 form-group">
-                                                <x-input-text name="mileage" label="Mileage"
-                                                    value="{{ old('mileage') }}"></x-input-text>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 form-group">
-                                                <x-input-text name="vehicle" label="Vehicle"
-                                                    value="{{ old('vehicle') }}"></x-input-text>
-                                            </div>
-                                            <div class="col-md-3 form-group">
-                                                <x-input-text name="year" label="Year"
-                                                    value="{{ old('year') }}"></x-input-text>
-                                            </div>
-                                            <div class="col-md-3 form-group">
-                                                <x-input-text name="lic_no" label="Lic No"
-                                                    value="{{ old('lic_no') }}"></x-input-text>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <x-input-text name="address" label="Address"
-                                                value="{{ old('address') }}"></x-input-text>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 form-group">
-                                                <x-input-text name="address" label="Returning"
-                                                    value="{{ old('address') }}"></x-input-text>
-                                            </div>
-                                            <div class="col-md-3 form-group">
-                                                <x-input-text name="color" label="Color"
-                                                    value="{{ old('color') }}"></x-input-text>
-                                            </div>
-                                            <div class="col-md-3 form-group">
-                                                <x-input-text name="tel_digicel" label="TEL Digicel"
-                                                    value="{{ old('tel_digicel') }}"></x-input-text>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 form-group">
-                                                <x-input-text name="email" label="Email"
-                                                    value="{{ old('email') }}"></x-input-text>
-                                            </div>
-                                            <div class="col-md-6 form-group">
-                                                <x-input-text name="tel_lime" label="TEL Lime"
-                                                    value="{{ old('tel_lime') }}"></x-input-text>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 form-group">
-                                                <x-input-text name="dob" label="Date of Birth"
-                                                    value="{{ old('dob') }}"></x-input-text>
-                                            </div>
-                                            <div class="col-md-6 form-group">
-                                                <x-input-text name="chassis" label="Chassis"
-                                                    value="{{ old('Chassis') }}"></x-input-text>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-8 form-group">
-                                                <p>Kindly complete this checklist by placing a tick in the
-                                                    respective boxes.<br>
-                                                    Any discrepancies should be detailed in the section provided at the bottom of the sheet.
-                                                </p>
-                                            </div>
-                                            <div class="col-md-4 form-group">
-                                                <x-input-text name="engine" label="Engine"
-                                                    value="{{ old('engine') }}"></x-input-text>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-8 form-group">
-                                                <p>ITEMS TO BE CHECKED:</p>
-                                                <p>Start Engine check dashboardfor the following indecators</p>
-                                                <p>Fuel level</p>
-                                                <p>Oil level</p>
-                                                <p>Coolant level</p>
-                                                <p>Power steering oil level</p>
-                                                <p>Check tires for wear and pressure</p>
-                                                <p>(20% 30% 50% 60% 80% 100% other indicate)</p>
-
-                                            </div>
-                                            <div class="col-md-4 form-group">
-                                                <table  class="table  table-bordered ">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Engine Light</th>
-                                                            <th>ABS Light</th>
-                                                            <th>Brake Light</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <th>E 1/4</th>
-                                                            <th>1/2  3/4</th>
-                                                            <th>F</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>E 1/4</th>
-                                                            <th>1/2  3/4</th>
-                                                            <th>F</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>E 1/4</th>
-                                                            <th>1/2  3/4</th>
-                                                            <th>F</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>E 1/4</th>
-                                                            <th>1/2  3/4</th>
-                                                            <th>F</th>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label class="col-sm-5"></label>
-                                                <label class="col-sm-2"> Good</label>
-                                                <label class="col-sm-1.5"> Defactive</label>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="col-sm-5"></label>
-                                                <label class="col-sm-2"> Good</label>
-                                                <label class="col-sm-1.5"> Defactive</label>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 form-group">
-                                                @php $types = ['Horn', 'Carpet', 'Battery', 'Battery Clamps', 'Left Headlight', 'Right Headlight', 'Left Indicator', 'Right Front Fender', 'Left Front Fender', 'Right Front Door', 'Left Front Door', 'Left Rear Door', 'right Rear Door', 'Left Tail Lamp', 'Right Tail Lamp', 'Hub Caps', 'Cigarette Lighter', 'Grill']; @endphp
-                                                @foreach ($types as $type)
-                                                <label class="col-sm-6">{{$type}}</label>
-                                                <div class="form-check form-check-inline col-sm-1">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="radio" name="good" id="gender-1" value="option1">
-                                                    </label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="name">Name:</label>
+                                                <div class="col-sm-9">
+                                                    <input class="form-control m-0" id="name" name="name"
+                                                        type="text">
                                                 </div>
-                                                <div class="form-check form-check-inline col-sm-1">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input" type="radio" name="defective" id="gender-2" value="option2">
-                                                    </label>
-                                                </div></br>
-                                                @endforeach
                                             </div>
-                                            <div class="col-md-6 form-group">
-                                                @php $types = ['Reverse Light', 'Rear Door or Trunk', 'Window Functions', 'Oil Cap', 'Left Quarter Panel', 'Right Quarter Panel', 'Front Bumper', 'Rear Bumper', 'Left Wing Mirror', 'Right Wing Mirror', 'Rims', 'Interior Lights', 'Seats', 'Door Pulls', 'Rear Windshield', 'Front Windshield', 'Spare Tire', 'Jack & Handle', 'Wipers & Washer Jets']; @endphp
-                                                @foreach ($types as $type)
-                                                <label class="col-sm-6">{{$type}}</label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="date">Date:</label>
+                                                <div class="col-sm-9">
+                                                    <input type="date" name="date" class="form-control m-0"
+                                                        id="datepicker">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="mileage">Mileage:</label>
+                                                <div class="col-sm-9">
+                                                    <input class="form-control m-0" id="mileage" name="mileage"
+                                                        type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="vehicle">Vehicle:</label>
+                                                <div class="col-sm-9">
+                                                    <input class="form-control m-0" id="vehicle" name="vehicle"
+                                                        type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="year">Year:</label>
+                                                <div class="col-sm-9">
+                                                    <input class="form-control m-0" id="year" name="year"
+                                                        type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="lic_no">Lic No:</label>
+                                                <div class="col-sm-9">
+                                                    <input class="form-control m-0" id="lic_no" name="lic_no"
+                                                        type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label" for="address">Address:</label>
+                                                <div class="col-sm-10">
+                                                    <input class="form-control m-0" id="address" name="address"
+                                                        type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label" for="returning">Returning:</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control m-0" id="returning" name="returning"
+                                                        type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label" for="color">Color:</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control m-0" id="color" name="color"
+                                                        type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label" for="tel_digicel">TEL
+                                                    Digicel:</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control m-0" id="tel_digicel" name="tel_digicel"
+                                                        type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label" for="email">Email:</label>
+                                                <div class="col-sm-10">
+                                                    <input class="form-control m-0" id="email" name="email"
+                                                        type="email">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="tel_lime">TEL Lime:</label>
+                                                <div class="col-sm-9">
+                                                    <input class="form-control m-0" id="tel_lime" name="tel_lime"
+                                                        type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="dob">Date of
+                                                    Birth:</label>
+                                                <div class="col-sm-9">
+                                                    <input type="date" class="form-control m-0" id="date"
+                                                        name="dob">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="chassis">Chassis:</label>
+                                                <div class="col-sm-9">
+                                                    <input class="form-control m-0" id="chassis" name="chassis"
+                                                        type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <p>Kindly complete this checklist by placing a tick in the respective boxes.<br>
+                                                Any discrepancies should be detailed in the section provided at the bottom
+                                                of the sheet.</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="engine">Engine:</label>
+                                                <div class="col-sm-9">
+                                                    <input class="form-control m-0" id="engine" name="engine"
+                                                        type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <p>ITEMS TO BE CHECKED:</p>
+                                            <p>Start Engine check dashboard for the following indicators</p>
+                                            <ul>
+                                                <li>Fuel level</li>
+                                                <li>Oil level</li>
+                                                <li>Coolant level</li>
+                                                <li>Power steering oil level</li>
+                                                <li>Check tires for wear and pressure (20% 30% 50% 60% 80% 100% other
+                                                    indicate)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Engine Light</th>
+                                                        <th>ABS Light</th>
+                                                        <th>Brake Light</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>E 1/4</td>
+                                                        <td>1/2 3/4</td>
+                                                        <td>F</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>E 1/4</td>
+                                                        <td>1/2 3/4</td>
+                                                        <td>F</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>E 1/4</td>
+                                                        <td>1/2 3/4</td>
+                                                        <td>F</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>E 1/4</td>
+                                                        <td>1/2 3/4</td>
+                                                        <td>F</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                        </div>
+                                        <div class="col-md-5">
+                                            <span class="col-sm-8"> </span><span class="col-sm-2">Good</span><span
+                                                class="col-sm-2">Defective</span>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <span class="col-sm-8"></span><span class="col-sm-2">Good</span><span
+                                                class="col-sm-2">Defective</span>
+                                        </div>
+                                    </div><br>
+
+                                    <div class="row">
+                                        <div class="col-md-6 form-group">
+                                            @php
+                                                $products1 = [
+                                                    'Horn',
+                                                    'Carpet',
+                                                    'Battery',
+                                                    'Battery Clamps',
+                                                    'Left Headlight',
+                                                    'Right Headlight',
+                                                    'Left Indicator',
+                                                    'Right Front Fender',
+                                                    'Left Front Fender',
+                                                    'Right Front Door',
+                                                    'Left Front Door',
+                                                    'Left Rear Door',
+                                                    'Right Rear Door',
+                                                    'Left Tail Lamp',
+                                                    'Right Tail Lamp',
+                                                    'Hub Caps',
+                                                    'Cigarette Lighter',
+                                                    'Grill',
+                                                ];
+                                            @endphp
+                                            @foreach ($products1 as $key => $product)
+                                                <label class="col-sm-6">{{ $product }}</label>
                                                 <div class="form-check form-check-inline col-sm-2">
                                                     <label class="form-check-label">
-                                                        <input class="form-check-input" type="radio" name="good" id="gender-1" value="option1">
+                                                        <input class="form-check-input status-checkbox"
+                                                            id="{{ strtolower(str_replace(' ', '_', $product)) }}_status[]"
+                                                            type="checkbox"
+                                                            name="products[{{ strtolower(str_replace(' ', '_', $product)) }}][condition]"
+                                                            value="good">
                                                     </label>
                                                 </div>
                                                 <div class="form-check form-check-inline col-sm-2">
                                                     <label class="form-check-label">
-                                                        <input class="form-check-input" type="radio" name="defective" id="gender-2" value="option2">
+                                                        <input class="form-check-input status-checkbox"
+                                                            id="{{ strtolower(str_replace(' ', '_', $product)) }}_status[]"
+                                                            type="checkbox"
+                                                            name="products[{{ strtolower(str_replace(' ', '_', $product)) }}][condition]"
+                                                            value="defective">
                                                     </label>
-                                                </div></br>
-                                                @endforeach
-                                            </div>
+                                                </div>
+                                            @endforeach
                                         </div>
-                                        <div class="<row>">
-                                            <p>Following Discrepancies where noted:.......................................................</p>
-                                            <p> I HERE BY AUTHORIZE SUPERIOR PARTS LIMITED TO EFFECT REPAIRS AND SUPPLY  NECESSARY  MATERIALS RELATING TO THIS JOB AND GRANT YOUR EMPLOYEES PERMISSION  TO OPERATE THE VEHICLE DESCRIBED ABOVE ON STREETS, HIGHWAYS AND ELSEWHERE FOR TESTING AND INSPECTION.</p>
-                                            <P> 50% DEPOSIT IS TO BE MADE ON ALL JOBS</P>
-                                            <P> SUPERIOR PARTS LTD WILL NOT BE HELD RESPONSIBLE FOR JOBS LEFT OVER 30 DAYS. </P>
-                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            @php
+                                                $products2 = [
+                                                    'Reverse Light',
+                                                    'Rear Door or Trunk',
+                                                    'Window Functions',
+                                                    'Oil Cap',
+                                                    'Left Quarter Panel',
+                                                    'Right Quarter Panel',
+                                                    'Front Bumper',
+                                                    'Rear Bumper',
+                                                    'Left Wing Mirror',
+                                                    'Right Wing Mirror',
+                                                    'Rims',
+                                                    'Interior Lights',
+                                                    'Seats',
+                                                    'Door Pulls',
+                                                    'Rear Windshield',
+                                                    'Front Windshield',
+                                                    'Spare Tire',
+                                                    'Jack & Handle',
+                                                    'Wipers & Washer Jets',
+                                                ];
+                                            @endphp
 
-                                        <div class="row">
-                                            <div class="col-md-5 form-group">
-                                                <label>Date</label>
-                                                <input type="date" name="date" label="Date"
-                                                    value="{{ old('date') }}" class="form-control"/>
+                                            @foreach ($products2 as $key => $product)
+                                                <label class="col-sm-6">{{ $product }}</label>
+                                                <div class="form-check form-check-inline col-sm-2">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input status-checkbox" type="checkbox"
+                                                            id="{{ strtolower(str_replace(' ', '_', $product)) }}_status[]"
+                                                            name="products[{{ strtolower(str_replace(' ', '_', $product)) }}][condition]"
+                                                            value="good">
+                                                    </label>
+                                                </div>
+                                                <div class="form-check form-check-inline col-sm-2">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input status-checkbox" type="checkbox"
+                                                            id="{{ strtolower(str_replace(' ', '_', $product)) }}_status[]"
+                                                            name="products[{{ strtolower(str_replace(' ', '_', $product)) }}][condition]"
+                                                            value="defective">
+                                                    </label>
+                                                </div><br>
+                                            @endforeach
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p>Following discrepancies were noted:
+                                                .......................................................</p>
+                                            <p>I hereby authorize Superior Parts Limited to effect repairs and supply
+                                                necessary materials
+                                                relating to this job and grant your employees permission to operate the
+                                                vehicle described above
+                                                on streets, highways, and elsewhere for testing and inspection.</p>
+                                            <p>50% deposit is to be made on all jobs.</p>
+                                            <p>Superior Parts Ltd will not be held responsible for jobs left over 30 days.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="date">Date:</label>
+                                                <div class="col-sm-9">
+                                                    <input class="form-control m-0 " id="date" name="sign_date" type="date">
+                                                </div>
                                             </div>
-                                            <div class="col-md-7 form-group">
-                                                <label>Customer's Signature</label>
-                                                <canvas id="sig-canvas" width="550" height="130">
+                                        </div>
+                                        <div class="col-md-8 form-group row">
+                                            <label class="col-sm-4 col-form-label">Customer's Signature:</label>
+                                            <div class="col-sm-8">
+                                                <canvas id="sig-canvas" width="400" height="130">
                                                     Get a better browser, bro.
                                                 </canvas>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <input id="sig-dataUrl" class="form-control" type="hidden">
-                                            </div>
-                                        </div>
-                                        {{-- <button type="submit" class="btn btn-primary">Save</button> --}}
-                                    </form>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <button class="btn btn-primary" id="sig-submitBtn">Submit Signature</button>
-                                            <button class="btn btn-default" id="sig-clearBtn">Clear Signature</button>
+                                            <input id="sig-dataUrl" class="form-control" type="hidden" name="signature">
                                         </div>
                                     </div>
-                                    <br/>
-                                    <!--div class="row">
+                                    <div class="row">
                                         <div class="col-md-12">
-                                            <img style="display:none;" id="sig-image" src="" alt="Your signature will go here!"/>
+                                            <button type="button" class="btn btn-default" id="sig-clearBtn">Clear Signature</button>
                                         </div>
-                                    </div-->
+                                    </div>
+                                    <br />
+                                    <button id="sig-submitBtn" class="btn btn-primary">Save</button>
+                                </form>
                                 </div>
                             </div>
                         </div>
@@ -241,38 +391,7 @@
             </div>
         </div>
     </div>
-
     <script>
-        $(function() {
-            $('form').validate({
-                rules: {
-                    first_name: "required",
-                    last_name: "required",
-                    email: "required",
-                    phone_digicel: "required"
-
-                },
-                messages: {
-                    first_name: "Please enter first name",
-                    last_name: "Please enter last name",
-                    email: "Please enter email",
-                    phone_digicel: "Please enter phone digicel",
-
-                },
-                errorClass: "text-danger f-12",
-                errorElement: "span",
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass("form-control-danger");
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass("form-control-danger");
-                },
-                submitHandler: function(form) {
-                    form.submit();
-                }
-            });
-        });
-
         // Canvas signature script
         $(function() {
             window.requestAnimFrame = (function(callback) {
@@ -381,6 +500,7 @@
             // Set up the UI
             var sigText = $("#sig-dataUrl")[0];
             var sigImage = $("#sig-image")[0];
+            
             var clearBtn = $("#sig-clearBtn")[0];
             var submitBtn = $("#sig-submitBtn")[0];
 
@@ -399,5 +519,31 @@
             });
         });
 
+        $(function() {
+            $('.status-checkbox').change(function() {
+                var type = $(this).attr('id');
+                $('.status-checkbox[id="' + type + '"]').not(this).prop('checked', false);
+            });
+
+            $('form').validate({
+                rules: {
+                    name: "required"
+                },
+                messages: {
+                    name: "Please enter name",
+                },
+                errorClass: "text-danger f-12",
+                errorElement: "span",
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass("form-control-danger");
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass("form-control-danger");
+                },
+                submitHandler: function(form) {
+                    form.submit();
+                }
+            });
+        });
     </script>
 @endsection
