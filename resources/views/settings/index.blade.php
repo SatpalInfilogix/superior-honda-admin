@@ -16,8 +16,6 @@
                                     <h5>Settings</h5>
                                 </div>
 
-                                <div id='calendar'></div>
-                                
                                 <div class="card-block">
                                     <div class="col-lg-12">
                                         <div class="row">
@@ -68,10 +66,13 @@
                                                                         class="custom-file-input" id="add-banner">
                                                                     <label class="custom-file-label" for="add-banner">Choose
                                                                         Banner</label>
-                                                                    @if(App\Helpers\SettingHelper::setting('banner') != '')
-                                                                        <img src="{{ asset(App\Helpers\SettingHelper::setting('banner')) }}"  id="previewImg" class="img-preview" width="50" height="50">
-                                                                    @else 
-                                                                        <img src="" id="previewImg" height="50" width="50" name="image" hidden>
+                                                                    @if (App\Helpers\SettingHelper::setting('banner') != '')
+                                                                        <img src="{{ asset(App\Helpers\SettingHelper::setting('banner')) }}"
+                                                                            id="previewImg" class="img-preview"
+                                                                            width="50" height="50">
+                                                                    @else
+                                                                        <img src="" id="previewImg" height="50"
+                                                                            width="50" name="image" hidden>
                                                                     @endif
                                                                 </div>
                                                             </div>
@@ -80,19 +81,25 @@
                                                                 <div class="custom-file">
                                                                     <input type="file" name="logo"
                                                                         class="custom-file-input" id="add-logo">
-                                                                    <label class="custom-file-label" for="add-logo">Choose Logo</label>
-                                                                    @if(App\Helpers\SettingHelper::setting('logo'))
-                                                                    <img src="{{ asset(App\Helpers\SettingHelper::setting('logo')) }}"  id="preview-Img" class="img-preview" width="50" height="50">
-                                                                    @else 
-                                                                        <img src="" id="preview-Img" height="50" width="50" name="image" hidden>
+                                                                    <label class="custom-file-label" for="add-logo">Choose
+                                                                        Logo</label>
+                                                                    @if (App\Helpers\SettingHelper::setting('logo'))
+                                                                        <img src="{{ asset(App\Helpers\SettingHelper::setting('logo')) }}"
+                                                                            id="preview-Img" class="img-preview"
+                                                                            width="50" height="50">
+                                                                    @else
+                                                                        <img src="" id="preview-Img" height="50"
+                                                                            width="50" name="image" hidden>
                                                                     @endif
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="currency">Currency</label>
                                                                 <select class="form-control" id="currency" name="currency">
-                                                                    <option value="INR" @selected(App\Helpers\SettingHelper::setting('currency') == 'INR')>INR</option>
-                                                                    <option value="USD" @selected(App\Helpers\SettingHelper::setting('currency') == 'USD')>USD</option>
+                                                                    <option value="INR" @selected(App\Helpers\SettingHelper::setting('currency') == 'INR')>INR
+                                                                    </option>
+                                                                    <option value="USD" @selected(App\Helpers\SettingHelper::setting('currency') == 'USD')>USD
+                                                                    </option>
                                                                 </select>
                                                             </div>
                                                             <button type="submit" class="btn btn-primary">Save</button>
@@ -118,14 +125,24 @@
                                                                 </div>
                                                             </div>
                                                             @php
-                                                            if(App\Helpers\SettingHelper::timing('timings')) {
-                                                                $weekdays = App\Helpers\SettingHelper::timing('timings');
-                                                            } else {
-                                                                $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-                                                                $weekdays = array_flip($days);
-                                                            }
+                                                                if (App\Helpers\SettingHelper::timing('timings')) {
+                                                                    $weekdays = App\Helpers\SettingHelper::timing(
+                                                                        'timings',
+                                                                    );
+                                                                } else {
+                                                                    $days = [
+                                                                        'Monday',
+                                                                        'Tuesday',
+                                                                        'Wednesday',
+                                                                        'Thursday',
+                                                                        'Friday',
+                                                                        'Saturday',
+                                                                        'Sunday',
+                                                                    ];
+                                                                    $weekdays = array_flip($days);
+                                                                }
                                                             @endphp
-                                                            @foreach ( $weekdays as $key => $weekday)
+                                                            @foreach ($weekdays as $key => $weekday)
                                                                 <div class="row">
                                                                     <div class="col-lg-4">
                                                                         <div class="form-group">
@@ -135,13 +152,19 @@
 
                                                                     <div class="col-lg-4">
                                                                         <div class="form-group">
-                                                                            <input type="time" name="timings[{{ $key }}][start_time]" class="form-control" value="{{ $weekday->start_time ?? ' '}}">
+                                                                            <input type="time"
+                                                                                name="timings[{{ $key }}][start_time]"
+                                                                                class="form-control"
+                                                                                value="{{ $weekday->start_time ?? ' ' }}">
                                                                         </div>
                                                                     </div>
 
                                                                     <div class="col-lg-4">
                                                                         <div class="form-group">
-                                                                            <input type="time" name="timings[{{ $key }}][end_time]" class="form-control" value="{{  $weekday->end_time ?? '' }}">
+                                                                            <input type="time"
+                                                                                name="timings[{{ $key }}][end_time]"
+                                                                                class="form-control"
+                                                                                value="{{ $weekday->end_time ?? '' }}">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -149,42 +172,40 @@
 
                                                             <button type="submit" class="btn btn-primary">Save</button>
                                                         </form>
-                                                        <div class="card">
-                                                            <div class="card-header">
-                                                                <h5>Full Calendar</h5>
-                                                            </div>
-                                                            <div class="card-block">
-                                                                <div class="row">
-                                                                    <div class="col-xl-2 col-md-12">
-                                                                        <div id="external-events">
-                                                                            <h6 class="m-b-30 m-t-20">Events</h6>
-                                                                            <div class="fc-event ui-draggable ui-draggable-handle">My
-                                                                                Event 1</div>
-                                                                            <div class="fc-event ui-draggable ui-draggable-handle">My
-                                                                                Event 2</div>
-                                                                            <div class="fc-event ui-draggable ui-draggable-handle">My
-                                                                                Event 3</div>
-                                                                            <div class="fc-event ui-draggable ui-draggable-handle">My
-                                                                                Event 4</div>
-                                                                            <div class="fc-event ui-draggable ui-draggable-handle">My
-                                                                                Event 5</div>
-                                                                            <div class="checkbox-fade fade-in-primary m-t-10">
-                                                                                <label>
-                                                                                    <input type="checkbox" value="">
-                                                                                    <span class="cr">
-                                                                                        <i
-                                                                                            class="cr-icon icofont icofont-ui-check txt-primary"></i>
-                                                                                    </span>
-                                                                                    <span>Remove After Drop</span>
-                                                                                </label>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-xl-10 col-md-12 calendar-container">
-                                                                        
+                                                        <div class="row">
+                                                            <div class="col-xl-2 col-md-12">
+                                                                <div id="external-events">
+                                                                    <h6 class="m-b-30 m-t-20">Events</h6>
+                                                                    <div class="fc-event ui-draggable ui-draggable-handle">
+                                                                        My
+                                                                        Event 1</div>
+                                                                    <div class="fc-event ui-draggable ui-draggable-handle">
+                                                                        My
+                                                                        Event 2</div>
+                                                                    <div class="fc-event ui-draggable ui-draggable-handle">
+                                                                        My
+                                                                        Event 3</div>
+                                                                    <div class="fc-event ui-draggable ui-draggable-handle">
+                                                                        My
+                                                                        Event 4</div>
+                                                                    <div class="fc-event ui-draggable ui-draggable-handle">
+                                                                        My
+                                                                        Event 5</div>
+                                                                    <div class="checkbox-fade fade-in-primary m-t-10">
+                                                                        <label>
+                                                                            <input type="checkbox" value="">
+                                                                            <span class="cr">
+                                                                                <i
+                                                                                    class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                                                                            </span>
+                                                                            <span>Remove After Drop</span>
+                                                                        </label>
                                                                     </div>
                                                                 </div>
-                                                                
+                                                            </div>
+                                                            <div class="col-xl-10 col-md-12">
+                                                                <div id='calendar'></div>
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -227,7 +248,7 @@
         <script src="{{ asset('assets/js/bootstrap-growl.min.js') }}"></script>
 
         <script>
-            $('#add-banner').change(function(){
+            $('#add-banner').change(function() {
                 var input = this;
                 if (input.files && input.files[0]) {
                     $('#previewImg').prop('hidden', false);
@@ -239,7 +260,7 @@
                 }
             });
 
-            $('#add-logo').change(function(){
+            $('#add-logo').change(function() {
                 var input = this;
                 if (input.files && input.files[0]) {
                     $('#preview-Img').prop('hidden', false);
@@ -286,6 +307,5 @@
                     }
                 });
             });
-
         </script>
     @endsection

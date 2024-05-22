@@ -11,7 +11,8 @@ $(document).ready(function () {
             revertDuration: 0
         });
     });
-    setTimeout(function () {
+    $('[href="#holidays"]').on('click', function () {
+        setTimeout(function(){
         $('#calendar').fullCalendar({
             header: {
                 left: 'prev,next today',
@@ -91,4 +92,5 @@ $(document).ready(function () {
             }]
         });
     }, 350);
+    });
 });
