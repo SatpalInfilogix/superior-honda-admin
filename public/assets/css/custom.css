@@ -1,5 +1,5 @@
 .ui-state-active, .accordion-msg:focus, .accordion-msg:hover{
-    background-color: #4680ff;
+    background-color: #ED1D24;
     color: #fff;
 }
 .file-button {
@@ -28,4 +28,14 @@
 
 img.preview-img {
     border-radius: 50%;
+}
+
+.primary-btn {
+    background-color: #ED1D24 !important;
+    border-color: #ED1D24 !important;
+}
+
+.page-item.active .page-link {
+    background-color: #ED1D24 !important;
+    border-color: #ED1D24 !important;
 }

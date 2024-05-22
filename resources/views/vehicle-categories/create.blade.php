@@ -11,7 +11,7 @@
                                 <div class="card-header">
                                     <h5>Add Vehicle Category</h5>
                                     <div class="float-right">
-                                        <a href="{{ route('vehicle-categories.index') }}" class="btn btn-primary btn-md">
+                                        <a href="{{ route('vehicle-categories.index') }}" class="btn btn-primary primary-btn btn-md">
                                             <i class="feather icon-arrow-left"></i>
                                             Go Back
                                         </a>
@@ -23,7 +23,7 @@
                                         <div class="form-group">
                                             <x-input-text name="name" label="Category Name" value="{{ old('name') }}"></x-input-text>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
                                 </div>
                             </div>

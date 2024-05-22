@@ -23,7 +23,7 @@
                                     <h5>Inquiries</h5>
                                     <div class="float-right">
 
-                                        <a href="{{ route('inquiries.create') }}" class="btn btn-primary btn-md">Add
+                                        <a href="{{ route('inquiries.create') }}" class="btn btn-primary btn-md primary-btn">Add
                                             Inquery</a>
                                     </div>
                                 </div>
@@ -51,16 +51,16 @@
                                                         <td>
                                                             <div class="btn-group btn-group-sm">
                                                                 <a href="{{ route('inquiries.edit', $inquiry->id) }}"
-                                                                    class="btn btn-primary waves-effect waves-light mr-2">
+                                                                    class="btn btn-primary waves-effect waves-light mr-2 primary-btn">
                                                                     <i class="feather icon-edit m-0"></i>
                                                                 </a>
                                                                 <a href="{{ route('inquiries.show', $inquiry->id) }}"
-                                                                    class="btn btn-primary waves-effect waves-light mr-2">
+                                                                    class="btn btn-primary waves-effect waves-light mr-2 primary-btn">
                                                                     <i class="feather icon-eye m-0"></i>
                                                                 </a>
                                                                 <button data-source="Inquiry"
                                                                     data-endpoint="{{ route('inquiries.destroy', $inquiry->id) }}"
-                                                                    class="delete-btn btn btn-danger waves-effect waves-light">
+                                                                    class="delete-btn btn btn-danger waves-effect waves-light primary-btn">
                                                                     <i class="feather icon-trash m-0"></i>
                                                                 </button>
                                                             </div>

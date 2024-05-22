@@ -11,7 +11,7 @@
                                 <div class="card-header">
                                     <h5>Inquiry Form</h5>
                                     <div class="float-right">
-                                        <a href="{{ route('inquiries.index') }}" class="btn btn-primary btn-md">
+                                        <a href="{{ route('inquiries.index') }}" class="btn btn-primary btn-md primary-btn">
                                             <i class="feather icon-arrow-left"></i>
                                             Go Back
                                         </a>
@@ -244,14 +244,16 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        @foreach (json_decode($inquiry->conditions) as $key => $product)
-                                            <div class="col-md-3">
-                                                <label>{{ ucwords(str_replace('_', ' ', $product->product)) }}</label>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label>{{ ucwords($product->condition) }}</label>
-                                            </div>
-                                        @endforeach
+                                        @if($inquiry->conditions)
+                                            @foreach (json_decode($inquiry->conditions) as $key => $product)
+                                                <div class="col-md-3">
+                                                    <label>{{ ucwords(str_replace('_', ' ', $product->product)) }}</label>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label>{{ ucwords($product->condition) }}</label>
+                                                </div>
+                                            @endforeach
+                                        @endif
                                     </div><br><br>
 
                                     <div class="row">

@@ -130,7 +130,12 @@
                     </li>
                 @endcan
                 @can('view vehicle')
-                    <li class=" ">
+                    <li @class([
+                        'active' => Request::is(
+                            'vehicles',
+                            'vehicles/create',
+                            'vehicles/*/edit'),
+                    ])>
                         <a href="{{ route('vehicles.index') }}" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
                                 <i class="fas fa-car"></i>
@@ -140,7 +145,12 @@
                     </li>
                 @endcan
                 {{-- @can('view vehicle') --}}
-                    <li class=" ">
+                    <li @class([
+                        'active' => Request::is(
+                            'coupons',
+                            'coupons/create',
+                            'coupons/*/edit'),
+                    ])>
                         <a href="{{ route('coupons.index') }}" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
                                 <i class="fas fa-car"></i>

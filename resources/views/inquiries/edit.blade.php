@@ -11,7 +11,7 @@
                                 <div class="card-header">
                                     <h5>Edit Inquiry Form</h5>
                                     <div class="float-right">
-                                        <a href="{{ route('inquiries.index') }}" class="btn btn-primary btn-md">
+                                        <a href="{{ route('inquiries.index') }}" class="btn btn-primary btn-md primary-btn">
                                             <i class="feather icon-arrow-left"></i>
                                             Go Back
                                         </a>
@@ -374,7 +374,7 @@
                                         </div>
                                     </div>
                                     <br />
-                                    <button id="sig-submitBtn" class="btn btn-primary">Save</button>
+                                    <button id="sig-submitBtn" class="btn btn-primary primary-btn">Save</button>
                                 </form>
                                 </div>
                             </div>

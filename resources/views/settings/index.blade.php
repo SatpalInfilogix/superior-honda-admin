@@ -95,7 +95,7 @@
                                                                     <option value="USD" @selected(App\Helpers\SettingHelper::setting('currency') == 'USD')>USD</option>
                                                                 </select>
                                                             </div>
-                                                            <button type="submit" class="btn btn-primary">Save</button>
+                                                            <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                                         </form>
                                                     </div>
 
@@ -147,7 +147,7 @@
                                                                 </div>
                                                             @endforeach
 
-                                                            <button type="submit" class="btn btn-primary">Save</button>
+                                                            <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                                         </form>
                                                         <div class="card">
                                                             <div class="card-header">
@@ -201,7 +201,7 @@
                                                                 <x-input-text name="secret_key" label="Secret Key"
                                                                     value="{{ old('secret_key', App\Helpers\SettingHelper::setting('secret_key')) }}"></x-input-text>
                                                             </div>
-                                                            <button type="submit" class="btn btn-primary">Save</button>
+                                                            <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                                         </form>
                                                     </div>
                                                 </div>

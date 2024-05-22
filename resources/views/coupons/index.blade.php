@@ -15,7 +15,7 @@
                                 <div class="card-header">
                                     <h5>Coupon/Offers</h5>
                                     <div class="float-right">
-                                        <a href="{{ route('coupons.create') }}" class="btn btn-primary btn-md">Add
+                                        <a href="{{ route('coupons.create') }}" class="btn btn-primary primary-btn btn-md">Add
                                             Coupon</a>
                                     </div>
                                 </div>
@@ -41,12 +41,13 @@
                                                         <td>
                                                             <div class="btn-group btn-group-sm">
                                                                 <a href="{{ route('coupons.edit', $coupon->id) }}"
-                                                                    class="btn btn-primary waves-effect waves-light mr-2">
+                                                                    class="btn btn-primary primary-btn waves-effect waves-light mr-2">
                                                                     <i class="feather icon-edit m-0"></i>
                                                                 </a>
 
                                                                 <button data-source="Coupon"
-                                                                    data-endpoint="{{ route('coupons.destroy', $coupon->id) }}"                                                          class="delete-btn btn btn-danger waves-effect waves-light">
+                                                                    data-endpoint="{{ route('coupons.destroy', $coupon->id) }}"   
+                                                                    class="delete-btn primary-btn btn btn-danger waves-effect waves-light"                                                       class="delete-btn btn btn-danger waves-effect waves-light">
                                                                     <i class="feather icon-trash m-0"></i>
                                                                 </button>
                                                             </div>

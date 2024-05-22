@@ -16,7 +16,7 @@
                                     <h5>Products</h5>
 
                                     <div class="float-right">
-                                        <div class="file-button btn btn-primary">
+                                        <div class="file-button btn btn-primary primary-btn">
                                             <form action="{{ route('products.import') }}" method="POST"
                                                 enctype="multipart/form-data">
                                                 @csrf
@@ -27,7 +27,7 @@
 
                                         @can('create product')
                                             <a href="{{ route('products.create') }}"
-                                                class="btn btn-primary btn-md">Add product
+                                                class="btn btn-primary primary-btn btn-md">Add product
                                             </a>
                                         @endcan
                                     </div>
@@ -70,7 +70,7 @@
                                                                 <div class="btn-group btn-group-sm">
                                                                     @can('edit product')
                                                                         <a href="{{ route('products.edit', $product->id) }}"
-                                                                            class="btn btn-primary waves-effect waves-light mr-2 edit-vehicle-type">
+                                                                            class="btn btn-primary primary-btn waves-effect waves-light mr-2 edit-vehicle-type">
                                                                             <i class="feather icon-edit m-0"></i>
                                                                         </a>
                                                                     @endcan
@@ -78,7 +78,7 @@
                                                                     @can('delete product')
                                                                         <button data-source="product"
                                                                             data-endpoint="{{ route('products.destroy', $product->id) }}"
-                                                                            class="delete-btn btn btn-danger waves-effect waves-light">
+                                                                            class="delete-btn primary-btn btn btn-danger waves-effect waves-light">
                                                                             <i class="feather icon-trash m-0"></i>
                                                                         </button>
                                                                     @endcan

@@ -16,7 +16,7 @@
                                     <h5>Vehicle Brands</h5>
                                     @can('create vehicle configuration')
                                         <div class="float-right">
-                                            <a href="{{ route('vehicle-brands.create') }}" class="btn btn-primary btn-md">Add
+                                            <a href="{{ route('vehicle-brands.create') }}" class="btn btn-primary primary-btn btn-md">Add
                                                 Vehicle Brand</a>
                                         </div>
                                     @endcan
@@ -52,7 +52,7 @@
                                                                 <div class="btn-group btn-group-sm">
                                                                     @can('edit vehicle configuration')
                                                                         <a href="{{ route('vehicle-brands.edit', $brands->id) }}"
-                                                                            class="btn btn-primary waves-effect waves-light mr-2">
+                                                                            class="btn btn-primary primary-btn waves-effect waves-light mr-2">
                                                                             <i class="feather icon-edit m-0"></i>
                                                                         </a>
                                                                     @endcan
@@ -60,7 +60,7 @@
                                                                     @can('delete vehicle configuration')
                                                                         <button data-source="vehicle brand"
                                                                             data-endpoint="{{ route('vehicle-brands.destroy', $brands->id) }}"
-                                                                            class="delete-btn btn btn-danger waves-effect waves-light">
+                                                                            class="delete-btn btn btn-danger primary-btn waves-effect waves-light">
                                                                             <i class="feather icon-trash m-0"></i>
                                                                         </button>
                                                                     @endcan

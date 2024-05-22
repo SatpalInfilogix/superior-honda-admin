@@ -16,7 +16,7 @@
                                     <h5>Manage Roles</h5>
                                     @can('create roles & permissions')
                                         <div class="float-right">
-                                            <a href="{{ route('roles.create') }}" class="btn btn-primary btn-md">Add Role</a>
+                                            <a href="{{ route('roles.create') }}" class="btn btn-primary primary-btn btn-md">Add Role</a>
                                         </div>
                                     @endcan
                                 </div>
@@ -42,7 +42,7 @@
                                                                 <div class="btn-group btn-group-sm">
                                                                     @can('edit roles & permissions')
                                                                     <a href="{{ route('roles.edit', $role->id) }}"
-                                                                        class="btn btn-primary waves-effect waves-light mr-2">
+                                                                        class="btn btn-primary primary-btn waves-effect waves-light mr-2">
                                                                         <i class="feather icon-edit m-0"></i>
                                                                     </a>
                                                                     @endcan
@@ -50,7 +50,7 @@
                                                                     @can('delete roles & permissions')
                                                                     <button data-source="role"
                                                                         data-endpoint="{{ route('roles.destroy', $role->id) }}"
-                                                                        class="delete-btn btn btn-danger waves-effect waves-light">
+                                                                        class="delete-btn btn btn-danger primary-btn waves-effect waves-light">
                                                                         <i class="feather icon-trash m-0"></i>
                                                                     </button>
                                                                     @endcan

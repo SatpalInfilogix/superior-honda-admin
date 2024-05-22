@@ -103,7 +103,7 @@
 
                                         <div class="row">
                                             <div class="col-md-12 form-group">
-                                                <button type="submit" class="btn btn-primary">Update Profile</button>
+                                                <button type="submit" class="btn btn-primary primary-btn">Update Profile</button>
                                             </div>
                                         </div>
                                     </form>

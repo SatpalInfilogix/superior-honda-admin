@@ -11,7 +11,7 @@
                                 <div class="card-header">
                                     <h5>Edit Role</h5>
                                     <div class="float-right">
-                                        <a href="{{ route('roles.index') }}" class="btn btn-primary btn-md">
+                                        <a href="{{ route('roles.index') }}" class="btn btn-primary btn-md primary-btn">
                                             <i class="feather icon-arrow-left"></i>
                                             Go Back
                                         </a>
@@ -25,7 +25,7 @@
                                             <label for="role">Name</label>
                                             <input type="text" class="form-control" name="name" id="role" value="{{ $role->name }}">
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
                                 </div>
                             </div>
