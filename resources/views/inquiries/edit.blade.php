@@ -9,7 +9,7 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Inquiry Form</h5>
+                                    <h5>Edit Inquiry Form</h5>
                                     <div class="float-right">
                                         <a href="{{ route('inquiries.index') }}" class="btn btn-primary btn-md">
                                             <i class="feather icon-arrow-left"></i>
@@ -19,14 +19,15 @@
                                 </div>
 
                                 <div class="card-block">
-                                    <form method="post" action="{{ route('inquiries.store') }}" enctype="multipart/form-data">
+                                    <form method="post" action="{{ route('inquiries.update', $inquiry->id) }}">
                                         @csrf
+                                        @method('PATCH')
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="name">Name:</label>
                                                 <div class="col-sm-9">
-                                                    <input class="form-control m-0" id="name" name="name"
+                                                    <input class="form-control m-0" id="name" name="name" value="{{ $inquiry->name }}"
                                                         type="text">
                                                 </div>
                                             </div>
@@ -35,7 +36,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="date">Date:</label>
                                                 <div class="col-sm-9">
-                                                    <input type="date" name="date" class="form-control m-0"
+                                                    <input type="date" name="date" class="form-control m-0" value="{{ $inquiry->date }}"
                                                         id="datepicker">
                                                 </div>
                                             </div>
@@ -44,7 +45,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="mileage">Mileage:</label>
                                                 <div class="col-sm-9">
-                                                    <input class="form-control m-0" id="mileage" name="mileage"
+                                                    <input class="form-control m-0" id="mileage" name="mileage" value="{{ $inquiry->mileage }}"
                                                         type="text">
                                                 </div>
                                             </div>
@@ -56,7 +57,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="vehicle">Vehicle:</label>
                                                 <div class="col-sm-9">
-                                                    <input class="form-control m-0" id="vehicle" name="vehicle"
+                                                    <input class="form-control m-0" id="vehicle" name="vehicle" value="{{ $inquiry->vehicle }}"
                                                         type="text">
                                                 </div>
                                             </div>
@@ -65,7 +66,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="year">Year:</label>
                                                 <div class="col-sm-9">
-                                                    <input class="form-control m-0" id="year" name="year"
+                                                    <input class="form-control m-0" id="year" name="year" value="{{ $inquiry->vehicle }}"
                                                         type="text">
                                                 </div>
                                             </div>
@@ -74,7 +75,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="lic_no">Lic No:</label>
                                                 <div class="col-sm-9">
-                                                    <input class="form-control m-0" id="lic_no" name="lic_no"
+                                                    <input class="form-control m-0" id="lic_no" name="lic_no" value="{{ $inquiry->lic_no }}"
                                                         type="text">
                                                 </div>
                                             </div>
@@ -86,7 +87,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-2 col-form-label" for="address">Address:</label>
                                                 <div class="col-sm-10">
-                                                    <input class="form-control m-0" id="address" name="address"
+                                                    <input class="form-control m-0" id="address" name="address" value="{{ $inquiry->address }}"
                                                         type="text">
                                                 </div>
                                             </div>
@@ -98,7 +99,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label" for="returning">Returning:</label>
                                                 <div class="col-sm-8">
-                                                    <input class="form-control m-0" id="returning" name="returning"
+                                                    <input class="form-control m-0" id="returning" name="returning" value="{{ $inquiry->returning }}"
                                                         type="text">
                                                 </div>
                                             </div>
@@ -107,7 +108,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-4 col-form-label" for="color">Color:</label>
                                                 <div class="col-sm-8">
-                                                    <input class="form-control m-0" id="color" name="color"
+                                                    <input class="form-control m-0" id="color" name="color" value="{{ $inquiry->color }}"
                                                         type="text">
                                                 </div>
                                             </div>
@@ -117,7 +118,7 @@
                                                 <label class="col-sm-4 col-form-label" for="tel_digicel">TEL
                                                     Digicel:</label>
                                                 <div class="col-sm-8">
-                                                    <input class="form-control m-0" id="tel_digicel" name="tel_digicel"
+                                                    <input class="form-control m-0" id="tel_digicel" name="tel_digicel" value="{{ $inquiry->tel_digicel }}"
                                                         type="text">
                                                 </div>
                                             </div>
@@ -129,7 +130,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-2 col-form-label" for="email">Email:</label>
                                                 <div class="col-sm-10">
-                                                    <input class="form-control m-0" id="email" name="email"
+                                                    <input class="form-control m-0" id="email" name="email" value="{{ $inquiry->email }}"
                                                         type="email">
                                                 </div>
                                             </div>
@@ -138,7 +139,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="tel_lime">TEL Lime:</label>
                                                 <div class="col-sm-9">
-                                                    <input class="form-control m-0" id="tel_lime" name="tel_lime"
+                                                    <input class="form-control m-0" id="tel_lime" name="tel_lime" value="{{ $inquiry->tel_lime }}"
                                                         type="text">
                                                 </div>
                                             </div>
@@ -151,7 +152,7 @@
                                                 <label class="col-sm-3 col-form-label" for="dob">Date of
                                                     Birth:</label>
                                                 <div class="col-sm-9">
-                                                    <input type="date" class="form-control m-0" id="date"
+                                                    <input type="date" class="form-control m-0" id="date" value="{{ $inquiry->dob }}"
                                                         name="dob">
                                                 </div>
                                             </div>
@@ -160,7 +161,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="chassis">Chassis:</label>
                                                 <div class="col-sm-9">
-                                                    <input class="form-control m-0" id="chassis" name="chassis"
+                                                    <input class="form-control m-0" id="chassis" name="chassis" value="{{ $inquiry->chassis }}"
                                                         type="text">
                                                 </div>
                                             </div>
@@ -177,7 +178,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="engine">Engine:</label>
                                                 <div class="col-sm-9">
-                                                    <input class="form-control m-0" id="engine" name="engine"
+                                                    <input class="form-control m-0" id="engine" name="engine" value="{{ $inquiry->engine }}"
                                                         type="text">
                                                 </div>
                                             </div>
@@ -243,7 +244,7 @@
                                                 class="col-sm-2">Defective</span>
                                         </div>
                                     </div><br>
-
+                                    <?php  $data = json_decode($inquiry->conditions); ?>
                                     <div class="row">
                                         <div class="col-md-6 form-group">
                                             @php
@@ -276,7 +277,7 @@
                                                             id="{{ strtolower(str_replace(' ', '_', $product)) }}_status[]"
                                                             type="checkbox"
                                                             name="products[{{ strtolower(str_replace(' ', '_', $product)) }}][condition]"
-                                                            value="good">
+                                                            value="good" @if($data) {{ in_array(strtolower(str_replace(' ', '_', $product)), array_column($data, 'product')) && $data[array_search(strtolower(str_replace(' ', '_', $product)), array_column($data, 'product'))]->condition == 'good' ? 'checked' : '' }} @endif>
                                                     </label>
                                                 </div>
                                                 <div class="form-check form-check-inline col-sm-2">
@@ -285,7 +286,7 @@
                                                             id="{{ strtolower(str_replace(' ', '_', $product)) }}_status[]"
                                                             type="checkbox"
                                                             name="products[{{ strtolower(str_replace(' ', '_', $product)) }}][condition]"
-                                                            value="defective">
+                                                            value="defective" @if($data){{ in_array(strtolower(str_replace(' ', '_', $product)), array_column($data, 'product')) && $data[array_search(strtolower(str_replace(' ', '_', $product)), array_column($data, 'product'))]->condition == 'defective' ? 'checked' : '' }} @endif>
                                                     </label>
                                                 </div>
                                             @endforeach
@@ -322,7 +323,7 @@
                                                         <input class="form-check-input status-checkbox" type="checkbox"
                                                             id="{{ strtolower(str_replace(' ', '_', $product)) }}_status[]"
                                                             name="products[{{ strtolower(str_replace(' ', '_', $product)) }}][condition]"
-                                                            value="good">
+                                                            value="good" @if($data) {{ in_array(strtolower(str_replace(' ', '_', $product)), array_column($data, 'product')) && $data[array_search(strtolower(str_replace(' ', '_', $product)), array_column($data, 'product'))]->condition == 'good' ? 'checked' : '' }} @endif>
                                                     </label>
                                                 </div>
                                                 <div class="form-check form-check-inline col-sm-2">
@@ -330,7 +331,7 @@
                                                         <input class="form-check-input status-checkbox" type="checkbox"
                                                             id="{{ strtolower(str_replace(' ', '_', $product)) }}_status[]"
                                                             name="products[{{ strtolower(str_replace(' ', '_', $product)) }}][condition]"
-                                                            value="defective">
+                                                            value="defective" @if($data) {{ in_array(strtolower(str_replace(' ', '_', $product)), array_column($data, 'product')) && $data[array_search(strtolower(str_replace(' ', '_', $product)), array_column($data, 'product'))]->condition == 'defective' ? 'checked' : '' }} @endif>
                                                     </label>
                                                 </div><br>
                                             @endforeach
@@ -357,27 +358,19 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="date">Date:</label>
                                                 <div class="col-sm-9">
-                                                    <input class="form-control m-0 " id="date" name="sign_date" type="date">
+                                                    <input class="form-control m-0 " id="date" name="sign_date" type="date" value="{{ $inquiry->sign_date }}">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-8 form-group row">
                                             <label class="col-sm-4 col-form-label">Customer's Signature:</label>
                                             <div class="col-sm-8">
-                                                <canvas id="sig-canvas" width="400" height="130">
-                                                    Get a better browser, bro.
-                                                </canvas>
+                                                <img src="{{ asset($inquiry->sign)}}" width="100" height="100">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <input id="sig-dataUrl" class="form-control" type="hidden" name="signature">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <button type="button" class="btn btn-default" id="sig-clearBtn">Clear Signature</button>
                                         </div>
                                     </div>
                                     <br />
@@ -392,133 +385,6 @@
         </div>
     </div>
     <script>
-        // Canvas signature script
-        $(function() {
-            window.requestAnimFrame = (function(callback) {
-                return window.requestAnimationFrame ||
-                    window.webkitRequestAnimationFrame ||
-                    window.mozRequestAnimationFrame ||
-                    window.oRequestAnimationFrame ||
-                    window.msRequestAnimaitonFrame ||
-                    function(callback) {
-                        window.setTimeout(callback, 1000 / 60);
-                    };
-            })();
-
-            var canvas = $("#sig-canvas")[0];
-            var ctx = canvas.getContext("2d");
-            ctx.strokeStyle = "#222222";
-            ctx.lineWidth = 4;
-
-            var drawing = false;
-            var mousePos = {
-                x: 0,
-                y: 0
-            };
-            var lastPos = mousePos;
-
-            $(canvas).on("mousedown", function(e) {
-                drawing = true;
-                lastPos = getMousePos(canvas, e);
-            });
-
-            $(canvas).on("mouseup", function(e) {
-                drawing = false;
-            });
-
-            $(canvas).on("mousemove", function(e) {
-                mousePos = getMousePos(canvas, e);
-            });
-
-            // Add touch event support for mobile
-            $(canvas).on("touchstart", function(e) {
-                e.preventDefault();
-                mousePos = getTouchPos(canvas, e);
-                var touch = e.touches[0];
-                var me = new MouseEvent("mousedown", {
-                    clientX: touch.clientX,
-                    clientY: touch.clientY
-                });
-                canvas.dispatchEvent(me);
-            });
-
-            $(canvas).on("touchmove", function(e) {
-                var touch = e.touches[0];
-                var me = new MouseEvent("mousemove", {
-                    clientX: touch.clientX,
-                    clientY: touch.clientY
-                });
-                canvas.dispatchEvent(me);
-            });
-
-            $(canvas).on("touchend", function(e) {
-                var me = new MouseEvent("mouseup", {});
-                canvas.dispatchEvent(me);
-            });
-
-            function getMousePos(canvasDom, mouseEvent) {
-                var rect = canvasDom.getBoundingClientRect();
-                return {
-                    x: mouseEvent.clientX - rect.left,
-                    y: mouseEvent.clientY - rect.top
-                };
-            }
-
-            function getTouchPos(canvasDom, touchEvent) {
-                var rect = canvasDom.getBoundingClientRect();
-                return {
-                    x: touchEvent.touches[0].clientX - rect.left,
-                    y: touchEvent.touches[0].clientY - rect.top
-                };
-            }
-
-            function renderCanvas() {
-                if (drawing) {
-                    ctx.moveTo(lastPos.x, lastPos.y);
-                    ctx.lineTo(mousePos.x, mousePos.y);
-                    ctx.stroke();
-                    lastPos = mousePos;
-                }
-            }
-
-            // Prevent scrolling when touching the canvas
-            $(document.body).on("touchstart touchend touchmove", function(e) {
-                if ($(e.target).is(canvas)) {
-                    e.preventDefault();
-                }
-            });
-
-            (function drawLoop() {
-                requestAnimFrame(drawLoop);
-                renderCanvas();
-            })();
-
-            function clearCanvas() {
-                canvas.width = canvas.width;
-            }
-
-            // Set up the UI
-            var sigText = $("#sig-dataUrl")[0];
-            var sigImage = $("#sig-image")[0];
-            
-            var clearBtn = $("#sig-clearBtn")[0];
-            var submitBtn = $("#sig-submitBtn")[0];
-
-            $(clearBtn).on("click", function(e) {
-                clearCanvas();
-                sigText.value = "Data URL for your signature will go here!";
-                sigImage.setAttribute("src", "");
-                $(sigImage).css("display", "none");
-            });
-
-            $(submitBtn).on("click", function(e) {
-                var dataUrl = canvas.toDataURL();
-                sigText.value = dataUrl;
-                sigImage.setAttribute("src", dataUrl);
-                $(sigImage).css("display", "block");
-            });
-        });
-
         $(function() {
             $('.status-checkbox').change(function() {
                 var type = $(this).attr('id');

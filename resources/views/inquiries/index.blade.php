@@ -50,9 +50,13 @@
                                                         <td>{{ $inquiry->date }}</td>
                                                         <td>
                                                             <div class="btn-group btn-group-sm">
-                                                                <a href="#"
+                                                                <a href="{{ route('inquiries.edit', $inquiry->id) }}"
                                                                     class="btn btn-primary waves-effect waves-light mr-2">
                                                                     <i class="feather icon-edit m-0"></i>
+                                                                </a>
+                                                                <a href="{{ route('inquiries.show', $inquiry->id) }}"
+                                                                    class="btn btn-primary waves-effect waves-light mr-2">
+                                                                    <i class="feather icon-eye m-0"></i>
                                                                 </a>
                                                                 <button data-source="Inquiry"
                                                                     data-endpoint="{{ route('inquiries.destroy', $inquiry->id) }}"
