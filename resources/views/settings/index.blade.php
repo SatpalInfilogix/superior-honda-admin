@@ -16,6 +16,8 @@
                                     <h5>Settings</h5>
                                 </div>
 
+                                <div id='calendar'></div>
+                                
                                 <div class="card-block">
                                     <div class="col-lg-12">
                                         <div class="row">
@@ -147,6 +149,44 @@
 
                                                             <button type="submit" class="btn btn-primary">Save</button>
                                                         </form>
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h5>Full Calendar</h5>
+                                                            </div>
+                                                            <div class="card-block">
+                                                                <div class="row">
+                                                                    <div class="col-xl-2 col-md-12">
+                                                                        <div id="external-events">
+                                                                            <h6 class="m-b-30 m-t-20">Events</h6>
+                                                                            <div class="fc-event ui-draggable ui-draggable-handle">My
+                                                                                Event 1</div>
+                                                                            <div class="fc-event ui-draggable ui-draggable-handle">My
+                                                                                Event 2</div>
+                                                                            <div class="fc-event ui-draggable ui-draggable-handle">My
+                                                                                Event 3</div>
+                                                                            <div class="fc-event ui-draggable ui-draggable-handle">My
+                                                                                Event 4</div>
+                                                                            <div class="fc-event ui-draggable ui-draggable-handle">My
+                                                                                Event 5</div>
+                                                                            <div class="checkbox-fade fade-in-primary m-t-10">
+                                                                                <label>
+                                                                                    <input type="checkbox" value="">
+                                                                                    <span class="cr">
+                                                                                        <i
+                                                                                            class="cr-icon icofont icofont-ui-check txt-primary"></i>
+                                                                                    </span>
+                                                                                    <span>Remove After Drop</span>
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-xl-10 col-md-12 calendar-container">
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
                                                     </div>
 
                                                     <div class="tab-pane" id="paypal_setting" role="tabpanel">
@@ -175,6 +215,8 @@
                 </div>
             </div>
         </div>
+
+        <x-include-plugins fullCalendar></x-include-plugins>
     @endsection
 
     @section('head')
@@ -243,7 +285,7 @@
                         form.submit();
                     }
                 });
-            })
-            })
+            });
+
         </script>
     @endsection
