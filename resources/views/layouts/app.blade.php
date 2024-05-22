@@ -14,25 +14,15 @@
     <link rel="stylesheet" href="{{ asset('assets/css/themify-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/font-awesome-n.min.css') }}">
+
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/sweetalert.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/datedropper.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/themify-icons.css') }}">
 
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/sweetalert.min.js') }}"></script>
-    <script src="{{ asset('assets/js/moment.js') }}"></script>
-    <script src="{{ asset('assets/js/moment.min.js') }}"></script>
-    <script src="{{ asset('assets/js/moment.min-2.js') }}"></script>
-    <script src="{{ asset('assets/js/moment-with-locales.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap-datetimepicker.min.js') }}"></script>
-    <script src="{{ asset('assets/js/daterangepicker.js') }}"></script>
-    <script src="{{ asset('assets/js/datedropper.min.js') }}"></script>
 
     @yield('head')
 </head>
@@ -77,7 +67,7 @@
                                     <ul class="show-notification profile-notification dropdown-menu"
                                         data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
                                         <li>
-                                            <a href="#!">
+                                            <a href="{{ route('settings.index')}}">
                                                 <i class="feather icon-settings"></i> Settings
                                             </a>
                                         </li>
@@ -122,6 +112,8 @@
     <script src="{{ asset('assets/js/pcoded.min.js') }}"></script>
     <script src="{{ asset('assets/js/vertical-layout.min.js') }}"></script>
     <script src="{{ asset('assets/js/script.min.js') }}"></script>
+    
+    @yield('script')
 
     <script>
         $(function() {            
@@ -164,6 +156,5 @@
         })
     </script>
 
-    @yield('script')
 
 </html>

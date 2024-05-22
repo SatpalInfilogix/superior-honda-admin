@@ -11,7 +11,7 @@
                                 <div class="card-header">
                                     <h5>Edit Coupon</h5>
                                     <div class="float-right">
-                                        <a href="{{ route('coupons.index') }}" class="btn btn-primary btn-md">
+                                        <a href="{{ route('coupons.index') }}" class="btn btn-primary btn-md primary-btn">
                                             <i class="feather icon-arrow-left"></i>
                                             Go Back
                                         </a>
@@ -45,7 +45,7 @@
                                                 <input type="date" name="end_date" class="form-control" value="{{ old('end_date', $coupon->end_date) }}">
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
                                 </div>
                             </div>

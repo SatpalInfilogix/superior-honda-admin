@@ -23,7 +23,7 @@
                                 <div class="card-header">
                                     <h5>User Management</h5>
                                     <div class="float-right">
-                                        <div class="file-button btn btn-primary">
+                                        <div class="file-button btn btn-primary primary-btn">
                                             <form action="{{ route('users.import') }}" method="POST"
                                                 enctype="multipart/form-data">
                                                 @csrf
@@ -33,7 +33,7 @@
                                         </div>
 
                                         @can('create user')
-                                            <a href="{{ route('users.create') }}" class="btn btn-primary btn-md">Add
+                                            <a href="{{ route('users.create') }}" class="btn btn-primary primary-btn btn-md">Add
                                                 User</a>
                                         @endif
                                     </div>
@@ -66,14 +66,14 @@
                                                                 <div class="btn-group btn-group-sm">
                                                                     @can('edit user')
                                                                         <a href="{{ route('users.edit', $user->id) }}"
-                                                                            class="btn btn-primary waves-effect waves-light mr-2">
+                                                                            class="btn btn-primary primary-btn waves-effect waves-light mr-2">
                                                                             <i class="feather icon-edit m-0"></i>
                                                                         </a>
                                                                     @endcan
                                                                     @can('delete user')
                                                                         <button data-source="User"
                                                                             data-endpoint="{{ route('users.destroy', $user->id) }}"
-                                                                            class="delete-btn btn btn-danger waves-effect waves-light">
+                                                                            class="delete-btn primary-btn btn btn-danger waves-effect waves-light">
                                                                             <i class="feather icon-trash m-0"></i>
                                                                         </button>
                                                                     @endcan

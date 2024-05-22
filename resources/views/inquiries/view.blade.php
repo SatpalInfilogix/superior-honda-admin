@@ -19,15 +19,13 @@
                                 </div>
 
                                 <div class="card-block">
-                                    <form method="post" action="{{ route('inquiries.store') }}" enctype="multipart/form-data">
-                                        @csrf
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="name">Name:</label>
                                                 <div class="col-sm-9">
                                                     <input class="form-control m-0" id="name" name="name"
-                                                        type="text">
+                                                        value="{{ $inquiry->name }}" type="text" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -36,7 +34,7 @@
                                                 <label class="col-sm-3 col-form-label" for="date">Date:</label>
                                                 <div class="col-sm-9">
                                                     <input type="date" name="date" class="form-control m-0"
-                                                        id="datepicker">
+                                                        value="{{ $inquiry->date }}" id="datepicker" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -45,7 +43,7 @@
                                                 <label class="col-sm-3 col-form-label" for="mileage">Mileage:</label>
                                                 <div class="col-sm-9">
                                                     <input class="form-control m-0" id="mileage" name="mileage"
-                                                        type="text">
+                                                        value="{{ $inquiry->mileage }}" type="text" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -57,7 +55,7 @@
                                                 <label class="col-sm-3 col-form-label" for="vehicle">Vehicle:</label>
                                                 <div class="col-sm-9">
                                                     <input class="form-control m-0" id="vehicle" name="vehicle"
-                                                        type="text">
+                                                        value="{{ $inquiry->vehicle }}" type="text" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -66,7 +64,7 @@
                                                 <label class="col-sm-3 col-form-label" for="year">Year:</label>
                                                 <div class="col-sm-9">
                                                     <input class="form-control m-0" id="year" name="year"
-                                                        type="text">
+                                                        value="{{ $inquiry->vehicle }}" type="text" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -75,7 +73,7 @@
                                                 <label class="col-sm-3 col-form-label" for="lic_no">Lic No:</label>
                                                 <div class="col-sm-9">
                                                     <input class="form-control m-0" id="lic_no" name="lic_no"
-                                                        type="text">
+                                                        value="{{ $inquiry->lic_no }}" type="text" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -87,7 +85,7 @@
                                                 <label class="col-sm-2 col-form-label" for="address">Address:</label>
                                                 <div class="col-sm-10">
                                                     <input class="form-control m-0" id="address" name="address"
-                                                        type="text">
+                                                        value="{{ $inquiry->address }}" type="text" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -99,7 +97,7 @@
                                                 <label class="col-sm-4 col-form-label" for="returning">Returning:</label>
                                                 <div class="col-sm-8">
                                                     <input class="form-control m-0" id="returning" name="returning"
-                                                        type="text">
+                                                        value="{{ $inquiry->returning }}" type="text" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -108,7 +106,7 @@
                                                 <label class="col-sm-4 col-form-label" for="color">Color:</label>
                                                 <div class="col-sm-8">
                                                     <input class="form-control m-0" id="color" name="color"
-                                                        type="text">
+                                                        value="{{ $inquiry->color }}" type="text" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -118,7 +116,7 @@
                                                     Digicel:</label>
                                                 <div class="col-sm-8">
                                                     <input class="form-control m-0" id="tel_digicel" name="tel_digicel"
-                                                        type="text">
+                                                        value="{{ $inquiry->tel_digicel }}" type="text" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -130,7 +128,7 @@
                                                 <label class="col-sm-2 col-form-label" for="email">Email:</label>
                                                 <div class="col-sm-10">
                                                     <input class="form-control m-0" id="email" name="email"
-                                                        type="email">
+                                                        value="{{ $inquiry->email }}" type="email" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -139,7 +137,7 @@
                                                 <label class="col-sm-3 col-form-label" for="tel_lime">TEL Lime:</label>
                                                 <div class="col-sm-9">
                                                     <input class="form-control m-0" id="tel_lime" name="tel_lime"
-                                                        type="text">
+                                                        value="{{ $inquiry->tel_lime }}" type="text" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -152,7 +150,7 @@
                                                     Birth:</label>
                                                 <div class="col-sm-9">
                                                     <input type="date" class="form-control m-0" id="date"
-                                                        name="dob">
+                                                        value="{{ $inquiry->dob }}" name="dob" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -161,7 +159,7 @@
                                                 <label class="col-sm-3 col-form-label" for="chassis">Chassis:</label>
                                                 <div class="col-sm-9">
                                                     <input class="form-control m-0" id="chassis" name="chassis"
-                                                        type="text">
+                                                        value="{{ $inquiry->chassis }}" type="text" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -178,7 +176,7 @@
                                                 <label class="col-sm-3 col-form-label" for="engine">Engine:</label>
                                                 <div class="col-sm-9">
                                                     <input class="form-control m-0" id="engine" name="engine"
-                                                        type="text">
+                                                        value="{{ $inquiry->engine }}" type="text" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -230,112 +228,33 @@
                                                 </tbody>
                                             </table>
                                         </div>
+                                    </div><br><br>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <h6 class="font-weight-bold">Products</h6>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <h6 class="font-weight-bold">Conditions</h6>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <h6 class="font-weight-bold">Products</h6>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <h6 class="font-weight-bold">Conditions</h6>
+                                        </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-2">
-                                        </div>
-                                        <div class="col-md-5">
-                                            <span class="col-sm-8"> </span><span class="col-sm-2">Good</span><span
-                                                class="col-sm-2">Defective</span>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <span class="col-sm-8"></span><span class="col-sm-2">Good</span><span
-                                                class="col-sm-2">Defective</span>
-                                        </div>
-                                    </div><br>
-
-                                    <div class="row">
-                                        <div class="col-md-6 form-group">
-                                            @php
-                                                $products1 = [
-                                                    'Horn',
-                                                    'Carpet',
-                                                    'Battery',
-                                                    'Battery Clamps',
-                                                    'Left Headlight',
-                                                    'Right Headlight',
-                                                    'Left Indicator',
-                                                    'Right Front Fender',
-                                                    'Left Front Fender',
-                                                    'Right Front Door',
-                                                    'Left Front Door',
-                                                    'Left Rear Door',
-                                                    'Right Rear Door',
-                                                    'Left Tail Lamp',
-                                                    'Right Tail Lamp',
-                                                    'Hub Caps',
-                                                    'Cigarette Lighter',
-                                                    'Grill',
-                                                ];
-                                            @endphp
-                                            @foreach ($products1 as $key => $product)
-                                                <label class="col-sm-6">{{ $product }}</label>
-                                                <div class="form-check form-check-inline col-sm-2">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input status-checkbox"
-                                                            id="{{ strtolower(str_replace(' ', '_', $product)) }}_status[]"
-                                                            type="checkbox"
-                                                            name="products[{{ strtolower(str_replace(' ', '_', $product)) }}][condition]"
-                                                            value="good">
-                                                    </label>
+                                        @if($inquiry->conditions)
+                                            @foreach (json_decode($inquiry->conditions) as $key => $product)
+                                                <div class="col-md-3">
+                                                    <label>{{ ucwords(str_replace('_', ' ', $product->product)) }}</label>
                                                 </div>
-                                                <div class="form-check form-check-inline col-sm-2">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input status-checkbox"
-                                                            id="{{ strtolower(str_replace(' ', '_', $product)) }}_status[]"
-                                                            type="checkbox"
-                                                            name="products[{{ strtolower(str_replace(' ', '_', $product)) }}][condition]"
-                                                            value="defective">
-                                                    </label>
+                                                <div class="col-md-3">
+                                                    <label>{{ ucwords($product->condition) }}</label>
                                                 </div>
                                             @endforeach
-                                        </div>
-                                        <div class="col-md-6 form-group">
-                                            @php
-                                                $products2 = [
-                                                    'Reverse Light',
-                                                    'Rear Door or Trunk',
-                                                    'Window Functions',
-                                                    'Oil Cap',
-                                                    'Left Quarter Panel',
-                                                    'Right Quarter Panel',
-                                                    'Front Bumper',
-                                                    'Rear Bumper',
-                                                    'Left Wing Mirror',
-                                                    'Right Wing Mirror',
-                                                    'Rims',
-                                                    'Interior Lights',
-                                                    'Seats',
-                                                    'Door Pulls',
-                                                    'Rear Windshield',
-                                                    'Front Windshield',
-                                                    'Spare Tire',
-                                                    'Jack & Handle',
-                                                    'Wipers & Washer Jets',
-                                                ];
-                                            @endphp
-
-                                            @foreach ($products2 as $key => $product)
-                                                <label class="col-sm-6">{{ $product }}</label>
-                                                <div class="form-check form-check-inline col-sm-2">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input status-checkbox" type="checkbox"
-                                                            id="{{ strtolower(str_replace(' ', '_', $product)) }}_status[]"
-                                                            name="products[{{ strtolower(str_replace(' ', '_', $product)) }}][condition]"
-                                                            value="good">
-                                                    </label>
-                                                </div>
-                                                <div class="form-check form-check-inline col-sm-2">
-                                                    <label class="form-check-label">
-                                                        <input class="form-check-input status-checkbox" type="checkbox"
-                                                            id="{{ strtolower(str_replace(' ', '_', $product)) }}_status[]"
-                                                            name="products[{{ strtolower(str_replace(' ', '_', $product)) }}][condition]"
-                                                            value="defective">
-                                                    </label>
-                                                </div><br>
-                                            @endforeach
-                                        </div>
-                                    </div>
+                                        @endif
+                                    </div><br><br>
 
                                     <div class="row">
                                         <div class="col-md-12">
@@ -357,24 +276,18 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="date">Date:</label>
                                                 <div class="col-sm-9">
-                                                    <input class="form-control m-0 " id="date" name="sign_date" type="date">
+                                                    <input class="form-control m-0 " id="date" name="sign_date"
+                                                        type="date" value="{{ $inquiry->sign_date }}">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-8 form-group row">
                                             <label class="col-sm-4 col-form-label">Customer's Signature:</label>
                                             <div class="col-sm-8">
-                                                <canvas id="sig-canvas" width="400" height="130">
-                                                    Get a better browser, bro.
-                                                </canvas>
-                                                <input id="sig-dataUrl" class="form-control" type="hidden" name="signature">
-                                                <button type="button" class="btn btn-default" id="sig-clearBtn">Clear Signature</button>
+                                                <img src="{{ asset($inquiry->sign) }}" width="100" height="100">
                                             </div>
                                         </div>
                                     </div>
-                                    <br />
-                                    <button id="sig-submitBtn" class="btn btn-primary primary-btn">Save</button>
-                                </form>
                                 </div>
                             </div>
                         </div>
@@ -383,63 +296,4 @@
             </div>
         </div>
     </div>
-    <x-signature-pad signature></x-signature-pad>
-    <script>
-        $(function() {
-            $('.status-checkbox').change(function() {
-                var type = $(this).attr('id');
-                $('.status-checkbox[id="' + type + '"]').not(this).prop('checked', false);
-            });
-
-            $('form').validate({
-                rules: {
-                    name: "required",
-                    date: "required",
-                    mileage: "required",
-                    vehicle: "required",
-                    year: "required",
-                    lic_no: "required",
-                    address: "required",
-                    returning: "required",
-                    color: "required",
-                    tel_digicel: "required",
-                    email: "required",
-                    tel_lime: "required",
-                    dob: "required",
-                    chassis: "required",
-                    engine: "required",
-                    sign_date: "required",
-                },
-                messages: {
-                    name: "Please enter name",
-                    date: "Please enter date",
-                    mileage: "Please enter mileage",
-                    vehicle: "Please enter vehicle",
-                    year: "Please enter year",
-                    lic_no: "Please enter lic no",
-                    address: "Please enter address",
-                    returning: "Please enter returning",
-                    color: "Please enter color",
-                    tel_digicel: "Please enter tel digicel",
-                    email: "Please enter email",
-                    tel_lime:"Please enter tel lime",
-                    dob: "Please enter date of birth",
-                    chassis: "Please enter chassis",
-                    engine:"Please enter engine",
-                    sign_date: "Please enter sign date",
-                },
-                errorClass: "text-danger f-12",
-                errorElement: "span",
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass("form-control-danger");
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass("form-control-danger");
-                },
-                submitHandler: function(form) {
-                    form.submit();
-                }
-            });
-        });
-    </script>
 @endsection

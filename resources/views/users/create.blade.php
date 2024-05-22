@@ -11,7 +11,7 @@
                                 <div class="card-header">
                                     <h5>Add User</h5>
                                     <div class="float-right">
-                                        <a href="{{ route('users.index') }}" class="btn btn-primary btn-md">
+                                        <a href="{{ route('users.index') }}" class="btn btn-primary primary-btn btn-md">
                                             <i class="feather icon-arrow-left"></i>
                                             Go Back
                                         </a>
@@ -71,7 +71,7 @@
                                                 <textarea id="additional_detail" name="additional_detail" class="form-control" rows="2" cols="50"></textarea>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
                                 </div>
                             </div>

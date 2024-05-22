@@ -11,7 +11,7 @@
                                 <div class="card-header">
                                     <h5>Edit Vehicle Type</h5>
                                     <div class="float-right">
-                                        <a href="{{ route('vehicle-types.index') }}" class="btn btn-primary btn-md">
+                                        <a href="{{ route('vehicle-types.index') }}" class="btn btn-primary primary-btn btn-md">
                                             <i class="feather icon-arrow-left"></i>
                                             Go Back
                                         </a>
@@ -34,7 +34,7 @@
                                         <div class="form-group">
                                             <x-input-text name="vehicle_type" label="Vehicle Type" value="{{ old('vehicle_type', $vehicleType->vehicle_type) }}"></x-input-text>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
                                 </div>
                             </div>

@@ -67,7 +67,7 @@
                                                     </table>
                                                 </div>
 
-                                                <button type="submit" class="btn btn-primary mt-2">Save</button>
+                                                <button type="submit" class="btn btn-primary primary-btn mt-2">Save</button>
                                             </form>
                                         @endforeach
                                     </div>

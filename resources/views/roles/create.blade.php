@@ -11,7 +11,7 @@
                                 <div class="card-header">
                                     <h5>Add Role</h5>
                                     <div class="float-right">
-                                        <a href="{{ route('roles.index') }}" class="btn btn-primary btn-md">
+                                        <a href="{{ route('roles.index') }}" class="btn btn-primary btn-md primary-btn">
                                             <i class="feather icon-arrow-left"></i>
                                             Go Back
                                         </a>
@@ -24,7 +24,7 @@
                                             <x-input-text name="name" label="Name"
                                                 value="{{ old('name') }}"></x-input-text>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Save</button>
+                                        <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
                                 </div>
                             </div>
