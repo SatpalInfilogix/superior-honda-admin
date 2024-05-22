@@ -10,6 +10,6 @@
             <x-input-text name="secret_key" label="Secret Key"
                 value="{{ old('secret_key', App\Helpers\SettingHelper::setting('secret_key')) }}"></x-input-text>
         </div>
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary primary-btn">Save</button>
     </form>
 </div>
