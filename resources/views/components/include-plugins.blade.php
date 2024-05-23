@@ -40,3 +40,7 @@
         <script src="{{ asset('assets/js/calendar.js') }}"></script>
     @endsection
 @endisset
+
+@isset($textEditor)
+        <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
+@endisset

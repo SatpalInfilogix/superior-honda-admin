@@ -17,6 +17,7 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\InquiryController;
+use App\Http\Controllers\EmailTemplateController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'auth.session'])->group(function () {
@@ -38,6 +39,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
         'settings'              => SettingController::class,
         'coupons'               => CouponController::class,
         'inquiries'             => InquiryController::class,
+        'emails'                => EmailTemplateController::class,
     ]);
 });
 
