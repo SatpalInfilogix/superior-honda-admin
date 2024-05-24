@@ -8,6 +8,7 @@ use App\Models\VehicleCategory;
 use App\Models\VehicleModel;
 use App\Models\VehicleBrand;
 use App\Models\VehicleType;
+use App\Models\ProductImage;
 use App\Models\VehicleModelVariant;
 use Illuminate\Support\Facades\Gate;
 
@@ -55,7 +56,7 @@ class ProductController extends Controller
             'manufacture_name' => 'required'
         ]);
 
-        Product::create([
+        $product = Product::create([
             'product_name'      => $request->product_name,
             'category_id'       =>$request->category_id,
             'brand_id'          =>$request->brand_name,
@@ -69,6 +70,23 @@ class ProductController extends Controller
             'is_oem'            => $request->oem ?? 0,
             'is_service'        => $request->is_service ?? 0
         ]);
+
+        $images = $request->images;
+        if ($images) {
+            $files = [];
+            if($request->hasfile('images'))
+            {
+                foreach($request->file('images') as $file)
+                {
+                    $filename = time().'.'.$file->getClientOriginalExtension();
+                    $file->move(public_path('uploads/product-image/'), $filename);
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'images'     => 'uploads/product-image/'. $filename,
+                    ]);
+                }
+            }
+        }
 
         return redirect()->route('products.index')->with('success', 'Product saved successfully');
     }
@@ -95,6 +113,7 @@ class ProductController extends Controller
         $vehicleModels = VehicleModel::all();
         $vehicleTypes = VehicleType::all();
         $modelVariants = VehicleModelVariant::all();
+        $product = Product::with('images')->where('id', $product->id)->first();
 
         return view('products.edit', compact('product', 'categories', 'brands', 'vehicleModels', 'vehicleTypes','modelVariants'));
 
@@ -132,6 +151,25 @@ class ProductController extends Controller
             'is_oem'        => $request->oem ?? 0,
             'is_service'    => $request->is_service ?? 0
         ]);
+
+        if ($request->hasFile('images')) {
+            if (count($request->images) > 0) {
+                foreach ($request->file('images') as $file) {
+                    $filename = time().'.'.$file->getClientOriginalExtension();
+                    $file->move(public_path('uploads/product-image/'), $filename);
+                    $file = ProductImage::create([
+                        'product_id' => $product->id,
+                        'images'      => 'uploads/product-image/'. $filename,
+                    ]);
+                }
+            }
+        }
+
+        $imagesDeleteId = $request->image_id;
+        if ($imagesDeleteId[0]) {
+             $imagesIds= explode(',',$imagesDeleteId[0]);
+             $imageDeleted = ProductImage::whereIn('id', $imagesIds)->delete();
+        }
 
         return redirect()->route('products.index')->with('success', 'Product updated successfully');
     }

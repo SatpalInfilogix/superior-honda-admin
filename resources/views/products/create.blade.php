@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
     <div class="pcoded-inner-content">
         <div class="main-body">
             <div class="page-wrapper">
@@ -19,7 +18,7 @@
                                     </div>
                                 </div>
                                 <div class="card-block">
-                                    <form action="{{ route('products.store') }}" method="POST">
+                                    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-6 form-group">
@@ -93,6 +92,13 @@
                                             </div>
                                         </div>
 
+                                        <div class="row">
+                                            <div class="col-md-12 form-group">
+                                                <label for="image" class>Image</label>
+                                                <input type="file" name="images[]" id="images" multiple class="form-control" required>
+                                                <div id="image_preview"></div>
+                                            </div>
+                                        <div>
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
                                 </div>
@@ -103,7 +109,7 @@
             </div>
         </div>
     </div>
-
+    <x-include-plugins multipleImage></x-include-plugins>
     <script>
         function oemClick(e) {
             e.value = e.checked ? 1 : 0;
@@ -115,61 +121,6 @@
         }
 
         $(function() {
-            $('#category_id').on('change', function() {
-                var category_id = this.value;
-                $("#brand_name").html('');
-                $("#vehicle_type").html('');
-                $("#model_name").html('<option value="">Select Model</option>');
-                $("#model_variant_name").html('<option value="">Select Model Variant</option>');
-                $.ajax({
-                    url: "{{ url('get-vehicle-brand') }}",
-                    type: "POST",
-                    data: {
-                        category_id: category_id,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        $('#brand_name').html(result.options);
-                        $("#vehicle_type").html(result.vehicleTypeOption);
-                    }
-                });
-            });
-
-            $('#brand_name').on('change', function() {
-                var brand_id = this.value;
-                $("#model_name").html('');
-                $.ajax({
-                    url: "{{ url('get-vehicle-model') }}",
-                    type: "POST",
-                    data: {
-                        brand_id: brand_id,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        $('#model_name').html(result.options);
-                    }
-                });
-            });
-
-            $('#model_name').on('change', function() {
-                var model_id = this.value;
-                $("#model_variant_name").html('');
-                $.ajax({
-                    url: "{{ url('get-vehicle-model-variant') }}",
-                    type: "POST",
-                    data: {
-                        model_id: model_id,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        $('#model_variant_name').html(result.options);
-                    }
-                });
-            });
-
             $('form').validate({
                 rules: {
                     category_id: "required",
