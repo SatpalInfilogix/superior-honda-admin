@@ -9,6 +9,7 @@ use App\Models\VehicleBrand;
 use App\Models\VehicleModel;
 use App\Models\VehicleType;
 use App\Models\VehicleModelVariant;
+use App\Models\ProductImage;
 
 class Product extends Model
 {
@@ -38,5 +39,10 @@ class Product extends Model
     public function variant()
     {
         return $this->belongsTo(VehicleModelVariant::class, 'varient_model_id', 'id');
+    }
+
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
     }
 }

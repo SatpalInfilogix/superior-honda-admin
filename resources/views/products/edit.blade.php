@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+{{-- <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet"> --}}
+
     <div class="pcoded-inner-content">
         <div class="main-body">
             <div class="page-wrapper">
@@ -104,6 +106,10 @@
 
                                             <div class="col-md-3 form-group">
                                                 <label for="oem" class>OEM</label>
+                                                {{-- <div class="col-md-6 form-group">
+                                                    <input data-id="{{$product->id}}" class="toggle-class" type="checkbox" data-onstyle="danger"        
+                                                        data-offstyle="info" data-toggle="toggle" data-on="Pending" data-off="Approved" {{$product->is_oem == 1 ?'checked':''}}>
+                                                </div> --}}
                                                 <input type="checkbox" id="oem" name="oem" value="{{ $product->is_oem }}" @checked($product->is_oem == 1) onclick='oemClick(this);'>
                                             </div>
 
@@ -111,6 +117,28 @@
                                                 <label for="service" class>Service</label>
                                                 <input type="checkbox" id="is_service" name="is_service" value="{{ $product->is_service }}" @checked($product->is_service == 1) onclick='serviceClick(this);'>
                                             </div>
+                                        </div>
+
+                                        <div class="position-relative form-group">
+                                            <label for="inputLastname" class="">Image</label>
+                                            <input type="file" name="images[]" id="images" multiple class="form-control mb-1">
+                                        </div>
+                        
+                                        <div class="row">
+                                            <div class="col-md-12 form-group">
+                                                <div id="image_preview" class="row">
+                                                    @foreach ($product->images as $key => $image)
+                                                        <div class="existing-img-div img-div" id="existing-img-div{{ $image->id }}">
+                                                            <img src="{{ asset($image->images) }}" id="previewImg-{{ $image->id }}" style="height:141px; width:150px;" name="image" class="img-responsive image">
+                                                            <div class='middle'>
+                                                                <a href ="javascript:void(0)" class="btn btn-danger delete-image image-delete-{{ $image->id }}" data-id="{{ $image->id }}" id="delete-image"><i class="fas fa-trash"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                    <span id="image_preview_new"></span>
+                                                </div>
+                                            </div>
+                                            <input type ="hidden" name="image_id[]" id ="image_id">
                                         </div>
 
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
@@ -123,8 +151,20 @@
             </div>
         </div>
     </div>
+    <x-include-plugins multipleImage></x-include-plugins>
+    {{-- <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script> --}}
 
     <script>
+        let deletedImageId= [];
+        $('.delete-image').on('click', function() {
+            var imageId = $(this).data('id');
+            deletedImageId.push(imageId);
+            $('#previewImg-' + imageId).prop('hidden', true)
+            $('.image-delete-' + imageId).prop('hidden', true)
+            $('#existing-img-div' + imageId).prop('hidden', true)
+            $('#image_id').val(deletedImageId);
+        });
+
         function oemClick(e) {
             e.value = e.checked ? 1 : 0;
             $('#oem').val(e.value);
@@ -135,60 +175,6 @@
             $('#is_service').val(e.value);
         }
         $(function() {
-            $('#category_id').on('change', function() {
-                var category_id = this.value;
-                $("#brand_name").html('');
-                $("#vehicle_type").html('');
-                $.ajax({
-                    url: "{{ url('get-vehicle-brand') }}",
-                    type: "POST",
-                    data: {
-                        category_id: category_id,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        $('#brand_name').html(result.options);
-                        $("#vehicle_type").html(result.vehicleTypeOption);
-                    }
-                });
-            });
-
-            $('#brand_name').on('change', function() {
-                var brand_id = this.value;
-                $("#model_name").html('');
-                $.ajax({
-                    url: "{{ url('get-vehicle-model') }}",
-                    type: "POST",
-                    data: {
-                        brand_id: brand_id,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        $('#model_name').html(result.options);
-                    }
-                });
-            });
-
-            $('#model_name').on('change', function() {
-                var model_id = this.value;
-                console.log(model_id); 
-                $("#model_variant_name").html('');
-                $.ajax({
-                    url: "{{ url('get-vehicle-model-variant') }}",
-                    type: "POST",
-                    data: {
-                        model_id: model_id,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        $('#model_variant_name').html(result.options);
-                    }
-                });
-            });
-
             $('form').validate({
                 rules: {
                     category_id: "required",

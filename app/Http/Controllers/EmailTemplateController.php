@@ -12,7 +12,9 @@ class EmailTemplateController extends Controller
      */
     public function index()
     {
-        //
+        $emails = EmailTemplate::latest()->get();
+
+        return view('emails.index', compact('emails'));
     }
 
     /**
@@ -20,7 +22,7 @@ class EmailTemplateController extends Controller
      */
     public function create()
     {
-        //
+        return view('emails.create');
     }
 
     /**
@@ -28,7 +30,13 @@ class EmailTemplateController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        EmailTemplate::create([
+            'email_template' => $request->template,
+            'content'        => $request->content,
+            'status'         => $request->status
+        ]);
+
+        return redirect()->route('emails.index')->with('success', 'Email created successfully');
     }
 
     /**
@@ -42,17 +50,25 @@ class EmailTemplateController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(EmailTemplate $emailTemplate)
+    public function edit(EmailTemplate $email)
     {
-        //
+        $email = EmailTemplate::where('id', $email->id)->first();
+
+        return view('emails.edit', compact('email'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, EmailTemplate $emailTemplate)
+    public function update(Request $request, EmailTemplate $email)
     {
-        //
+        EmailTemplate::where('id', $email->id)->update([
+            'email_template' => $request->template,
+            'content'        => $request->content,
+            'status'         => $request->status
+        ]);
+
+        return redirect()->route('emails.index')->with('success', 'Email updated successfully');
     }
 
     /**
@@ -60,6 +76,11 @@ class EmailTemplateController extends Controller
      */
     public function destroy(EmailTemplate $emailTemplate)
     {
-        //
+        EmailTemplate::where('id', $emailTemplate->id)->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Email Template deleted successfully.'
+        ]);
     }
 }

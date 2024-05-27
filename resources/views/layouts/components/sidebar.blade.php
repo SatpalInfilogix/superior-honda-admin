@@ -153,7 +153,7 @@
                     ])>
                         <a href="{{ route('coupons.index') }}" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
-                                <i class="fas fa-car"></i>
+                                <i class="fas fa-credit-card"></i>
                             </span>
                             <span class="pcoded-mtext">Coupon/Offers</span>
                         </a>
@@ -246,7 +246,7 @@
             <ul class="pcoded-item pcoded-left-item">
                 @can('view job')
                     <li class="view email template ">
-                        <a href="" class="waves-effect waves-dark">
+                        <a href="{{ route('emails.index') }}" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
                                 <i class="feather icon-mail"></i>
                             </span>

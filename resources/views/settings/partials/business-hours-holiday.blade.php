@@ -62,7 +62,7 @@
             </div>
         @endforeach
 
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary primary-btn">Save</button>
     </form>
 
     <div class="row mt-5">
