@@ -23,6 +23,21 @@
                                         @method('PATCH')
                                         <div class="row">
                                             <div class="col-md-6 form-group">
+                                                <x-input-text name="product_code" label="Product Code" value="{{ old('product_code', $product->product_code) }}"></x-input-text>
+                                            </div>
+
+                                            <div class="col-md-6 form-group">
+                                                <label for="category_id">Category</label>
+                                                <select name="category_id" id="category_id" class="form-control">
+                                                    <option value="" selected disabled>Select Category</option>
+                                                    @foreach($categories as $category)
+                                                        <option value="{{ $category->id }}" @selected($product->category_id == $category->id)>{{ $category->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
                                                 <x-input-text name="product_name" label="Product Name" value="{{ old('product_name', $product->product_name) }}"></x-input-text>
                                             </div>
 
@@ -32,11 +47,11 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                            <label for="category_id">Vehicle Category</label>
-                                            <select name="category_id" id="category_id" class="form-control">
-                                                <option value="" selected disabled>Select Category</option>
-                                                @foreach($categories as $category)
-                                                    <option value="{{ $category->id }}" @selected($product->category_id == $category->id)>{{ $category->name }}</option>
+                                            <label for="vehicle_category_id">Vehicle Category</label>
+                                            <select name="vehicle_category_id" id="vehicle_category_id" class="form-control">
+                                                <option value="" selected disabled>Select Vehicle Category</option>
+                                                @foreach($vehicleCategories as $vehicleCategory)
+                                                    <option value="{{ $vehicleCategory->id }}" @selected($product->vehicle_category_id == $vehicleCategory->id)>{{ $vehicleCategory->name }}</option>
                                                 @endforeach
                                             </select>
                                             </div>

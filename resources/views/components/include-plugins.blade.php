@@ -89,7 +89,7 @@
             return b.files
         }
 
-        $('#category_id').on('change', function() {
+        $('#vehicle_category_id').on('change', function() {
             var category_id = this.value;
             $("#brand_name").html('');
             $("#vehicle_type").html('');

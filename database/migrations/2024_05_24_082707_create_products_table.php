@@ -34,6 +34,7 @@ return new class extends Migration
             $table->string('sales_person')->nullable();
             $table->timestamps();
 
+            $table->foreign('category_id')->references('id')->on('product_categories');
             $table->foreign('vehicle_category_id')->references('id')->on('vehicle_categories');
             $table->foreign('brand_id')->references('id')->on('vehicle_brands');
             $table->foreign('model_id')->references('id')->on('vehicle_models');

@@ -38,8 +38,8 @@ class ProductController extends Controller
         }
 
         $categories = ProductCategory::all();
-
-        return view('products.create', compact('categories'));
+        $vehicleCategories = VehicleCategory::all();
+        return view('products.create', compact('categories', 'vehicleCategories'));
     }
 
     /**
@@ -53,13 +53,16 @@ class ProductController extends Controller
 
         $request->validate([
             'category_id'  => 'required',
+            'vehicle_category_id' => 'required',
             'product_name' => 'required',
             'manufacture_name' => 'required'
         ]);
 
         $product = Product::create([
+            'product_code'      => $request->product_code,
             'product_name'      => $request->product_name,
             'category_id'       =>$request->category_id,
+            'vehicle_category_id'=> $request->vehicle_category_id,
             'brand_id'          =>$request->brand_name,
             'model_id'          => $request->model_name,
             'varient_model_id'  =>$request->model_variant_name,
@@ -114,13 +117,14 @@ class ProductController extends Controller
         }
 
         $categories = ProductCategory::all();
+        $vehicleCategories = VehicleCategory::all();
         $brands = VehicleBrand::all();
         $vehicleModels = VehicleModel::all();
         $vehicleTypes = VehicleType::all();
         $modelVariants = VehicleModelVariant::all();
         $product = Product::with('images')->where('id', $product->id)->first();
 
-        return view('products.edit', compact('product', 'categories', 'brands', 'vehicleModels', 'vehicleTypes','modelVariants'));
+        return view('products.edit', compact('product', 'categories', 'brands', 'vehicleModels', 'vehicleTypes','modelVariants', 'vehicleCategories'));
 
     }
 
@@ -135,16 +139,19 @@ class ProductController extends Controller
         }
 
         $request->validate([
-            'category_id'  => 'required',
-            'product_name' => 'required',
-            'manufacture_name' => 'required'
+            'category_id'           => 'required',
+            'vehicle_category_id'   => 'required',
+            'product_name'          => 'required',
+            'manufacture_name'      => 'required'
         ]);
 
         $product = Product::where('id', $product->id)->first();
 
         $product->update([
+            'product_code'      => $request->product_code,
             'product_name'      => $request->product_name,
             'category_id'       => $request->category_id,
+            'vehicle_category_id'=> $request->vehicle_category_id,
             'brand_id'          => $request->brand_name,
             'model_id'          => $request->model_name,
             'varient_model_id'  =>$request->model_variant_name,
