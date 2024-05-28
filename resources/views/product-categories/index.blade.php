@@ -14,7 +14,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h5>Product Categories</h5>
-                                    @can('create vehicle configuration')
+                                    @can('create product')
                                         <div class="float-right">
                                             <a href="{{ route('product-categories.create') }}"
                                                 class="btn btn-primary btn-md primary-btn">Add
@@ -31,7 +31,7 @@
                                                     <th>#</th>
                                                     <th>Category Image</th>
                                                     <th>Category Name</th>
-                                                    @canany(['edit vehicle configuration', 'delete vehicle configuration'])
+                                                    @canany(['edit product', 'delete product'])
                                                         <th>Actions</th>
                                                     @endcanany
                                                 </tr>
@@ -43,20 +43,19 @@
                                                         <td><img src="{{ asset($category->category_image) }}" width="50" height="50"></td>
                                                         <td>{{ $category->name }}</td>
                                                         @canany([
-                                                            'edit vehicle configuration',
-                                                            'delete vehicle
-                                                            configuration',
+                                                            'edit product',
+                                                            'delete product',
                                                             ])
                                                             <td>
                                                                 <div class="btn-group btn-group-sm">
-                                                                    @can('edit vehicle configuration')
+                                                                    @can('edit product')
                                                                         <a href="{{ route('product-categories.edit', $category->id) }}"
                                                                             class="btn btn-primary primary-btn waves-effect waves-light mr-2 edit-vehicle-type">
                                                                             <i class="feather icon-edit m-0"></i>
                                                                         </a>
                                                                     @endcan
 
-                                                                    @can('delete vehicle configuration')
+                                                                    @can('delete product')
                                                                         <button data-source="category"
                                                                             data-endpoint="{{ route('product-categories.destroy', $category->id) }}"
                                                                             class="delete-btn primary-btn btn btn-danger waves-effect waves-light">

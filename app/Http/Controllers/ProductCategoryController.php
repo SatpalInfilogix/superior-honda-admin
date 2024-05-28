@@ -21,6 +21,9 @@ class ProductCategoryController extends Controller
      */
     public function create()
     {
+        if(!Gate::allows('create product')) {
+            abort(403);
+        }
         return view('product-categories.create');
     }
 
@@ -60,6 +63,9 @@ class ProductCategoryController extends Controller
      */
     public function edit(string $id)
     {
+        if(!Gate::allows('edit product')) {
+            abort(403);
+        }
         $product_category = ProductCategory::find($id); 
         return view('product-categories.edit', compact('product_category'));
     }
@@ -88,7 +94,7 @@ class ProductCategoryController extends Controller
         } 
 
         $category->save();
-        
+
         return redirect()->route('product-categories.index')->with('success', 'Product category update successfully');
     }
 
@@ -97,6 +103,9 @@ class ProductCategoryController extends Controller
      */
     public function destroy(string $id)
     {
+        if(!Gate::allows('delete product')) {
+            abort(403);
+        }
         ProductCategory::where('id', $id)->delete();
         return response()->json([
             'success' => true,
