@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductCategory; 
 use Illuminate\Http\Request;
 use App\Models\VehicleCategory;
 use App\Models\VehicleModel;
@@ -36,7 +37,7 @@ class ProductController extends Controller
             abort(403);
         }
 
-        $categories = VehicleCategory::all();
+        $categories = ProductCategory::all();
 
         return view('products.create', compact('categories'));
     }
@@ -112,7 +113,7 @@ class ProductController extends Controller
             abort(403);
         }
 
-        $categories = VehicleCategory::all();
+        $categories = ProductCategory::all();
         $brands = VehicleBrand::all();
         $vehicleModels = VehicleModel::all();
         $vehicleTypes = VehicleType::all();
