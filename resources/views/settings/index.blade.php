@@ -10,7 +10,6 @@
                             @if (session('success'))
                                 <x-alert message="{{ session('success') }}"></x-alert>
                             @endif
-
                             <div class="card">
                                 <div class="card-header">
                                     <h5>Settings</h5>

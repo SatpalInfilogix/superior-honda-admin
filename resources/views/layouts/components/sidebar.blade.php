@@ -29,14 +29,49 @@
                 @endcan
                 @can('view product')
                     <li @class([
-                        'active' => Request::is('products', 'products/create', 'products/*/edit'),
+                        'pcoded-hasmenu',
+                        'pcoded-trigger active' => Request::is(
+                            'products',
+                            'products/create',
+                            'products/*/edit',
+                            'product-categories',
+                            'product-categories/create',
+                            'product-categories/*/edit'),
                     ])>
-                        <a href="{{ route('products.index') }}" class="waves-effect waves-dark">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
                                 <i class="fas fa-cube"></i>
                             </span>
                             <span class="pcoded-mtext">Manage Products</span>
                         </a>
+						<ul class="pcoded-submenu">
+                            <li @class([
+                                'active' => Request::is(
+                                    'product-categories',
+                                    'product-categories/create',
+                                    'product-categories/*/edit'),
+                            ])>
+							    <a href="{{ route('product-categories.index') }}" class="waves-effect waves-dark">
+									<span class="pcoded-micon">
+										<i class="fas fa-cube"></i>
+									</span>
+									<span class="pcoded-mtext">Product Categories</span>
+								</a>
+							</li>
+							<li @class([
+                                'active' => Request::is(
+                                    'products',
+                                    'products/create',
+                                    'products/*/edit',),
+                            ])>
+							    <a href="{{ route('products.index') }}" class="waves-effect waves-dark">
+									<span class="pcoded-micon">
+										<i class="fas fa-cube"></i>
+									</span>
+									<span class="pcoded-mtext">Products</span>
+								</a>
+							</li>
+						</ul>
                     </li>
                 @endcan
 

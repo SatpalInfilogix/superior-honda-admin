@@ -12,6 +12,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoleAndPermissionController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\VehicleModelVariantController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\SettingController;
@@ -35,6 +36,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
         'roles'                 => RoleController::class,
         'roles-and-permissions' => RoleAndPermissionController::class,
         'products'              => ProductController::class,
+        'product-categories'    => ProductCategoryController::class,
         'vehicles'              => VehicleController::class,
         'settings'              => SettingController::class,
         'coupons'               => CouponController::class,
