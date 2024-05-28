@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-{{-- <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet"> --}}
-
     <div class="pcoded-inner-content">
         <div class="main-body">
             <div class="page-wrapper">
@@ -34,7 +32,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                            <label for="category_id">Category</label>
+                                            <label for="category_id">Vehicle Category</label>
                                             <select name="category_id" id="category_id" class="form-control">
                                                 <option value="" selected disabled>Select Category</option>
                                                 @foreach($categories as $category)
@@ -106,10 +104,6 @@
 
                                             <div class="col-md-3 form-group">
                                                 <label for="oem" class>OEM</label>
-                                                {{-- <div class="col-md-6 form-group">
-                                                    <input data-id="{{$product->id}}" class="toggle-class" type="checkbox" data-onstyle="danger"        
-                                                        data-offstyle="info" data-toggle="toggle" data-on="Pending" data-off="Approved" {{$product->is_oem == 1 ?'checked':''}}>
-                                                </div> --}}
                                                 <input type="checkbox" id="oem" name="oem" value="{{ $product->is_oem }}" @checked($product->is_oem == 1) onclick='oemClick(this);'>
                                             </div>
 
@@ -152,7 +146,6 @@
         </div>
     </div>
     <x-include-plugins multipleImage></x-include-plugins>
-    {{-- <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script> --}}
 
     <script>
         let deletedImageId= [];
