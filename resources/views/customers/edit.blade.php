@@ -35,6 +35,14 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
+                                                <x-input-text name="address" label="Address" value="{{ old('address', $customer->address) }}" ></x-input-text>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="info" label="Info" value="{{ old('info', $customer->info) }}" ></x-input-text>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
                                                 <x-input-text name="phone_digicel" label="Phone (Digicel)" value="{{ old('phone_digicel', $customer->phone_digicel) }}" ></x-input-text>
                                             </div>
 
@@ -49,13 +57,16 @@
                                             </div>
 
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="lic_no" label="Lic No" value="{{ old('lic_no', $customer->lic_no) }}" ></x-input-text>
+                                                <x-input-text name="licence_no" label="Licence Number" value="{{ old('licence_no', $customer->licence_no) }}" ></x-input-text>
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="address" label="Address" value="{{ old('address', $customer->address) }}" ></x-input-text>
+                                                <x-input-text name="company_info" label="Company Info" value="{{ old('company_info', $customer->company_info) }}" ></x-input-text>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="city" label="City" value="{{ old('city', $customer->city ) }}" ></x-input-text>
                                             </div>
                                         </div>
                                         
@@ -72,20 +83,25 @@
 
     <script>
         $(function() {
+            $('#datepicker').datepicker({
+                autoclose: true,
+                format: 'yyyy-mm-dd' 
+            });
+
             $('form').validate({
                 rules: {
                     first_name: "required",
                     last_name: "required",
-                    designation: "required",
                     email: "required",
-                    role: "required"
+                    phone_digicel: "required",
+                    address: "required",
                 },
                 messages: {
                     first_name: "Please enter first name",
                     last_name: "Please enter last name",
-                    designation: "Please enter designation",
                     email: "Please enter email",
-                    role: "Please enter role"
+                    phone_digicel: "Please enter phone digicel",
+                    address: "Please enter address"
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",

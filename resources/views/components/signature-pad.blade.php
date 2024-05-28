@@ -2,6 +2,18 @@
 <script>
     // Canvas signature script
     $(function() {
+        $('#datepicker').datepicker({
+        autoclose: true,
+        format: 'yyyy-mm-dd' 
+    });
+    $('#datepicker2').datepicker({
+        autoclose: true,
+        format: 'yyyy-mm-dd' 
+    });
+    $('#date').datepicker({
+        autoclose: true,
+        format: 'yyyy-mm-dd' 
+    });
         window.requestAnimFrame = (function(callback) {
             return window.requestAnimationFrame ||
                 window.webkitRequestAnimationFrame ||

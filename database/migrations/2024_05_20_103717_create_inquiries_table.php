@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->date('date')->nullable();
+            $table->string('email')->nullable();
             $table->string('mileage')->nullable();
             $table->string('vehicle')->nullable();
             $table->string('year')->nullable();
-            $table->string('lic_no')->nullable();
+            $table->string('licence_no')->nullable();
             $table->string('address')->nullable();
             $table->string('returning')->nullable();
             $table->string('color')->nullable();

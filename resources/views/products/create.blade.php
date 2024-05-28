@@ -31,7 +31,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                            <label for="category_id">Category</label>
+                                            <label for="category_id">Vehicle Category</label>
                                             <select name="category_id" id="category_id" class="form-control">
                                                 <option value="" selected disabled>Select Category</option>
                                                 @foreach($categories as $category)
@@ -96,7 +96,7 @@
                                             <div class="col-md-12 form-group">
                                                 <label for="image" class>Image</label>
                                                 <input type="file" name="images[]" id="images" multiple class="form-control" required>
-                                                <div id="image_preview"></div>
+                                                <div id="image_preview_new"></div>
                                             </div>
                                         <div>
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
