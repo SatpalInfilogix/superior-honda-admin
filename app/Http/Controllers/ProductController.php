@@ -68,7 +68,11 @@ class ProductController extends Controller
             'quantity'          => $request->quantity,
             'hsn_no'            => $request->hsn_no,
             'is_oem'            => $request->oem ?? 0,
-            'is_service'        => $request->is_service ?? 0
+            'is_service'        => $request->is_service ?? 0,
+            'description'       => $request->description,
+            'cost_price'        => $request->cost_price,
+            'item_number'       => $request->item_number,
+            'sales_person'      => $request->sales_person
         ]);
 
         $images = $request->images;
@@ -138,18 +142,22 @@ class ProductController extends Controller
         $product = Product::where('id', $product->id)->first();
 
         $product->update([
-            'product_name'  => $request->product_name,
-            'category_id'   => $request->category_id,
-            'brand_id'      => $request->brand_name,
-            'model_id'      => $request->model_name,
-            'varient_model_id'=>$request->model_variant_name,
-            'type_id'       => $request->vehicle_type,
-            'manufacture_name' => $request->manufacture_name,
-            'supplier'      => $request->supplier,
-            'quantity'      => $request->quantity,
-            'hsn_no'        => $request->hsn_no,
-            'is_oem'        => $request->oem ?? 0,
-            'is_service'    => $request->is_service ?? 0
+            'product_name'      => $request->product_name,
+            'category_id'       => $request->category_id,
+            'brand_id'          => $request->brand_name,
+            'model_id'          => $request->model_name,
+            'varient_model_id'  =>$request->model_variant_name,
+            'type_id'           => $request->vehicle_type,
+            'manufacture_name'  => $request->manufacture_name,
+            'supplier'          => $request->supplier,
+            'quantity'          => $request->quantity,
+            'hsn_no'            => $request->hsn_no,
+            'is_oem'            => $request->oem ?? 0,
+            'is_service'        => $request->is_service ?? 0,
+            'description'       => $request->description,
+            'cost_price'        => $request->cost_price,
+            'item_number'       => $request->item_number,
+            'sales_person'      => $request->sales_person
         ]);
 
         if ($request->hasFile('images')) {

@@ -77,8 +77,32 @@
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
+                                                <label for="cost_price" class>Cost Price</label>
+                                                <input type="number" id="price" name="cost_price" class="form-control"value="{{ old('cost_price') }}">
+                                            </div>
+
+                                            <div class="col-md-6 form-group">
+                                                <label for="item_number" class>Item Number</label>
+                                                <input type="number" id="item_number" name="item_number" class="form-control"value="{{ old('item_number') }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label for="sales_person" class>Sales Person</label>
+                                                <input type="text" id="sales_person" name="sales_person" class="form-control"value="{{ old('sales_person') }}">
+                                            </div>
+
+                                            <div class="col-md-6 form-group">
                                                 <label for="model_name" class>Quantity</label>
                                                 <input type="number" id="quantity" name="quantity" class="form-control"value="{{ old('quantity') }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label for="branch">Description</label>
+                                                <textarea id="description" name="description" class="form-control" rows="2" cols="50"></textarea>
                                             </div>
 
                                             <div class="col-md-3 form-group">
