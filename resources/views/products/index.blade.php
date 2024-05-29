@@ -2,6 +2,8 @@
 
 @section('content')
     <div class="pcoded-inner-content">
+        {{-- <h2>Code: 98245226222</h2>
+        {!! $barcode !!} --}}
         <div class="main-body">
             <div class="page-wrapper">
                 <div class="page-body">
@@ -40,6 +42,7 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Product Name</th>
+                                                    <th>Barcode</th>
                                                     <th>Manufacture Name</th>
                                                     <th>Vehicle Category</th>
                                                     <th>Brand Name</th>
@@ -56,6 +59,9 @@
                                                     <tr>
                                                         <td>{{ $index + 1 }}</td>
                                                         <td>{{ $product->product_name }}</td>
+                                                        <td>{!! $product->barcode !!}
+                                                            P- {{$product->product_code}}
+                                                        </td>
                                                         <td>{{ $product->manufacture_name }}</td>
                                                         <td>{{ $product->category->name }}</td>
                                                         <td>{{ optional($product->brand)->brand_name }}</td>

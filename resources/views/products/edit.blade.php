@@ -125,22 +125,16 @@
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <label for="sales_person" class>Sales Person</label>
-                                                <input type="text" id="sales_person" name="sales_person" class="form-control"value="{{ old('sales_person', $product->sales_person) }}">
-                                            </div>
-
-                                            <div class="col-md-6 form-group">
                                                 <label for="model_name" class>Quantity</label>
                                                 <input type="number" id="quantity" name="quantity" class="form-control"value="{{ old('quantity', $product->quantity) }}">
                                             </div>
-                                        </div>
-
-                                        <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="branch">Description</label>
                                                 <textarea id="description" name="description" class="form-control" rows="2" cols="50">{{ $product->description }}</textarea>
                                             </div>
+                                        </div>
 
+                                        <div class="row">
                                             <div class="col-md-3 form-group">
                                                 <label for="oem" class>OEM</label>
                                                 <input type="checkbox" id="oem" name="oem" value="{{ $product->is_oem }}" @checked($product->is_oem == 1) onclick='oemClick(this);'>

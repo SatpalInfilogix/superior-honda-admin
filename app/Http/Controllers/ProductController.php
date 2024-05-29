@@ -12,6 +12,8 @@ use App\Models\VehicleType;
 use App\Models\ProductImage;
 use App\Models\VehicleModelVariant;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
+use Picqer\Barcode\BarcodeGeneratorHTML;
 
 class ProductController extends Controller
 {
@@ -24,6 +26,10 @@ class ProductController extends Controller
             abort(403);
         }
         $products = Product::latest()->get();
+        foreach($products as $key=> $product) {
+            $genertorHTML = new BarcodeGeneratorHTML();
+            $products[$key]['barcode'] = $genertorHTML->getBarcode($product->product_code, $genertorHTML::TYPE_CODE_128);
+        }
 
         return view('products.index', compact('products'));
     }
@@ -52,10 +58,11 @@ class ProductController extends Controller
         }
 
         $request->validate([
-            'category_id'  => 'required',
+            'product_code'      => 'required',
+            'category_id'       => 'required',
             'vehicle_category_id' => 'required',
-            'product_name' => 'required',
-            'manufacture_name' => 'required'
+            'product_name'      => 'required',
+            'manufacture_name'  => 'required'
         ]);
 
         $product = Product::create([
@@ -76,7 +83,7 @@ class ProductController extends Controller
             'description'       => $request->description,
             'cost_price'        => $request->cost_price,
             'item_number'       => $request->item_number,
-            'sales_person'      => $request->sales_person
+            'created_by'        => Auth::id()
         ]);
 
         $images = $request->images;
@@ -139,6 +146,7 @@ class ProductController extends Controller
         }
 
         $request->validate([
+            'product_code'          => 'required',
             'category_id'           => 'required',
             'vehicle_category_id'   => 'required',
             'product_name'          => 'required',
@@ -165,7 +173,6 @@ class ProductController extends Controller
             'description'       => $request->description,
             'cost_price'        => $request->cost_price,
             'item_number'       => $request->item_number,
-            'sales_person'      => $request->sales_person
         ]);
 
         if ($request->hasFile('images')) {

@@ -53,9 +53,9 @@ class CustomerController extends Controller
 
         $request->validate([
             'first_name'    => 'required',
-            'last_name'     => 'required',
-            'email'         => 'required',
-            'phone_digicel' => 'required'
+            // 'last_name'     => 'required',
+            // 'email'         => 'required',
+            'phone_number' => 'required'
         ]);
 
         $user = User::orderByDesc('cus_code')->first();
@@ -76,7 +76,7 @@ class CustomerController extends Controller
             'date_of_birth'      => $request->date_of_birth,
             'address'            => $request->address,
             'info'               => $request->info,
-            'phone_digicel'      => $request->phone_digicel,
+            'phone_number'       => $request->phone_number,
             'phone_lime'         => $request->phone_lime,
             'licence_no'         => $request->licence_no,
             'company_info'       => $request->company_info,
@@ -119,8 +119,8 @@ class CustomerController extends Controller
 
         $request->validate([
             'first_name'    => 'required',
-            'last_name'     => 'required',
-            'phone_digicel' => 'required'
+            // 'last_name'     => 'required',
+            'phone_number' => 'required'
         ]);
 
         $customer = User::where('id', $customer->id)->first();
@@ -129,7 +129,7 @@ class CustomerController extends Controller
             'first_name'         => $request->first_name,
             'last_name'          => $request->last_name,
             'date_of_birth'      => $request->date_of_birth,
-            'phone_digicel'      => $request->phone_digicel,
+            'phone_number'       => $request->phone_number,
             'phone_lime'         => $request->phone_lime,
             'licence_no'         => $request->licence_no,
             'address'            => $request->address,

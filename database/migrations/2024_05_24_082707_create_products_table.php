@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('category_id');
             $table->string('product_name');
-            $table->string('product_code')->nullable();
+            $table->string('product_code')->unique()->nullable();
             $table->string('hsn_no')->nullable();
             $table->string('manufacture_name')->nullable();
             $table->string('supplier')->nullable();
@@ -31,9 +31,10 @@ return new class extends Migration
             $table->string('cost_price')->default(0);
             $table->text('description')->nullable();
             $table->string('item_number')->nullable();
-            $table->string('sales_person')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
 
+            $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('category_id')->references('id')->on('product_categories');
             $table->foreign('vehicle_category_id')->references('id')->on('vehicle_categories');
             $table->foreign('brand_id')->references('id')->on('vehicle_brands');

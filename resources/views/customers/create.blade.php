@@ -42,7 +42,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="phone_digicel" label="Phone (Digicel)" value="{{ old('phone_digicel') }}" ></x-input-text>
+                                                <x-input-text name="phone_number" label="Phone Number" value="{{ old('phone_number') }}" ></x-input-text>
                                             </div>
                                             <div class="col-md-6 form-group">
                                                 <x-input-text name="phone_lime" label="Phone (Lime)" value="{{ old('phone_lime') }}" ></x-input-text>
@@ -85,16 +85,14 @@
             $('form').validate({
                 rules: {
                     first_name: "required",
-                    last_name: "required",
-                    email: "required",
-                    phone_digicel: "required",
+                    // email: "required",
+                    phone_number: "required",
                     address: "required",
                 },
                 messages: {
                     first_name: "Please enter first name",
-                    last_name: "Please enter last name",
-                    email: "Please enter email",
-                    phone_digicel: "Please enter phone digicel",
+                    // email: "Please enter email",
+                    phone_number: "Please enter phone number",
                     address: "Please enter address"
 
                 },
