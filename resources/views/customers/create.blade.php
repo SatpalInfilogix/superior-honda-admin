@@ -34,7 +34,15 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="phone_digicel" label="Phone (Digicel)" value="{{ old('phone_digicel') }}" ></x-input-text>
+                                                <x-input-text name="address" label="Address" value="{{ old('address') }}" ></x-input-text>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="info" label="Info" value="{{ old('info') }}" ></x-input-text>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="phone_number" label="Phone Number" value="{{ old('phone_number') }}" ></x-input-text>
                                             </div>
                                             <div class="col-md-6 form-group">
                                                 <x-input-text name="phone_lime" label="Phone (Lime)" value="{{ old('phone_lime') }}" ></x-input-text>
@@ -43,15 +51,18 @@
                                         <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="dob">Date of Birth</label>
-                                                <input type="date" name="date_of_birth" class="form-control" value="{{ old('date_of_birth') }}" placeholder="YYYY-MM-DD">
+                                                <input type="text" name="date_of_birth" class="form-control m-0" id="datepicker" value="{{ old('date_of_birth') }}">
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="lic_no" label="Lic No" value="{{ old('lic_no') }}" ></x-input-text>
+                                                <x-input-text name="licence_no" label="Licence Number" value="{{ old('licence_no') }}" ></x-input-text>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="address" label="Address" value="{{ old('address') }}" ></x-input-text>
+                                                <x-input-text name="company_info" label="Company Info" value="{{ old('company_info') }}" ></x-input-text>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="city" label="City" value="{{ old('city') }}" ></x-input-text>
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
@@ -67,19 +78,22 @@
 
     <script>
         $(function() {
+            $('#datepicker').datepicker({
+                autoclose: true,
+                format: 'yyyy-mm-dd' 
+            });
             $('form').validate({
                 rules: {
                     first_name: "required",
-                    last_name: "required",
-                    email: "required",
-                    phone_digicel: "required"
-
+                    // email: "required",
+                    phone_number: "required",
+                    address: "required",
                 },
                 messages: {
                     first_name: "Please enter first name",
-                    last_name: "Please enter last name",
-                    email: "Please enter email",
-                    phone_digicel: "Please enter phone digicel",
+                    // email: "Please enter email",
+                    phone_number: "Please enter phone number",
+                    address: "Please enter address"
 
                 },
                 errorClass: "text-danger f-12",

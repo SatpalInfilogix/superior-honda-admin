@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductCategory; 
 use Illuminate\Http\Request;
 use App\Models\VehicleCategory;
 use App\Models\VehicleModel;
@@ -11,6 +12,8 @@ use App\Models\VehicleType;
 use App\Models\ProductImage;
 use App\Models\VehicleModelVariant;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
+use Picqer\Barcode\BarcodeGeneratorHTML;
 
 class ProductController extends Controller
 {
@@ -22,7 +25,11 @@ class ProductController extends Controller
         if(!Gate::allows('view product')) {
             abort(403);
         }
-        $products = Product::latest()->get();
+        $products = Product::with('category')->latest()->get();
+        foreach($products as $key=> $product) {
+            $genertorHTML = new BarcodeGeneratorHTML();
+            $products[$key]['barcode'] = $genertorHTML->getBarcode($product->product_code, $genertorHTML::TYPE_CODE_128);
+        }
 
         return view('products.index', compact('products'));
     }
@@ -36,9 +43,9 @@ class ProductController extends Controller
             abort(403);
         }
 
-        $categories = VehicleCategory::all();
-
-        return view('products.create', compact('categories'));
+        $categories = ProductCategory::all();
+        $vehicleCategories = VehicleCategory::all();
+        return view('products.create', compact('categories', 'vehicleCategories'));
     }
 
     /**
@@ -51,14 +58,18 @@ class ProductController extends Controller
         }
 
         $request->validate([
-            'category_id'  => 'required',
-            'product_name' => 'required',
-            'manufacture_name' => 'required'
+            'product_code'      => 'required',
+            'category_id'       => 'required',
+            'vehicle_category_id' => 'required',
+            'product_name'      => 'required',
+            'manufacture_name'  => 'required'
         ]);
 
         $product = Product::create([
+            'product_code'      => $request->product_code,
             'product_name'      => $request->product_name,
             'category_id'       =>$request->category_id,
+            'vehicle_category_id'=> $request->vehicle_category_id,
             'brand_id'          =>$request->brand_name,
             'model_id'          => $request->model_name,
             'varient_model_id'  =>$request->model_variant_name,
@@ -68,7 +79,11 @@ class ProductController extends Controller
             'quantity'          => $request->quantity,
             'hsn_no'            => $request->hsn_no,
             'is_oem'            => $request->oem ?? 0,
-            'is_service'        => $request->is_service ?? 0
+            'is_service'        => $request->is_service ?? 0,
+            'description'       => $request->description,
+            'cost_price'        => $request->cost_price,
+            'item_number'       => $request->item_number,
+            'created_by'        => Auth::id()
         ]);
 
         $images = $request->images;
@@ -108,14 +123,15 @@ class ProductController extends Controller
             abort(403);
         }
 
-        $categories = VehicleCategory::all();
+        $categories = ProductCategory::all();
+        $vehicleCategories = VehicleCategory::all();
         $brands = VehicleBrand::all();
         $vehicleModels = VehicleModel::all();
         $vehicleTypes = VehicleType::all();
         $modelVariants = VehicleModelVariant::all();
         $product = Product::with('images')->where('id', $product->id)->first();
 
-        return view('products.edit', compact('product', 'categories', 'brands', 'vehicleModels', 'vehicleTypes','modelVariants'));
+        return view('products.edit', compact('product', 'categories', 'brands', 'vehicleModels', 'vehicleTypes','modelVariants', 'vehicleCategories'));
 
     }
 
@@ -130,26 +146,33 @@ class ProductController extends Controller
         }
 
         $request->validate([
-            'category_id'  => 'required',
-            'product_name' => 'required',
-            'manufacture_name' => 'required'
+            'product_code'          => 'required',
+            'category_id'           => 'required',
+            'vehicle_category_id'   => 'required',
+            'product_name'          => 'required',
+            'manufacture_name'      => 'required'
         ]);
 
         $product = Product::where('id', $product->id)->first();
 
         $product->update([
-            'product_name'  => $request->product_name,
-            'category_id'   => $request->category_id,
-            'brand_id'      => $request->brand_name,
-            'model_id'      => $request->model_name,
-            'varient_model_id'=>$request->model_variant_name,
-            'type_id'       => $request->vehicle_type,
-            'manufacture_name' => $request->manufacture_name,
-            'supplier'      => $request->supplier,
-            'quantity'      => $request->quantity,
-            'hsn_no'        => $request->hsn_no,
-            'is_oem'        => $request->oem ?? 0,
-            'is_service'    => $request->is_service ?? 0
+            'product_code'      => $request->product_code,
+            'product_name'      => $request->product_name,
+            'category_id'       => $request->category_id,
+            'vehicle_category_id'=> $request->vehicle_category_id,
+            'brand_id'          => $request->brand_name,
+            'model_id'          => $request->model_name,
+            'varient_model_id'  =>$request->model_variant_name,
+            'type_id'           => $request->vehicle_type,
+            'manufacture_name'  => $request->manufacture_name,
+            'supplier'          => $request->supplier,
+            'quantity'          => $request->quantity,
+            'hsn_no'            => $request->hsn_no,
+            'is_oem'            => $request->oem ?? 0,
+            'is_service'        => $request->is_service ?? 0,
+            'description'       => $request->description,
+            'cost_price'        => $request->cost_price,
+            'item_number'       => $request->item_number,
         ]);
 
         if ($request->hasFile('images')) {

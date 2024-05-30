@@ -45,8 +45,10 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Name</th>
-                                                    <th>Phone Number</th>
                                                     <th>Email</th>
+                                                    <th>Phone Number</th>
+                                                    <th>Address</th>
+                                                    <th>Licence Number</th>
                                                     @canany(['edit customer', 'delete customer'])
                                                         <th>Actions</th>
                                                     @endcanany
@@ -57,8 +59,10 @@
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $customer->first_name . $customer->last_names }}</td>
-                                                        <td>{{ $customer->phone_digicel }}</td>
                                                         <td>{{ $customer->email }}</td>
+                                                        <td>{{ $customer->phone_number }}</td>
+                                                        <td>{{ $customer->address }}</td>
+                                                        <td>{{ $customer->licence_no }}</td>
                                                         @canany(['edit customer', 'delete customer'])
                                                             <td>
                                                                 <div class="btn-group btn-group-sm">

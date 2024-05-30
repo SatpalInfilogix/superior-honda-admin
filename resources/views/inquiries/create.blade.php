@@ -35,7 +35,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="date">Date:</label>
                                                 <div class="col-sm-9">
-                                                    <input type="date" name="date" class="form-control m-0"
+                                                    <input type="text" name="date" class="form-control m-0"
                                                         id="datepicker">
                                                 </div>
                                             </div>
@@ -72,9 +72,9 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label" for="lic_no">Lic No:</label>
+                                                <label class="col-sm-3 col-form-label" for="licence_no">Licence No:</label>
                                                 <div class="col-sm-9">
-                                                    <input class="form-control m-0" id="lic_no" name="lic_no"
+                                                    <input class="form-control m-0" id="licence_no" name="licence_no"
                                                         type="text">
                                                 </div>
                                             </div>
@@ -151,7 +151,7 @@
                                                 <label class="col-sm-3 col-form-label" for="dob">Date of
                                                     Birth:</label>
                                                 <div class="col-sm-9">
-                                                    <input type="date" class="form-control m-0" id="date"
+                                                    <input type="text" class="form-control m-0" id="datepicker2"
                                                         name="dob">
                                                 </div>
                                             </div>
@@ -357,7 +357,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="date">Date:</label>
                                                 <div class="col-sm-9">
-                                                    <input class="form-control m-0 " id="date" name="sign_date" type="date">
+                                                    <input type="text" class="form-control m-0" name="sign_date" id="date">
                                                 </div>
                                             </div>
                                         </div>
@@ -394,39 +394,19 @@
             $('form').validate({
                 rules: {
                     name: "required",
-                    date: "required",
                     mileage: "required",
-                    vehicle: "required",
-                    year: "required",
-                    lic_no: "required",
-                    address: "required",
-                    returning: "required",
-                    color: "required",
+                    licence_no: "required",
                     tel_digicel: "required",
-                    email: "required",
                     tel_lime: "required",
                     dob: "required",
-                    chassis: "required",
-                    engine: "required",
-                    sign_date: "required",
                 },
                 messages: {
                     name: "Please enter name",
-                    date: "Please enter date",
                     mileage: "Please enter mileage",
-                    vehicle: "Please enter vehicle",
-                    year: "Please enter year",
-                    lic_no: "Please enter lic no",
-                    address: "Please enter address",
-                    returning: "Please enter returning",
-                    color: "Please enter color",
+                    licence_no: "Please enter licence no",
                     tel_digicel: "Please enter tel digicel",
-                    email: "Please enter email",
                     tel_lime:"Please enter tel lime",
                     dob: "Please enter date of birth",
-                    chassis: "Please enter chassis",
-                    engine:"Please enter engine",
-                    sign_date: "Please enter sign date",
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",

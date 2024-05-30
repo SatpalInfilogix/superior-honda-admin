@@ -18,7 +18,7 @@ class Product extends Model
 
     public function category()
     {
-        return $this->belongsTo(VehicleCategory::class);
+        return $this->belongsTo(VehicleCategory::class, 'vehicle_category_id', 'id');
     }
 
     public function brand()

@@ -42,28 +42,33 @@
 @endisset
 
 @isset($textEditor)
-        <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
 @endisset
 
 @isset($multipleImage)
-<script>
-    var fileArr = [];
+    <script>
+        var fileArr = [];
         $("#images").change(function() {
             if (fileArr.length > 0) fileArr = [];
-                $('#image_preview_new').html("");
-                var total_file = document.getElementById("images").files;
-                if (!total_file.length) return;
-                for (var i = 0; i < total_file.length; i++) {
-                    if (total_file[i].size > 1048576) {
-                        return false;
-                    } else {
-                        fileArr.push(total_file[i]);
-                        $('#image_preview_new').append("<div class='img-div' id='img-div"+i+"'><img src='"+URL.createObjectURL(event.target.files[i])+"' class='img-responsive image' style='height:141px; width:150px' title='"+total_file[i].name+"'><div class='middle'><button id='action-icon' value='img-div"+i+"' class='btn btn-danger' role='"+total_file[i].name+"'><i class='fa fa-trash'></i></button></div></div>");
-                    }
+            $('#image_preview_new').html("");
+            var total_file = document.getElementById("images").files;
+            if (!total_file.length) return;
+            for (var i = 0; i < total_file.length; i++) {
+                if (total_file[i].size > 1048576) {
+                    return false;
+                } else {
+                    fileArr.push(total_file[i]);
+                    $('#image_preview_new').append("<div class='img-div' id='img-div" + i + "'><img src='" + URL
+                        .createObjectURL(event.target.files[i]) +
+                        "' class='img-responsive image' style='height:141px; width:150px' title='" + total_file[
+                            i].name + "'><div class='middle'><button id='action-icon' value='img-div" + i +
+                        "' class='btn btn-danger' role='" + total_file[i].name +
+                        "'><i class='fa fa-trash'></i></button></div></div>");
                 }
+            }
         });
 
-        $('body').on('click', '#action-icon', function(evt){
+        $('body').on('click', '#action-icon', function(evt) {
             var divName = this.value;
             var fileName = $(this).attr('role');
             $(`#${divName}`).remove();
@@ -84,59 +89,81 @@
             return b.files
         }
 
-    $('#category_id').on('change', function() {
-        var category_id = this.value;
-        $("#brand_name").html('');
-        $("#vehicle_type").html('');
-        $("#model_name").html('<option value="">Select Model</option>');
-        $("#model_variant_name").html('<option value="">Select Model Variant</option>');
-        $.ajax({
-            url: "{{ url('get-vehicle-brand') }}",
-            type: "POST",
-            data: {
-                category_id: category_id,
-                _token: '{{ csrf_token() }}'
-            },
-            dataType: 'json',
-            success: function(result) {
-                $('#brand_name').html(result.options);
-                $("#vehicle_type").html(result.vehicleTypeOption);
-            }
+        $('#vehicle_category_id').on('change', function() {
+            var category_id = this.value;
+            $("#brand_name").html('');
+            $("#vehicle_type").html('');
+            $("#model_name").html('<option value="">Select Model</option>');
+            $("#model_variant_name").html('<option value="">Select Model Variant</option>');
+            $.ajax({
+                url: "{{ url('get-vehicle-brand') }}",
+                type: "POST",
+                data: {
+                    category_id: category_id,
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: 'json',
+                success: function(result) {
+                    $('#brand_name').html(result.options);
+                    $("#vehicle_type").html(result.vehicleTypeOption);
+                }
+            });
         });
-    });
 
-    $('#brand_name').on('change', function() {
-        var brand_id = this.value;
-        $("#model_name").html('');
-        $.ajax({
-            url: "{{ url('get-vehicle-model') }}",
-            type: "POST",
-            data: {
-                brand_id: brand_id,
-                _token: '{{ csrf_token() }}'
-            },
-            dataType: 'json',
-            success: function(result) {
-                $('#model_name').html(result.options);
-            }
+        $('#brand_name').on('change', function() {
+            var brand_id = this.value;
+            $("#model_name").html('');
+            $.ajax({
+                url: "{{ url('get-vehicle-model') }}",
+                type: "POST",
+                data: {
+                    brand_id: brand_id,
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: 'json',
+                success: function(result) {
+                    $('#model_name').html(result.options);
+                }
+            });
         });
-    });
 
-    $('#model_name').on('change', function() {
-        var model_id = this.value;
-        $("#model_variant_name").html('');
-        $.ajax({
-            url: "{{ url('get-vehicle-model-variant') }}",
-            type: "POST",
-            data: {
-                model_id: model_id,
-                _token: '{{ csrf_token() }}'
-            },
-            dataType: 'json',
-            success: function(result) {
-                $('#model_variant_name').html(result.options);
-            }
+        $('#model_name').on('change', function() {
+            var model_id = this.value;
+            $("#model_variant_name").html('');
+            $.ajax({
+                url: "{{ url('get-vehicle-model-variant') }}",
+                type: "POST",
+                data: {
+                    model_id: model_id,
+                    _token: '{{ csrf_token() }}'
+                },
+                dataType: 'json',
+                success: function(result) {
+                    $('#model_variant_name').html(result.options);
+                }
+            });
         });
-    });
-</script>
+    </script>
+@endisset
+
+@isset($imagePreview)
+    <script>
+        document.getElementById('imageInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const preview = document.getElementById('image_preview');
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = function() {
+                    preview.innerHTML = '';
+                    preview.appendChild(img);
+                };
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
 @endisset

@@ -70,10 +70,10 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group row">
-                                                <label class="col-sm-3 col-form-label" for="lic_no">Lic No:</label>
+                                                <label class="col-sm-3 col-form-label" for="licence_no">Licence No:</label>
                                                 <div class="col-sm-9">
-                                                    <input class="form-control m-0" id="lic_no" name="lic_no"
-                                                        value="{{ $inquiry->lic_no }}" type="text" readonly>
+                                                    <input class="form-control m-0" id="licence_no" name="licence_no"
+                                                        value="{{ $inquiry->licence_no }}" type="text" readonly>
                                                 </div>
                                             </div>
                                         </div>

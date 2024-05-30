@@ -78,6 +78,8 @@
                     form.submit();
                 }
             });
-        })
+        });
     </script>
 @endsection
+
+

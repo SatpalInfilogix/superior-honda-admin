@@ -53,9 +53,9 @@ class CustomerController extends Controller
 
         $request->validate([
             'first_name'    => 'required',
-            'last_name'     => 'required',
-            'email'         => 'required',
-            'phone_digicel' => 'required'
+            // 'last_name'     => 'required',
+            // 'email'         => 'required',
+            'phone_number' => 'required'
         ]);
 
         $user = User::orderByDesc('cus_code')->first();
@@ -74,10 +74,13 @@ class CustomerController extends Controller
             'email'              => $request->email,
             'cus_code'           => $cusCode,
             'date_of_birth'      => $request->date_of_birth,
-            'phone_digicel'      => $request->phone_digicel,
-            'phone_lime'         => $request->phone_lime,
-            'lic_no'             => $request->lic_no,
             'address'            => $request->address,
+            'info'               => $request->info,
+            'phone_number'       => $request->phone_number,
+            'phone_lime'         => $request->phone_lime,
+            'licence_no'         => $request->licence_no,
+            'company_info'       => $request->company_info,
+            'city'               => $request->city,
             'password'           => Hash::make(Str::random(10)),
         ])->assignRole('Customer');
 
@@ -116,8 +119,8 @@ class CustomerController extends Controller
 
         $request->validate([
             'first_name'    => 'required',
-            'last_name'     => 'required',
-            'phone_digicel' => 'required'
+            // 'last_name'     => 'required',
+            'phone_number' => 'required'
         ]);
 
         $customer = User::where('id', $customer->id)->first();
@@ -126,10 +129,13 @@ class CustomerController extends Controller
             'first_name'         => $request->first_name,
             'last_name'          => $request->last_name,
             'date_of_birth'      => $request->date_of_birth,
-            'phone_digicel'      => $request->phone_digicel,
+            'phone_number'       => $request->phone_number,
             'phone_lime'         => $request->phone_lime,
-            'lic_no'             => $request->lic_no,
+            'licence_no'         => $request->licence_no,
             'address'            => $request->address,
+            'info'               => $request->info,
+            'company_info'       => $request->company_info,
+            'city'               => $request->city,
         ]);
 
         return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
@@ -166,7 +172,7 @@ class CustomerController extends Controller
         $data = array_map('str_getcsv', file($path));
         unset($data[0]);
         $header = [
-            'first_name', 'last_name', 'email', 'phone_digicel','phone_lime','dob','lic_no','address'
+            'first_name', 'last_name', 'email', 'phone_digicel','phone_lime','dob','licence_no','address'
         ];
 
         $errors = [];
@@ -203,7 +209,7 @@ class CustomerController extends Controller
                 'phone_digicel'      => $row['phone_digicel'],
                 'phone_lime'         => $row['phone_lime'],
                 'date_of_birth'      => $row['dob'],
-                'lic_no'             => $row['lic_no'],
+                'licence_no'         => $row['licence_no'],
                 'address'            => $row['address'],
                 'cus_code'           => $cus_code,
                 'password'           => Hash::make(Str::random(10)),

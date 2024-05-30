@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-{{-- <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet"> --}}
-
     <div class="pcoded-inner-content">
         <div class="main-body">
             <div class="page-wrapper">
@@ -25,6 +23,21 @@
                                         @method('PATCH')
                                         <div class="row">
                                             <div class="col-md-6 form-group">
+                                                <x-input-text name="product_code" label="Product Code" value="{{ old('product_code', $product->product_code) }}"></x-input-text>
+                                            </div>
+
+                                            <div class="col-md-6 form-group">
+                                                <label for="category_id">Category</label>
+                                                <select name="category_id" id="category_id" class="form-control">
+                                                    <option value="" selected disabled>Select Category</option>
+                                                    @foreach($categories as $category)
+                                                        <option value="{{ $category->id }}" @selected($product->category_id == $category->id)>{{ $category->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
                                                 <x-input-text name="product_name" label="Product Name" value="{{ old('product_name', $product->product_name) }}"></x-input-text>
                                             </div>
 
@@ -34,11 +47,11 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                            <label for="category_id">Category</label>
-                                            <select name="category_id" id="category_id" class="form-control">
-                                                <option value="" selected disabled>Select Category</option>
-                                                @foreach($categories as $category)
-                                                    <option value="{{ $category->id }}" @selected($product->category_id == $category->id)>{{ $category->name }}</option>
+                                            <label for="vehicle_category_id">Vehicle Category</label>
+                                            <select name="vehicle_category_id" id="vehicle_category_id" class="form-control">
+                                                <option value="" selected disabled>Select Vehicle Category</option>
+                                                @foreach($vehicleCategories as $vehicleCategory)
+                                                    <option value="{{ $vehicleCategory->id }}" @selected($product->vehicle_category_id == $vehicleCategory->id)>{{ $vehicleCategory->name }}</option>
                                                 @endforeach
                                             </select>
                                             </div>
@@ -96,20 +109,34 @@
                                             <div class="col-md-6 form-group">
                                                 <x-input-text name="supplier" label="Supplier" value="{{ old('supplier', $product->supplier) }}"></x-input-text>
                                             </div>
-
                                         </div>
+
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <label for="" class>Quantity</label>
-                                                <input type="number" id="quantity" name="quantity" class="form-control"value="{{ old('quantity',$product->quantity) }}">
+                                                <label for="cost_price" class>Cost Price</label>
+                                                <input type="number" id="price" name="cost_price" class="form-control"value="{{ old('cost_price', $product->cost_price) }}">
                                             </div>
 
+                                            <div class="col-md-6 form-group">
+                                                <label for="item_number" class>Item Number</label>
+                                                <input type="number" id="item_number" name="item_number" class="form-control"value="{{ old('item_number', $product->item_number) }}">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label for="model_name" class>Quantity</label>
+                                                <input type="number" id="quantity" name="quantity" class="form-control"value="{{ old('quantity', $product->quantity) }}">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label for="branch">Description</label>
+                                                <textarea id="description" name="description" class="form-control" rows="2" cols="50">{{ $product->description }}</textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
                                             <div class="col-md-3 form-group">
                                                 <label for="oem" class>OEM</label>
-                                                {{-- <div class="col-md-6 form-group">
-                                                    <input data-id="{{$product->id}}" class="toggle-class" type="checkbox" data-onstyle="danger"        
-                                                        data-offstyle="info" data-toggle="toggle" data-on="Pending" data-off="Approved" {{$product->is_oem == 1 ?'checked':''}}>
-                                                </div> --}}
                                                 <input type="checkbox" id="oem" name="oem" value="{{ $product->is_oem }}" @checked($product->is_oem == 1) onclick='oemClick(this);'>
                                             </div>
 
@@ -152,7 +179,6 @@
         </div>
     </div>
     <x-include-plugins multipleImage></x-include-plugins>
-    {{-- <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script> --}}
 
     <script>
         let deletedImageId= [];
