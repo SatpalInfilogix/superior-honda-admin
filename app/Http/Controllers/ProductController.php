@@ -25,7 +25,7 @@ class ProductController extends Controller
         if(!Gate::allows('view product')) {
             abort(403);
         }
-        $products = Product::latest()->get();
+        $products = Product::with('category')->latest()->get();
         foreach($products as $key=> $product) {
             $genertorHTML = new BarcodeGeneratorHTML();
             $products[$key]['barcode'] = $genertorHTML->getBarcode($product->product_code, $genertorHTML::TYPE_CODE_128);

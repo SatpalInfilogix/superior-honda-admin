@@ -63,7 +63,7 @@
                                                             P- {{$product->product_code}}
                                                         </td>
                                                         <td>{{ $product->manufacture_name }}</td>
-                                                        <td>{{ $product->category->name }}</td>
+                                                        <td>{{  optional($product->category)->name }}</td>
                                                         <td>{{ optional($product->brand)->brand_name }}</td>
                                                         <td>{{ optional($product->model)->model_name }}</td>
                                                         <td>{{ optional($product->variant)->variant_name }}</td>
