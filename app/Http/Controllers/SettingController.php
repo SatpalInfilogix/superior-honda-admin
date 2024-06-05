@@ -35,7 +35,7 @@ class SettingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(setting $setting)
+    public function show(Setting $setting)
     {
         //
     }
@@ -43,7 +43,7 @@ class SettingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(setting $setting)
+    public function edit(Setting $setting)
     {
         //
     }
@@ -51,7 +51,7 @@ class SettingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, setting $setting)
+    public function update(Request $request, Setting $setting)
     {
         //
     }
@@ -59,7 +59,7 @@ class SettingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(setting $setting)
+    public function destroy(Setting $setting)
     {
         //
     }
