@@ -70,3 +70,7 @@ img.preview-img {
 .img-div:hover .middle {
     opacity: 1;
 }
+
+.main__logo--img {
+    width: 100px; height: 50px;
+}

@@ -1,10 +1,18 @@
 @extends('layouts.auth')
 
 @section('content')
+<?php 
+$logo_url= DB::table('settings')->where('key','logo')->first();
+if($logo_url)
+{$logo_url = $logo_url->value;}
+else{
+    $logo_url = '';
+}
+?>
     <form method="POST" action="{{ route('authenticate') }}" class="md-float-material form-material">
         @csrf
         <div class="text-center">
-            <img src="{{ asset('assets/images/logo.png') }}">
+            <img class="main__logo--img" src="@if($logo_url) {{env('APP_URL')}}/{{$logo_url}} @else{{ asset('assets/images/logo.png') }}@endif">
         </div>
 
         <div class="auth-box">
