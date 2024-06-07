@@ -172,7 +172,7 @@ class CustomerController extends Controller
         $data = array_map('str_getcsv', file($path));
         unset($data[0]);
         $header = [
-            'first_name', 'last_name', 'email', 'phone_digicel','phone_lime','dob','licence_no','address'
+            'first_name', 'last_name', 'email', 'phone_number','designation', 'additional_details','dob'
         ];
 
         $errors = [];
@@ -191,7 +191,7 @@ class CustomerController extends Controller
                 'first_name' => 'required',
                 'last_name'  => 'required',
                 'email'      => 'required|email|unique:users,email',
-                'phone_digicel' => 'required',
+                'phone_number' => 'required',
             ],
             [
                 'email.unique' => 'The email '. $row['email'] .' has already been taken.',
@@ -206,11 +206,10 @@ class CustomerController extends Controller
                 'first_name'         => $row['first_name'],
                 'last_name'          => $row['last_name'],
                 'email'              => $row['email'],
-                'phone_digicel'      => $row['phone_digicel'],
-                'phone_lime'         => $row['phone_lime'],
+                'phone_number'       => $row['phone_number'],
+                'designation'        => $row['designation'],
+                'additional_details' => $row['additional_details'],
                 'date_of_birth'      => $row['dob'],
-                'licence_no'         => $row['licence_no'],
-                'address'            => $row['address'],
                 'cus_code'           => $cus_code,
                 'password'           => Hash::make(Str::random(10)),
             ])->assignRole('Customer');

@@ -22,7 +22,9 @@
                                 <div class="card-header">
                                     <h5>Customer Management</h5>
                                     <div class="float-right">
-
+                                        <a href="{{ asset('assets/sample-customer/customer.csv') }}"
+                                            class="btn btn-primary primary-btn btn-md"><i class="fa fa-download"></i>Customer Sample File
+                                        </a>
                                         <div class="file-button btn btn-primary primary-btn">
                                             <form action="{{ route('customers.import') }}" method="POST"
                                                 enctype="multipart/form-data">
