@@ -50,7 +50,7 @@ ul.chosen-choices {
                                                 <div class="autocomplete-items"></div>
                                             </div>
                                         </div> -->
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="menu">Start Date</label>
                                                 <input type="text" name="start_date" id="datepicker" class="form-control" value="{{ old('start_date') }}">
@@ -59,7 +59,7 @@ ul.chosen-choices {
                                                 <label for="submenu">End Date</label>
                                                 <input type="text" name="end_date" id="datepicke" class="form-control" value="{{ old('end_date') }}">
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="add-icon">Service Icon</label>
@@ -112,8 +112,8 @@ ul.chosen-choices {
         });
 
         $(document).ready(function () {
-            $('#datepicker').datepicker();
-            $('#datepicke').datepicker();
+            // $('#datepicker').datepicker();
+            // $('#datepicke').datepicker();
 
             $('body').on('input', '.model-autocomplete', function () {
                 var input = $(this).val().trim();
@@ -180,8 +180,8 @@ ul.chosen-choices {
                     name: "required",
                     price: "required",
                     // manufacture_name: "required",
-                    start_date: "required",
-                    end_date: "required",
+                    // start_date: "required",
+                    // end_date: "required",
                     // model: "required",
                     short_description: "required",
                     description: "required",
@@ -193,8 +193,8 @@ ul.chosen-choices {
                     name: "Please enter name",
                     price: "Please enter price",
                     // manufacture_name: "Please enter manufacture name",
-                    start_date: "Please enter start date",
-                    end_date:  "Please enter end date",
+                    // start_date: "Please enter start date",
+                    // end_date:  "Please enter end date",
                     // model: "Please enter model",
                     short_description: "Please enter short description",
                     description: "Please enter description",
