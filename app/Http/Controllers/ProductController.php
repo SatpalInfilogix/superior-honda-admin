@@ -14,6 +14,7 @@ use App\Models\VehicleModelVariant;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Picqer\Barcode\BarcodeGeneratorHTML;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -242,30 +243,32 @@ class ProductController extends Controller
         $data = array_map('str_getcsv', file($path));
         unset($data[0]);
         $header = [
-            'first_name', 'last_name', 'email', 'designation','additional_details','dob','role'
+            'product_code', 'category_id', 'product_name', 'manufacture_name', 'supplier', 'quantity', 'vehicle_category_id', 'description', 'cost_price', 'item_number'
         ];
 
         $errors = [];
-        $user = User::orderByDesc('emp_id')->first();
-        if (!$user) {
-            $empId =  'EMP0001';
-        } else {
-            $numericPart = (int)substr($user->emp_id, 3);
-            $nextNumericPart = str_pad($numericPart + 1, 4, '0', STR_PAD_LEFT);
-            $empId = 'EMP' . $nextNumericPart;
-        }
-
         foreach ($data as $key => $row) {
             $row = array_combine($header, $row);
-
             $validator = Validator::make($row, [
-                'first_name' => 'required',
-                'last_name'  => 'required',
-                'email'      => 'required|email|unique:users,email',
-                'role'       => 'required',
-            ],
-            [
-                'email.unique' => 'The email '. $row['email'] .' has already been taken.',
+                'product_code' => 'required',
+                'category_id'  => [
+                    'required',
+                    function ($attribute, $value, $fail) {
+                        if (!ProductCategory::where('id', $value)->exists()) {
+                            $fail('The selected category id '. $value .' is invalid for row.');
+                        }
+                    }
+                ],
+                'product_name'       => 'required',
+                'manufacture_name'   => 'required',
+                'vehicle_category_id'  => [
+                    'required',
+                    function ($attribute, $value, $fail) {
+                        if (!VehicleCategory::where('id', $value)->exists()) {
+                            $fail('The selected vehicle category id '. $value .' is invalid.');
+                        }
+                    }
+                ]
             ]);
 
             if ($validator->fails()) {
@@ -273,22 +276,24 @@ class ProductController extends Controller
                 continue;
             }
 
-            User::create([
-                'first_name'         => $row['first_name'],
-                'last_name'          => $row['last_name'],
-                'email'              => $row['email'],
-                'designation'        => $row['designation'],
-                'emp_id'             => $empId,
-                'password'           => Hash::make(Str::random(10)),
-                'additional_details' => $row['additional_details'],
-                'date_of_birth'      => $row['dob'],
-            ])->assignRole($row['role']);
+            Product::create([
+                'product_code'         => $row['product_code'],
+                'category_id'          => $row['category_id'],
+                'product_name'         => $row['product_name'],
+                'manufacture_name'     => $row['manufacture_name'],
+                'supplier'             => $row['supplier'],
+                'quantity'             => $row['quantity'],
+                'vehicle_category_id'  => $row['vehicle_category_id'],
+                'description'          => $row['description'],
+                'cost_price'           => $row['cost_price'],
+                'item_number'          => $row['item_number'],
+            ]);
         }
 
         if (!empty($errors)) {
-            return redirect()->route('users.index')->with('error', $errors);
+            return redirect()->route('products.index')->with('error', $errors);
         }
 
-        return redirect()->route('users.index')->with('success', 'CSV file imported successfully.');
+        return redirect()->route('products.index')->with('success', 'CSV file imported successfully.');
     }
 }

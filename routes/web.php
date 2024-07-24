@@ -63,3 +63,12 @@ Route::post('products/import', [ProductController::class, 'import'])->name('prod
 Route::post('customers/import', [CustomerController::class, 'import'])->name('customers.import');  //import customers csv file
 
 Route::post('general-setting',[SettingController::class, 'generalSetting'])->name('settings.general-setting');
+
+Route::get('download-product-sample', function () {
+    $file = public_path('assets/sample-product/product.csv');
+    return Response::download($file);
+});
+Route::get('download-customer-sample', function () {
+    $file = public_path('assets/sample-customer/customer.csv');
+    return Response::download($file);
+});

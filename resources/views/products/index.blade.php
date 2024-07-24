@@ -12,12 +12,22 @@
                             @if (session('success'))
                                 <x-alert message="{{ session('success') }}"></x-alert>
                             @endif
+                            @if (session('error'))
+                            @foreach (session('error') as $key => $error)
+                                @foreach ($error as $errorKey => $value)
+                                    <x-alert type="error" message="{{ $value }}"></x-alert>
+                                @endforeach
+                            @endforeach
+                        @endif
 
                             <div class="card">
                                 <div class="card-header">
                                     <h5>Products</h5>
 
                                     <div class="float-right">
+                                        <a href="{{ asset('assets/sample-product/product.csv') }}"
+                                                class="btn btn-primary primary-btn btn-md"><i class="fa fa-download"></i>Product Sample File
+                                        </a>
                                         <div class="file-button btn btn-primary primary-btn">
                                             <form action="{{ route('products.import') }}" method="POST"
                                                 enctype="multipart/form-data">
@@ -109,6 +119,10 @@
     <x-include-plugins dataTable></x-include-plugins>
     <script>
         $(function() {
+            $('[name="file"]').change(function() {
+                $(this).parents('form').submit();
+            });
+
             $('#products-list').DataTable();
         })
     </script>

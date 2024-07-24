@@ -27,7 +27,14 @@
 
     @yield('head')
 </head>
-
+<?php 
+$logo_url= DB::table('settings')->where('key','logo')->first();
+if($logo_url)
+{$logo_url = $logo_url->value;}
+else{
+    $logo_url = '';
+}
+?>
 <body>
     <div class="loader-bg">
         <div class="loader-bar"></div>
@@ -41,7 +48,11 @@
                 <div class="navbar-wrapper">
                     <div class="navbar-logo">
                         <a href="{{ route('dashboard.index') }}">
-                            SUPERIOR HONDA
+                        @if($logo_url) 
+                        <img class="main__logo--img" src="{{env('APP_URL')}}/{{$logo_url}}"/>  
+                        @else
+                            Superior Honda
+                        @endif
                         </a>
                         <a class="mobile-menu" id="mobile-collapse" href="#!">
                             <i class="feather icon-menu icon-toggle-right"></i>
