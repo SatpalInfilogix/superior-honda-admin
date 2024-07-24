@@ -118,7 +118,7 @@ class VehicleModelVariantController extends Controller
         ]);
 
         $oldImage = NULL;
-        $vehicleModelVariant = VehicleModelVariant::findOrFail($vehicleModelVariant->id)->first();
+        $vehicleModelVariant = VehicleModelVariant::where('id',$vehicleModelVariant->id)->first();
         if($vehicleModelVariant != '') {
             $oldImage = $vehicleModelVariant->model_variant_image;
         }

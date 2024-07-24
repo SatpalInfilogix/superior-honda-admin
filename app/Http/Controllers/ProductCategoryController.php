@@ -77,23 +77,16 @@ class ProductCategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $category = ProductCategory::find($id);
-
         if($request->hasfile('image')){
-
             $file = $request->file('image');
             $filename = time().'.'.$file->getClientOriginalExtension();
             $file->move(public_path('uploads/product-categories-image/'), $filename);
-
             $category->name = $request->name;
             $category->category_image = 'uploads/product-categories-image/'. $filename;
             $category->save();
-
         }else{
-
             $category->name = $request->name; 
-
         } 
-
         $category->save();
 
         return redirect()->route('product-categories.index')->with('success', 'Product category update successfully');

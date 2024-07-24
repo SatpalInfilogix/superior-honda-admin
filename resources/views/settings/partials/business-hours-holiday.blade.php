@@ -65,7 +65,7 @@
         <button type="submit" class="btn btn-primary primary-btn">Save</button>
     </form>
 
-    <div class="row mt-5">
+    {{-- <div class="row mt-5">
         <div class="col-xl-2 col-md-12">
             <div id="external-events">
                 <div class="fc-event ui-draggable ui-draggable-handle">
@@ -84,5 +84,5 @@
             <div id='calendar'></div>
 
         </div>
-    </div>
+    </div> --}}
 </div>

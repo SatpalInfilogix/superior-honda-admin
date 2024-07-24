@@ -24,7 +24,7 @@
                                     <div class="float-right">
 
                                         <a href="{{ route('inquiries.create') }}" class="btn btn-primary btn-md primary-btn">Add
-                                            Inquery</a>
+                                            Inquiry</a>
                                     </div>
                                 </div>
                                 <div class="card-block">
@@ -37,6 +37,7 @@
                                                     <th>Vehicle</th>
                                                     <th>Year</th>
                                                     <th>Date</th>
+                                                    <th>Status</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -48,6 +49,7 @@
                                                         <td>{{ $inquiry->vehicle }}</td>
                                                         <td>{{ $inquiry->year }}</td>
                                                         <td>{{ $inquiry->date }}</td>
+                                                        <td class="status-column" data-id="{{ $inquiry->id }}">{{ $inquiry->status }}</td>
                                                         <td>
                                                             <div class="btn-group btn-group-sm">
                                                                 <a href="{{ route('inquiries.edit', $inquiry->id) }}"
@@ -69,6 +71,15 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
+                                        <form id="status-form" style="display:none;">
+                                            @csrf
+                                            <select name="status">
+                                                <option value="In Progress">In Progress</option>
+                                                <option value="Completed">Completed</option>
+                                            </select>
+                                            <button type="submit">Save</button>
+                                            <button type="button" id="cancel-btn">Cancel</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -89,6 +100,56 @@
             });
 
             $('#inquiries-list').DataTable();
-        })
+
+            let appUrl = '{{ env("APP_URL") }}';
+
+            function clickHandler() {
+                var $this = $(this);
+                var inquiryId = $this.data('id');
+                var currentStatus = $this.text().trim();
+                var $form = $('#status-form');
+                var $originalContent = $this.html(); // Save the original content
+
+                $this.off('click');
+
+                $this.html($form.show());
+
+                $form.find('select[name="status"]').val(currentStatus);
+
+                $(document).on('click','#cancel-btn', function() {
+                    $form.hide();
+                    console.log($originalContent);
+                    $this.html($originalContent); // Restore the original content
+                    $this.on('click', clickHandler);
+                });
+
+                $form.on('submit', function(e) {
+                    e.preventDefault();
+                    var newStatus = $form.find('select[name="status"]').val();
+
+                    $.ajax({
+                        url: appUrl + '/inquiries/' + inquiryId + '/update-status',
+                        method: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            status: newStatus
+                        },
+                        success: function(response) {
+                            if(response.success) {
+                                alert('Status updated successfully');
+                                location.reload();
+                            } else {
+                                alert('Error updating status');
+                                $form.hide();
+                                $this.html($originalContent); // Restore the original content
+                                $this.on('click', clickHandler);
+                            }
+                        }
+                    });
+                });
+            }
+
+            $('.status-column').on('click', clickHandler);
+        });
     </script>
 @endsection

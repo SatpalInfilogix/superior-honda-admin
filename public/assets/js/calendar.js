@@ -11,6 +11,7 @@ $(document).ready(function () {
             revertDuration: 0
         });
     });
+
     $('[href="#holidays"]').on('click', function () {
         setTimeout(function () {
             $('#calendar').fullCalendar({
@@ -19,78 +20,65 @@ $(document).ready(function () {
                     center: 'title',
                     right: 'month,agendaWeek,agendaDay,listMonth'
                 },
-                defaultDate: '2018-09-12',
+                defaultDate:  new Date(),
                 navLinks: true,
                 businessHours: true,
                 editable: true,
                 droppable: true,
-                drop: function () {
+                drop: function (date, jsEvent, ui) {
+                    var originalEventObject = $(this).data('event');
+                    var copiedEventObject = $.extend({}, originalEventObject);
+
+                    copiedEventObject.start = date.format();
+
+                    $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+
+                    var eventName = copiedEventObject.title;
+                     var eventDate = moment(copiedEventObject.start).format('YYYY-MM-DDTHH:mm:ss'); // Correct format
+
+                    // AJAX call to save the event name and date
+                    $.ajax({
+                        url: 'http://localhost/hadmin-1/public/save-event',
+                        method: 'POST',
+                        data: {
+                            eventName: eventName,
+                            eventDate: eventDate,
+                             _token: $('meta[name="csrf-token"]').attr('content') // CSRF token
+                        },
+                        success: function (response) {
+                            alert('Event saved successfully.');
+                        },
+                        error: function () {
+                            alert('Error saving event.');
+                        }
+                    });
+
                     if ($('#checkbox2').is(':checked')) {
                         $(this).remove();
                     }
                 },
-                events: [{
-                    title: 'Business Lunch',
-                    start: '2018-09-03T13:00:00',
-                    constraint: 'businessHours',
-                    borderColor: '#ff5252',
-                    backgroundColor: '#ff5252',
-                    textColor: '#fff'
-                }, {
-                    title: 'Meeting',
-                    start: '2018-09-13T11:00:00',
-                    constraint: 'availableForMeeting',
-                    editable: true,
-                    borderColor: '#448aff',
-                    backgroundColor: '#448aff',
-                    textColor: '#fff'
-                }, {
-                    title: 'Conference',
-                    start: '2018-09-18',
-                    end: '2018-09-20',
-                    borderColor: '#9ccc65',
-                    backgroundColor: '#9ccc65',
-                    textColor: '#fff'
-                }, {
-                    title: 'Party',
-                    start: '2018-09-29T20:00:00',
-                    borderColor: '#FFB64D',
-                    backgroundColor: '#FFB64D',
-                    textColor: '#fff'
-                }, {
-                    id: 'availableForMeeting',
-                    start: '2018-09-11T10:00:00',
-                    end: '2018-09-11T16:00:00',
-                    rendering: 'background',
-                    borderColor: '#ab7967',
-                    backgroundColor: '#ab7967',
-                    textColor: '#fff'
-                }, {
-                    id: 'availableForMeeting',
-                    start: '2018-09-13T10:00:00',
-                    end: '2018-09-13T16:00:00',
-                    rendering: 'background',
-                    borderColor: '#39ADB5',
-                    backgroundColor: '#39ADB5',
-                    textColor: '#fff'
-                }, {
-                    start: '2018-09-24',
-                    end: '2018-09-28',
-                    overlap: false,
-                    rendering: 'background',
-                    borderColor: '#FFB64D',
-                    backgroundColor: '#FFB64D',
-                    color: '#d8d6d6'
-                }, {
-                    start: '2018-09-06',
-                    end: '2018-09-08',
-                    overlap: false,
-                    rendering: 'background',
-                    borderColor: '#ab7967',
-                    backgroundColor: '#ab7967',
-                    color: '#d8d6d6'
-                }]
+                events: [
+                    // Your predefined events here...
+                ]
             });
         }, 350);
     });
+
+    // Event click functionality
+    $('#external-events').on('click', '.fc-event', function () {
+        var $this = $(this);
+        var currentText = $this.text().trim();
+        $this.html(`<input type="text" class="edit-event-input" value="${currentText}"> <button class="save-event-button">Save</button>`);
+
+        $this.find('.save-event-button').on('click', function () {
+            var newEventName = $this.find('.edit-event-input').val().trim();
+            if (newEventName === '') {
+                alert('Event name cannot be empty.');
+                return;
+            }
+
+            $this.text(newEventName); // Update the text of the event
+        });
+    });
 });
+

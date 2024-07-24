@@ -28,7 +28,7 @@
                                         <div class="row">
                                             <div class="col-md-12 form-group">
                                                 <label for="image" class>Image</label>
-                                                <input type="file" name="image" id="imageInput" class="form-control" required>
+                                                <input type="file" name="image" id="imageInput" class="form-control">
                                                 <div id="image_preview"><img src="{{ asset($product_category->category_image) }}"></div>
                                             </div>
                                         </div>

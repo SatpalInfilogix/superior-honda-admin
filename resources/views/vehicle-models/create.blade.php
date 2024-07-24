@@ -47,6 +47,7 @@
                                                 <input type="file" name="model_image" class="custom-file-input" id="add-model-image">
                                                 <label class="custom-file-label" for="add-car-image">Choose Car Image</label>
                                             </div>
+                                            <img src="" id="image_preview" height="50"width="50" name="image" hidden>
                                         </div> 
                     
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
@@ -62,6 +63,18 @@
 
     <script>
         $(function() {
+            $('#add-model-image').change(function() {
+                var input = this;
+                if (input.files && input.files[0]) {
+                    $('#image_preview').prop('hidden', false);
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#image_preview').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
+
             $('#category_id').on('change', function() {
                 var category_id = this.value;
                 $("#brand_name").html('');

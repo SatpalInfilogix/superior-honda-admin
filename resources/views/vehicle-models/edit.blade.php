@@ -53,6 +53,13 @@
                                                 <input type="file" name="model_image" class="custom-file-input" id="add-model-image">
                                                 <label class="custom-file-label" for="add-model-image">Choose Model Image</label>
                                             </div>
+                                            <div id="imagePreview">
+                                                @if ($vehicleModel->model_image)
+                                                    <img src="{{ asset($vehicleModel->model_image) }}" id="preview-Img" class="img-preview" width="50" height="50">
+                                                @else
+                                                    <img src="" id="preview-Img" height="50" width="50" name="image" hidden>
+                                                @endif
+                                            </div>
                                         </div>  
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
@@ -66,6 +73,21 @@
     </div>
 
     <script>
+        $(document).ready(function() {
+            $('#add-model-image').change(function() {
+                var file = this.files[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#imagePreview').html(
+                            '<img class="preview-img" width="50px" height="50px" src="' + e.target
+                            .result + '" alt="Selected Image">');
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
         $(function() {
             $('#category').on('change', function() {
                 var category_id = this.value;

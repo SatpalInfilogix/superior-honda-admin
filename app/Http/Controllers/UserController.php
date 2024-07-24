@@ -139,10 +139,10 @@ class UserController extends Controller
         $request->validate([
             'first_name'  => 'required',
             'last_name'   => 'required',
-            'designation' => 'required',
         ]);
 
-        user::where('id', $user->id)->update([
+        $user = User::where('id', $user->id)->first();
+        $user->update([
             'first_name'         => $request->first_name,
             'last_name'          => $request->last_name,
             'branch_id'          => $request->branch,

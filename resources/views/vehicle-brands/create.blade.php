@@ -38,6 +38,7 @@
                                                 <input type="file" name="brand_logo" class="custom-file-input" id="add-brand-logo">
                                                 <label class="custom-file-label" for="add-brand-logo">Choose Brand Logo</label>
                                             </div>
+                                            <img src="" id="image_preview" height="50"width="50" name="image" hidden>
                                         </div>
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
@@ -52,6 +53,18 @@
 
     <script>
         $(function() {
+            $('#add-brand-logo').change(function() {
+                var input = this;
+                if (input.files && input.files[0]) {
+                    $('#image_preview').prop('hidden', false);
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#image_preview').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
+
             $('form').validate({
                 rules: {
                     category_id: "required",

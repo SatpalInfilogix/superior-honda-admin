@@ -108,7 +108,7 @@ class VehicleModelController extends Controller
         ]);
 
         $oldImage = NULL;
-        $vehicleModel = VehicleModel::findOrFail($vehicleModel->id)->first();
+        $vehicleModel = VehicleModel::where('id',$vehicleModel->id)->first();
         if($vehicleModel != '') {
             $oldImage = $vehicleModel->model_image;
         }

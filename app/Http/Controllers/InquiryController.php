@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\inquiry;
+use App\Models\Inquiry;
+use App\Models\Inspection;
 use Illuminate\Http\Request;
 
 class InquiryController extends Controller
@@ -13,7 +14,9 @@ class InquiryController extends Controller
     public function index()
     {
         $inquiries = Inquiry::latest()->get();
-
+        // echo "<pre>";
+        // print_r($inquiries);
+        // die;
         return view('inquiries.index', compact('inquiries'));
     }
 
@@ -76,7 +79,8 @@ class InquiryController extends Controller
             'engine'        => $request->engine,
             'conditions'    => isset($productConditions) ? json_encode($productConditions) : NULL,
             'sign'          => 'uploads/inquiry-signature/'. $filename,
-            'sign_date'     =>  $request->sign_date
+            'sign_date'     => $request->sign_date,
+            'notes'         => $request->notes
         ]);
 
         return redirect()->route('inquiries.index')->with('success', 'Inquiry created successfully.');
@@ -85,7 +89,7 @@ class InquiryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(inquiry $inquiry)
+    public function show(Inquiry $inquiry)
     {
         return view('inquiries.view', compact('inquiry'));
     }
@@ -93,7 +97,7 @@ class InquiryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(inquiry $inquiry)
+    public function edit(Inquiry $inquiry)
     {
         return view('inquiries.edit', compact('inquiry'));
     }
@@ -101,7 +105,7 @@ class InquiryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, inquiry $inquiry)
+    public function update(Request $request, Inquiry $inquiry)
     {
         $productConditions = NULL;
 
@@ -132,7 +136,8 @@ class InquiryController extends Controller
             'engine'        => $request->engine,
             'conditions'    => isset($productConditions) ? json_encode($productConditions) : NULL,
             'sign'          => $inquiry->sign,
-            'sign_date'     => $request->sign_date
+            'sign_date'     => $request->sign_date,
+            'notes'         => $request->notes
         ]);
 
         return redirect()->route('inquiries.index')->with('success', 'Inquiry updated successfully.');
@@ -141,13 +146,89 @@ class InquiryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(inquiry $inquiry)
+    public function destroy(Inquiry $inquiry)
     {
-        $product = inquiry::where('id', $inquiry->id)->delete();
+        $product = Inquiry::where('id', $inquiry->id)->delete();
 
         return response()->json([
             'success' => true,
             'message' => 'Inquiry deleted successfully.'
         ]);
     }
+
+    public function inqueryInfo(Request $request)
+    {
+        $licenseNo = $request->input('licenseNo');
+        $inquiries = '';
+        if($licenseNo != '') {
+            $inquiries = Inquiry::where('licence_no', 'like', '%' . $licenseNo . '%')->get();
+        }
+        $html = '';
+        if(count($inquiries) > 0) {
+            foreach ($inquiries as $key => $inquiry) {
+                $html .= '<tr>
+                            <td>'.++$key.'</td>
+                            <td>'.$inquiry['name'].'</td>
+                            <td>'.$inquiry['date'].'</td>
+                            <td>'.$inquiry['licence_no'].'</td>
+                            <td>'.$inquiry['status'].'</td>
+                            <td><a href="'. route('inquiries.show', $inquiry->id) .'" target="_blank" class="btn btn-primary waves-effect waves-light mr-2 primary-btn">
+                                <i class="feather icon-eye m-0"></i>
+                                </a>
+                            </td>
+                        </tr>';
+            }
+        }
+        else {
+            $html = '<tr>
+                        <td class="text-center" colspan="10"> No record found! </td>
+                    </tr>';
+        }
+        return response()->json([
+            'success' => true,
+            'html'   => $html
+        ]);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $inquiry = Inquiry::find($id);
+        if ($inquiry) {
+            if($inquiry->status != 'Completed') {
+                $inquiry->status = $request->input('status');
+                $inquiry->save();
+
+                if($request->status == 'Completed') {
+                    $inspection = Inspection::create([
+                        'inquiry_id'    => $id,
+                        'name'          => $inquiry->name,
+                        'date'          => $inquiry->date,
+                        'mileage'       => $inquiry->mileage,
+                        'vehicle'       => $inquiry->vehicle,
+                        'year'          => $inquiry->year,
+                        'licence_no'    => $inquiry->licence_no,
+                        'address'       => $inquiry->address,
+                        'returning'     => $inquiry->returning,
+                        'color'         => $inquiry->color,
+                        'tel_digicel'   => $inquiry->tel_digicel,
+                        'tel_lime'      => $inquiry->tel_lime,
+                        'dob'           => $inquiry->dob,
+                        'chassis'       => $inquiry->chassis,
+                        'engine'        => $inquiry->engine,
+                        'conditions'    => $inquiry->conditions,
+                        'sign'          => $inquiry->sign,
+                        'sign_date'     => $inquiry->sign_date,
+                        'status'        => 'Pending',
+                        'notes'         => $inquiry->notes
+                    ]);
+                }
+                return response()->json(['success' => true, 'message' => 'Inquery status change successfully.' ]);
+            } else {
+                return response()->json(['success' => true, 'message' => 'Inquery status already completed.' ]);
+            }
+        }
+
+        return response()->json(['success' => false], 404);
+    }
+
 }

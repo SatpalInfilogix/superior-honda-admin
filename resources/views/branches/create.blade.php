@@ -1,6 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+<script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
+<link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/>
+<style>
+ul.chosen-choices {
+    width: 477px !important;
+}
+    </style>
     <div class="pcoded-inner-content">
         <div class="main-body">
             <div class="page-wrapper">
@@ -26,16 +33,23 @@
                                                 <x-input-text name="name" label="Name" value="{{ old('name') }}"></x-input-text>
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <label for="timing">Timing</label>
-                                                <input type="time" name="email" class="form-control" value="{{ old('timing') }}" >
+                                                <label for="branch_head">Branch Head</label>
+                                                <select name="branch_head" id="branch_head" class="form-control">
+                                                    <option value="" selected disabled>Select Branch</option>
+                                                    @foreach ($users as $key => $user)
+                                                        <option value="{{$user->id}}">{{ $user->first_name.' '.$user->last_name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="operating_hours" label="Operating Hours" value="{{ old('operating_hours') }}"></x-input-text>
+                                                <label for="timing">Start Time</label>
+                                                <input type="time" name="start_time" class="form-control" value="{{ old('start_time') }}" >
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="branch_head" label="Branch Head" value="{{ old('branch_head') }}"></x-input-text>
+                                                <label for="timing">End Time</label>
+                                                <input type="time" name="end_time" class="form-control" value="{{ old('end_time') }}" >
                                             </div>
                                         </div>
                                         <div class="row">
@@ -54,6 +68,16 @@
                                                     <option value="Not Working">Not Working</option>
                                                 </select>
                                             </div>
+
+                                            <div class="col-md-6 form-group">
+                                                <label for="status">Week Status</label>
+                                                @php $weeks = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] @endphp
+                                                <select multiple class="form-control chosen-select" name="week_status[]" id="week_status">
+                                                    @foreach($weeks as $aItemKey => $week)
+                                                        <option value="{{$week}}">{{$week}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
@@ -67,6 +91,9 @@
     </div>
 
     <script>
+        $(".chosen-select").chosen({
+            no_results_text: "Oops, nothing found!"
+        })
         $(function() {
             $('form').validate({
                 rules: {

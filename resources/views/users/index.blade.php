@@ -60,7 +60,11 @@
                                                         <td>{{ $user->first_name . $user->last_names }}</td>
                                                         <td>{{ $user->designation }}</td>
                                                         <td>{{ $user->email }}</td>
-                                                        <td>{{ $user->roles->pluck('name')[0] }}</td>
+                                                        <td> 
+                                                            @if ($user->roles->isNotEmpty())
+                                                            {{ $user->roles->pluck('name')[0] }}
+                                                            @endif
+                                                        </td>
                                                         @canany(['edit user', 'delete user'])
                                                             <td>
                                                                 <div class="btn-group btn-group-sm">
