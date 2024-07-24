@@ -6,10 +6,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "barryvdh/laravel-dompdf": "^2.2",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
         "picqer/php-barcode-generator": "^2.4",
-        "spatie/laravel-permission": "^6.7"
+        "spatie/laravel-permission": "^6.7",
+        "srmklive/paypal": "~3.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -22,18 +24,9 @@
         "spatie/laravel-ignition": "^2.4"
     },
     "autoload": {
-        "files": [
-            "App/Helpers/SettingHelper.php"
-        ],
         "psr-4": {
             "App\\": "app/",
-            "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/"
         }
     },
     "scripts": {

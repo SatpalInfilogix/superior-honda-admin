@@ -30,3 +30,7 @@ img.main__logo--img {
     height: 51px;
 
 }
+
+.form-material .form-control {
+    height: 26px !important;
+}

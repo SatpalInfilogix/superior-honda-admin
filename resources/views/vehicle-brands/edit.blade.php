@@ -39,6 +39,13 @@
                                                 <input type="file" name="brand_logo" class="custom-file-input" id="add-brand-logo">
                                                 <label class="custom-file-label" for="add-brand-logo">Choose Brand Logo</label>
                                             </div>
+                                            <div id="imagePreview">
+                                            @if ($vehicleBrand->brand_logo)
+                                                <img src="{{ asset($vehicleBrand->brand_logo) }}" id="preview-Img" class="img-preview" width="50" height="50">
+                                            @else
+                                                <img src="" id="preview-Img" height="50" width="50" name="image" hidden>
+                                            @endif
+                                            </div>
                                         </div>  
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
@@ -52,6 +59,20 @@
     </div>
 
     <script>
+        $(document).ready(function() {
+            $('#add-brand-logo').change(function() {
+                var file = this.files[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#imagePreview').html(
+                            '<img class="preview-img" width="50px" height="50px" src="' + e.target
+                            .result + '" alt="Selected Image">');
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
         $(function() {
             $('form').validate({
                 rules: {

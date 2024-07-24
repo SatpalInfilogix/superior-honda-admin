@@ -41,10 +41,20 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'edit branch']);
         Permission::create(['name' => 'delete branch']);
 
+        Permission::create(['name' => 'view bay']);
+        Permission::create(['name' => 'create bay']);
+        Permission::create(['name' => 'edit bay']);
+        Permission::create(['name' => 'delete bay']);
+
         Permission::create(['name' => 'view inquiry']);
         Permission::create(['name' => 'create inquiry']);
         Permission::create(['name' => 'edit inquiry']);
         Permission::create(['name' => 'delete inquiry']);
+
+        Permission::create(['name' => 'view inspection']);
+        Permission::create(['name' => 'create inspection']);
+        Permission::create(['name' => 'edit inspection']);
+        Permission::create(['name' => 'delete inspection']);
 
         Permission::create(['name' => 'view vehicle']);
         Permission::create(['name' => 'create vehicle']);
@@ -55,11 +65,6 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'create vehicle configuration']);
         Permission::create(['name' => 'edit vehicle configuration']);
         Permission::create(['name' => 'delete vehicle configuration']);
-
-        Permission::create(['name' => 'view inspection']);
-        Permission::create(['name' => 'create inspection']);
-        Permission::create(['name' => 'edit inspection']);
-        Permission::create(['name' => 'delete inspection']);
 
         Permission::create(['name' => 'view job']);
         Permission::create(['name' => 'create job']);

@@ -33,14 +33,14 @@ else{
                         </div>
                     </div>
                     <div class="form-group form-primary">
+                        <label>Email Address</label>
                         <input type="email" name="email" class="form-control" required="">
                         <span class="form-bar"></span>
-                        <label class="float-label">Email Address</label>
                     </div>
                     <div class="form-group form-primary">
-                        <input type="password" name="password" class="form-control" required="">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control"  required="">
                         <span class="form-bar"></span>
-                        <label class="float-label">Password</label>
                     </div>
                     <div class="row m-t-25 text-left">
                         <div class="col-12">

@@ -194,6 +194,12 @@
                                                 <li>Check tires for wear and pressure (20% 30% 50% 60% 80% 100% other
                                                     indicate)</li>
                                             </ul>
+                                            <div class="form-group">
+                                                <label class="col-form-label" for="notes">Notes:</label>
+                                                <div class="">
+                                                    <textarea class="form-control m-0" id="notes" name="notes" rows="2" cols="200" readonly>{{ $inquiry->notes }}</textarea>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-md-4">
                                             <table class="table table-bordered">

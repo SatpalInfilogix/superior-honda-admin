@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Wishlist;
+use App\Models\Cart;
 
 class User extends Authenticatable
 {
@@ -34,5 +36,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function carts()
+    {
+        return $this->belongsTo(Cart::class, 'id', 'user_id');
+    }
+
+    public function wishlist()
+    {
+        return $this->belongsTo(Wishlist::class, 'id', 'user_id');
     }
 }

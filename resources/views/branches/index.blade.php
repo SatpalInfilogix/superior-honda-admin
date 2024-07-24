@@ -49,13 +49,20 @@
                                                                     <i class="feather icon-edit m-0"></i>
                                                                 </a>
                                                                 @endif
+                                                                @if(Auth::user()->can('edit branch'))
+                                                                <button
+                                                                    class="disable-branch btn btn-primary primary-btn waves-effect waves-light mr-2" data-value="{{$branch->id}}">
+                                                                    <i class="feather icon-octagon m-0"></i>
+                                                                </button>
+                                                                @endif
                                                                 @if(Auth::user()->can('delete branch'))
                                                                 <button data-source="Branch" data-endpoint="{{ route('branches.destroy', $branch->id) }}"
                                                                     class="delete-btn primary-btn btn btn-danger waves-effect waves-light">
                                                                     <i class="feather icon-trash m-0"></i>
                                                                 </button>
-                                                            </div>
-                                                            @endif
+                                                            @endif 
+                                                            
+                                                             </div>
                                                         </td>
                                                         @endcanany
                                                     </tr>
@@ -78,6 +85,27 @@
     <script>
         $(function() {
             $('#vehicle-types-list').DataTable();
-        })
+             $('.disable-branch').on('click', function() {
+        var id = $(this).data('value');
+        
+        if (confirm('Are you sure to make the branch disabled!')) {
+            $.ajax({
+                        url: '{{ route("disable-branch") }}',
+                        method: 'post',
+                        data: {
+                            id: id,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            alert(response.message);
+                        },
+                        error: function(response) {
+                            alert('Issue while updating the branch status');
+                            console.error(response); // Log the error to the console
+                        }
+                    });
+                }
+            });
+        });
     </script>
 @endsection

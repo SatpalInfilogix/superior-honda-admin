@@ -135,14 +135,28 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-3 form-group">
+                                            <div class="col-md-2 form-group">
                                                 <label for="oem" class>OEM</label>
                                                 <input type="checkbox" id="oem" name="oem" value="{{ $product->is_oem }}" @checked($product->is_oem == 1) onclick='oemClick(this);'>
                                             </div>
+                                        </div>
 
-                                            <div class="col-md-3 form-group">
-                                                <label for="service" class>Service</label>
+                                        <div class ="row">
+                                            <div class="col-md-2 form-group">
+                                                <label for="service" class>Is Service</label>
                                                 <input type="checkbox" id="is_service" name="is_service" value="{{ $product->is_service }}" @checked($product->is_service == 1) onclick='serviceClick(this);'>
+                                             </div>
+                                            <div class="col-md-4 form-group">
+                                                <label for="popular" class>Is Popular Product</label>
+                                                <input type="checkbox" id="is_popular" name="is_popular" value="{{ $product->popular }}" @checked($product->popular == 1) onclick='popularClick(this);'>
+                                           </div>
+                                           <div class="col-md-2 form-group">
+                                                <label for="popular" class>Used Part</label>
+                                                <input type="checkbox" id="used_part" name="used_part" value="{{ $product->used_part }}" @checked($product->used_part == 1) onclick='popularClick(this);'>
+                                            </div>
+                                            <div class="col-md-4 form-group">
+                                                <label for="popular" class>Access Series</label>
+                                                <input type="checkbox" id="access_series" name="access_series" value="{{ $product->access_series }}" @checked($product->access_series == 1)  onclick='accessSeries(this);'>
                                             </div>
                                         </div>
 
@@ -200,6 +214,22 @@
             e.value = e.checked ? 1 : 0;
             $('#is_service').val(e.value);
         }
+
+        function popularClick(e) {
+            e.value = e.checked ? 1 : 0;
+            $('#is_popular').val(e.value);
+        }
+
+        function usedPart(e) {
+            e.value = e.checked ? 1 : 0;
+            $('#used_part').val(e.value);
+        }
+
+        function accessSeries(e) {
+            e.value = e.checked ? 1 : 0;
+            $('#access_series').val(e.value);
+        }
+
         $(function() {
             $('form').validate({
                 rules: {

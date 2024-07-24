@@ -50,8 +50,16 @@ class ModuleSeeder extends Seeder
             'slug' => 'branch'
         ]);
         Module::create([
+            'name' => 'Bay',
+            'slug' => 'bay'
+        ]);
+        Module::create([
             'name' => 'Inquiry',
             'slug' => 'inquiry'
+        ]);
+        Module::create([
+            'name' => 'Inspection',
+            'slug' => 'inspection'
         ]);
         Module::create([
             'name' => 'Job',

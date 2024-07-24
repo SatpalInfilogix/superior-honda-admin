@@ -127,7 +127,7 @@
                 rules: {
                     first_name: "required",
                     last_name: "required",
-                    date_of_birth: "required",
+                    // date_of_birth: "required",
                     confirm_password: {
                         equalTo: "#password"
                     }
@@ -135,7 +135,7 @@
                 messages: {
                     first_name: "Please enter your firstname",
                     last_name: "Please enter your lastname",
-                    date_of_birth: "Please enter your date of birth",
+                    // date_of_birth: "Please enter your date of birth",
                     confirm_password: {
                         required: 'Please enter confirm password.',
                         equalTo: 'Confirm Password do not match with password.',

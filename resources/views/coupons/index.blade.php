@@ -37,7 +37,7 @@
                                                         <td>{{ ++$key }}</td>
                                                         <td>{{ $coupon->coupon_code }}</td>
                                                         <td>{{ $coupon->discount_type }}</td>
-                                                        <td>{{ $coupon->discount_type == 'Percentage' ? $coupon->discount_amount.' %' : '$ '.$coupon->discount_amount }}</td>
+                                                        <td>{{ $coupon->discount_type == 'percentage' ? $coupon->discount_amount.' %' : '$ '.$coupon->discount_amount }}</td>
                                                         <td>
                                                             <div class="btn-group btn-group-sm">
                                                                 <a href="{{ route('coupons.edit', $coupon->id) }}"

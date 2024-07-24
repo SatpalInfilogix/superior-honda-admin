@@ -29,7 +29,7 @@ class ProductController extends Controller
         $products = Product::with('category')->latest()->get();
         foreach($products as $key=> $product) {
             $genertorHTML = new BarcodeGeneratorHTML();
-            $products[$key]['barcode'] = $genertorHTML->getBarcode($product->product_code, $genertorHTML::TYPE_CODE_128);
+            $products[$key]['barcode'] = $genertorHTML->getBarcode($product->product_code. ' ' .$product->product_name, $genertorHTML::TYPE_CODE_128,2);
         }
 
         return view('products.index', compact('products'));
@@ -81,6 +81,9 @@ class ProductController extends Controller
             'hsn_no'            => $request->hsn_no,
             'is_oem'            => $request->oem ?? 0,
             'is_service'        => $request->is_service ?? 0,
+            'popular'           => $request->is_popular ?? 0,
+            'used_part'         => $request->used_part ?? 0,
+            'access_series'     => $request->access_series ?? 0,
             'description'       => $request->description,
             'cost_price'        => $request->cost_price,
             'item_number'       => $request->item_number,
@@ -171,6 +174,9 @@ class ProductController extends Controller
             'hsn_no'            => $request->hsn_no,
             'is_oem'            => $request->oem ?? 0,
             'is_service'        => $request->is_service ?? 0,
+            'popular'           => $request->is_popular ?? 0,
+            'used_part'         => $request->used_part ?? 0,
+            'access_series'     => $request->access_series ?? 0,
             'description'       => $request->description,
             'cost_price'        => $request->cost_price,
             'item_number'       => $request->item_number,

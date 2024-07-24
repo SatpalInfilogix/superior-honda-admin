@@ -6,6 +6,8 @@ use App\Models\Branch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Spatie\Permission\Models\Role;
+use App\Models\User;
 
 class BranchController extends Controller
 {
@@ -31,7 +33,13 @@ class BranchController extends Controller
             abort(403);
         }
 
-        return view('branches.create');
+        $adminRole = Role::where('name', 'Admin')->first();
+
+        $users = User::whereHas('roles', function ($query) use ($adminRole) {
+            $query->where('role_id', $adminRole->id);
+        })->latest()->get();
+
+        return view('branches.create', compact('users'));
     }
 
     /**
@@ -59,14 +67,15 @@ class BranchController extends Controller
         }
     
         Branch::create([
-            'name'          => $request->name,
-            'timing'        => $request->timing,
             'unique_code'   => $uniqueCode,
-            'operating_hours' => $request->operating_hours,
+            'name'          => $request->name,
+            'start_time'    => $request->start_time,
+            'end_time'      => $request->end_time,
             'branch_head'   => $request->branch_head,
             'address'       => $request->address,
             'pincode'       => $request->pincode,
             'status'        => $request->status,
+            'week_status'   =>  implode(',',$request->week_status)
         ]);
 
         return redirect()->route('branches.index')->with('success', 'Branch saved successfully'); 
@@ -89,8 +98,16 @@ class BranchController extends Controller
             abort(403);
         }
 
+        $adminRole = Role::where('name', 'Admin')->first();
+
+        $users = User::whereHas('roles', function ($query) use ($adminRole) {
+            $query->where('role_id', $adminRole->id);
+        })->latest()->get();
+
         $branch = Branch::where('id', $branch->id)->first();
-        return view('branches.edit', compact('branch'));
+        $branch['week_status'] = explode(',' ,$branch->week_status);
+
+        return view('branches.edit', compact('branch', 'users'));
     }
 
     /**
@@ -110,12 +127,13 @@ class BranchController extends Controller
 
         Branch::where('id', $branch->id)->update([
             'name'            => $request->name,
-            'timing'          => $request->timing,
-            'operating_hours' => $request->operating_hours,
+            'start_time'      => $request->start_time,
+            'end_time'        => $request->end_time,
             'branch_head'     => $request->branch_head,
             'address'         => $request->address,
             'pincode'         => $request->pincode,
             'status'          => $request->status,
+            'week_status'     => implode(',',$request->week_status)
         ]);
 
         return redirect()->route('branches.index')->with('success', 'Branch updated successfully'); 
@@ -135,6 +153,26 @@ class BranchController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Branch deleted successfully.'
+        ]);
+    }
+
+    public function disableBranch(Request $request){
+        $id = $request->id;
+        $branchData = Branch::find($id)->first();
+        $message = 'Branch disabled successfully.';
+        if($branchData->disable_branch == 1){
+            $branchData->disable_branch = 0;
+            $message = 'Branch enabled successfully.';
+        }
+        else
+        {
+         $branchData->disable_branch = 1;   
+        }
+        $branchData->disable_branch = 1;
+        $branchData->save();
+        return response()->json([
+                'success' => true,
+                'message' => $message
         ]);
     }
 }

@@ -25,8 +25,8 @@
                                     <h5>Products</h5>
 
                                     <div class="float-right">
-                                        <a href="{{ asset('assets/sample-product/product.csv') }}"
-                                                class="btn btn-primary primary-btn btn-md"><i class="fa fa-download"></i>Product Sample File
+                                        <a href="{{ url('download-product-sample') }}"
+                                            class="btn btn-primary primary-btn btn-md"><i class="fa fa-download"></i>Product Sample File
                                         </a>
                                         <div class="file-button btn btn-primary primary-btn">
                                             <form action="{{ route('products.import') }}" method="POST"
@@ -70,7 +70,7 @@
                                                         <td>{{ $index + 1 }}</td>
                                                         <td>{{ $product->product_name }}</td>
                                                         <td>{!! $product->barcode !!}
-                                                            P- {{$product->product_code}}
+                                                            P- {{$product->product_code. ' '.$product->product_name}}
                                                         </td>
                                                         <td>{{ $product->manufacture_name }}</td>
                                                         <td>{{  optional($product->category)->name }}</td>

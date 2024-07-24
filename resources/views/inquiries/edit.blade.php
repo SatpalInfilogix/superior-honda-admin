@@ -1,6 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    .modal-content {
+        width: 130%;
+    }
+    .primary-btn {
+        margin-left: 10px;
+        color:white;
+    }
+    .input-group-append {
+        margin-left: 23px !important;
+    }
+</style>
     <div class="pcoded-inner-content">
         <div class="main-body">
             <div class="page-wrapper">
@@ -73,13 +85,26 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="licence_no">Licence No:</label>
+                                                <div class="col-sm-9 input-group">
+                                                    <input type="text" class="form-control m-0" id="licence_no" value="{{ $inquiry->licence_no }}"
+                                                        name="licence_no">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-outline-secondary primary-btn" id="openPopupBtn" type="button"
+                                                                data-toggle="modal" data-target="#myModal">View Previous History</button>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{-- <div class="col-md-4">
+                                            <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="licence_no">Lic No:</label>
                                                 <div class="col-sm-9">
                                                     <input class="form-control m-0" id="licence_no" name="licence_no" value="{{ $inquiry->licence_no }}"
                                                         type="text">
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
 
                                     <div class="row">
@@ -197,6 +222,12 @@
                                                 <li>Check tires for wear and pressure (20% 30% 50% 60% 80% 100% other
                                                     indicate)</li>
                                             </ul>
+                                            <div class="form-group">
+                                                <label class="col-form-label" for="notes">Notes:</label>
+                                                <div class="">
+                                                    <textarea class="form-control m-0" id="notes" name="notes" rows="2" cols="200">{{$inquiry->notes}}</textarea>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-md-4">
                                             <table class="table table-bordered">
@@ -384,7 +415,66 @@
             </div>
         </div>
     </div>
+
+     <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Inquery Data</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="inquery-table">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No.</th>
+                                        <th>Name</th>
+                                        <th>Date</th>
+                                        <th>Licence no</th>
+                                        <th>Action</th>
+                                    </tr>
+                                <tbody id="inquery"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <!-- Add additional buttons or controls here if needed -->
+                    </div>
+                </div>
+            </div>
+        </div>
     <script>
+        $(document).ready(function() {
+            $('#openPopupBtn').click(function() {
+                var licenseNo = $('#licence_no').val();
+                console.log(licenseNo);
+                $.ajax({
+                    url: '/inquery-data',
+                    type: 'POST',
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        licenseNo: licenseNo,
+                    },
+                    success: function(response) {
+                        if (response.html == '') {
+                            $('.inquery-table').addClass('d-none');
+                        } else {
+                            $('#inquery').html(response.html);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+
         $(function() {
             $('.status-checkbox').change(function() {
                 var type = $(this).attr('id');
@@ -396,17 +486,25 @@
                     name: "required",
                     mileage: "required",
                     licence_no: "required",
-                    tel_digicel: "required",
-                    tel_lime: "required",
                     dob: "required",
+                    tel_digicel: {
+                        required: function(element) {
+                            return $('#tel_lime').val() === '';
+                        }
+                    },
+                    tel_lime: {
+                        required: function(element) {
+                            return $('#tel_digicel').val() === '';
+                        }
+                    }
                 },
                 messages: {
                     name: "Please enter name",
                     mileage: "Please enter mileage",
                     licence_no: "Please enter licence no",
-                    tel_digicel: "Please enter tel digicel",
-                    tel_lime:"Please enter tel lime",
                     dob: "Please enter date of birth",
+                    tel_digicel: "Please enter at least one phone number (Digicel or Lime)",
+                    tel_lime: "Please enter at least one phone number (Digicel or Lime)",
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",

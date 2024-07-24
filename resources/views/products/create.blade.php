@@ -113,14 +113,29 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-3 form-group">
+                                            <div class="col-md-2 form-group">
                                                 <label for="oem" class>OEM</label>
                                                 <input type="checkbox" id="oem" name="oem" value="0" onclick='oemClick(this);'>
                                             </div>
+                                        </div>
 
-                                            <div class="col-md-3 form-group">
-                                                <label for="service" class>Service</label>
+                                        <div class ="row">
+                                            <div class="col-md-2 form-group">
+                                                <label for="service" class>Is Service</label>
                                                 <input type="checkbox" id="is_service" name="is_service" value="0" onclick='serviceClick(this);'>
+                                            </div>
+                                            <div class="col-md-4 form-group">
+                                                <label for="popular" class>Is Popular Product</label>
+                                                <input type="checkbox" id="is_popular" name="is_popular" value="0" onclick='popularClick(this);'>
+                                            </div>
+
+                                            <div class="col-md-2 form-group">
+                                                <label for="service" class>Used Part</label>
+                                                <input type="checkbox" id="used_part" name="used_part" value="0" onclick='usedPart(this);'>
+                                            </div>
+                                            <div class="col-md-4 form-group">
+                                                <label for="popular" class>Access Series</label>
+                                                <input type="checkbox" id="access_series" name="access_series" value="0" onclick='accessSeries(this);'>
                                             </div>
                                         </div>
 
@@ -149,6 +164,16 @@
         }
 
         function serviceClick(e) {
+            e.value = e.checked ? 1 : 0;
+        }
+
+        function popularClick(e) {
+            e.value = e.checked ? 1 : 0;
+        }
+        function usedPart(e) {
+            e.value = e.checked ? 1 : 0;
+        }
+        function accessSeries(e) {
             e.value = e.checked ? 1 : 0;
         }
 

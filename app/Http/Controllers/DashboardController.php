@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Inquiry;
+use App\Models\Order;
+
 class DashboardController extends Controller
 {
     /**
@@ -11,7 +14,18 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        $order = new Order();
+        $completedOrdersCount = count($order->getCompletedOrders());
+        // dd($completedOrders);
+        $ordersInQueueCount = count($order->getOrdersInQueue());
+        $pendingInquiries = Inquiry::inProgressForThreeHoursOrMore()->get();
+        return view('dashboard')->with(
+                                        [
+                                            'pendingInquiries'     => $pendingInquiries,
+                                            'completedOrdersCount' => $completedOrdersCount,
+                                            'ordersInQueueCount'   => $ordersInQueueCount
+                                        ]
+                                    );
     }
 
     /**

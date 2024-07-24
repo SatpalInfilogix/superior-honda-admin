@@ -18,8 +18,13 @@
             @endcanany
             <ul class="pcoded-item pcoded-left-item">
                 @can('view invoice')
-                    <li class="">
-                        <a href="" class="waves-effect waves-dark">
+                    <li @class([
+                         'active' => Request::is(
+                                    'invoices',
+                                    'invoices/*/view'),
+                            
+                    ])>
+                        <a href="{{ route('invoices.index')}}" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
                                 <i class="feather icon-edit"></i>
                             </span>
@@ -76,8 +81,8 @@
                 @endcan
 
                 @can('view order')
-                    <li class=" ">
-                        <a href="" class="waves-effect waves-dark">
+                    <li class="{{ Request::segment(1) == 'orders' ? 'active' : '' }}">
+                        <a href="{{ route('orders.index')}}" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
                                 <i class="fas fa-cube"></i>
                             </span>
@@ -85,6 +90,15 @@
                         </a>
                     </li>
                 @endcan
+
+                <!-- <li class="{{ Request::segment(1) == 'banners' ? 'active' : '' }}">
+                    <a href="{{ route('banners.index')}}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="fas fa-cube"></i>
+                        </span>
+                        <span class="pcoded-mtext">Banners</span>
+                    </a>
+                </li> -->
 
                 @can('view vehicle configuration')
                     <li @class([
@@ -210,6 +224,16 @@
                 <div class="pcoded-navigation-label">Administrator</div>
             @endcanany
             <ul class="pcoded-item pcoded-left-item">
+                <li @class([
+                        'active' => Request::is('reports'),
+                    ])>
+                        <a href="{{ route('reports.index') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="feather icon-user"></i>
+                            </span>
+                            <span class="pcoded-mtext">Reports</span>
+                        </a>
+                    </li>
                 @can('view user')
                     <li @class([
                         'active' => Request::is('users', 'users/create', 'users/*/edit'),
@@ -234,6 +258,16 @@
                         </a>
                     </li>
                 @endcan
+                    <li  @class([
+                        'active' => Request::is('bay', 'bay/create', 'bay/*/edit'),
+                    ])>
+                        <a href="{{ route('bay.index') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="ti-direction"></i>
+                            </span>
+                            <span class="pcoded-mtext">Bay</span>
+                        </a>
+                    </li>
                 @can('view branch')
                     <li @class([
                         'active' => Request::is('branches', 'branches/create', 'branches/*/edit'),
@@ -257,8 +291,8 @@
                     </li>
                 @endcan
                 @can('view inspection')
-                    <li class=" ">
-                        <a href="" class="waves-effect waves-dark">
+                    <li class="{{ Request::segment(1) == 'inspection' ? 'active' : '' }}">
+                        <a href="{{ route('inspection.index')}}" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
                                 <i class="ti-write"></i>
                             </span>
@@ -267,8 +301,8 @@
                     </li>
                 @endcan
                 @can('view job')
-                    <li class=" ">
-                        <a href="" class="waves-effect waves-dark">
+                    <li class="{{ Request::segment(1) == 'jobs' ? 'active' : '' }}">
+                        <a href="{{ route('jobs.index')}}" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
                                 <i class="ti-id-badge f-16"></i>
                             </span>
@@ -276,6 +310,51 @@
                         </a>
                     </li>
                 @endcan
+
+                <li  class="{{ Request::segment(1) == 'carts' ? 'active' : '' }}">
+                    <a href="{{ route('carts.index')}}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="ti-shopping-cart"></i>
+                        </span>
+                        <span class="pcoded-mtext">Cart/Wishlist</span>
+                    </a>
+                </li>
+
+                <li  class="{{ Request::segment(1) == 'orders' ? 'active' : '' }}">
+                    <a href="{{ route('orders.index')}}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="ti-layout-grid4"></i>
+                        </span>
+                        <span class="pcoded-mtext">Orders</span>
+                    </a>
+                </li>
+
+                <li class="{{ Request::segment(1) == 'banners' ? 'active' : '' }}">
+                    <a href="{{ route('banners.index')}}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="fas fa-cube"></i>
+                        </span>
+                        <span class="pcoded-mtext">Banners</span>
+                    </a>
+                </li>
+
+                <li class="{{ Request::segment(1) == 'sales-products' ? 'active' : '' }}">
+                    <a href="{{ route('sales-products.index')}}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="fas fa-cube"></i>
+                        </span>
+                        <span class="pcoded-mtext">Sales Product</span>
+                    </a>
+                </li>
+
+                <li class="{{ Request::segment(1) == 'services' ? 'active' : '' }}">
+                    <a href="{{ route('services.index')}}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="fas fa-cube"></i>
+                        </span>
+                        <span class="pcoded-mtext">Services</span>
+                    </a>
+                </li>
             </ul>
             <div class="pcoded-navigation-label">Settings</div>
             <ul class="pcoded-item pcoded-left-item">
