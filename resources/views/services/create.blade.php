@@ -38,7 +38,7 @@ ul.chosen-choices {
                                                 <input name="price" id="price" type="text" class="form-control" value="{{ old('price') }}">
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="type">Manufacture name</label>
                                                 <input type="text" name="manufacture_name" class="form-control " value="{{ old('manufacture_name') }}">
@@ -49,8 +49,8 @@ ul.chosen-choices {
                                                     value="{{ old('model') }}">
                                                 <div class="autocomplete-items"></div>
                                             </div>
-                                        </div>
-                                        <div class="row">
+                                        </div> -->
+                                        <!-- <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="menu">Start Date</label>
                                                 <input type="text" name="start_date" id="datepicker" class="form-control" value="{{ old('start_date') }}">
@@ -59,8 +59,16 @@ ul.chosen-choices {
                                                 <label for="submenu">End Date</label>
                                                 <input type="text" name="end_date" id="datepicke" class="form-control" value="{{ old('end_date') }}">
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label for="add-icon">Service Icon</label>
+                                                <div class="custom-file">
+                                                    <input type="file" name="icon" class="custom-file-input" id="add-icon">
+                                                    <label class="custom-file-label" for="add-icon">Choose Icon</label>
+                                                    <img src="" id="previewIcon" height="50" width="50" name="icon" hidden>
+                                                </div>
+                                            </div>
                                             <div class="col-md-6 form-group">
                                                 <label for="add-image">Image</label>
                                                 <div class="custom-file">
@@ -69,11 +77,19 @@ ul.chosen-choices {
                                                         <img src="" id="previewImg" height="50" width="50" name="image" hidden>
                                                 </div>
                                             </div>
+                                           
+                                        </div>
+                                        <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <label for="branch">Description</label>
+                                                <label for="branch">Short Description</label>
+                                                <textarea id="short_description" name="short_description" class="form-control" rows="2" cols="50"></textarea>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label for="branch">Long Description</label>
                                                 <textarea id="description" name="description" class="form-control" rows="2" cols="50"></textarea>
                                             </div>
                                         </div>
+                                        
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
                                 </div>
@@ -84,10 +100,21 @@ ul.chosen-choices {
             </div>
         </div>
     </div>
+    <script src="https://cdn.ckeditor.com/ckeditor5/27.1.0/classic/ckeditor.js"></script>
+
     <script>
-            $(document).ready(function () {
-                $('#datepicker').datepicker();
-                $('#datepicke').datepicker();
+        document.addEventListener('DOMContentLoaded', function () {
+            ClassicEditor
+                .create(document.querySelector('#description'))
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+
+        $(document).ready(function () {
+            // $('#datepicker').datepicker();
+            // $('#datepicke').datepicker();
+
             $('body').on('input', '.model-autocomplete', function () {
                 var input = $(this).val().trim();
                 var autocompleteContainer = $(this).siblings('.autocomplete-items');
@@ -133,6 +160,18 @@ ul.chosen-choices {
                     reader.readAsDataURL(input.files[0]);
                 }
             });
+
+            $('#add-icon').change(function() {
+                var input = this;
+                if (input.files && input.files[0]) {
+                    $('#previewIcon').prop('hidden', false);
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#previewIcon').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            });
         });
 
         $(function() {
@@ -140,22 +179,26 @@ ul.chosen-choices {
                 rules: {
                     name: "required",
                     price: "required",
-                    manufacture_name: "required",
-                    start_date: "required",
-                    end_date: "required",
-                    model: "required",
+                    // manufacture_name: "required",
+                    // start_date: "required",
+                    // end_date: "required",
+                    // model: "required",
+                    short_description: "required",
                     description: "required",
+                    icon: "required",
                     image : "required"
                 },
 
                 messages: {
                     name: "Please enter name",
                     price: "Please enter price",
-                    manufacture_name: "Please enter manufacture name",
-                    start_date: "Please enter start date",
-                    end_date:  "Please enter end date",
-                    model: "Please enter model",
+                    // manufacture_name: "Please enter manufacture name",
+                    // start_date: "Please enter start date",
+                    // end_date:  "Please enter end date",
+                    // model: "Please enter model",
+                    short_description: "Please enter short description",
                     description: "Please enter description",
+                    icon: "Please select service icon",
                     image : "Please enter image"
                 },
 

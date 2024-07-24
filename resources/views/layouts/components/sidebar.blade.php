@@ -341,7 +341,7 @@
                 <li class="{{ Request::segment(1) == 'sales-products' ? 'active' : '' }}">
                     <a href="{{ route('sales-products.index')}}" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
-                            <i class="fas fa-cube"></i>
+                            <i class="fas fa-cubes"></i>
                         </span>
                         <span class="pcoded-mtext">Sales Product</span>
                     </a>
@@ -350,7 +350,7 @@
                 <li class="{{ Request::segment(1) == 'services' ? 'active' : '' }}">
                     <a href="{{ route('services.index')}}" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
-                            <i class="fas fa-cube"></i>
+                            <i class="fas fa-cog"></i>
                         </span>
                         <span class="pcoded-mtext">Services</span>
                     </a>

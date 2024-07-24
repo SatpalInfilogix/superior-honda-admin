@@ -30,9 +30,9 @@
                                                     <th>#</th>
                                                     <th>Service Name</th>
                                                     <th>Price</th>
-                                                    <th>Model</th>
-                                                    <th>Start Date</th>
-                                                    <th>End Date</th>
+                                                    <!-- <th>Model</th> -->
+                                                    <!-- <th>Start Date</th>
+                                                    <th>End Date</th> -->
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -43,9 +43,9 @@
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $service->name}}</td>
                                                         <td>{{ $service->price}}</td>
-                                                        <td>{{ $service->model_name}}</td>
-                                                        <td>{{ $service->start_date}}</td>
-                                                        <td>{{ $service->end_date}}</td>
+                                                        <!-- <td>{{ $service->model_name}}</td> -->
+                                                        <!-- <td>{{ $service->start_date}}</td>
+                                                        <td>{{ $service->end_date}}</td> -->
                                                         <td>
                                                             <div class="btn-group btn-group-sm">
                                                                 <a href="{{ route('services.edit', $service->id) }}"
