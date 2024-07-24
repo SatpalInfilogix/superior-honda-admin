@@ -36,4 +36,14 @@ class SalesProductController extends Controller
             return redirect()->route('sales-products.index')->with('error', 'Sales product not found.'); 
         }
     }
+
+    public function destroy(string $id)
+    {
+        SalesProduct::where('id', $id)->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Sales product deleted successfully.'
+        ]);
+    }
 }

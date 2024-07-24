@@ -39,7 +39,7 @@ ul.chosen-choices {
                                                 <input name="price" id="price" type="text" class="form-control" value="{{ old('price', $service->price) }}">
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="type">Manufacture name</label>
                                                 <input type="text" name="manufacture_name" class="form-control " value="{{ old('manufacture_name', $service->manufacture_name) }}">
@@ -50,7 +50,7 @@ ul.chosen-choices {
                                                     value="{{ old('model', $service->model_name) }}">
                                                 <div class="autocomplete-items"></div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="menu">Start Date</label>
@@ -62,6 +62,20 @@ ul.chosen-choices {
                                             </div>
                                         </div>
                                         <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label for="add-icon">Service Icon</label>
+                                                <div class="custom-file">
+                                                    <input type="file" name="icon" class="custom-file-input" id="add-icon">
+                                                    <label class="custom-file-label" for="add-icon">Choose Service Icon</label>
+                                                    <div id="iconPreview">
+                                                        @if ($service->service_icon)
+                                                            <img src="{{ asset($service->service_icon) }}" id="preview-icon" class="icon-preview" width="50" height="50">
+                                                        @else
+                                                            <img src="" id="preview-icon" height="50" width="50" name="image" hidden>
+                                                        @endif
+                                                        </div>
+                                                </div>
+                                            </div>
                                             <div class="col-md-6 form-group">
                                                 <label for="add-image">Image</label>
                                                 <div class="custom-file">
@@ -75,6 +89,12 @@ ul.chosen-choices {
                                                         @endif
                                                         </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label for="branch">Short Description</label>
+                                                <textarea id="short_description" name="short_description" class="form-control" rows="2" cols="50">{{$service->short_description}}</textarea>
                                             </div>
                                             <div class="col-md-6 form-group">
                                                 <label for="branch">Description</label>
@@ -91,8 +111,16 @@ ul.chosen-choices {
             </div>
         </div>
     </div>
+    <script src="https://cdn.ckeditor.com/ckeditor5/27.1.0/classic/ckeditor.js"></script>
 
     <script>
+         document.addEventListener('DOMContentLoaded', function () {
+            ClassicEditor
+                .create(document.querySelector('#description'))
+                .catch(error => {
+                    console.error(error);
+                });
+        });
         $(document).ready(function () {
             $('#datepicker').datepicker();
             $('#datepicke').datepicker();
@@ -102,6 +130,19 @@ ul.chosen-choices {
                     var reader = new FileReader();
                     reader.onload = function(e) {
                         $('#imagePreview').html(
+                            '<img class="preview-img" width="50px" height="50px" src="' + e.target
+                            .result + '" alt="Selected Image">');
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            $('#add-icon').change(function() {
+                var file = this.files[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#iconPreview').html(
                             '<img class="preview-img" width="50px" height="50px" src="' + e.target
                             .result + '" alt="Selected Image">');
                     }
@@ -161,20 +202,20 @@ ul.chosen-choices {
                 rules: {
                     name: "required",
                     price: "required",
-                    manufacture_name: "required",
+                    // manufacture_name: "required",
                     start_date: "required",
                     end_date: "required",
-                    model: "required",
+                    // model: "required",
                     description: "required",
                 },
 
                 messages: {
                     name: "Please enter name",
                     price: "Please enter price",
-                    manufacture_name: "Please enter manufacture name",
+                    // manufacture_name: "Please enter manufacture name",
                     start_date: "Please enter start date",
                     end_date:  "Please enter end date",
-                    model: "Please enter model",
+                    // model: "Please enter model",
                     description: "Please enter description",
                 },
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Models\VehicleModel;
+use Carbon\Carbon;
 
 class ServiceController extends Controller
 {
@@ -29,15 +30,25 @@ class ServiceController extends Controller
             $file->move(public_path('uploads/services/'), $filename);
         }
 
+        if ($request->hasFile('icon'))
+        {
+            $iconFile = $request->file('icon');
+            $iconFilename = time().'.'.$iconFile->getClientOriginalExtension();
+            $iconFile->move(public_path('uploads/service-icons/'), $iconFilename);
+        }
+
         Service::create([
-            'name' => $request->name,
-            'price' => $request->price,
-            'manufacture_name' => $request->manufacture_name,
-            'model_name' => $request->model,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'description' => $request->description,
-            'image' => isset($filename) ? 'uploads/services/'.$filename : NULL
+            'name'              => $request->name,
+            'price'             => $request->price,
+            'manufacture_name'  => $request->manufacture_name,
+            'model_name'        => $request->model,
+            'start_date'        => Carbon::createFromFormat('m/d/Y', $request->start_date)->format('Y-m-d H:i:s'),
+            'end_date'          => Carbon::createFromFormat('m/d/Y', $request->end_date)->format('Y-m-d H:i:s'),
+            'description'       => $request->description,
+            'short_description' => $request->short_description,
+            'service_icon'      => isset($iconFilename) ? 'uploads/service-icons/'.$iconFilename : NULL,
+            'image'             => isset($filename) ? 'uploads/services/'.$filename : NULL
+
         ]);
 
         return redirect()->route('services.index')->with('success', 'Service created successfully.');
@@ -65,8 +76,10 @@ class ServiceController extends Controller
     {
         $service = Service::where('id', $service->id)->first();
         $oldService = NULL;
+        $oldServiceIcon = NULL;
         if($service != '') {
             $oldService = $service->image;
+            $oldServiceIcon = $service->service_icon;
         }
 
         if ($request->hasFile('image'))
@@ -75,16 +88,24 @@ class ServiceController extends Controller
             $filename = time().'.'.$file->getClientOriginalExtension();
             $file->move(public_path('uploads/services/'), $filename);
         }
+        if ($request->hasFile('icon'))
+        {
+            $iconFile = $request->file('icon');
+            $iconFilename = time().'.'.$iconFile->getClientOriginalExtension();
+            $iconFile->move(public_path('uploads/service-icons/'), $iconFilename);
+        }
 
         $service->update([
-            'name' => $request->name,
-            'price' => $request->price,
-            'manufacture_name' => $request->manufacture_name,
-            'model_name' => $request->model,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'description' => $request->description,
-            'image' => isset($filename) ? 'uploads/services/'.$filename : $oldService
+            'name'              => $request->name,
+            'price'             => $request->price,
+            'manufacture_name'  => $request->manufacture_name,
+            'model_name'        => $request->model,
+            'start_date'        => Carbon::createFromFormat('m/d/Y', $request->start_date)->format('Y-m-d H:i:s'),
+            'end_date'          => Carbon::createFromFormat('m/d/Y', $request->end_date)->format('Y-m-d H:i:s'),
+            'description'       => $request->description,
+            'short_description' => $request->short_description,
+            'service_icon'      => isset($iconFilename) ? 'uploads/service-icons/'.$iconFilename : $oldServiceIcon,
+            'image'             => isset($filename) ? 'uploads/services/'.$filename : $oldService
         ]);
 
         return redirect()->route('services.index')->with('success', 'Services updated successfully.');

@@ -43,13 +43,13 @@
                                                         <td>{{ $salesProduct->start_date}}</td>
                                                         <td>{{ $salesProduct->end_date}}</td>
                                                         <td>
-                                                            <!-- <div class="btn-group btn-group-sm">
-                                                                <button data-source="Banner"
-                                                                    data-endpoint="{{ route('banners.destroy', $salesProduct->id) }}"
+                                                            <div class="btn-group btn-group-sm">
+                                                                <button data-source="Sales Product"
+                                                                    data-endpoint="{{ route('sales-products.destroy', $salesProduct->id) }}"
                                                                     class="delete-btn primary-btn btn btn-danger waves-effect waves-light">
                                                                     <i class="feather icon-trash m-0"></i>
                                                                 </button>
-                                                            </div> -->
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 @endforeach

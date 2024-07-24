@@ -30,7 +30,7 @@
                                                     <th>#</th>
                                                     <th>Service Name</th>
                                                     <th>Price</th>
-                                                    <th>Model</th>
+                                                    <!-- <th>Model</th> -->
                                                     <th>Start Date</th>
                                                     <th>End Date</th>
                                                     <th>Actions</th>
@@ -43,7 +43,7 @@
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $service->name}}</td>
                                                         <td>{{ $service->price}}</td>
-                                                        <td>{{ $service->model_name}}</td>
+                                                        <!-- <td>{{ $service->model_name}}</td> -->
                                                         <td>{{ $service->start_date}}</td>
                                                         <td>{{ $service->end_date}}</td>
                                                         <td>
