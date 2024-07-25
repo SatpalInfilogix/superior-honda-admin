@@ -42,7 +42,7 @@
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $service->name}}</td>
-                                                        <td>{{ $service->price}}</td>
+                                                        <td>${{ number_format($service->price, 2)}}</td>
                                                         <!-- <td>{{ $service->model_name}}</td> -->
                                                         <!-- <td>{{ $service->start_date}}</td>
                                                         <td>{{ $service->end_date}}</td> -->
