@@ -54,7 +54,8 @@
             var total_file = document.getElementById("images").files;
             if (!total_file.length) return;
             for (var i = 0; i < total_file.length; i++) {
-                if (total_file[i].size > 5368709120) {
+                if (total_file[i].size > 10485760) {
+                    alert('File size exceeds 10 MB: ' + total_file[i]);
                     return false;
                 } else {
                     fileArr.push(total_file[i]);
