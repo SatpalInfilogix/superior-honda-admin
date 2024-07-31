@@ -40,7 +40,7 @@
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $brands->category->name }}</td>
-                                                        <td>{{ $brands->brand_name }}</td>
+                                                        <td>{{ ucwords($brands->brand_name) }}</td>
                                                         <td><img src="{{ asset($brands->brand_logo) }}" width="50"
                                                                 height="50"></td>
                                                         @canany([

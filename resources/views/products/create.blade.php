@@ -108,41 +108,41 @@
                                             </div>
                                             <div class="col-md-6 form-group">
                                                 <label for="branch">Description</label>
-                                                <textarea id="description" name="description" class="form-control" rows="2" cols="50"></textarea>
+                                                <textarea id="description" name="description" class="form-control" rows="2" cols="50">{{ old('description') }}</textarea>
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-md-2 form-group">
                                                 <label for="oem" class>OEM</label>
-                                                <input type="checkbox" id="oem" name="oem" value="0" onclick='oemClick(this);'>
+                                                <input type="checkbox" id="oem" name="oem" value="0" {{ old('oem') ? 'checked' : '' }} onclick='oemClick(this);'>
                                             </div>
                                         </div>
 
                                         <div class ="row">
                                             <div class="col-md-2 form-group">
                                                 <label for="service" class>Is Service</label>
-                                                <input type="checkbox" id="is_service" name="is_service" value="0" onclick='serviceClick(this);'>
+                                                <input type="checkbox" id="is_service" name="is_service" value="0" {{ old('is_service') ? 'checked' : '' }} onclick='serviceClick(this);'>
                                             </div>
                                             <div class="col-md-4 form-group">
                                                 <label for="popular" class>Is Popular Product</label>
-                                                <input type="checkbox" id="is_popular" name="is_popular" value="0" onclick='popularClick(this);'>
+                                                <input type="checkbox" id="is_popular" name="is_popular" value="0"  {{ old('is_popular') ? 'checked' : '' }} onclick='popularClick(this);'>
                                             </div>
 
                                             <div class="col-md-2 form-group">
                                                 <label for="service" class>Used Part</label>
-                                                <input type="checkbox" id="used_part" name="used_part" value="0" onclick='usedPart(this);'>
+                                                <input type="checkbox" id="used_part" name="used_part" value="0" {{ old('used_part') ? 'checked' : '' }} onclick='usedPart(this);'>
                                             </div>
                                             <div class="col-md-4 form-group">
                                                 <label for="popular" class>Access Series</label>
-                                                <input type="checkbox" id="access_series" name="access_series" value="0" onclick='accessSeries(this);'>
+                                                <input type="checkbox" id="access_series" name="access_series" value="0"{{ old('access_series') ? 'checked' : '' }} onclick='accessSeries(this);'>
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-md-12 form-group">
                                                 <label for="image" class>Image</label>
-                                                <input type="file" name="images[]" id="images" multiple class="form-control" required>
+                                                <input type="file" name="images[]" id="images" multiple class="form-control"  accept="image/*" required>
                                                 <div id="image_preview_new"></div>
                                             </div>
                                         <div>

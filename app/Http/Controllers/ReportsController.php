@@ -25,7 +25,7 @@ class ReportsController extends Controller
     public function fetchData(Request $request)
     {
         $filter = $request->filter;
-        $perPage = 2;
+        $perPage = 10;
         $data = '';
         if($request->filterValue == 'Inqueries') {
             if ($filter == 'Inqueries') {

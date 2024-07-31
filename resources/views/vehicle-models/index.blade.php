@@ -42,7 +42,7 @@
                                                         <td>{{ ++$key }}</td>
                                                         <td>{{ $vehicleModel->category->name }}</td>
                                                         <td>{{ optional($vehicleModel->brand)->brand_name ?? 'N/A' }}</td>
-                                                        <td>{{ $vehicleModel->model_name }}</td>
+                                                        <td>{{ ucwords($vehicleModel->model_name) }}</td>
                                                         <td><img src="{{ asset($vehicleModel->model_image) }}"
                                                                 width="50" height="50"></td>
                                                         @canany([

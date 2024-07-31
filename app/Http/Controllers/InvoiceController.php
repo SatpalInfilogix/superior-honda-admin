@@ -35,7 +35,9 @@ class InvoiceController extends Controller
     public function autocomplete(Request $request)
     {
         $searchTerm = $request->input('input');
-        $products = Product::where('product_name', 'like', '%' . $searchTerm . '%')->get(['id', 'product_name']);
+        $products = Product::with('productCategory')->whereHas('productCategory', function ($query) {
+                            $query->whereNull('deleted_at');
+                        })->where('product_name', 'like', '%' . $searchTerm . '%')->get(['id', 'product_name']);
 
         return response()->json($products);
     }

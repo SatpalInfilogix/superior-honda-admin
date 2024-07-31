@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Picqer\Barcode\BarcodeGeneratorHTML;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
@@ -26,11 +27,14 @@ class ProductController extends Controller
         if(!Gate::allows('view product')) {
             abort(403);
         }
-        $products = Product::with('category')->latest()->get();
-        foreach($products as $key=> $product) {
-            $genertorHTML = new BarcodeGeneratorHTML();
-            $products[$key]['barcode'] = $genertorHTML->getBarcode($product->product_code. ' ' .$product->product_name, $genertorHTML::TYPE_CODE_128,2);
-        }
+        $products = Product::with('category', 'productCategory')->whereHas('productCategory', function ($query) {
+                        $query->whereNull('deleted_at');
+                    })->latest()->get();
+
+        // foreach($products as $key=> $product) {
+        //     $genertorHTML = new BarcodeGeneratorHTML();
+        //     $products[$key]['barcode'] = $genertorHTML->getBarcode($product->product_code. ' ' .$product->product_name, $genertorHTML::TYPE_CODE_128,2);
+        // }
 
         return view('products.index', compact('products'));
     }
@@ -59,7 +63,7 @@ class ProductController extends Controller
         }
 
         $request->validate([
-            'product_code'      => 'required',
+            'product_code'      => 'required|unique:products',
             'category_id'       => 'required',
             'vehicle_category_id' => 'required',
             'product_name'      => 'required',
@@ -97,7 +101,8 @@ class ProductController extends Controller
             {
                 foreach($request->file('images') as $file)
                 {
-                    $filename = time().'.'.$file->getClientOriginalExtension();
+                    $filename = time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+                    // $filename = time().'.'.$file->getClientOriginalExtension();
                     $file->move(public_path('uploads/product-image/'), $filename);
                     ProductImage::create([
                         'product_id' => $product->id,
@@ -144,17 +149,19 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        
         if(!Gate::allows('edit product')) {
             abort(403);
         }
 
         $request->validate([
-            'product_code'          => 'required',
-            'category_id'           => 'required',
-            'vehicle_category_id'   => 'required',
-            'product_name'          => 'required',
-            'manufacture_name'      => 'required'
+            'product_code' => [
+                'required',
+                Rule::unique('products', 'product_code')->ignore($product->id)
+            ],
+            'category_id' => 'required',
+            'vehicle_category_id' => 'required',
+            'product_name' => 'required',
+            'manufacture_name' => 'required'
         ]);
 
         $product = Product::where('id', $product->id)->first();
@@ -185,7 +192,8 @@ class ProductController extends Controller
         if ($request->hasFile('images')) {
             if (count($request->images) > 0) {
                 foreach ($request->file('images') as $file) {
-                    $filename = time().'.'.$file->getClientOriginalExtension();
+                    $filename = time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+                    // $filename = time().'.'.$file->getClientOriginalExtension();
                     $file->move(public_path('uploads/product-image/'), $filename);
                     $file = ProductImage::create([
                         'product_id' => $product->id,
