@@ -302,7 +302,7 @@
              var invoiceId = $(this).data('id'); // Assuming the button has a data attribute with the invoice ID
 
             $.ajax({
-                url: '{{env("APP_URL")}}download-invoice-pdf/' + invoiceId,
+                url: '{{env("APP_URL")}}/download-invoice-pdf/' + invoiceId,
                 type: 'GET',
                 xhrFields: {
                     responseType: 'blob' // Important to handle the binary data

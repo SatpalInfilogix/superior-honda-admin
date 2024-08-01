@@ -28,6 +28,7 @@
                                             <div class="col-md-6 form-group">
                                                 <label for="branch_head">Branch</label>
                                                 <select name="branch_head" id="branch_head" class="form-control">
+                                                    <option value="" selected disabled>Select Branch</option>
                                                     @foreach ($branchesData as $key => $user)
                                                         <option value="{{$user->id}}">{{ $user->name }} - {{$user->address}}</option>
                                                     @endforeach
@@ -50,13 +51,11 @@
             $('form').validate({
                 rules: {
                     name: "required",
-                    address: "required",
-                    pincode: "required"
+                    branch_head: "required",
                 },
                 messages: {
-                    name: "Please enter branch name",
-                    address: "Please enter address",
-                    pincode: "Please enter pincode"
+                    name: "Please enter bay name",
+                    branch_head: "Please select branch",
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",

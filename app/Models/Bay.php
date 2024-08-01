@@ -11,12 +11,10 @@ class Bay extends Model
 {
     use HasFactory;
     protected $table = 'bays';
-    public $fillable = [
-    					'name',
-    					'branch_id'
-    					];
+    protected $guarded=[];
+
    public function branch()
     {
-        return $this->belongsTo(Branch::class);
+        return $this->belongsTo(Branch::class)->where('disable_branch', 0);
     }
 }

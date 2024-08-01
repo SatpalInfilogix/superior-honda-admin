@@ -65,7 +65,7 @@ class BranchController extends Controller
             $nextNumericPart = str_pad($numericPart + 1, 4, '0', STR_PAD_LEFT);
             $uniqueCode = 'BR' . $nextNumericPart;
         }
-    
+
         Branch::create([
             'unique_code'   => $uniqueCode,
             'name'          => $request->name,
@@ -156,20 +156,20 @@ class BranchController extends Controller
         ]);
     }
 
-    public function disableBranch(Request $request){
-        $id = $request->id;
-        $branchData = Branch::find($id)->first();
+    public function disableBranch(Request $request)
+    {
+        $branch = Branch::where('id', $request->id)->first();
+        $status = 1;
         $message = 'Branch disabled successfully.';
-        if($branchData->disable_branch == 1){
-            $branchData->disable_branch = 0;
+        if($branch->disable_branch == 1){
+            $status = 0;
             $message = 'Branch enabled successfully.';
         }
-        else
-        {
-         $branchData->disable_branch = 1;   
-        }
-        $branchData->disable_branch = 1;
-        $branchData->save();
+
+        $branch->update([
+          'disable_branch' => $status  
+        ]);
+
         return response()->json([
                 'success' => true,
                 'message' => $message

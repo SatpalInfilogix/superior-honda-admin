@@ -44,24 +44,31 @@
                                                         <td>
                                                             <div class="btn-group btn-group-sm">
                                                                 @if(Auth::user()->can('edit branch'))
-                                                                <a href="{{ route('branches.edit', $branch->id) }}"
-                                                                    class="btn btn-primary primary-btn waves-effect waves-light mr-2">
-                                                                    <i class="feather icon-edit m-0"></i>
-                                                                </a>
+                                                                    <a href="{{ route('branches.edit', $branch->id) }}"
+                                                                        class="btn btn-primary primary-btn waves-effect waves-light mr-2">
+                                                                        <i class="feather icon-edit m-0"></i>
+                                                                    </a>
                                                                 @endif
-                                                                @if(Auth::user()->can('edit branch'))
-                                                                <button
-                                                                    class="disable-branch btn btn-primary primary-btn waves-effect waves-light mr-2" data-value="{{$branch->id}}">
-                                                                    <i class="feather icon-octagon m-0"></i>
-                                                                </button>
+
+                                                                @if($branch->disable_branch == 0)
+                                                                    <button
+                                                                        class="disable-branch btn btn-primary primary-btn waves-effect waves-light mr-2"
+                                                                        data-id="{{ $branch->id }}" data-value="disabled">
+                                                                        <i class="feather icon-check-circle m-0"></i>
+                                                                    </button>
+                                                                @else
+                                                                    <button
+                                                                        class="disable-branch btn btn-primary primary-btn waves-effect waves-light mr-2"
+                                                                        data-id="{{ $branch->id }}" data-value="enabled">
+                                                                        <i class="feather icon-slash m-0"></i>
+                                                                    </button>
                                                                 @endif
                                                                 @if(Auth::user()->can('delete branch'))
-                                                                <button data-source="Branch" data-endpoint="{{ route('branches.destroy', $branch->id) }}"
-                                                                    class="delete-btn primary-btn btn btn-danger waves-effect waves-light">
-                                                                    <i class="feather icon-trash m-0"></i>
-                                                                </button>
-                                                            @endif 
-                                                            
+                                                                    <button data-source="Branch" data-endpoint="{{ route('branches.destroy', $branch->id) }}"
+                                                                        class="delete-btn primary-btn btn btn-danger waves-effect waves-light">
+                                                                        <i class="feather icon-trash m-0"></i>
+                                                                    </button>
+                                                                @endif 
                                                              </div>
                                                         </td>
                                                         @endcanany
@@ -74,7 +81,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -85,27 +91,65 @@
     <script>
         $(function() {
             $('#vehicle-types-list').DataTable();
-             $('.disable-branch').on('click', function() {
-        var id = $(this).data('value');
+
+            $(document).on('click', '.disable-branch', function() {
+                var id = $(this).data('id');
+                var value = $(this).data('value');
+                swal({
+                    title: "Are you sure?",
+                    text: `You really want to ${value} ?`,
+                    type: "warning",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                }, function(isConfirm) {
+                    if (isConfirm) {
+                        $.ajax({
+                            url: '{{ route("disable-branch") }}',
+                            method: 'post',
+                            data: {
+                                id: id,
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                if(response.success){
+                                    swal({
+                                        title: "Success!",
+                                        text: response.message,
+                                        type: "success",
+                                        showConfirmButton: false
+                                    }) 
+
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 2000);
+                                }
+                            }
+                        })
+                    }
+                });
+            })
+
+        //      $('.disable-branch').on('click', function() {
+        // var id = $(this).data('value');
         
-        if (confirm('Are you sure to make the branch disabled!')) {
-            $.ajax({
-                        url: '{{ route("disable-branch") }}',
-                        method: 'post',
-                        data: {
-                            id: id,
-                            _token: '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            alert(response.message);
-                        },
-                        error: function(response) {
-                            alert('Issue while updating the branch status');
-                            console.error(response); // Log the error to the console
-                        }
-                    });
-                }
-            });
+        // if (confirm('Are you sure to make the branch disabled!')) {
+        //     $.ajax({
+        //                 url: '{{ route("disable-branch") }}',
+        //                 method: 'post',
+        //                 data: {
+        //                     id: id,
+        //                     _token: '{{ csrf_token() }}'
+        //                 },
+        //                 success: function(response) {
+        //                     alert(response.message);
+        //                 },
+        //                 error: function(response) {
+        //                     alert('Issue while updating the branch status');
+        //                     console.error(response); // Log the error to the console
+        //                 }
+        //             });
+        //         }
+        //     });
         });
     </script>
 @endsection

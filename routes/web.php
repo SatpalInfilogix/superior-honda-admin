@@ -106,6 +106,8 @@ Route::post('/inquery-data', [InquiryController::class, 'inqueryInfo']);
 Route::get('/fetch-data', [ReportsController::class, 'fetchData'])->name('fetch-data');
 Route::post('/disable-branch',[BranchController::class,'disableBranch'])->name('disable-branch');
 
+Route::post('/disable-bay',[BayController::class,'disableBay'])->name('disable-bay');
+
 // route for inquery status update
 Route::post('/inquiries/{id}/update-status', [InquiryController::class, 'updateStatus'])->name('inquiries.update-status');
 
