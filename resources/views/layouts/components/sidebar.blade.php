@@ -258,6 +258,7 @@
                         </a>
                     </li>
                 @endcan
+                @can('view bay')
                     <li  @class([
                         'active' => Request::is('bay', 'bay/create', 'bay/*/edit'),
                     ])>
@@ -268,6 +269,7 @@
                             <span class="pcoded-mtext">Bay</span>
                         </a>
                     </li>
+                @endcan
                 @can('view branch')
                     <li @class([
                         'active' => Request::is('branches', 'branches/create', 'branches/*/edit'),

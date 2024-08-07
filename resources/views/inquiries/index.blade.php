@@ -126,7 +126,7 @@
                 $form.on('submit', function(e) {
                     e.preventDefault();
                     var newStatus = $form.find('select[name="status"]').val();
-
+                    console.log(newStatus);
                     $.ajax({
                         url: appUrl + '/inquiries/' + inquiryId + '/update-status',
                         method: 'POST',

@@ -52,7 +52,7 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Product Name</th>
-                                                    <th>Barcode</th>
+                                                    <!-- <th>Barcode</th> -->
                                                     <th>Manufacture Name</th>
                                                     <th>Vehicle Category</th>
                                                     <th>Brand Name</th>
@@ -69,9 +69,9 @@
                                                     <tr>
                                                         <td>{{ $index + 1 }}</td>
                                                         <td>{{ $product->product_name }}</td>
-                                                        <td>{!! $product->barcode !!}
+                                                        <!-- <td>{!! $product->barcode !!}
                                                             P- {{$product->product_code. ' '.$product->product_name}}
-                                                        </td>
+                                                        </td> -->
                                                         <td>{{ $product->manufacture_name }}</td>
                                                         <td>{{  optional($product->category)->name }}</td>
                                                         <td>{{ optional($product->brand)->brand_name }}</td>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProductCategory; 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Gate;
 
 class ProductCategoryController extends Controller
@@ -36,6 +37,7 @@ class ProductCategoryController extends Controller
         $request->validate([
             'name' => 'required|unique:product_categories|max:25'
         ]);
+
         if($request->hasfile('image')){
 
             $file = $request->file('image');
@@ -76,6 +78,14 @@ class ProductCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+           'name' => [
+                'required',
+                'max:25',
+                Rule::unique('product_categories', 'name')->ignore($id)
+            ],
+        ]);
+
         $category = ProductCategory::find($id);
         if($request->hasfile('image')){
             $file = $request->file('image');

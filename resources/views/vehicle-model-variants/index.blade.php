@@ -48,7 +48,7 @@
                                                         <td>{{ optional($vehicleModelVariant->brand)->brand_name ?? 'N/A' }}</td>
                                                         <td>{{ optional($vehicleModelVariant->model)->model_name }}</td>
                                                         <td>{{ optional($vehicleModelVariant->type)->vehicle_type }}</td>
-                                                        <td>{{ $vehicleModelVariant->variant_name }}</td>
+                                                        <td>{{ ucwords($vehicleModelVariant->variant_name) }}</td>
                                                         <td>{{ $vehicleModelVariant->fuel_type }}</td>
                                                         <td><img src="{{ asset($vehicleModelVariant->model_variant_image) }}"
                                                                 width="50" height="50"></td>

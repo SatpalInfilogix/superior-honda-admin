@@ -39,7 +39,7 @@
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $vehicle_type->category->name }}</td>
-                                                        <td>{{ $vehicle_type->vehicle_type }}</td>
+                                                        <td>{{ ucwords($vehicle_type->vehicle_type) }}</td>
                                                         @canany([
                                                             'edit vehicle configuration',
                                                             'delete vehicle

@@ -1,94 +1,98 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="pcoded-inner-content">
-        <div class="main-body">
-            <div class="page-wrapper">
-                <div class="page-body">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Reports</h5>
-                                    <div class="float-right">
-                                    <a href="{{route('reports-chart')}}"  target="_blank">
+<style>
+    #inquiries-report-table, #product-report-table {
+        width: 100% !important; /* Ensure tables use full width */
+    }
+</style>
+
+<div class="pcoded-inner-content">
+    <div class="main-body">
+        <div class="page-wrapper">
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Reports</h5>
+                                <div class="float-right">
+                                    <a href="{{ route('reports-chart') }}" target="_blank">
                                         <button type="button" class="btn btn-primary primary-btn btn-group-sm">Reports Chart</button>
                                     </a>
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <form id="filter-form" action="#" method="GET">
+                                            <label for="report-filter">Report Filter:</label>
+                                            <div class="d-flex">
+                                                <select name="report-filter" id="report-filter" class="form-control mr-2">
+                                                    <option value="" selected disabled>Select Filter</option>
+                                                    <option value="Inquiries">Inquiries</option>
+                                                    <option value="Vehicle">Inquiry By Vehicle</option>
+                                                    <option value="Product_Sold_Report">Product Sold Report</option>
+                                                </select>
+                                                <input type="hidden" name="dataFilter" value="" id="dataFilter">
+                                                <input type="hidden" name="dailyFilter" value="" id="dailyFilter">
+                                                <input type="hidden" name="date" value="" id="date">
+                                                <input type="hidden" name="startDate" value="" id="startDate">
+                                                <input type="hidden" name="endDate" value="" id="endDate">
+                                                <input type="hidden" name="vehicleName" value="" id="vehicleName">
+                                                <input type="hidden" name="vehicleMileage" value="" id="vehicleMileage">
+                                                <input type="hidden" name="dateOfBirth" value="" id="dateOfBirth">
+                                                <input type="hidden" name="vehicleLicenceNo" value="" id="vehicleLicenceNo">
+                                                <input type="hidden" name="modelValue" value="" id="modelValue">
+                                                <button type="button" id="filter-button" class="btn btn-primary primary-btn btn-group-sm">Apply</button>
+                                            </div>
+                                            <div class="error-message text-danger"></div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-6 form-group day-week-month-filter" hidden>
+                                        <div>
+                                            <button type="button" id="day-filter" class="btn btn-primary primary-btn float-right mr-2" data-filter="Day">Day</button>
+                                            <button type="button" id="week-filter" class="btn btn-primary primary-btn float-right mr-2" data-filter="Week">Week</button>
+                                            <button type="button" id="month-filter" class="btn btn-primary primary-btn float-right mr-2" data-filter="Month">Month</button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="card-block">
-                                    <div class="row">
-                                        <div class="col-md-6 form-group">
-                                            <form id="filter-form" action="#" method="GET">
-                                                <label for="report-filter">Report Filter:</label>
-                                                <div class="d-flex">
-                                                    <select name="report-filter" id="report-filter"
-                                                        class="form-control mr-2">
-                                                        <option value="" selected disabled>Select Filter</option>
-                                                        <option value="Inqueries">Inquiries</option>
-                                                        <option value="Vehicle">Inquiry By Vehicle</option>
-                                                        <option value="Product_Sold_Report">Product Sold Report</option>
-                                                    </select>
-                                                    <input type="hidden" name="dataFilter" value="" id="dataFilter">
-                                                    <input type="hidden" name="dataFilter" value="" id="dailyFilter">
-                                                    <input type="hidden" name="date" value="" id="date">
-                                                    <input type="hidden" name="startDate" value="" id="startDate">
-                                                    <input type="hidden" name="endDate" value="" id="endDate">
-                                                    <input type="hidden" name="vehicleName" value="" id="vehicleName">
-                                                    <input type="hidden" name="vehicleMileage" value="" id="vehicleMileage">
-                                                    <input type="hidden" name="dateOfBirth" value="" id="dateOfBirth">
-                                                    <input type="hidden" name="vehicleLicenceNo" value="" id="vehicleLicenceNo">
+                                <div class="filter"> Select Any Option</div>
+                                <div class="dt-responsive table-responsive" id="table-container" hidden>
+                                    <table id="inquiries-report-table" class="table table-striped table-bordered nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Name</th>
+                                                <th>Date</th>
+                                                <th>Email</th>
+                                                <th>Vehicle</th>
+                                                <th>License Number</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Data will be populated here by DataTables -->
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                                                    <button type="button" id="filter-button" class="btn btn-primary primary-btn btn-group-sm">Apply</button>
-                                                </div>
-                                                <div class="error-message text-danger"></div>
-                                            </form>
-                                        </div>
-                                        <div class="col-md-6 form-group day-week-month-filter" hidden>
-                                            <div>
-                                                <button type="button" id="day-filter" class="btn btn-primary primary-btn float-right mr-2" data-filter="Day">Day</button>
-                                                <button type="button" id="week-filter" class="btn btn-primary primary-btn float-right mr-2" data-filter="Week">Week</button>
-                                                <button type="button" id="month-filter" class="btn btn-primary primary-btn float-right mr-2" data-filter="Month">Month</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="dt-responsive table-responsive">
-                                        <div class="filter"> Select Any Option</div>
-                                        <table id="inquiries-report-table" class="table table-striped table-bordered nowrap"
-                                            hidden>
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Name</th>
-                                                    <th>Date</th>
-                                                    <th>Email</th>
-                                                    <th>Vehicle</th>
-                                                    <th>License Number</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="inquiries-report-table-body">
-                                                <!-- Table body will be filled dynamically -->
-                                            </tbody>
-                                        </table>
-
-                                        <table id="product-report-table" class="table table-striped table-bordered nowrap" hidden>
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Product Name</th>
-                                                    <th>Product Code</th>
-                                                    <th>Manufacture Name</th>
-                                                    <th>Cost Price</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="product-report-table-body">
-                                                <!-- Table body will be filled dynamically -->
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div id="pagination-container" class="pagination d-flex justify-content-center mt-3">
-                                        <!-- Pagination links will be loaded here -->
-                                    </div>
+                                <div class="dt-responsive table-responsive" id="product-table-container" hidden>
+                                    <table id="product-report-table" class="table table-striped table-bordered nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Product Name</th>
+                                                <th>Product Quantity</th>
+                                                <th>Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Data will be populated here by DataTables -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="pagination-container" class="pagination d-flex justify-content-center mt-3">
+                                    <!-- Pagination links will be loaded here -->
                                 </div>
                             </div>
                         </div>
@@ -97,511 +101,317 @@
             </div>
         </div>
     </div>
+</div>
 
-        <!--- Pop Up Model Day ----- -->
-    <div class="modal fade" id="dayModal" tabindex="-1" role="dialog" aria-labelledby="dayModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="dayModalLabel">Select Date</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="date-form">
-                        <div class="form-group">
-                            <label for="selected-date">Date:</label>
-                            <input type="date" class="form-control" id="selected-date" name="selected-date">
-                            <input type="hidden" name="filter" value="Day" id="dayFilter">
-                            <div class="date-error-message text-danger"></div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="submit-date-modal">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-        <!--- Pop Up Model Week ----- -->
-    <div class="modal fade" id="weekModal" tabindex="-1" role="dialog" aria-labelledby="weekModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="weekModalLabel">Select Start and End Dates for Week</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="week-form">
-                        <div class="form-group">
-                            <label for="start-week">Start Date:</label>
-                            <input type="date" class="form-control" id="start-week" name="start-week">
-                            <div class="start-week-error-message text-danger"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="end-week">End Date:</label>
-                            <input type="date" class="form-control" id="end-week" name="end-week">
-                            <div class="end-week-error-message text-danger"></div>
-                        </div>
-                        <input type="hidden" name="filter" value="Week" id="weekFilter">
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="submit-week-modal">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-        <!--- Pop Up Model Month ----- -->
-    <div class="modal fade" id="monthModal" tabindex="-1" role="dialog" aria-labelledby="monthModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="monthModalLabel">Select Start and End Dates for Month</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="month-form">
-                        <div class="form-group">
-                            <label for="start-month">Start Date:</label>
-                            <input type="date" class="form-control" id="start-month" name="start-month">
-                            <div class="start-month-error-message text-danger"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="end-month">End Date:</label>
-                            <input type="date" class="form-control" id="end-month" name="end-month">
-                            <div class="end-month-error-message text-danger"></div>
-                        </div>
-                        <input type="hidden" name="filter" value="Month" id="monthFilter">
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="submit-month-modal">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- Modals -->
+@include('reports.partials.modals') <!-- Include modals from a partial view -->
+<x-include-plugins dataTable></x-include-plugins>
 
-    <!-- Pop Up Model Vehicle Inquiry -->
-    <div class="modal fade" id="vehicleModal" tabindex="-1" role="dialog" aria-labelledby="vehicleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="vehicleModalLabel">Select Vehicle License Plate Number</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="vehicle-form">
-                        <div class="form-group">
-                            <label for="vehicle-name">Vehicle:</label>
-                            <select class="form-control" id="vehicle-name" name="vehicle-name">
-                                <option value="" selected disabled>Vehicle Name</option>
-                                @foreach($vehicles as $vehicle)
-                                    <option value="{{ $vehicle->vehicle }}">{{ $vehicle->vehicle }}</option>
-                                @endforeach
-                            </select>
-                            <div class="vechicle-name-error-message text-danger"></div>
-                        </div>
+<script>
+   $(document).ready(function() {
+    // Initialize Inquiries DataTable
+    var inquiriesTable = $('#inquiries-report-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '{{ route("fetch-data") }}',
+            type: 'GET',
+            data: function(d) {
+                d.filter = $('#report-filter').val();
+                d.date = $('#date').val();
+                d.startDate = $('#startDate').val();
+                d.endDate = $('#endDate').val();
+                d.vehicleName = $('#vehicleName').val();
+                d.vehicleMileage = $('#vehicleMileage').val();
+                d.dateOfBirth = $('#dateOfBirth').val();
+                d.vehicleLicenceNo = $('#vehicleLicenceNo').val();
+                d.filterValue = $('#modelValue').val();
+            },
+            dataSrc: function (json) {
+                console.log('Inquiries Table Data:', json); // Debug: Check the data structure
+                return json.data; // Ensure this matches the format returned from the server
+            }
+        },
+        columns: [{
+            data: null,
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        },
+                        title: '#'
+                    },
+            { data: 'name', name: 'name' },
+            { data: 'created_at', name: 'created_at' },
+            { data: 'email', name: 'email' },
+            { data: 'vehicle', name: 'vehicle' },
+            { data: 'licence_no', name: 'licence_no' }
+        ],
+        paging: true,
+        pageLength: 10,
+        lengthMenu: [10, 20, 25, 50, 100],
+        responsive: true
+    });
 
-                        <div class="form-group">
-                            <label for="vehicle-mielage">Mielage:</label>
-                            <select class="form-control" id="vehicle_mileage" name="mielage" disabled>
-                                <option value="" selected disabled>Select Mielage</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="dob">DOB:</label>
-                            <select class="form-control" id="dob" name="dob" disabled>
-                                <option value="" selected disabled>Select DOB</option>
-                            </select>
-                            {{-- <input type="hidden" name="filter" value="Vehicle" id="vehicleFilter"> --}}
-                        </div>
-
-                        <div class="form-group">
-                            <label for="vehicle-license">License Plate Number:</label>
-                            <select class="form-control" id="vehicle-license" name="vehicle-license" disabled>
-                                <option value="" selected disabled>Select License Plate Number</option>
-                            </select>
-                            {{-- <input type="hidden" name="filter" value="Vehicle" id="vehicleFilter"> --}}
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="submit-vehicle-modal">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Loader element -->
-    <div id="loader" class="d-none">
-        <div class="spinner-border text-primary" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-
-    <script>
-        function loadReports(page = 1) {
-            var filterValue = $('#dataFilter').val();
-            var filter = $('#dailyFilter').val();
-            var date = $('#date').val();
-            var startDate = $('#startDate').val();
-            var endDate = $('#endDate').val();
-            var vehicleName = $('#vehicleName').val();
-            var vehicleMileage = $('#vehicleMileage').val();
-            var dob = $('#dateOfBirth').val();
-            var license = $('#vehicleLicenceNo').val();
-
-            var url = '{{ route("fetch-data") }}?page=' + page + '&filter=' + filter + '&date=' + date + '&startDate=' + startDate +
-                    '&endDate=' + endDate + '&filterValue=' + filterValue +  '&vehicleName=' + vehicleName + '&vehicleMileage=' + vehicleMileage + '&dob=' + dob + '&vehicleLicense=' + license;
-            $.ajax({
-                url: url,
-                method: 'GET',
-                success: function(response) {
-                    if(filterValue == 'Inqueries') {
-                        $('#inquiries-report-table tbody').html(response.data);
-                    } else if(filterValue == 'Product_Sold_Report'){
-                        $('#product-report-table tbody').html(response.data);
-                    } else {
-                        $('#inquiries-report-table tbody').html(response.data);
-                    }
-                    $('#pagination-container').html(response.links);
+    // Initialize Product DataTable
+    var productTable = $('#product-report-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '{{ route("fetch-data") }}',
+            type: 'GET',
+            data: function(d) {
+                d.filter = $('#report-filter').val();
+                d.date = $('#date').val();
+                d.startDate = $('#startDate').val();
+                d.endDate = $('#endDate').val();
+                d.vehicleName = $('#vehicleName').val();
+                d.vehicleMileage = $('#vehicleMileage').val();
+                d.dateOfBirth = $('#dateOfBirth').val();
+                d.vehicleLicenceNo = $('#vehicleLicenceNo').val();
+                d.filterValue = $('#modelValue').val();
+            },
+            dataSrc: function (json) {
+                console.log('Product Table Data:', json); // Debug: Check the data structure
+                return json.data; // Ensure this matches the format returned from the server
+            }
+        },
+        columns: [
+            { data: null,
+                render: function(data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
                 },
-            });
+                title: '#'
+            },
+            { data: 'product_name', name: 'product_name' },
+            { data: 'quantity', name: 'quantity' },
+            { data: 'cost_price', name: 'cost_price' }
+        ],
+        paging: true,
+        pageLength: 10,
+        lengthMenu: [10, 20, 25, 50, 100],
+        responsive: true
+    });
+
+    // Apply filter button click event
+    $('#filter-button').on('click', function(event) {
+        event.preventDefault();
+        var filterValue = $('#report-filter').val();
+
+        if (!filterValue) {
+            $('.error-message').html('Please select any option.');
+            return false;
+        } else {
+            $('.error-message').html('');
+
+            if (filterValue === 'Vehicle') {
+                $('#vehicleModal').modal('show');
+                $('#table-container').removeAttr('hidden');
+                $('.day-week-month-filter').attr('hidden', true);
+                return false; // Prevent default form submission
+            } else if (filterValue === 'Product_Sold_Report') {
+                $('#table-container').attr('hidden', true);
+                $('#product-table-container').removeAttr('hidden');
+                $('.day-week-month-filter').removeAttr('hidden');
+                $('#product-report-table').show();
+                productTable.ajax.reload();
+            } else {
+                $('#product-table-container').attr('hidden', true);
+                $('#table-container').removeAttr('hidden');
+                $('#inquiries-report-table').show();
+                $('#product-report-table').hide();
+                $('.day-week-month-filter').removeAttr('hidden');
+                $('.filter').hide();
+                inquiriesTable.ajax.reload(); // Trigger DataTable to reload data
+            }
         }
-        $(document).on('click', '#pagination-container a', function(e) {
-            e.preventDefault();
-            var page = $(this).attr('href').split('page=')[1];
-            loadReports(page);
-        });
+    });
 
-        loadReports();
-        $(document).ready(function() {
-            $('#filter-button').on('click', function(event) {
-                event.preventDefault();
-                var filterValue = $('#report-filter').val();
-                if (!filterValue) {
-                    $('.error-message').html('Please select any option.');
-                    return false;
-                } else {
-                    $('.error-message').html('');
-                    // $('#filter-button').attr('hidden', 'hidden');
-                    if (filterValue == 'Vehicle') {
-                        $('#vehicleModal').modal('show');
-                    } else {
-                        // Hide vehicle modal if another option is selected
-                        $('#vehicleModal').modal('hide');
-                        showLoader();
-                        $.ajax({
-                            url: '{{ route("fetch-data") }}',
-                            method: 'GET',
-                            data: {
-                                filter: filterValue,
-                                filterValue: filterValue
-                            },
-                            success: function(response) {
-                                hideLoader();
-                                if (response.success) {
-                                    if (filterValue == 'Inqueries') {
-                                        $('#inquiries-report-table').removeAttr('hidden');
-                                        $('#inquiries-report-table tbody').html(response.data);
-                                        $('#product-report-table').attr('hidden', 'hidden');
-                                    }
-                                    if (filterValue == 'Product_Sold_Report') {
-                                        $('#inquiries-report-table').attr('hidden', 'hidden');
-                                        $('#product-report-table tbody').html(response.data);
-                                        $('#product-report-table').removeAttr('hidden');
-                                    }
-                                    $('.day-week-month-filter').removeAttr('hidden');
-                                    $('.filter').attr('hidden', 'hidden');
-                                    $('#dailyFilter').val($('#report-filter').val());
-                                    $('#dataFilter').val($('#report-filter').val());
-                                    $('#pagination-container').html(response.links);
-                                }
-                            },
-                        });
-                    }
-                }
-            });
+    // Add click handlers for filtering by day, week, and month
+    $('#month-filter').click(function() {
+        $('#monthModal').modal('show');
+    });
 
-            $('#day-filter').click(function() {
-                $('#dayModal').modal('show');
-            });
+    $('#submit-month-modal').click(function() {
+        var startDate = $('#start-month').val();
+        var endDate = $('#end-month').val();
+        if (!startDate) {
+            $('.start-month-error-message').html('Please enter start month date.');
+            return false;
+        } else {
+            $('.start-month-error-message').html('');
+        }
+        if (!endDate) {
+            $('.end-month-error-message').html('Please enter end month date.');
+            return false;
+        } else {
+            $('.end-month-error-message').html('');
+        }
 
-            $('#submit-date-modal').click(function() {
-                var selectedDate = $('#selected-date').val();
-                var dataFilter = $('#dayFilter').val();
-                var filterValue = $('#report-filter').val();
-                if (!selectedDate) {
-                    $('.date-error-message').html('Please enter date.');
-                    return false;
-                } else {
-                    $('.date-error-message').html('');
-                    $('#dayModal').modal('hide');
-                    if (selectedDate) {
-                        showLoader();
-                        $.ajax({
-                            url: '{{ route("fetch-data") }}',
-                            method: 'GET',
-                            data: {
-                                filter: 'Day',
-                                date: selectedDate,
-                                filterValue: filterValue
-                            },
-                            success: function(response) {
-                                hideLoader();
-                                if (response.success) {
-                                    if (filterValue == 'Inqueries') {
-                                        $('#inquiries-report-table tbody').html(response.data);
-                                        $('#inquiries-report-table').removeAttr('hidden');
-                                    } else {
-                                        $('#product-report-table tbody').html(response.data);
-                                        $('#product-report-table').removeAttr('hidden');
-                                    }
-                                    $('.filter').attr('hidden', 'hidden');
-                                    $('#pagination-container').html(response.links);
-                                    $('#dataFilter').val(filterValue);
-                                    $('#dailyFilter').val(dataFilter);
-                                    $('#date').val(selectedDate);
-                                }
-                            },
-                            error: function(xhr, status, error) {
-                                hideLoader();
-                                console.error(error);
-                            }
-                        });
-                    }
-                }
-            });
+        $('#date').val('');
+        $('#startDate').val(startDate);
+        $('#endDate').val(endDate);
+        $('#modelValue').val('Month');
+        var filterType = $('#report-filter').val();
+        if (filterType === 'Product_Sold_Report') {
+            productTable.ajax.reload(); // Reload product table
+        } else {
+            inquiriesTable.ajax.reload(); // Reload inquiries table
+        }
+        $('#monthModal').modal('hide');
+    });
 
-            $('#week-filter').click(function() {
-                $('#weekModal').modal('show');
-            });
+    $('#day-filter').click(function() {
+        $('#dayModal').modal('show');
+    });
 
-            $('#submit-week-modal').click(function() {
-                var dataFilter = $('#weekFilter').val();
-                var startDate = $('#start-week').val();
-                var filterValue = $('#report-filter').val();
+    $('#submit-date-modal').click(function() {
+        var date = $('#selected-date').val();
+        if (!date) {
+            $('.date-error-message').html('Please enter day date.');
+            return false;
+        } else {
+            $('.date-error-message').html('');
+        }
+        $('#date').val(date);
+        $('#startDate').val('');
+        $('#endDate').val('');
+        $('#modelValue').val('Day');
+        var filterType = $('#report-filter').val();
+        if (filterType === 'Product_Sold_Report') {
+            productTable.ajax.reload(); // Reload product table
+        } else {
+            inquiriesTable.ajax.reload(); // Reload inquiries table
+        }
+        $('#dayModal').modal('hide');
+    });
 
-                if (!startDate) {
-                    $('.start-week-error-message').html('Please enter start week date.');
-                    return false;
-                } else {
-                    $('.start-week-error-message').html('');
-                }
-                var endDate = $('#end-week').val();
-                if (!endDate) {
-                    $('.end-week-error-message').html('Please enter end  week date.');
-                    return false;
-                } else {
-                    $('.end-week-error-message').html('');
-                }
-                $('#weekModal').modal('hide');
-                if (startDate && endDate) {
-                    showLoader();
-                    $.ajax({
-                        url: '{{ route("fetch-data") }}',
-                        method: 'GET',
-                        data: {
-                            filter: 'Week',
-                            startDate: startDate,
-                            endDate: endDate,
-                            filterValue: filterValue
-                        },
-                        success: function(response) {
-                            hideLoader();
-                            if (response.success) {
-                                if (filterValue == 'Inqueries') {
-                                    $('#inquiries-report-table tbody').html(response.data);
-                                    $('#inquiries-report-table').removeAttr('hidden');
-                                } else {
-                                    $('#product-report-table tbody').html(response.data);
-                                    $('#product-report-table').removeAttr('hidden');
-                                }
-                                $('.filter').attr('hidden', 'hidden');
-                                $('#pagination-container').html(response.links);
-                                $('#dataFilter').val(filterValue);
-                                $('#dailyFilter').val(dataFilter);
-                                $('#startDate').val(startDate);
-                                $('#endDate').val(endDate);
-                            }
-                        },
-                    });
-                }
-            });
+    $('#week-filter').click(function() {
+        $('#weekModal').modal('show');
+    });
 
-            $('#month-filter').click(function() {
-                $('#monthModal').modal('show');
-            });
+    $('#submit-week-modal').click(function() {
+        var startDate = $('#start-week').val();
+        var endDate = $('#end-week').val();
+        if (!startDate) {
+            $('.start-week-error-message').html('Please enter start week date.');
+            return false;
+        } else {
+            $('.start-week-error-message').html('');
+        }
+        if (!endDate) {
+            $('.end-week-error-message').html('Please enter end week date.');
+            return false;
+        } else {
+            $('.end-week-error-message').html('');
+        }
 
-            $('#submit-month-modal').click(function() {
-                var dataFilter = $('#monthFilter').val();
-                var startDate = $('#start-month').val();
-                var filterValue = $('#report-filter').val();
-                if (!startDate) {
-                    $('.start-month-error-message').html('Please enter start month date.');
-                    return false;
-                } else {
-                    $('.start-month-error-message').html('');
-                }
-                var endDate = $('#end-month').val();
-                if (!endDate) {
-                    $('.end-month-error-message').html('Please enter end month date.');
-                    return false;
-                } else {
-                    $('.end-month-error-message').html('');
-                }
-                $('#monthModal').modal('hide');
-                if (startDate && endDate) {
-                    showLoader();
-                    $.ajax({
-                        url: '{{ route("fetch-data") }}',
-                        method: 'GET',
-                        data: {
-                            filter: 'Month',
-                            startDate: startDate,
-                            endDate: endDate,
-                            filterValue: filterValue
-                        },
-                        success: function(response) {
-                            hideLoader();
-                            if (response.success) {
-                                if (filterValue == 'Inqueries') {
-                                    $('#inquiries-report-table tbody').html(response.data);
-                                    $('#inquiries-report-table').removeAttr('hidden');
-                                } else {
-                                    $('#product-report-table tbody').html(response.data);
-                                    $('#product-report-table').removeAttr('hidden');
-                                }
-                                $('.filter').attr('hidden', 'hidden');
-                                $('#pagination-container').html(response.links);
-                                $('#dataFilter').val(filterValue);
-                                $('#dailyFilter').val(dataFilter);
-                                $('#startDate').val(startDate);
-                                $('#endDate').val(endDate);
-                            }
-                        },
-                    });
-                }
-            });
+        $('#date').val('');
+        $('#startDate').val(startDate);
+        $('#endDate').val(endDate);
+        $('#modelValue').val('Week');
 
-            function showLoader() {
-                $('#loader').removeClass('d-none'); // Show loader
+        var filterType = $('#report-filter').val();
+        if (filterType === 'Product_Sold_Report') {
+            productTable.ajax.reload(); // Reload product table
+        } else {
+            inquiriesTable.ajax.reload(); // Reload inquiries table
+        }
+        $('#weekModal').modal('hide');
+    });
+
+    // Handle table visibility based on filter
+    $('#report-filter').on('change', function() {
+        var filterValue = $(this).val();
+        if (filterValue === 'Product_Sold_Report') {
+            $('#product-table-container').show();
+            $('#table-container').hide();
+        } else {
+            $('#product-table-container').hide();
+            $('#table-container').show();
+        }
+    });
+
+    $('#vehicle-name').on('change', function() {
+        var vehicleName = this.value;
+        $.ajax({
+            url: "{{ url('get-vehicle-name') }}",
+            type: "POST",
+            data: {
+                vehicleName: vehicleName,
+                _token: '{{ csrf_token() }}'
+            },
+            dataType: 'json',
+            success: function(result) {
+                $('#vehicle_mileage').html(result.options);
+                $('#vehicle_mileage').prop('disabled', false);
             }
-
-            function hideLoader() {
-                $('#loader').addClass('d-none'); // Hide loader
-            }
-
-            $('#vehicle-name').on('change', function() {
-                var vehicleName = this.value;
-                $.ajax({
-                    url: "{{ url('get-vehicle-name') }}",
-                    type: "POST",
-                    data: {
-                        vehicleName: vehicleName,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        $('#vehicle_mileage').html(result.options);
-                        $('#vehicle_mileage').prop('disabled', false);
-                    }
-                });
-            });
-
-            $('#vehicle_mileage').on('change', function() {
-                var vehicleMileage = this.value;
-                $.ajax({
-                    url: "{{ url('get-vehicle_mileage') }}",
-                    type: "POST",
-                    data: {
-                        vehicleMileage: vehicleMileage,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        $('#dob').html(result.options);
-                        $('#dob').prop('disabled', false);
-                    }
-                });
-            });
-
-            $('#dob').on('change', function() {
-                var dob = this.value;
-                $.ajax({
-                    url: "{{ url('get-dob') }}",
-                    type: "POST",
-                    data: {
-                        dob: dob,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    dataType: 'json',
-                    success: function(result) {
-                        $('#vehicle-license').html(result.options);
-                        $('#vehicle-license').prop('disabled', false);
-                    }
-                });
-            });
-
-            $('#submit-vehicle-modal').click(function() {
-                var filterValue = $('#report-filter').val();
-                var vehicleMileage = $('#vehicle_mileage').val();
-                var dob = $('#dob').val();
-                var vehicleLicense = $('#vehicle-license').val();
-                var vehicleName = $('#vehicle-name').val();
-
-                if (!vehicleName) {
-                    $('.vechicle-name-error-message').html('Please select vehicle name.');
-                    return false;
-                } else {
-                    $('.vechicle-name-error-message').html('');
-                }
-                $('#vehicleModal').modal('hide');
-                showLoader();
-                $.ajax({
-                    url: '{{ route("fetch-data") }}',
-                    method: 'GET',
-                    data: {
-                        filter: 'Vehicle',
-                        vehicleName: vehicleName,
-                        vehicleMileage: vehicleMileage,
-                        dob: dob,
-                        vehicleLicense: vehicleLicense,
-                        filterValue: filterValue
-                    },
-                    success: function(response) {
-                        hideLoader();
-                        if (response.success) {
-                            $('#inquiries-report-table tbody').html(response.data);
-                            $('#inquiries-report-table').removeAttr('hidden');
-                            $('.filter').attr('hidden', 'hidden');
-                            $('#pagination-container').html(response.links);
-                            $('#dataFilter').val(filterValue);
-                            $('#vehicleName').val(vehicleName);
-                            $('#vehicleMileage').val(vehicleMileage);
-                            $('#dateOfBirth').val(dob);
-                            $('#vehicleLicenceNo').val(vehicleLicense);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        hideLoader();
-                        console.error(error);
-                    }
-                });
-            });
         });
-    </script>
+    });
+
+    $('#vehicle_mileage').on('change', function() {
+        var vehicleMileage = this.value;
+        $.ajax({
+            url: "{{ url('get-vehicle_mileage') }}",
+            type: "POST",
+            data: {
+                vehicleMileage: vehicleMileage,
+                _token: '{{ csrf_token() }}'
+            },
+            dataType: 'json',
+            success: function(result) {
+                $('#dob').html(result.options);
+                $('#dob').prop('disabled', false);
+            }
+        });
+    });
+
+    $('#dob').on('change', function() {
+        var dob = this.value;
+        $.ajax({
+            url: "{{ url('get-dob') }}",
+            type: "POST",
+            data: {
+                dob: dob,
+                _token: '{{ csrf_token() }}'
+            },
+            dataType: 'json',
+            success: function(result) {
+                $('#vehicle-license').html(result.options);
+                $('#vehicle-license').prop('disabled', false);
+            }
+        });
+    });
+
+    $('#submit-vehicle-modal').click(function() {
+        var vehicleName = $('#vehicle-name').val();
+        var vehicleMileage = $('#vehicle_mileage').val();
+        var dob = $('#dob').val();
+        var vehicleLicense = $('#vehicle-license').val();
+        var filterValue = $('#report-filter').val();
+
+        // Validate vehicle name
+        if (!vehicleName) {
+            $('.vechicle-name-error-message').html('Please select vehicle name.');
+            return false;
+        } else {
+            $('.vechicle-name-error-message').html('');
+        }
+
+        // Set hidden input values
+        $('#date').val('');
+        $('#startDate').val('');
+        $('#endDate').val('');
+        $('#modelValue').val('Vehicle');
+        $('#vehicleName').val(vehicleName);
+        $('#vehicleMileage').val(vehicleMileage);
+        $('#dateOfBirth').val(dob);
+        $('#vehicleLicenceNo').val(vehicleLicense);
+
+        // Reload DataTable with AJAX
+        // Hide the modal
+        inquiriesTable.ajax.reload();
+        $('#vehicleModal').modal('hide');
+    });
+
+});
+</script>
 @endsection

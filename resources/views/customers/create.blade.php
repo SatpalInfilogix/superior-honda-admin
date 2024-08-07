@@ -85,13 +85,13 @@
             $('form').validate({
                 rules: {
                     first_name: "required",
-                    // email: "required",
+                    email: "required",
                     phone_number: "required",
                     address: "required",
                 },
                 messages: {
                     first_name: "Please enter first name",
-                    // email: "Please enter email",
+                    email: "Please enter email",
                     phone_number: "Please enter phone number",
                     address: "Please enter address"
 

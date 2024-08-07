@@ -19,19 +19,19 @@
                                 </div>
 
                                 <div class="card-block">
-                                    <form action="{{ route('bay.update', $branch->id) }}" method="POST">
+                                    <form action="{{ route('bay.update', $bay->id) }}" method="POST">
                                         @csrf
                                         @method('PATCH')
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="name" label="Name" value="{{ old('name', $branch->name) }}"></x-input-text>
+                                                <x-input-text name="name" label="Name" value="{{ old('name', $bay->name) }}"></x-input-text>
                                             </div>
                                             <div class="col-md-6 form-group">
                                                 <label for="branch_head">Branch Head</label>
                                                 <select name="branch_head" id="branch_head" class="form-control">
                                                     <option value="" selected disabled>Select Branch</option>
-                                                    @foreach ($branchdata as $key => $user)
-                                                        <option value="{{$user->id}}" @selected( $branch->branch_id == $user->id)>{{ $user->name }} - {{$user->address}}</option>
+                                                    @foreach ($branchdata as $key => $branch)
+                                                        <option value="{{$branch->id}}" @selected( $bay->branch_id == $branch->id)>{{ $branch->name }} - {{$branch->address}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -52,13 +52,11 @@
             $('form').validate({
                 rules: {
                     name: "required",
-                    address: "required",
-                    pincode: "required"
+                    branch_head: "required",
                 },
                 messages: {
                     name: "Please enter branch name",
-                    address: "Please enter address",
-                    pincode: "Please enter pincode"
+                    branch_head: "Please select branch",
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",

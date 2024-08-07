@@ -54,7 +54,8 @@
             var total_file = document.getElementById("images").files;
             if (!total_file.length) return;
             for (var i = 0; i < total_file.length; i++) {
-                if (total_file[i].size > 1048576) {
+                if (total_file[i].size > 10485760) {
+                    alert('File size exceeds 10 MB: ' + total_file[i]);
                     return false;
                 } else {
                     fileArr.push(total_file[i]);
@@ -148,22 +149,18 @@
 
 @isset($imagePreview)
     <script>
-        document.getElementById('imageInput').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (!file) {
-                return;
+        $('#add-category-image').change(function() {
+            var input = this;
+            if (input.files && input.files[0]) {
+                $('#image_preview').prop('hidden', false);
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#image_preview').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
             }
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const preview = document.getElementById('image_preview');
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = function() {
-                    preview.innerHTML = '';
-                    preview.appendChild(img);
-                };
-            };
-            reader.readAsDataURL(file);
         });
     </script>
+
+    
 @endisset

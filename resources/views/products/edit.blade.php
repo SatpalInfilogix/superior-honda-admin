@@ -162,7 +162,7 @@
 
                                         <div class="position-relative form-group">
                                             <label for="inputLastname" class="">Image</label>
-                                            <input type="file" name="images[]" id="images" multiple class="form-control mb-1">
+                                            <input type="file" name="images[]" id="images" accept="image/*" multiple class="form-control mb-1">
                                         </div>
                         
                                         <div class="row">

@@ -22,14 +22,20 @@
                                         @csrf
                                         @method('PATCH')
                                         <div class="form-group">
-                                            <label for="category-name">Category Name</label>
-                                            <input type="text" class="form-control" name="name" id="category-name" value="{{ $product_category->name }}">
+                                            <x-input-text name="name" label="Category Name" value="{{ old('name', $product_category->name) }}"></x-input-text>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12 form-group">
                                                 <label for="image" class>Image</label>
-                                                <input type="file" name="image" id="imageInput" class="form-control">
-                                                <div id="image_preview"><img src="{{ asset($product_category->category_image) }}"></div>
+                                                <input type="file" name="image" id="add-category-image" class="form-control">
+                                                <div id="imagePreview">
+                                                @if ($product_category->category_image)
+                                                    <img src="{{ asset($product_category->category_image) }}" id="preview-Img" class="img-preview" width="50" height="50">
+                                                @else
+                                                    <img src="" id="preview-Img" height="50" width="50" name="image" hidden>
+                                                @endif
+                                            </div>
+                                                <!-- <div id="image_preview"><img src="{{ asset($product_category->category_image) }}"></div> -->
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
@@ -42,5 +48,20 @@
             </div>
         </div>
     </div>
-    <x-include-plugins imagePreview></x-include-plugins>
+    <script>
+        $(document).ready(function() {
+            $('#add-category-image').change(function() {
+                var file = this.files[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#imagePreview').html(
+                            '<img class="preview-img" width="50px" height="50px" src="' + e.target
+                            .result + '" alt="Selected Image">');
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+        </script>
 @endsection
