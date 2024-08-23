@@ -102,31 +102,48 @@
             $('#inquiries-list').DataTable();
 
             let appUrl = '{{ env("APP_URL") }}';
+            let $statusForm = $('#status-form');
+            let $currentStatusColumn = null;
+            let $originalContent = null;
 
             function clickHandler() {
                 var $this = $(this);
                 var inquiryId = $this.data('id');
                 var currentStatus = $this.text().trim();
-                var $form = $('#status-form');
-                var $originalContent = $this.html(); // Save the original content
+
+                if ($currentStatusColumn && $currentStatusColumn[0] !== $this[0]) {
+                    $statusForm.hide();
+                    $currentStatusColumn.html($originalContent);
+                    $currentStatusColumn.on('click', clickHandler);
+                }
+
+                if ($this === $currentStatusColumn) {
+                    $statusForm.hide();
+                    $this.html($originalContent);
+                    $this.on('click', clickHandler);
+                    $currentStatusColumn = null;
+                    $originalContent = null;
+                    return;
+                }
+
+                $currentStatusColumn = $this;
+                $originalContent = $this.html();
 
                 $this.off('click');
+                $this.html($statusForm.show());
+                $statusForm.find('select[name="status"]').val(currentStatus);
 
-                $this.html($form.show());
-
-                $form.find('select[name="status"]').val(currentStatus);
-
-                $(document).on('click','#cancel-btn', function() {
-                    $form.hide();
-                    console.log($originalContent);
-                    $this.html($originalContent); // Restore the original content
-                    $this.on('click', clickHandler);
+                $(document).on('click', '#cancel-btn', function() {
+                    $statusForm.hide();
+                    $currentStatusColumn.html($originalContent);
+                    $currentStatusColumn.on('click', clickHandler);
+                    $currentStatusColumn = null;
+                    $originalContent = null;
                 });
 
-                $form.on('submit', function(e) {
+                $statusForm.on('submit', function(e) {
                     e.preventDefault();
-                    var newStatus = $form.find('select[name="status"]').val();
-                    console.log(newStatus);
+                    var newStatus = $statusForm.find('select[name="status"]').val();
                     $.ajax({
                         url: appUrl + '/inquiries/' + inquiryId + '/update-status',
                         method: 'POST',
@@ -140,9 +157,11 @@
                                 location.reload();
                             } else {
                                 alert('Error updating status');
-                                $form.hide();
-                                $this.html($originalContent); // Restore the original content
-                                $this.on('click', clickHandler);
+                                $statusForm.hide();
+                                $currentStatusColumn.html($originalContent);
+                                $currentStatusColumn.on('click', clickHandler);
+                                $currentStatusColumn = null;
+                                $originalContent = null;
                             }
                         }
                     });
