@@ -53,7 +53,7 @@
                                         <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="dob">Date of Birth</label>
-                                                <input type="text" name="date_of_birth" class="form-control" value="{{ old('date_of_birth', $customer->date_of_birth) }}" placeholder="YYYY-MM-DD">
+                                                <input type="text" name="date_of_birth" class="form-control" id="datepicker" value="{{ old('date_of_birth', $customer->date_of_birth) }}" placeholder="YYYY-MM-DD">
                                             </div>
 
                                             <div class="col-md-6 form-group">
