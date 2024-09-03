@@ -71,6 +71,20 @@
                                                 <textarea id="additional_detail" name="additional_detail" class="form-control" rows="2" cols="50"></textarea>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label for="password">Password</label>
+                                                <div class="input-group mb-0">
+                                                    <input type="password" id="password" name="password" class="form-control">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text primary-btn">
+                                                            <i id="togglePassword" class="fas fa-eye"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <label for="password" class="error"></label> <!-- Error message will appear here -->
+                                            </div>
+                                        </div>
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
                                 </div>
@@ -95,26 +109,44 @@
                     last_name: "required",
                     designation: "required",
                     email: "required",
-                    role: "required"
+                    role: "required",
+                    password: "required"
                 },
                 messages: {
                     first_name: "Please enter first name",
                     last_name: "Please enter last name",
                     designation: "Please enter designation",
                     email: "Please enter email",
-                    role: "Please enter role"
+                    role: "Please enter role",
+                    password: "Please enter password"
                 },
-                errorClass: "text-danger f-12",
-                errorElement: "span",
+                errorClass: "text-danger",
+                errorElement: "label",
                 highlight: function(element, errorClass, validClass) {
-                    $(element).addClass("form-control-danger");
+                    $(element).addClass("form-control-danger"); // Highlight input
+                    $(element).siblings('label.error').show(); // Show error label
                 },
                 unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass("form-control-danger");
+                    $(element).removeClass("form-control-danger"); // Remove highlight
+                    $(element).siblings('label.error').hide(); // Hide error label
+                },
+                errorPlacement: function(error, element) {
+                    if (element.parent('.input-group').length) {
+                        error.insertAfter(element.parent()); // Place error message after input-group
+                    } else {
+                        error.insertAfter(element); // Default placement
+                    }
                 },
                 submitHandler: function(form) {
                     form.submit();
                 }
+            });
+
+            $('#togglePassword').on('click', function() {
+                const passwordField = $('#password');
+                const type = passwordField.attr('type') === 'password' ? 'text' : 'password';
+                passwordField.attr('type', type);
+                $(this).toggleClass('fa-eye fa-eye-slash');
             });
         })
     </script>

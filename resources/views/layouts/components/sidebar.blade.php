@@ -258,18 +258,6 @@
                         </a>
                     </li>
                 @endcan
-                @can('view bay')
-                    <li  @class([
-                        'active' => Request::is('bay', 'bay/create', 'bay/*/edit'),
-                    ])>
-                        <a href="{{ route('bay.index') }}" class="waves-effect waves-dark">
-                            <span class="pcoded-micon">
-                                <i class="ti-direction"></i>
-                            </span>
-                            <span class="pcoded-mtext">Bay</span>
-                        </a>
-                    </li>
-                @endcan
                 @can('view branch')
                     <li @class([
                         'active' => Request::is('branches', 'branches/create', 'branches/*/edit'),
@@ -279,6 +267,18 @@
                                 <i class="ti-direction"></i>
                             </span>
                             <span class="pcoded-mtext">Branch Management</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('view bay')
+                    <li  @class([
+                        'active' => Request::is('bay', 'bay/create', 'bay/*/edit'),
+                    ])>
+                        <a href="{{ route('bay.index') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="ti-direction"></i>
+                            </span>
+                            <span class="pcoded-mtext">Bay</span>
                         </a>
                     </li>
                 @endcan

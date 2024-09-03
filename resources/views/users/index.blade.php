@@ -23,6 +23,9 @@
                                 <div class="card-header">
                                     <h5>User Management</h5>
                                     <div class="float-right">
+                                        <a href="{{ url('download-user-sample') }}"
+                                            class="btn btn-primary primary-btn btn-md"><i class="fa fa-download"></i>User Sample File
+                                        </a>
                                         <div class="file-button btn btn-primary primary-btn">
                                             <form action="{{ route('users.import') }}" method="POST"
                                                 enctype="multipart/form-data">

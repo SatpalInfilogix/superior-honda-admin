@@ -98,6 +98,10 @@ Route::get('download-customer-sample', function () {
     $file = public_path('assets/sample-customer/customer.csv');
     return Response::download($file);
 });
+Route::get('download-user-sample', function () {
+    $file = public_path('assets/sample-user/user.csv');
+    return Response::download($file);
+});
 
 // routes/web.php
 Route::post('/save-event', [EventController::class, 'saveEvent']);

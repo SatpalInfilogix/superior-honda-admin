@@ -82,7 +82,7 @@ class CustomerController extends Controller
             'licence_no'         => $request->licence_no,
             'company_info'       => $request->company_info,
             'city'               => $request->city,
-            'password'           => Hash::make(Str::random(10)),
+            'password'           => Hash::make($request->password),
         ])->assignRole('Customer');
 
         return redirect()->route('customers.index')->with('success', 'Customer created successfully.');
@@ -173,7 +173,7 @@ class CustomerController extends Controller
         $data = array_map('str_getcsv', file($path));
         unset($data[0]);
         $header = [
-            'first_name', 'last_name', 'email', 'phone_number','designation', 'additional_details','dob'
+            'first_name', 'last_name', 'email', 'phone_number','designation', 'additional_details','dob', 'password'
         ];
 
         $errors = [];
@@ -193,6 +193,7 @@ class CustomerController extends Controller
                 'last_name'  => 'required',
                 'email'      => 'required|email|unique:users,email',
                 'phone_number' => 'required',
+                'password'   => 'required'
             ],
             [
                 'email.unique' => 'The email '. $row['email'] .' has already been taken.',
@@ -212,7 +213,7 @@ class CustomerController extends Controller
                 'additional_details' => $row['additional_details'],
                 'date_of_birth'      => $row['dob'],
                 'cus_code'           => $cus_code,
-                'password'           => Hash::make(Str::random(10)),
+                'password'           => Hash::make($row['password']),
             ])->assignRole('Customer');
         }
 

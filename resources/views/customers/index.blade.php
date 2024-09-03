@@ -22,7 +22,7 @@
                                 <div class="card-header">
                                     <h5>Customer Management</h5>
                                     <div class="float-right">
-                                        <a href="{{ asset('assets/sample-customer/customer.csv') }}"
+                                        <a href="{{ url('download-customer-sample') }}"
                                             class="btn btn-primary primary-btn btn-md"><i class="fa fa-download"></i>Customer Sample File
                                         </a>
                                         <div class="file-button btn btn-primary primary-btn">
