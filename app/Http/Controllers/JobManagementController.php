@@ -52,12 +52,16 @@ class JobManagementController extends Controller
     {
         $branches = Branch::latest()->get();
         $bays = Bay::latest()->get();
-        $customerRole = Role::where('name', 'Technician')->first();
-        $users = User::where('branch_id', $job->branch_id)->whereHas('roles', function ($query) use ($customerRole) {
-            $query->where('role_id', $customerRole->id);
-        })->latest()->get();
+        $customerRole = Role::whereIn('name',  ['Mechanic','Technician'])->get();
+        // $customerId = $scustomerRole ? $customerRole->id : null;
+        $roleIds = $customerRole->pluck('id')->toArray();
+        $users = User::where('branch_id', $job->branch_id)
+                        ->whereHas('roles', function ($query) use ($roleIds) {
+                            $query->whereIn('role_id', $roleIds);
+                        })
+                        ->latest()
+                        ->get();
 
-        
         return view('jobs.edit', compact('job', 'branches','bays', 'users'));
     }
 
@@ -167,10 +171,17 @@ class JobManagementController extends Controller
 
     public function getBay(Request $request) 
     {
-        $customerRole = Role::where('name', 'Technician')->first();
-        $customers = User::where('branch_id', $request->branch_id)->whereHas('roles', function ($query) use ($customerRole) {
-            $query->where('role_id', $customerRole->id);
-        })->latest()->get();
+        $customerRole = Role::whereIn('name',  ['Mechanic','Technician'])->get();
+        // $customerId = $scustomerRole ? $customerRole->id : null;
+        $roleIds = $customerRole->pluck('id')->toArray();
+
+        $customers = User::where('branch_id', $request->branch_id)
+                        ->whereHas('roles', function ($query) use ($roleIds) {
+                            $query->whereIn('role_id', $roleIds);
+                        })
+                        ->latest()
+                        ->get();
+        
         $usersOption ='<option value="">Select User </option>';
         if($customers){
             foreach($customers as $customer)

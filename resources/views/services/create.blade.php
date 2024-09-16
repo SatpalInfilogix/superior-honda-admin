@@ -35,7 +35,7 @@ ul.chosen-choices {
                                             </div>
                                             <div class="col-md-6 form-group">
                                                 <label for="product">Price</label>
-                                                <input name="price" id="price" type="text" class="form-control" value="{{ old('price') }}">
+                                                <input name="price" id="price" type="number" class="form-control" value="{{ old('price') }}">
                                             </div>
                                         </div>
                                         <!-- <div class="row">
