@@ -27,7 +27,7 @@ class ProductController extends Controller
         if(!Gate::allows('view product')) {
             abort(403);
         }
-        $products = Product::with('category', 'productCategory')->whereHas('productCategory', function ($query) {
+        $products = Product::whereNull('deleted_at')->with('category', 'productCategory')->whereHas('productCategory', function ($query) {
                         $query->whereNull('deleted_at');
                     })->latest()->get();
 
@@ -70,6 +70,13 @@ class ProductController extends Controller
             'manufacture_name'  => 'required'
         ]);
 
+        if ($request->hasFile('service_icon'))
+        {
+            $iconFile = $request->file('service_icon');
+            $iconFilename = time().'.'.$iconFile->getClientOriginalExtension();
+            $iconFile->move(public_path('uploads/service-icons/'), $iconFilename);
+        }
+
         $product = Product::create([
             'product_code'      => $request->product_code,
             'product_name'      => $request->product_name,
@@ -85,6 +92,8 @@ class ProductController extends Controller
             'hsn_no'            => $request->hsn_no,
             'is_oem'            => $request->oem ?? 0,
             'is_service'        => $request->is_service ?? 0,
+            'short_description' => $request->short_description,
+            'service_icon'      => isset($iconFilename) ? 'uploads/service-icons/'.$iconFilename : NULL,
             'popular'           => $request->is_popular ?? 0,
             'used_part'         => $request->used_part ?? 0,
             'access_series'     => $request->access_series ?? 0,
@@ -165,6 +174,17 @@ class ProductController extends Controller
         ]);
 
         $product = Product::where('id', $product->id)->first();
+        $oldServiceIcon = NULL;
+        if($product != '') {
+            $oldServiceIcon = $product->service_icon;
+        }
+
+        if ($request->hasFile('service_icon'))
+        {
+            $iconFile = $request->file('service_icon');
+            $iconFilename = time().'.'.$iconFile->getClientOriginalExtension();
+            $iconFile->move(public_path('uploads/service-icons/'), $iconFilename);
+        }
 
         $product->update([
             'product_code'      => $request->product_code,
@@ -181,6 +201,8 @@ class ProductController extends Controller
             'hsn_no'            => $request->hsn_no,
             'is_oem'            => $request->oem ?? 0,
             'is_service'        => $request->is_service ?? 0,
+            'short_description' => $request->short_description,
+            'service_icon'      => isset($iconFilename) ? 'uploads/service-icons/'.$iconFilename : $oldServiceIcon,
             'popular'           => $request->is_popular ?? 0,
             'used_part'         => $request->used_part ?? 0,
             'access_series'     => $request->access_series ?? 0,
@@ -264,7 +286,7 @@ class ProductController extends Controller
         foreach ($data as $key => $row) {
             $row = array_combine($header, $row);
             $validator = Validator::make($row, [
-                'product_code' => 'required',
+                'product_code' => 'required|unique:products,product_code',
                 'category_id'  => [
                     'required',
                     function ($attribute, $value, $fail) {

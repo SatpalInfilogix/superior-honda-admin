@@ -186,10 +186,11 @@
                 url: '{{ route('autocomplete') }}',
                 data: { input: input },
                 success: function(response) {
+                    console.log(response);
                     autocompleteContainer.empty();
                     if (response.length > 0) {
                         $.each(response, function(key, value) {
-                            var autocompleteItem = '<div class="autocomplete-item" data-id="' + value.id + '">' + value.product_name + '</div>';
+                            var autocompleteItem = '<div class="autocomplete-item" data-id="' + value.id + '">' + value.name + '</div>';
                             autocompleteContainer.append(autocompleteItem);
                         });
                         autocompleteContainer.show();
@@ -205,6 +206,7 @@
 
         $('body').on('click', '.autocomplete-item', function() {
             var productName = $(this).text();
+            console.log(productName);
             var productId = $(this).data('id');
             var productRow = $(this).closest('.product-row');
             var inputField = productRow.find('.product-autocomplete');
@@ -212,8 +214,9 @@
             $.ajax({
                 type: 'GET',
                 url: '{{ route('getProductDetails') }}',
-                data: { id: productId },
+                data: { productName: productName },
                 success: function(response) {
+                    console.log(response);
                     if (response.success) {
                         productRow.find('.cost-price').val(response.product.price);
                         productRow.find('.discount').val(response.product.discount);

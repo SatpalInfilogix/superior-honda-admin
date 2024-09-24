@@ -64,7 +64,7 @@
                                                 <label class="col-sm-3 col-form-label" for="year">Year:</label>
                                                 <div class="col-sm-9">
                                                     <input class="form-control m-0" id="year" name="year"
-                                                        value="{{ $inquiry->vehicle }}" type="text" readonly>
+                                                        value="{{ $inquiry->year }}" type="text" readonly>
                                                 </div>
                                             </div>
                                         </div>

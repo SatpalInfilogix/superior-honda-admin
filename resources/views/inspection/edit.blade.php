@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
+<script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
+<link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/>
 <style>
 .modal-content {
     width: 113%;
@@ -71,7 +73,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="year">Year:</label>
                                                 <div class="col-sm-9">
-                                                    <input class="form-control m-0" id="year" name="year" value="{{ $inspection->vehicle }}"
+                                                    <input class="form-control m-0" id="year" name="year" value="{{ $inspection->year }}"
                                                         type="text">
                                                 </div>
                                             </div>
@@ -363,7 +365,72 @@
                                             @endforeach
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="name">Service:</label>
+                                                <div class="col-sm-9">
+                                                    <select multiple class="form-control chosen-select" name="services[]" id="services">
+                                                        @foreach($services as $service)
+                                                            <option value="{{ $service->id }}" 
+                                                                @if(is_array(old('services', $inspection->services)) && in_array($service->id, old('services', $inspection->services)))
+                                                                    selected
+                                                                @endif>
+                                                                {{ $service->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>            
+                                    </div>
 
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="name">Branch:</label>
+                                                <div class="col-sm-9">
+                                                    <select name="branch_id" id="branch_id" class="form-control m-0">
+                                                        <option value="">Select Branch</option>
+                                                        @foreach($branches as $key => $branch)
+                                                            <option value="{{$branch->id}}" @selected($branch->id == $inspection->branch_id)>{{ ucwords($branch->name) }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="date">Bay:</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" id="bay_id" name="bay_id" placeholder="Select Bay">
+                                                        <option value="" selected disabled>Select Bay</option>
+                                                        @if($bays)
+                                                            @foreach($bays as $bay)
+                                                                <option value="{{$bay->id}}" @selected($bay->id == $inspection->bay_id)>{{ $bay->name }}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="mileage">User:</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" id="user_id" name="user_id" placeholder="Select User">
+                                                        <option value="" selected disabled>Select User</option>
+                                                        @if($users)
+                                                            @foreach($users as $user)
+                                                                <option value="{{$user->id}}" @selected($user->id == $inspection->user_id)>{{ $user->first_name.' '.$user->last_name }}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="row">
                                         <div class="col-md-12">
                                             <p>Following discrepancies were noted:
@@ -445,6 +512,9 @@
             </div>
         </div>
     <script>
+        $(".chosen-select").chosen({
+            no_results_text: "Oops, nothing found!"
+        })
         $(document).ready(function() {
             $('#openPopupBtn').click(function() {
                 var licenseNo = $('#licence_no').val();
@@ -474,6 +544,25 @@
             $('.status-checkbox').change(function() {
                 var type = $(this).attr('id');
                 $('.status-checkbox[id="' + type + '"]').not(this).prop('checked', false);
+            });
+
+            $('#branch_id').on('change', function() {
+                var branch_id = this.value;
+                $("#bay_id").html('');
+                $("#user_id").html('');
+                $.ajax({
+                    url: "{{ url('get-bay') }}",
+                    type: "POST",
+                    data: {
+                        branch_id: branch_id,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        $('#bay_id').html(result.options);
+                        $('#user_id').html(result.userOption)
+                    }
+                });
             });
 
             $('form').validate({

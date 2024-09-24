@@ -22,14 +22,14 @@
                                     <form action="{{ route('customers.store') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="customer_no" label="Customer Number" value="{{ old('customer_no') }}" ></x-input-text>
+                                            </div>
                                             <div class="col-md-3 form-group">
                                                 <x-input-text name="first_name" label="First Name" value="{{ old('first_name') }}"></x-input-text>
                                             </div>
                                             <div class="col-md-3 form-group">
                                                 <x-input-text name="last_name" label="Last Name" value="{{ old('last_name') }}"></x-input-text>
-                                            </div>
-                                            <div class="col-md-6 form-group">
-                                                <x-input-text name="email" label="Email Address" value="{{ old('email') }}" ></x-input-text>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -37,7 +37,7 @@
                                                 <x-input-text name="address" label="Address" value="{{ old('address') }}" ></x-input-text>
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="info" label="Info" value="{{ old('info') }}" ></x-input-text>
+                                                <x-input-text name="email" label="Email Address" value="{{ old('email') }}" ></x-input-text>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -66,6 +66,9 @@
                                             </div>
                                         </div>
                                         <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="info" label="Info" value="{{ old('info') }}" ></x-input-text>
+                                            </div>
                                             <div class="col-md-6 form-group">
                                                 <label for="password">Password</label>
                                                 <div class="input-group mb-0">
@@ -103,13 +106,15 @@
                     phone_number: "required",
                     address: "required",
                     password: "required",
+                    customer_no: "required"
                 },
                 messages: {
                     first_name: "Please enter first name",
                     email: "Please enter email",
                     phone_number: "Please enter phone number",
                     address: "Please enter address",
-                    password: "Please enter password"
+                    password: "Please enter password",
+                    customer_no: "Please enter customer number."
 
                 },
                 errorClass: "text-danger f-12",

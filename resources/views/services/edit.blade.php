@@ -31,12 +31,12 @@ ul.chosen-choices {
                                         @method('PATCH')
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <label for="type">Name</label>
-                                                <input type="text" name="name" value="{{ old('name', $service->name) }}" class="form-control">
+                                                <label for="type">Service Number</label>
+                                                <input type="text" name="service_no" value="{{ old('service_no', $service->service_no) }}" class="form-control">
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <label for="product">Price</label>
-                                                <input name="price" id="price" type="number" class="form-control" value="{{ old('price', $service->price) }}">
+                                                <label for="type">Name</label>
+                                                <input type="text" name="name" value="{{ old('name', $service->name) }}" class="form-control">
                                             </div>
                                         </div>
                                         <!-- <div class="row">
@@ -63,6 +63,10 @@ ul.chosen-choices {
                                         </div> -->
                                         <div class="row">
                                             <div class="col-md-6 form-group">
+                                                <label for="product">Price</label>
+                                                <input name="price" id="price" type="number" class="form-control" value="{{ old('price', $service->price) }}">
+                                            </div>
+                                            {{-- <div class="col-md-6 form-group">
                                                 <label for="add-icon">Service Icon</label>
                                                 <div class="custom-file">
                                                     <input type="file" name="icon" class="custom-file-input" id="add-icon">
@@ -75,8 +79,8 @@ ul.chosen-choices {
                                                         @endif
                                                         </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6 form-group">
+                                            </div> --}}
+                                            {{-- <div class="col-md-6 form-group">
                                                 <label for="add-image">Image</label>
                                                 <div class="custom-file">
                                                     <input type="file" name="image" class="custom-file-input" id="add-image">
@@ -89,9 +93,9 @@ ul.chosen-choices {
                                                         @endif
                                                         </div>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         </div>
-                                        <div class="row">
+                                        {{-- <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="branch">Short Description</label>
                                                 <textarea id="short_description" name="short_description" class="form-control" rows="2" cols="50">{{$service->short_description}}</textarea>
@@ -100,7 +104,7 @@ ul.chosen-choices {
                                                 <label for="branch">Description</label>
                                                 <textarea id="description" name="description" class="form-control" rows="2" cols="50">{{$service->description}}</textarea>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
                                 </div>
@@ -200,23 +204,25 @@ ul.chosen-choices {
         $(function() {
             $('form').validate({
                 rules: {
+                    service_no: "required",
                     name: "required",
                     price: "required",
                     // manufacture_name: "required",
                     // start_date: "required",
                     // end_date: "required",
                     // model: "required",
-                    description: "required",
+                    // description: "required",
                 },
 
                 messages: {
+                    service_no: "Please enter service number"
                     name: "Please enter name",
                     price: "Please enter price",
                     // manufacture_name: "Please enter manufacture name",
                     // start_date: "Please enter start date",
                     // end_date:  "Please enter end date",
                     // model: "Please enter model",
-                    description: "Please enter description",
+                    // description: "Please enter description",
                 },
 
                 errorClass: "text-danger f-12",

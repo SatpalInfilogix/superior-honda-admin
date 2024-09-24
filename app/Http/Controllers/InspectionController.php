@@ -6,6 +6,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Inspection;
 use App\Models\Job;
+use App\Models\Branch;
+use App\Models\Bay;
+use App\Models\User;
+use App\Models\Service;
+use Spatie\Permission\Models\Role;
 class InspectionController extends Controller
 {
 
@@ -40,7 +45,22 @@ class InspectionController extends Controller
      */
     public function show(Inspection $inspection)
     {
-        return view('inspection.view', compact('inspection'));
+        $services =  Service::latest()->get();
+        $branches = Branch::latest()->get();
+        $bays = Bay::latest()->get();
+        $customerRole = Role::whereIn('name',  ['Mechanic','Technician'])->get();
+        // $customerId = $scustomerRole ? $customerRole->id : null;
+        $roleIds = $customerRole->pluck('id')->toArray();
+        $users = User::where('branch_id', $inspection->branch_id)
+                        ->whereHas('roles', function ($query) use ($roleIds) {
+                            $query->whereIn('role_id', $roleIds);
+                        })
+                        ->latest()
+                        ->get();
+
+        $inspection['services'] = explode(',' ,$inspection->services);
+
+        return view('inspection.view', compact('inspection', 'services', 'branches', 'bays', 'users'));
     }
 
     /**
@@ -48,7 +68,23 @@ class InspectionController extends Controller
      */
     public function edit(Inspection $inspection)
     {
-        return view('inspection.edit', compact('inspection'));
+        $services =  Service::latest()->get();
+        $branches = Branch::latest()->get();
+        $bays = Bay::latest()->get();
+        $customerRole = Role::whereIn('name',  ['Mechanic','Technician'])->get();
+        // $customerId = $scustomerRole ? $customerRole->id : null;
+        $roleIds = $customerRole->pluck('id')->toArray();
+        // echo"<pre>"; print_R($roleIds); die();
+        $users = User::where('branch_id', $inspection->branch_id)
+                        ->whereHas('roles', function ($query) use ($roleIds) {
+                            $query->whereIn('role_id', $roleIds);
+                        })
+                        ->latest()
+                        ->get();
+    
+        $inspection['services'] = explode(',' ,$inspection->services);
+
+        return view('inspection.edit', compact('inspection', 'services', 'branches', 'bays', 'users'));
     }
 
     /**
@@ -67,8 +103,18 @@ class InspectionController extends Controller
             }
         }
 
+        if (is_array($request->services)) {
+            $services = implode(',', $request->services);
+        } else {
+            $services = NULL;
+        }
+
         $inspection = Inspection::where('id', $inspection->id)->first();
         $inspection->update([
+            'services'      => $services,
+            'branch_id'     => $request->branch_id,
+            'bay_id'        => $request->bay_id,
+            'user_id'       => $request->user_id,
             'name'          => $request->name,
             'date'          => $request->date,
             'mileage'       => $request->mileage,
@@ -182,4 +228,30 @@ class InspectionController extends Controller
         return response()->json(['success' => false], 404);
     }
 
+    public function printInspectionList()
+    {
+        $records = Inspection::all();
+
+        return view('print.inquery-inspection-list', compact('records'));
+    }
+
+    public function InspectionPrint($id)
+    {
+        $records = Inspection::where('id', $id)->first();
+        $services =  Service::latest()->get();
+        $branches = Branch::latest()->get();
+        $bays = Bay::latest()->get();
+        $customerRole = Role::whereIn('name',  ['Mechanic','Technician'])->get();
+        $roleIds = $customerRole->pluck('id')->toArray();
+        $users = User::where('branch_id', $records->branch_id)
+                        ->whereHas('roles', function ($query) use ($roleIds) {
+                            $query->whereIn('role_id', $roleIds);
+                        })
+                        ->latest()
+                        ->get();
+
+        $records['services'] = explode(',' ,$records->services);
+
+        return view('print.inquery-inspection', compact('records', 'services', 'branches', 'bays', 'users'));
+    }
 }

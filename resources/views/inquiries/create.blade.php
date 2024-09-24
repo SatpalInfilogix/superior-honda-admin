@@ -9,9 +9,6 @@
         margin-left: 10px;
         color:white;
     }
-    .input-group-append {
-        margin-left: 23px !important;
-    }
 </style>
     <div class="pcoded-inner-content">
         <div class="main-body">
@@ -23,6 +20,7 @@
                                 <div class="card-header">
                                     <h5>Inquiry Form</h5>
                                     <div class="float-right">
+                                        <button class="btn btn-primary btn-md primary-btn" id="openPopupBtn" type="button" data-toggle="modal" data-target="#myModal">Previous Licence History</button>
                                         <a href="{{ route('inquiries.index') }}" class="btn btn-primary btn-md primary-btn">
                                             <i class="feather icon-arrow-left"></i>
                                             Go Back
@@ -88,13 +86,10 @@
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label" for="licence_no">Licence No:</label>
                                                     <div class="col-sm-9">
-                                                        <div class="input-group">
+                                                        <div class="input-grou">
                                                             <input type="text" class="form-control" id="licence_no" name="licence_no">
-                                                            <div class="input-group-append">
-                                                                <button class="btn btn-outline-secondary primary-btn" id="openPopupBtn" type="button"
-                                                                    data-toggle="modal" data-target="#myModal">View Previous History</button>
-                                                            </div>
                                                         </div>
+                                                        <span class="text-success mt-2" style="font-size: 12px;">Enter licence number to preview licence history.</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -466,12 +461,14 @@
         $(document).ready(function() {
             $('#openPopupBtn').click(function() {
                 var licenseNo = $('#licence_no').val();
+                var type = 'create';
                 $.ajax({
                     url: '/inquery-data',
                     type: 'POST',
                     data: {
                         '_token': '{{ csrf_token() }}',
                         licenseNo: licenseNo,
+                        type: type
                     },
                     success: function(response) {
                         if (response.html == '') {
@@ -485,6 +482,43 @@
                     }
                 });
             });
+        });
+
+        $(document).on('click', '.check-btn', function(event) {
+            event.preventDefault();
+            const id = $(this).data('id');
+
+            $.ajax({
+                url: '/inquery-licence/' + id,
+                type: 'POST',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    id: id,
+                },
+                success: function(response) {
+                    if(response.success) {
+                        $('#name').val(response.inquiry.name);
+                        $('#datepicker').val(response.inquiry.date);
+                        $('#mileage').val(response.inquiry.mileage);
+                        $('#vehicle').val(response.inquiry.vehicle);
+                        $('#year').val(response.inquiry.year);
+                        $('#licence_no').val(response.inquiry.licence_no);
+                        $('#address').val(response.inquiry.address);
+                        $('#returning').val(response.inquiry.returning);
+                        $('#color').val(response.inquiry.color);
+                        $('#tel_digicel').val(response.inquiry.tel_digicel);
+                        $('#email').val(response.inquiry.email);
+                        $('#tel_lime').val(response.inquiry.tel_lime);
+                        $('#datepicker2').val(response.inquiry.dob);
+                        $('#chassis').val(response.inquiry.chassis);
+                        $('#engine').val(response.inquiry.engine);
+                    }
+                    $('#myModal').modal('hide');
+                },
+                error: function(xhr, status, error) {
+                    console.error(error); // Log the error for debugging
+                }
+            }); 
         });
 
         $(function() {

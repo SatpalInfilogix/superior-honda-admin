@@ -302,7 +302,7 @@
                         </a>
                     </li>
                 @endcan
-                @can('view job')
+                {{-- @can('view job')
                     <li class="{{ Request::segment(1) == 'jobs' ? 'active' : '' }}">
                         <a href="{{ route('jobs.index')}}" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
@@ -311,7 +311,7 @@
                             <span class="pcoded-mtext">Job Management</span>
                         </a>
                     </li>
-                @endcan
+                @endcan --}}
 
                 <li  class="{{ Request::segment(1) == 'carts' ? 'active' : '' }}">
                     <a href="{{ route('carts.index')}}" class="waves-effect waves-dark">

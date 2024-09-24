@@ -159,29 +159,35 @@ class InquiryController extends Controller
     public function inqueryInfo(Request $request)
     {
         $licenseNo = $request->input('licenseNo');
-        $inquiries = '';
-        if($licenseNo != '') {
+        $inquiries = [];
+        if ($licenseNo != '') {
             $inquiries = Inquiry::where('licence_no', 'like', '%' . $licenseNo . '%')->get();
         }
         $html = '';
-        if(count($inquiries) > 0) {
+        if (count($inquiries) > 0) {
             foreach ($inquiries as $key => $inquiry) {
                 $html .= '<tr>
-                            <td>'.++$key.'</td>
-                            <td>'.$inquiry['name'].'</td>
-                            <td>'.$inquiry['date'].'</td>
-                            <td>'.$inquiry['licence_no'].'</td>
-                            <td>'.$inquiry['status'].'</td>
-                            <td><a href="'. route('inquiries.show', $inquiry->id) .'" target="_blank" class="btn btn-primary waves-effect waves-light mr-2 primary-btn">
-                                <i class="feather icon-eye m-0"></i>
-                                </a>
-                            </td>
+                            <td>' . ++$key . '</td>
+                            <td>' . $inquiry['name'] . '</td>
+                            <td>' . $inquiry['date'] . '</td>
+                            <td>' . $inquiry['licence_no'] . '</td>
+                            <td class="btn-group-sm">
+                                <a href="' . route('inquiries.show', $inquiry->id) . '" target="_blank" class="btn btn-primary waves-effect waves-light mr-2 primary-btn">
+                                    <i class="feather icon-eye m-0"></i>
+                                </a>';
+
+                if ($request->type != 'edit') {
+                    $html .= '<a href="#" class="btn btn-primary waves-effect waves-light mr-2 primary-btn check-btn" data-id="' . $inquiry->id . '">
+                                <i class="feather icon-check m-0"></i>
+                            </a>';
+                }
+
+                $html .= '</td>
                         </tr>';
             }
-        }
-        else {
+        } else {
             $html = '<tr>
-                        <td class="text-center" colspan="10"> No record found! </td>
+                        <td class="text-center" colspan="5"> No record found! </td>
                     </tr>';
         }
         return response()->json([
@@ -229,6 +235,37 @@ class InquiryController extends Controller
         }
 
         return response()->json(['success' => false], 404);
+    }
+
+    public function printInquiryList()
+    {
+        $records = Inquiry::all();
+
+        return view('print.inquery-inspection-list', compact('records'));
+    }
+
+    public function printInquery($id)
+    {
+        $records = Inquiry::where('id', $id)->first();
+
+        return view('print.inquery-inspection', compact('records'));
+    }
+
+    public function getInquiry($id)
+    {
+        $inquiry = Inquiry::find($id);
+
+        if (!$inquiry) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Inquiry not found.'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'inquiry' => $inquiry
+        ]);
     }
 
 }

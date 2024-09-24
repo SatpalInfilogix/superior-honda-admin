@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Invoice;
 use App\Models\Job;
 use App\Models\Product;
+use App\Models\Service;
+use App\Models\Inspection;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 class InvoiceController extends Controller
 {
@@ -27,31 +29,60 @@ class InvoiceController extends Controller
     public function create()
     {
         $jobs = Job::latest()->get();
-        $products = Product::latest()->get();
 
-        return view('invoices.create', compact('jobs', 'products'));
+        return view('invoices.create', compact('jobs'));
     }
 
     public function autocomplete(Request $request)
     {
         $searchTerm = $request->input('input');
-        $products = Product::with('productCategory')->whereHas('productCategory', function ($query) {
+        $inspectionServices = Inspection::pluck('services')->map(function ($services) {
+            return explode(',', $services);
+        })->flatten()->unique();
+
+        $matchingServices = Service::where('name', 'like', '%' . $searchTerm . '%') // Adjust 'service_name' if needed
+                                    ->whereIn('id', $inspectionServices)->latest()->get();
+
+        $products = Product::whereNull('deleted_at')->with('productCategory')->whereHas('productCategory', function ($query) {
                             $query->whereNull('deleted_at');
                         })->where('product_name', 'like', '%' . $searchTerm . '%')->get(['id', 'product_name']);
 
-        return response()->json($products);
+        $formattedServices = collect($matchingServices)->map(function ($service) {
+            return [
+                'id' => $service->id,
+                'name' => $service->name, // Adjust if needed
+                'type' => 'service',
+            ];
+        });
+
+        $formattedProducts = collect($products)->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->product_name,
+                'type' => 'product',
+            ];
+        });
+
+        $mergedResults = $formattedServices->merge($formattedProducts);
+
+        return response()->json($mergedResults);
     }
 
     public function productDetails(Request $request)
     {
-        $productId = $request->id;
+        $productName = $request->productName;
 
-        $product = Product::where('id', $productId)->first();
+        $service = Service::where('name',  $productName)->first();
+        $product = Product::where('product_name', $productName)->first();
 
+        $servicePrice = $service ? $service->price : 0;
+        $productPrice = $product ? $product->cost_price : 0;
+
+        $totalPrice = $servicePrice + $productPrice;
         return response()->json([
             'success' => true,
             'product' => [
-                'price' => $product->cost_price,
+                'price' => $totalPrice,
                 // 'discount' => $product->discount,
             ]
         ]);
@@ -106,7 +137,7 @@ class InvoiceController extends Controller
     public function edit(Invoice $invoice)
     {
         $jobs = Job::latest()->get();
-        $products = Product::latest()->get();
+        $products = Product::whereNull('deleted_at')->latest()->get();
 
         return view('invoices.edit', compact('invoice', 'jobs', 'products'));
     }

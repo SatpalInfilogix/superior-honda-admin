@@ -197,8 +197,15 @@ class UserController extends Controller
             $nextNumericPart = str_pad($numericPart + 1, 4, '0', STR_PAD_LEFT);
             $empId = 'EMP' . $nextNumericPart;
         }
+
+        $validRoles = Role::pluck('name')->toArray();
         foreach ($data as $key => $row) {
             $row = array_combine($header, $row);
+
+            if (!in_array($row['role'], $validRoles)) {
+                $errors[$key][] = 'Role ' . $row['role'] . ' is not valid.';
+                continue;
+            }
 
             $validator = Validator::make($row, [
                 'first_name' => 'required',

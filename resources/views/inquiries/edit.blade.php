@@ -23,6 +23,7 @@
                                 <div class="card-header">
                                     <h5>Edit Inquiry Form</h5>
                                     <div class="float-right">
+                                        <button class="btn btn-primary btn-md primary-btn" id="openPopupBtn" type="button" data-toggle="modal" data-target="#myModal">Previous Licence History</button>
                                         <a href="{{ route('inquiries.index') }}" class="btn btn-primary btn-md primary-btn">
                                             <i class="feather icon-arrow-left"></i>
                                             Go Back
@@ -78,7 +79,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="year">Year:</label>
                                                 <div class="col-sm-9">
-                                                    <input class="form-control m-0" id="year" name="year" value="{{ $inquiry->vehicle }}"
+                                                    <input class="form-control m-0" id="year" name="year" value="{{ $inquiry->year }}"
                                                         type="text">
                                                 </div>
                                             </div>
@@ -86,13 +87,11 @@
                                         <div class="col-md-4">
                                             <div class="form-group row">
                                                 <label class="col-sm-3 col-form-label" for="licence_no">Licence No:</label>
-                                                <div class="col-sm-9 input-group">
-                                                    <input type="text" class="form-control m-0" id="licence_no" value="{{ $inquiry->licence_no }}"
-                                                        name="licence_no">
-                                                        <div class="input-group-append">
-                                                            <button class="btn btn-outline-secondary primary-btn" id="openPopupBtn" type="button"
-                                                                data-toggle="modal" data-target="#myModal">View Previous History</button>
-                                                        </div>
+                                                <div class="col-sm-9">
+                                                    <div class="input-grou">
+                                                        <input type="text" class="form-control" id="licence_no" name="licence_no" value="{{ $inquiry->licence_no }}">
+                                                    </div>
+                                                    <span class="text-success mt-2" style="font-size: 12px;">Enter licence number to preview licence history.</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -453,13 +452,14 @@
         $(document).ready(function() {
             $('#openPopupBtn').click(function() {
                 var licenseNo = $('#licence_no').val();
-                console.log(licenseNo);
+                var type = 'edit';
                 $.ajax({
                     url: '/inquery-data',
                     type: 'POST',
                     data: {
                         '_token': '{{ csrf_token() }}',
                         licenseNo: licenseNo,
+                        type: type,
                     },
                     success: function(response) {
                         if (response.html == '') {

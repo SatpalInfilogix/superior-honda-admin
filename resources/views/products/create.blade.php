@@ -106,10 +106,6 @@
                                                 <label for="model_name" class>Quantity</label>
                                                 <input type="number" id="quantity" name="quantity" class="form-control"value="{{ old('quantity') }}">
                                             </div>
-                                            <div class="col-md-6 form-group">
-                                                <label for="branch">Description</label>
-                                                <textarea id="description" name="description" class="form-control" rows="2" cols="50">{{ old('description') }}</textarea>
-                                            </div>
                                         </div>
 
                                         <div class="row">
@@ -139,6 +135,28 @@
                                             </div>
                                         </div>
 
+                                        <div id="serviceFields" style="display: none;">
+                                            <div class="row">
+                                                <div class="col-md-6 form-group">
+                                                    <label for="add-icon">Service Icon</label>
+                                                    <div class="custom-file">
+                                                        <input type="file" name="service_icon" class="custom-file-input" id="add-icon">
+                                                        <label class="custom-file-label" for="add-icon">Choose Icon</label>
+                                                        <img src="" id="previewIcon" height="50" width="50" name="icon" hidden>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="short_description" class>Short Description</label>
+                                                    <textarea id="short_description" name="short_description" class="form-control" rows="2" cols="50">{{ old('short_description') }}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 form-group">
+                                                <label for="branch">Description</label>
+                                                <textarea id="description" name="description" class="form-control" rows="2" cols="50">{{ old('description') }}</textarea>
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="col-md-12 form-group">
                                                 <label for="image" class>Image</label>
@@ -158,6 +176,14 @@
     </div>
     <x-include-plugins multipleImage></x-include-plugins>
     <script>
+           document.addEventListener('DOMContentLoaded', function () {
+                ClassicEditor
+                    .create(document.querySelector('#description'))
+                    .catch(error => {
+                        console.error(error);
+                    });
+            })
+
         function oemClick(e) {
             e.value = e.checked ? 1 : 0;
             $('#oem').val(e.value);
@@ -165,6 +191,7 @@
 
         function serviceClick(e) {
             e.value = e.checked ? 1 : 0;
+            $('#serviceFields').toggle(e.checked);
         }
 
         function popularClick(e) {
@@ -183,11 +210,25 @@
                     category_id: "required",
                     product_name: "required",
                     manufacture_name: "required",
+                    short_description: {
+                        required: function() {
+                            return $('#is_service').is(':checked');
+                        }
+                    },
+                    service_icon: {
+                        required: function() {
+                            return $('#is_service').is(':checked');
+                        },
+                    }
                 },
                 messages: {
                     category_id: "Please enter category name",
                     product_name: "Please enter product name",
                     manufacture_name: "Please enter manufacture name",
+                    short_description: "Please enter a short description",
+                    service_icon: {
+                        required: "Please upload a service icon",
+                    }
 
                 },
                 errorClass: "text-danger f-12",
@@ -200,6 +241,18 @@
                 },
                 submitHandler: function(form) {
                     form.submit();
+                }
+            });
+
+            $('#add-icon').change(function() {
+                var input = this;
+                if (input.files && input.files[0]) {
+                    $('#previewIcon').prop('hidden', false);
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#previewIcon').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
                 }
             });
         })

@@ -125,6 +125,7 @@ else{
     <script src="{{ asset('assets/js/vertical-layout.min.js') }}"></script>
     <script src="{{ asset('assets/js/script.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/27.1.0/classic/ckeditor.js"></script>
     
     @yield('script')
 

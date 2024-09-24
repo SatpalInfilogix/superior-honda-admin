@@ -40,7 +40,7 @@ class BannerController extends Controller
         }
 
         $product_id = NULL;
-        $product = Product::with('productCategory')->whereHas('productCategory', function ($query) {
+        $product = Product::whereNull('deleted_at')->with('productCategory')->whereHas('productCategory', function ($query) {
                         $query->whereNull('deleted_at');
                     })->where('product_name', $request->product)->first();
         if($product) {
@@ -96,7 +96,7 @@ class BannerController extends Controller
         }
 
         $product_id = NULL;
-        $product = Product::with('productCategory')->whereHas('productCategory', function ($query) {
+        $product = Product::whereNull('deleted_at')->with('productCategory')->whereHas('productCategory', function ($query) {
                     $query->whereNull('deleted_at');
                 })->where('product_name', $request->product)->first();
         if($product) {

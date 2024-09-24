@@ -26,7 +26,7 @@ class ReportsController extends Controller
     {
         if($request->filter)
         {
-            $perPage = $request->length; // Number of items per page
+            $perPage = $request->length;
             $start = $request->start; // Starting point
             $searchValue = $request->search['value'] ?? ''; // Ensure search value is properly fetched
 
@@ -48,7 +48,7 @@ class ReportsController extends Controller
                     $cart = json_decode($order->cart_items, true);
                     if ($cart && isset($cart['products'])) {
                         $product_ids = array_column($cart['products'], 'id');
-                        $products_for_order = Product::whereIn('id', $product_ids)->get()->toArray();
+                        $products_for_order = Product::whereNull('deleted_at')->whereIn('id', $product_ids)->get()->toArray();
                         $products_in_order = array_merge($products_in_order, $products_for_order);
                     }
                 }

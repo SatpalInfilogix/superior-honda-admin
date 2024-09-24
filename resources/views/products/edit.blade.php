@@ -128,10 +128,6 @@
                                                 <label for="model_name" class>Quantity</label>
                                                 <input type="number" id="quantity" name="quantity" class="form-control"value="{{ old('quantity', $product->quantity) }}">
                                             </div>
-                                            <div class="col-md-6 form-group">
-                                                <label for="branch">Description</label>
-                                                <textarea id="description" name="description" class="form-control" rows="2" cols="50">{{ $product->description }}</textarea>
-                                            </div>
                                         </div>
 
                                         <div class="row">
@@ -157,6 +153,35 @@
                                             <div class="col-md-4 form-group">
                                                 <label for="popular" class>Access Series</label>
                                                 <input type="checkbox" id="access_series" name="access_series" value="{{ $product->access_series }}" @checked($product->access_series == 1)  onclick='accessSeries(this);'>
+                                            </div>
+                                        </div>
+
+                                          <div id="serviceFields" style="display: none;">
+                                            <div class="row">
+                                                <div class="col-md-6 form-group">
+                                                    <label for="add-icon">Service Icon</label>
+                                                    <div class="custom-file">
+                                                        <input type="file" name="service_icon" class="custom-file-input" id="add-icon">
+                                                        <label class="custom-file-label" for="add-icon">Choose Service Icon</label>
+                                                        <div id="iconPreview">
+                                                            @if ($product->service_icon)
+                                                                <img src="{{ asset($product->service_icon) }}" id="preview-icon" class="icon-preview" width="50" height="50">
+                                                            @else
+                                                                <img src="" id="preview-icon" height="50" width="50" name="image" hidden>
+                                                            @endif
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="short_description" class>Short Description</label>
+                                                    <textarea id="short_description" name="short_description" class="form-control" rows="2" cols="50">{{ old('short_description', $product->short_description) }}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 form-group">
+                                                <label for="branch">Description</label>
+                                                <textarea id="description" name="description" class="form-control" rows="2" cols="50">{{ old('description', $product->description) }}</textarea>
                                             </div>
                                         </div>
 
@@ -195,6 +220,14 @@
     <x-include-plugins multipleImage></x-include-plugins>
 
     <script>
+         document.addEventListener('DOMContentLoaded', function () {
+            ClassicEditor
+                .create(document.querySelector('#description'))
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+
         let deletedImageId= [];
         $('.delete-image').on('click', function() {
             var imageId = $(this).data('id');
@@ -213,7 +246,12 @@
         function serviceClick(e) {
             e.value = e.checked ? 1 : 0;
             $('#is_service').val(e.value);
+            $('#serviceFields').toggle(e.checked);
         }
+
+        $(document).ready(function() {
+            serviceClick(document.getElementById('is_service'));
+        });
 
         function popularClick(e) {
             e.value = e.checked ? 1 : 0;
@@ -236,12 +274,17 @@
                     category_id: "required",
                     product_name: "required",
                     manufacture_name: "required",
+                    short_description: {
+                        required: function() {
+                            return $('#is_service').is(':checked');
+                        }
+                    },
                 },
                 messages: {
                     category_id: "Please enter category name",
                     product_name: "Please enter product name",
                     manufacture_name: "Please enter manufacture name",
-
+                    short_description: "Please enter a short description",
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",
@@ -253,6 +296,18 @@
                 },
                 submitHandler: function(form) {
                     form.submit();
+                }
+            });
+            $('#add-icon').change(function() {
+                var file = this.files[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#iconPreview').html(
+                            '<img class="preview-img" width="50px" height="50px" src="' + e.target
+                            .result + '" alt="Selected Image">');
+                    }
+                    reader.readAsDataURL(file);
                 }
             });
         })

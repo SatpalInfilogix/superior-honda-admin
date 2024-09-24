@@ -22,6 +22,7 @@
                                 <div class="card-header">
                                     <h5>Inquiries</h5>
                                     <div class="float-right">
+                                        <button id="print-btn" class="btn btn-primary btn-md primary-btn">Print</button>
 
                                         <a href="{{ route('inquiries.create') }}" class="btn btn-primary btn-md primary-btn">Add
                                             Inquiry</a>
@@ -60,6 +61,8 @@
                                                                     class="btn btn-primary waves-effect waves-light mr-2 primary-btn">
                                                                     <i class="feather icon-eye m-0"></i>
                                                                 </a>
+                                                                <button data-endpoint="{{ route('inquiry.inquiry-print', $inquiry->id ) }}" id="print-inquiry"class="print-inquiry btn btn-primary waves-effect waves-light mr-2 primary-btn"><i class="feather icon-printer m-0"></i></button>
+
                                                                 <button data-source="Inquiry"
                                                                     data-endpoint="{{ route('inquiries.destroy', $inquiry->id) }}"
                                                                     class="delete-btn btn btn-danger waves-effect waves-light primary-btn">
@@ -95,6 +98,24 @@
 
     <script>
         $(function() {
+            $('#print-btn').click(function() {
+                var printUrl = '{{ route('inquiry.print-inquiry') }}';
+                var printWindow = window.open(printUrl, '_blank'); // Open the print page in a new tab/window
+
+                printWindow.onload = function() {
+                    printWindow.print();
+                };
+            });
+
+            $('.print-inquiry').click(function() {
+                var url = $(this).data('endpoint'); // Use $(this) to reference the clicked element
+                var printWindow = window.open(url, '_blank'); // Open the print page in a new tab/window
+
+                printWindow.onload = function() {
+                    printWindow.print();
+                };
+            });
+
             $('[name="file"]').change(function() {
                 $(this).parents('form').submit();
             });

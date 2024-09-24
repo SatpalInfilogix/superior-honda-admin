@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Models\VehicleModel;
 use Carbon\Carbon;
+use App\Imports\ServiceImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Session;
 
 class ServiceController extends Controller
 {
@@ -37,9 +40,12 @@ class ServiceController extends Controller
             $iconFile->move(public_path('uploads/service-icons/'), $iconFilename);
         }
 
+        $cleanPrice = preg_replace('/[^\d.]/', '', $request->price);
+
         Service::create([
+            'service_no'        => $request->service_no,
             'name'              => $request->name,
-            'price'             => $request->price,
+            'price'             => $cleanPrice,
             // 'manufacture_name'  => $request->manufacture_name,
             // 'model_name'        => $request->model,
             // 'start_date'        => Carbon::createFromFormat('m/d/Y', $request->start_date)->format('Y-m-d H:i:s'),
@@ -95,9 +101,12 @@ class ServiceController extends Controller
             $iconFile->move(public_path('uploads/service-icons/'), $iconFilename);
         }
 
+        $cleanPrice = preg_replace('/[^\d.]/', '', $request->price);
+
         $service->update([
+            'service_no'        => $request->service_no,
             'name'              => $request->name,
-            'price'             => $request->price,
+            'price'             => $cleanPrice,
             // 'manufacture_name'  => $request->manufacture_name,
             // 'model_name'        => $request->model,
             // 'start_date'        => Carbon::createFromFormat('m/d/Y', $request->start_date)->format('Y-m-d H:i:s'),
@@ -119,5 +128,19 @@ class ServiceController extends Controller
             'success' => true,
             'message' => 'Service deleted successfully.'
         ]);
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,xlsx',
+        ]);
+
+        $import = new ServiceImport;
+        Excel::import($import, $request->file('file'));
+
+        Session::flash('import_errors', $import->getErrors());
+
+        return redirect()->route('services.index')->with('success', 'Services imported successfully.');
     }
 }

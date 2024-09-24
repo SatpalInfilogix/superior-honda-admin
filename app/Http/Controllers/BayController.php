@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
 use App\Models\Branch;
+use App\Imports\BayImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Session;
 
 class BayController extends Controller
 {
@@ -152,6 +155,20 @@ class BayController extends Controller
                 'success' => true,
                 'message' => $message
         ]);
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,xlsx',
+        ]);
+
+        $import = new BayImport;
+        Excel::import($import, $request->file('file'));
+
+        Session::flash('import_errors', $import->getErrors());
+
+        return redirect()->route('bay.index')->with('success', 'Bay imported successfully.');
     }
 }
 

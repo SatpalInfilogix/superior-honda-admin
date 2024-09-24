@@ -12,6 +12,20 @@
                                 <div class="card-header">
                                     <h5>Bays</h5>
                                     <div class="float-right">
+                                        <a href="{{ url('download-bay-sample') }}"
+                                            class="btn btn-primary primary-btn btn-md"><i class="fa fa-download"></i>Branch Sample File
+                                        </a>
+
+                                        <div class="d-inline-block">
+                                            <form id="importForm" action="{{ route('bay.import') }}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <label for="fileInput" class="btn btn-primary primary-btn btn-md mb-0">
+                                                    Import CSV
+                                                    <input type="file" id="fileInput" name="file" accept=".csv" style="display:none;">
+                                                </label>
+                                            </form>
+                                        </div>
+
                                         @if(Auth::user()->can('create bay'))
                                         <a href="{{ route('bay.create') }}" class="btn btn-primary primary-btn btn-md">Add Bay</a>
                                         @endif
@@ -85,6 +99,20 @@
     <x-include-plugins dataTable></x-include-plugins>
 
     <script>
+        $(document).ready(function() {
+            $('#importButton').on('click', function() {
+                $('#fileInput').click();
+            });
+
+            $('#fileInput').on('change', function(event) {
+                var file = $(this).prop('files')[0];
+                if (file && file.type === 'text/csv') {
+                    $('#importForm').submit();
+                } else {
+                    alert('Please select a valid CSV file.');
+                }
+            });
+        });
         $(function() {
             $('#vehicle-types-list').DataTable();
 

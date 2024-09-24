@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             VehicleCategorySeeder::class,
             MasterConfigurationSeeder::class,
             VehicleTypeSeeder::class,
+            EmailTemplateSeeder::class,
         ]);
     }
 }
