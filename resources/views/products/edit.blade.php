@@ -247,6 +247,9 @@
             e.value = e.checked ? 1 : 0;
             $('#is_service').val(e.value);
             $('#serviceFields').toggle(e.checked);
+            if (e.checked) {
+                $('#access_series').prop('checked', false).val(0); 
+            }
         }
 
         $(document).ready(function() {
@@ -266,6 +269,10 @@
         function accessSeries(e) {
             e.value = e.checked ? 1 : 0;
             $('#access_series').val(e.value);
+            if (e.checked) {
+                $('#is_service').prop('checked', false).val(0); // Uncheck and set value to 0
+                $('#serviceFields').hide();
+            }
         }
 
         $(function() {

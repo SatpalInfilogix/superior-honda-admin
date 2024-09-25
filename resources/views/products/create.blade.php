@@ -192,6 +192,9 @@
         function serviceClick(e) {
             e.value = e.checked ? 1 : 0;
             $('#serviceFields').toggle(e.checked);
+            if (e.checked) {
+                $('#access_series').prop('checked', false).val(0); 
+            }
         }
 
         function popularClick(e) {
@@ -202,6 +205,10 @@
         }
         function accessSeries(e) {
             e.value = e.checked ? 1 : 0;
+            if (e.checked) {
+                $('#is_service').prop('checked', false).val(0); // Uncheck and set value to 0
+                $('#serviceFields').hide();
+            }
         }
 
         $(function() {
