@@ -151,7 +151,7 @@
                                                 <input type="checkbox" id="used_part" name="used_part" value="{{ $product->used_part }}" @checked($product->used_part == 1) onclick='popularClick(this);'>
                                             </div>
                                             <div class="col-md-4 form-group">
-                                                <label for="popular" class>Access Series</label>
+                                                <label for="popular" class>Accesseries</label>
                                                 <input type="checkbox" id="access_series" name="access_series" value="{{ $product->access_series }}" @checked($product->access_series == 1)  onclick='accessSeries(this);'>
                                             </div>
                                         </div>

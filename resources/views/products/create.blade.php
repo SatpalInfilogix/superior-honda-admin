@@ -130,7 +130,7 @@
                                                 <input type="checkbox" id="used_part" name="used_part" value="0" {{ old('used_part') ? 'checked' : '' }} onclick='usedPart(this);'>
                                             </div>
                                             <div class="col-md-4 form-group">
-                                                <label for="popular" class>Access Series</label>
+                                                <label for="popular" class>Accesseries</label>
                                                 <input type="checkbox" id="access_series" name="access_series" value="0"{{ old('access_series') ? 'checked' : '' }} onclick='accessSeries(this);'>
                                             </div>
                                         </div>
