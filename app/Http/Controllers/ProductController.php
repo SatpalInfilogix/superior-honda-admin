@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Auth;
 use Picqer\Barcode\BarcodeGeneratorHTML;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\Imports\ProductImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Session;
 
 class ProductController extends Controller
 {
@@ -266,70 +269,22 @@ class ProductController extends Controller
 
     public function import(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'file' => 'required|mimes:csv,txt',
+        $request->validate([
+            'file' => 'required|mimes:csv,xlsx',
         ]);
 
-        if ($validator->fails()) {
-            return back()->with('error', $validator);
-        }
+        $import = new ProductImport;
 
-        $file = $request->file('file');
-        $path = $file->getRealPath();
-        $data = array_map('str_getcsv', file($path));
-        unset($data[0]);
-        $header = [
-            'product_code', 'category_id', 'product_name', 'manufacture_name', 'supplier', 'quantity', 'vehicle_category_id', 'description', 'cost_price', 'item_number'
-        ];
+        Excel::import($import, $request->file('file'));
 
-        $errors = [];
-        foreach ($data as $key => $row) {
-            $row = array_combine($header, $row);
-            $validator = Validator::make($row, [
-                'product_code' => 'required|unique:products,product_code',
-                'category_id'  => [
-                    'required',
-                    function ($attribute, $value, $fail) {
-                        if (!ProductCategory::where('id', $value)->exists()) {
-                            $fail('The selected category id '. $value .' is invalid for row.');
-                        }
-                    }
-                ],
-                'product_name'       => 'required',
-                'manufacture_name'   => 'required',
-                'vehicle_category_id'  => [
-                    'required',
-                    function ($attribute, $value, $fail) {
-                        if (!VehicleCategory::where('id', $value)->exists()) {
-                            $fail('The selected vehicle category id '. $value .' is invalid.');
-                        }
-                    }
-                ]
-            ]);
-
-            if ($validator->fails()) {
-                $errors[$key] = $validator->errors()->all();
-                continue;
-            }
-
-            Product::create([
-                'product_code'         => $row['product_code'],
-                'category_id'          => $row['category_id'],
-                'product_name'         => $row['product_name'],
-                'manufacture_name'     => $row['manufacture_name'],
-                'supplier'             => $row['supplier'],
-                'quantity'             => $row['quantity'],
-                'vehicle_category_id'  => $row['vehicle_category_id'],
-                'description'          => $row['description'],
-                'cost_price'           => $row['cost_price'],
-                'item_number'          => $row['item_number'],
-            ]);
-        }
+        $errors = $import->getErrors();
 
         if (!empty($errors)) {
-            return redirect()->route('products.index')->with('error', $errors);
+            Session::flash('import_errors', $errors);
+            return redirect()->route('products.index')->with('error', 'Some Products could not be imported. Please check the errors.');
         }
 
-        return redirect()->route('products.index')->with('success', 'CSV file imported successfully.');
+        return redirect()->route('products.index')->with('success', 'Products imported successfully.');
     }
+
 }

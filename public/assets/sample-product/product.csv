@@ -1,7 +1,7 @@
-Product Code,Category Id,Product Name,Manufacture Name,Supplier,Quantity,Vehicle Category Id,Description,Cost Price,Item  Number
-ABC,1,Coilovers,asdfds,customer,5,1,sadsad a,100,1
-AAAA,2,JE Pistons,asd,customer,10,2,dasd asd asdda sa dsa,1500,23
-01ASD,3,Turbochargers,sd,customer,12,4,sad asdasdasd,200,324
-ABCD,1,Product1,asdfds,customer,5,1,sadsad a,100,1
-EAA,2,Product2,asd,customer,10,2,dasd asd asdda sa dsa,1500,23
-BASD,3,Product3,sd,customer,12,4,sad asdasdasd,200,324
+product_code,category_id,product_name,manufacture_name,supplier,quantity,vehicle_category_id,description,cost_price,item_number,image_paths
+ABC,1,Coilovers,asdfds,customer,5,1,sadsad a,100,1,"https://www.muthootcap.com/wp-content/uploads/2022/11/KTM-RC-200.jpg,https://t3.ftcdn.net/jpg/05/58/14/66/360_F_558146635_Pjgj1F8Au64JTeB9VGuas0Fm09OhEOGh.jpg"
+AAAA,2,JE Pistons,asd,customer,10,2,dasd asd asdda sa dsa,1500,23,https://t3.ftcdn.net/jpg/05/58/14/66/360_F_558146635_Pjgj1F8Au64JTeB9VGuas0Fm09OhEOGh.jpg
+01ASD,3,Turbochargers,sd,customer,12,4,sad asdasdasd,200,324,https://st3.depositphotos.com/10820522/36256/i/450/depositphotos_362566674-stock-photo-white-business-class-car-on.jpg
+ABCD,1,Product1,asdfds,customer,5,1,sadsad a,100,1,https://www.muthootcap.com/wp-content/uploads/2022/11/KTM-RC-200.jpg
+EAA,2,Product2,asd,customer,10,2,dasd asd asdda sa dsa,1500,23,https://www.muthootcap.com/wp-content/uploads/2022/11/KTM-RC-200.jpg
+BASD,3,Product3,sd,customer,12,2,sad asdasdasd,200,324,

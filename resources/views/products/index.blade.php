@@ -12,13 +12,25 @@
                             @if (session('success'))
                                 <x-alert message="{{ session('success') }}"></x-alert>
                             @endif
-                            @if (session('error'))
-                            @foreach (session('error') as $key => $error)
-                                @foreach ($error as $errorKey => $value)
-                                    <x-alert type="error" message="{{ $value }}"></x-alert>
-                                @endforeach
-                            @endforeach
-                        @endif
+                            @if (session('import_errors'))
+                                <div class="alert alert-danger">
+                                    <strong>Errors:</strong>
+                                    <ul>
+                                        @foreach (session('import_errors') as $index => $error)
+                                            <li>
+                                                Row {{ $index + 1 }}:
+                                                @if (isset($error['errors']))
+                                                    @foreach ($error['errors'] as $field => $messages)
+                                                        Field: {{ $field }} - {{ is_array($messages) ? implode('; ', $messages) : $messages }}
+                                                    @endforeach
+                                                @else
+                                                    {{ implode('; ', $error['errors']) }}
+                                                @endif
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
 
                             <div class="card">
                                 <div class="card-header">
