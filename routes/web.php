@@ -90,7 +90,7 @@ Route::post('services/import', [ServiceController::class, 'import'])->name('serv
 Route::post('branch/import', [BranchController::class, 'import'])->name('branch.import'); // import Branch csv file
 Route::post('bay/import', [BayController::class, 'import'])->name('bay.import'); // import Bay csv file
 Route::post('sales/import', [SalesProductController::class, 'import'])->name('sales.import'); // import Sale csv file
-
+Route::post('vehicle/import', [VehicleController::class, 'import'])->name('vehicle.import'); // import vehicle csv file
 /************* End import csv files */
 
 Route::post('general-setting',[SettingController::class, 'generalSetting'])->name('settings.general-setting');
@@ -128,6 +128,11 @@ Route::get('download-branch-sample', function() {
 
 Route::get('download-bay-sample', function() {
     $file = public_path('assets/sample-bay/bay.csv');
+    return Response::download($file);
+});
+
+Route::get('download-vehicle-sample', function() {
+    $file = public_path('assets/sample-vehicles/vehicle.csv');
     return Response::download($file);
 });
 /************* End Download Sample files */
@@ -177,3 +182,5 @@ Route::get('/inspection/inspection-print/{id}', [InspectionController::class, 'I
 
 Route::get('print-inquiry', [InquiryController::class, 'printInquiryList'])->name('inquiry.print-inquiry');
 Route::get('/inquiry-print/{id}', [InquiryController::class, 'printInquery'])->name('inquiry.inquiry-print');
+
+Route::get('/export/csv', [VehicleController::class, 'downloadExcel'])->name('export.csv');

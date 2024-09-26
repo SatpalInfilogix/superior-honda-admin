@@ -1,0 +1,4 @@
+customer_id,vehicle_category_id,vehicle_brand_id,vehicle_model_id,vehicle_variant_id,vehicle_no,year,color,chasis_no,engine_no,additional_detail
+7,1,1,10,5,123456,2015,red,12,213,sdfsd ds
+8,2,5,4,4,435344,2020,green,23,324,sdf sdf sd
+7,1,2,1,6,345435,2023,blue,434,2,s fsdfsdf

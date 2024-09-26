@@ -12,6 +12,11 @@ use App\Models\VehicleBrand;
 use App\Models\VehicleType;
 use App\Models\VehicleModelVariant;
 use Illuminate\Http\Request;
+use App\Imports\VehicleImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Session;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class VehicleController extends Controller
 {
@@ -165,5 +170,125 @@ class VehicleController extends Controller
             'success' => true,
             'message' => 'Vehicle deleted successfully.'
         ]);
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,xlsx',
+        ]);
+
+        $import = new VehicleImport;
+
+        Excel::import($import, $request->file('file'));
+
+        $errors = $import->getErrors();
+
+        if (!empty($errors)) {
+            Session::flash('import_errors', $errors);
+            return redirect()->route('vehicles.index')->with('error', 'Some vehicles could not be imported. Please check the errors.');
+        }
+
+        return redirect()->route('vehicles.index')->with('success', 'Vehicles imported successfully.');
+    }
+
+    public function downloadExcel()
+    {
+        $spreadsheet = new Spreadsheet();
+        
+        $this->addUsersSheet($spreadsheet);
+        
+        $this->addVehicleCategoriesSheet($spreadsheet);
+        $this->addVehicleBrandsSheet($spreadsheet);
+        $this->addVehicleModelsSheet($spreadsheet);
+        $this->addVehicleVariantsSheet($spreadsheet);
+
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'vehicle_configuration' . '.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $fileName . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit;
+    }
+
+
+    protected function addUsersSheet($spreadsheet)
+    {
+        $sheet = $spreadsheet->createSheet();
+        $sheet->setTitle('Users');
+
+        $headers = ['ID', 'First Name', 'Last Name', 'Email', 'Phone Number'];
+        $sheet->fromArray($headers, NULL, 'A1');
+
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('name', 'Customer');
+        })->get();
+
+        foreach ($users as $key => $user) {
+            $sheet->fromArray([$user->id, $user->first_name, $user->last_name, $user->email, $user->phone_number], NULL, 'A' . ($key + 2));
+        }
+    }
+
+    protected function addVehicleCategoriesSheet($spreadsheet)
+    {
+        $sheet = $spreadsheet->createSheet();
+        $sheet->setTitle('Vehicle Categories');
+
+        $headers = ['ID', 'Name'];
+        $sheet->fromArray($headers, NULL, 'A1');
+
+        $categories = VehicleCategory::all();
+
+        foreach ($categories as $key => $category) {
+            $sheet->fromArray([$category->id, $category->name], NULL, 'A' . ($key + 2));
+        }
+    }
+
+    protected function addVehicleBrandsSheet($spreadsheet)
+    {
+        $sheet = $spreadsheet->createSheet();
+        $sheet->setTitle('Vehicle Brands');
+
+        $headers = ['ID', 'Category ID', 'Brand Name'];
+        $sheet->fromArray($headers, NULL, 'A1');
+
+        $brands = VehicleBrand::all();
+
+        foreach ($brands as $key => $brand) {
+            $sheet->fromArray([$brand->id, $brand->category_id, $brand->brand_name], NULL, 'A' . ($key + 2));
+        }
+    }
+
+    protected function addVehicleModelsSheet($spreadsheet)
+    {
+        $sheet = $spreadsheet->createSheet();
+        $sheet->setTitle('Vehicle Models');
+
+        $headers = ['ID', 'Category ID', 'Brand ID', 'Model Name'];
+        $sheet->fromArray($headers, NULL, 'A1');
+
+        $models = VehicleModel::all();
+
+        foreach ($models as $key => $model) {
+            $sheet->fromArray([$model->id, $model->category_id, $model->brand_id, $model->model_name], NULL, 'A' . ($key + 2));
+        }
+    }
+
+    protected function addVehicleVariantsSheet($spreadsheet)
+    {
+        $sheet = $spreadsheet->createSheet();
+        $sheet->setTitle('Vehicle Variants');
+
+        $headers = ['ID', 'Category ID', 'Brand ID', 'Model ID', 'Variant Name'];
+        $sheet->fromArray($headers, NULL, 'A1');
+
+        $variants = VehicleModelVariant::all();
+
+        foreach ($variants as $key => $variant) {
+            $sheet->fromArray([$variant->id, $variant->category_id, $variant->brand_id, $variant->model_id, $variant->variant_name], NULL, 'A' . ($key + 2));
+        }
     }
 }
