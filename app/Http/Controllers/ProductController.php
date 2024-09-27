@@ -293,7 +293,7 @@ class ProductController extends Controller
             $query->whereNull('deleted_at');
         })->latest()->get();
 
-        $fileName = 'products.csv';
+        $fileName = 'export-products.csv';
 
         $handle = fopen('php://output', 'w');
 

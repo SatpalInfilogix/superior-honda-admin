@@ -184,4 +184,4 @@ Route::get('print-inquiry', [InquiryController::class, 'printInquiryList'])->nam
 Route::get('/inquiry-print/{id}', [InquiryController::class, 'printInquery'])->name('inquiry.inquiry-print');
 
 Route::get('/export/csv', [VehicleController::class, 'downloadExcel'])->name('export.csv');
-Route::get('/export/csv', [ProductController::class, 'downloadExcel'])->name('export.csv');
+Route::get('/product-export/csv', [ProductController::class, 'downloadExcel'])->name('product-export.csv');
