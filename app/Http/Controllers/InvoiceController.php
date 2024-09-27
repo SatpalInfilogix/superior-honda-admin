@@ -28,7 +28,7 @@ class InvoiceController extends Controller
 
     public function create()
     {
-        $jobs = Job::latest()->get();
+        $jobs = Inspection::latest()->get();
 
         return view('invoices.create', compact('jobs'));
     }

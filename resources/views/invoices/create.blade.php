@@ -2,6 +2,10 @@
 
 @section('content')
 <style>
+.modal-content {
+    width: 173%;
+    margin-left: -104px;
+}
 .autocomplete-items {
     position: absolute;
     background-color: #fff;
