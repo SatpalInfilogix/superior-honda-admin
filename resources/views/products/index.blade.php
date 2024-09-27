@@ -37,6 +37,7 @@
                                     <h5>Products</h5>
 
                                     <div class="float-right">
+                                        <a href="{{ route('export.csv') }}" class="btn btn-primary primary-btn btn-md"><i class="fa fa-download"></i>Export Products</a>
                                         <a href="{{ url('download-product-sample') }}"
                                             class="btn btn-primary primary-btn btn-md"><i class="fa fa-download"></i>Product Sample File
                                         </a>

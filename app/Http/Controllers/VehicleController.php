@@ -29,7 +29,9 @@ class VehicleController extends Controller
             abort(403);
         }
 
-        $vehicles = Vehicle::with('customer')->latest()->get();
+        $vehicles = Vehicle::with('customer')->whereHas('customer', function ($query) {
+            $query->whereNull('deleted_at');
+        })->latest()->get();
 
         return view('vehicles.index', compact('vehicles'));
     }

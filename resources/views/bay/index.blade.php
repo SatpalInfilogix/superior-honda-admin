@@ -13,7 +13,7 @@
                                     <h5>Bays</h5>
                                     <div class="float-right">
                                         <a href="{{ url('download-bay-sample') }}"
-                                            class="btn btn-primary primary-btn btn-md"><i class="fa fa-download"></i>Branch Sample File
+                                            class="btn btn-primary primary-btn btn-md"><i class="fa fa-download"></i>Bay Sample File
                                         </a>
 
                                         <div class="d-inline-block">

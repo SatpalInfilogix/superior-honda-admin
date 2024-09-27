@@ -270,7 +270,7 @@ class ProductController extends Controller
     public function import(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:csv,xlsx',
+            'file' => 'required ',
         ]);
 
         $import = new ProductImport;
@@ -285,6 +285,46 @@ class ProductController extends Controller
         }
 
         return redirect()->route('products.index')->with('success', 'Products imported successfully.');
+    }
+
+    public function downloadExcel()
+    {
+        $products = Product::whereNull('deleted_at')->with('category', 'productCategory', 'images')->whereHas('productCategory', function ($query) {
+            $query->whereNull('deleted_at');
+        })->latest()->get();
+
+        $fileName = 'products.csv';
+
+        $handle = fopen('php://output', 'w');
+
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+        
+        fputcsv($handle, ['Product Code', 'Product Name', 'Manufacture Name', 'Vehicle_Category', 'Description', 'Price', 'Item Number', 'image_paths']);
+        $baseImagePath = env('APP_URL');
+        foreach ($products as $product) {
+            $imageUrls = $product->images->pluck('images')->toArray(); // Assuming 'images' holds the file path
+           
+            $imageUrls = array_map(function($imagePath) use ($baseImagePath) {
+                return $baseImagePath .'/'. $imagePath;
+            }, $imageUrls);
+
+            $imageUrls = implode('; ', $imageUrls);
+
+            fputcsv($handle, [
+                $product->product_code,
+                $product->product_name,
+                $product->manufacture_name,
+                optional($product->category)->name,
+                $product->description,
+                $product->cost_price,
+                $product->item_number,
+                $imageUrls,
+            ]);
+        }
+
+        fclose($handle);
+        exit;
     }
 
 }

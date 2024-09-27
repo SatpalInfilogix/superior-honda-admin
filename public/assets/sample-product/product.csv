@@ -1,7 +1,10 @@
 product_code,category_id,product_name,manufacture_name,supplier,quantity,vehicle_category_id,description,cost_price,item_number,image_paths
-ABC,1,Coilovers,asdfds,customer,5,1,sadsad a,100,1,"https://www.muthootcap.com/wp-content/uploads/2022/11/KTM-RC-200.jpg,https://t3.ftcdn.net/jpg/05/58/14/66/360_F_558146635_Pjgj1F8Au64JTeB9VGuas0Fm09OhEOGh.jpg"
-AAAA,2,JE Pistons,asd,customer,10,2,dasd asd asdda sa dsa,1500,23,https://t3.ftcdn.net/jpg/05/58/14/66/360_F_558146635_Pjgj1F8Au64JTeB9VGuas0Fm09OhEOGh.jpg
-01ASD,3,Turbochargers,sd,customer,12,4,sad asdasdasd,200,324,https://st3.depositphotos.com/10820522/36256/i/450/depositphotos_362566674-stock-photo-white-business-class-car-on.jpg
-ABCD,1,Product1,asdfds,customer,5,1,sadsad a,100,1,https://www.muthootcap.com/wp-content/uploads/2022/11/KTM-RC-200.jpg
-EAA,2,Product2,asd,customer,10,2,dasd asd asdda sa dsa,1500,23,https://www.muthootcap.com/wp-content/uploads/2022/11/KTM-RC-200.jpg
-BASD,3,Product3,sd,customer,12,2,sad asdasdasd,200,324,
+08798-9035(L),1,MOTOR OIL SYN BLEND 10W-30,abc,customer,10,1,MOTOR OIL SYN BLEND 10W-30,1017.45,08798-9035(L),"https://hondasuperiorpart.com/hondasuperiorpart_images/engine.png,https://hondasuperiorpart.com/hondasuperiorpart_images/car-turbo.jpg"
+15400-PLM-A01 C,2,OIL FILTER,abc,customer,10,2,OIL FILTER,840,15400-PLM-A01 C,https://hondasuperiorpart.com/hondasuperiorpart_images/evo_crankshaft.jpg
+08200-9008,3,ATF-FLUID DW-1,sdf,customer,10,4,ATF-FLUID DW-1,1655.17,08200-9008,https://hondasuperiorpart.com/hondasuperiorpart_images/CIGUENAL.jpg
+08200-HCF2,1,HONDA HCF-2 CVT FLUID,asdfds,customer,10,1,HONDA HCF-2 CVT FLUID,2355.14,08200-HCF2,https://hondasuperiorpart.com/hondasuperiorpart_images/engine.png
+98079-5614G,2,Spark Plug(ZFR6F-11)(9807B-5617P),asd,customer,10,2,Spark Plug(ZFR6F-11)(9807B-5617P),896.2,98079-5614G,https://hondasuperiorpart.com/hondasuperiorpart_images/Brakes.jpg
+03555-71936LONG,3,Tie Strap,sd,customer,10,2,Tie Strap,33,03555-71936LONG,https://hondasuperiorpart.com/hondasuperiorpart_images/evo_crankshaft.jpg
+08200-9006,4,CVT TRANSMISSION FLUID,as,customer,10,1,CVT TRANSMISSION FLUID,1660.4,08200-9006,https://hondasuperiorpart.com/hondasuperiorpart_images/CIGUENAL.jpg
+08798-9023,2,HONDA MOTOR OIL 5w-20 SYTHC BLEND 946ML,sa,customer,10,3,HONDA MOTOR OIL 5w-20 SYTHC BLEND 946ML,1017.39,08798-9023,https://hondasuperiorpart.com/hondasuperiorpart_images/Brakes.jpg
+80292-TF0-G01T,1,CABIN FILTER,as,customer,10,1,CABIN FILTER,1100,80292-TF0-G01T,https://hondasuperiorpart.com/hondasuperiorpart_images/car-suspension-parts.jpg

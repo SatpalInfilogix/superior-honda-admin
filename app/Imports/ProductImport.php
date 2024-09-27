@@ -41,8 +41,7 @@ class ProductImport implements ToModel, WithHeadingRow
                         $fail('The selected vehicle category id ' . $value . ' is invalid.');
                     }
                 }
-            ],
-            'image_paths' => 'required'
+            ]
         ]);
 
         if ($validator->fails()) {
