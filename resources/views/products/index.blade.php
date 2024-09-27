@@ -12,6 +12,11 @@
                             @if (session('success'))
                                 <x-alert message="{{ session('success') }}"></x-alert>
                             @endif
+                            @if (session('error'))
+                                <div class="alert alert-danger">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
                             @if (session('import_errors'))
                                 <div class="alert alert-danger">
                                     <strong>Errors:</strong>

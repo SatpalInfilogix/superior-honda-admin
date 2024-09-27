@@ -8,10 +8,12 @@ use App\Models\ProductCategory;
 use App\Models\VehicleCategory;
 use App\Models\VehicleBrand;
 use App\Models\VehicleModel;
+use App\Models\VehicleType;
 use App\Models\VehicleModelVariant;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Illuminate\Validation\Rule;
 
 class ProductImport implements ToModel, WithHeadingRow
 {
@@ -26,7 +28,14 @@ class ProductImport implements ToModel, WithHeadingRow
     protected function processRow(array $row)
 {
     $validator = Validator::make($row, [
-        'product_code' => 'required|unique:products,product_code',
+        'product_code' => [
+            'required',
+            function ($attribute, $value, $fail) {
+                if (Product::where('product_code', $value)->whereNull('deleted_at')->exists()) {
+                    $fail('The product code' . $value .' has already been taken.');
+                }
+            }
+        ],
         'category_id' => [
             'required',
             function ($attribute, $value, $fail) {
@@ -42,6 +51,14 @@ class ProductImport implements ToModel, WithHeadingRow
             function ($attribute, $value, $fail) {
                 if (!VehicleCategory::where('id', $value)->exists()) {
                     $fail('The selected vehicle category id ' . $value . ' is invalid.');
+                }
+            }
+        ],
+        'vehicle_type_id' => [
+            'required',
+            function ($attribute, $value, $fail) {
+                if (!VehicleType::where('id', $value)->exists()) {
+                    $fail('The selected vehicle type id' . $value . ' is invalid.');
                 }
             }
         ]
@@ -91,12 +108,12 @@ class ProductImport implements ToModel, WithHeadingRow
     }
 
     $product = Product::create([
-        'product_code' => $row['product_code'],
-        'category_id' => $row['category_id'],
-        'product_name' => $row['product_name'],
-        'manufacture_name' => $row['manufacture_name'],
-        'supplier' => $row['supplier'],
-        'quantity' => $row['quantity'],
+        'product_code'      => $row['product_code'],
+        'category_id'       => $row['category_id'],
+        'product_name'      => $row['product_name'],
+        'manufacture_name'  => $row['manufacture_name'],
+        'supplier'          => $row['supplier'],
+        'quantity'          => $row['quantity'],
         'vehicle_category_id' => $row['vehicle_category_id'],
         'description'      => $row['description'],
         'cost_price'       => $row['cost_price'],
@@ -104,7 +121,7 @@ class ProductImport implements ToModel, WithHeadingRow
         'brand_id'         => $row['vehicle_brand_id'],
         'model_id'         => $row['vehicle_model_id'],
         'varient_model_id' => $row['vehicle_variant_id'],
-        // 'type_id'          =>$row['vehicle_type_id']
+        'type_id'          =>$row['vehicle_type_id']
     ]);
 
     if (!empty($row['image_paths'])) {
