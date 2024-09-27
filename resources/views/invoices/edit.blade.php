@@ -167,7 +167,7 @@
                     autocompleteContainer.empty();
                     if (response.length > 0) {
                         $.each(response, function(key, value) {
-                            var autocompleteItem = '<div class="autocomplete-item" data-id="' + value.id + '">' + value.product_name + '</div>';
+                            var autocompleteItem = '<div class="autocomplete-item" data-id="' + value.id + '">' + value.name + '</div>';
                             autocompleteContainer.append(autocompleteItem);
                         });
                     }
@@ -178,17 +178,15 @@
         // Selecting autocomplete item functionality
         $('body').on('click', '.autocomplete-item', function() {
             var productName = $(this).text();
+            console.log(productName);
             var productId = $(this).data('id');
             var productRow = $(this).closest('.product-row');
             var inputField = productRow.find('.product-autocomplete');
-            var autocompleteContainer = inputField.siblings('.autocomplete-items');
             inputField.val(productName);
-
-            // Fetch product details via AJAX
             $.ajax({
                 type: 'GET',
                 url: '{{ route('getProductDetails') }}',
-                data: { id: productId },
+                data: { productName: productName },
                 success: function(response) {
                     if (response.success) {
                         productRow.find('.cost-price').val(response.product.price);
@@ -199,11 +197,11 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('AJAX error:', status, error);
+                    console.error('Get Product Details AJAX error:', status, error);
                 }
             });
 
-            autocompleteContainer.empty().hide();
+            $(this).parent('.autocomplete-items').empty().hide();
         });
 
         function calculateTotalAmount() {

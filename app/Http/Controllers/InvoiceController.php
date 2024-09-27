@@ -136,7 +136,7 @@ class InvoiceController extends Controller
 
     public function edit(Invoice $invoice)
     {
-        $jobs = Job::latest()->get();
+        $jobs = Inspection::latest()->get();
         $products = Product::whereNull('deleted_at')->latest()->get();
 
         return view('invoices.edit', compact('invoice', 'jobs', 'products'));
