@@ -300,7 +300,7 @@ class ProductController extends Controller
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $fileName . '"');
         
-        fputcsv($handle, ['Product Code', 'Product Name', 'Manufacture Name', 'Vehicle_Category', 'Description', 'Price', 'Item Number', 'image_paths']);
+        fputcsv($handle, ['product_code', 'category_id', 'product_name', 'manufacture_name', 'supplier', 'quantity', 'vehicle_category_id', 'description', 'cost_price', 'item_number', 'image_paths', 'vehicle_brand_id', 'vehicle_model_id', 'vehicle_variant_id', 'vehicle_type_id']);
         $baseImagePath = env('APP_URL');
         foreach ($products as $product) {
             $imageUrls = $product->images->pluck('images')->toArray(); // Assuming 'images' holds the file path
@@ -313,13 +313,20 @@ class ProductController extends Controller
 
             fputcsv($handle, [
                 $product->product_code,
+                $product->category_id,
                 $product->product_name,
                 $product->manufacture_name,
+                $product->supplier,
+                $product->quantity,
                 optional($product->category)->name,
                 $product->description,
                 $product->cost_price,
                 $product->item_number,
                 $imageUrls,
+                $product->brand_id,
+                $product->model_id,
+                $product->varient_model_id,
+                $product->type_id
             ]);
         }
 

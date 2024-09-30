@@ -278,6 +278,7 @@
         $(function() {
             $('form').validate({
                 rules: {
+                    product_code: "required",
                     category_id: "required",
                     product_name: "required",
                     manufacture_name: "required",
@@ -288,6 +289,7 @@
                     },
                 },
                 messages: {
+                    product_code: "Please enter product code",
                     category_id: "Please enter category name",
                     product_name: "Please enter product name",
                     manufacture_name: "Please enter manufacture name",

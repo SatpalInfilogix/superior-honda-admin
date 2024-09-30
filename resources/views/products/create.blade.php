@@ -214,9 +214,11 @@
         $(function() {
             $('form').validate({
                 rules: {
+                    product_code: "required",
                     category_id: "required",
                     product_name: "required",
                     manufacture_name: "required",
+                    vehicle_type: "required",
                     short_description: {
                         required: function() {
                             return $('#is_service').is(':checked');
@@ -229,9 +231,11 @@
                     }
                 },
                 messages: {
+                    product_code: "Please enter product code",
                     category_id: "Please enter category name",
                     product_name: "Please enter product name",
                     manufacture_name: "Please enter manufacture name",
+                    vehicle_type:"PLease enter vehicle type",
                     short_description: "Please enter a short description",
                     service_icon: {
                         required: "Please upload a service icon",

@@ -201,6 +201,7 @@ class VehicleController extends Controller
         $this->addUsersSheet($spreadsheet);
         
         $this->addVehicleCategoriesSheet($spreadsheet);
+        $this->addVehicleTypeSheet($spreadsheet);
         $this->addVehicleBrandsSheet($spreadsheet);
         $this->addVehicleModelsSheet($spreadsheet);
         $this->addVehicleVariantsSheet($spreadsheet);
@@ -246,6 +247,21 @@ class VehicleController extends Controller
 
         foreach ($categories as $key => $category) {
             $sheet->fromArray([$category->id, $category->name], NULL, 'A' . ($key + 2));
+        }
+    }
+
+    protected function addVehicleTypeSheet($spreadsheet)
+    {
+        $sheet = $spreadsheet->createSheet();
+        $sheet->setTitle('Vehicle Type');
+
+        $headers = ['ID', 'Category ID', 'Vehicle Type'];
+        $sheet->fromArray($headers, NULL, 'A1');
+
+        $vehicleTypes = VehicleType::all();
+
+        foreach ($vehicleTypes as $key => $vehicleType) {
+            $sheet->fromArray([$vehicleType->id, $vehicleType->category_id, $vehicleType->vehicle_type], NULL, 'A' . ($key + 2));
         }
     }
 

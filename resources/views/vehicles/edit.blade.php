@@ -201,15 +201,18 @@
 
             $('form').validate({
                 rules: {
-                    category_id: "required",
-                    product_name: "required",
-                    manufacture_name: "required",
+                    category_id:    "required",
+                    customer_id:    "required",
+                    year:           "required",
+                    vehicle_no:     "required",
+                    vehicle_type:   "required"
                 },
                 messages: {
+                    customer_id: "Please enter customer name",
                     category_id: "Please enter category name",
-                    product_name: "Please enter product name",
-                    manufacture_name: "Please enter manufacture name",
-
+                    year:        "Please enter year",
+                    vehicle_no:  "please enter vehicle number",
+                    vehicle_type: "Please enter vehicle type"
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",
