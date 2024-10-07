@@ -183,5 +183,11 @@ Route::get('/inspection/inspection-print/{id}', [InspectionController::class, 'I
 Route::get('print-inquiry', [InquiryController::class, 'printInquiryList'])->name('inquiry.print-inquiry');
 Route::get('/inquiry-print/{id}', [InquiryController::class, 'printInquery'])->name('inquiry.inquiry-print');
 
+Route::get('print-invoice', [InvoiceController::class, 'printInvoiceList'])->name('invoices.print-invoice');
+Route::get('/invoice-print/{id}', [InvoiceController::class, 'printInvoice'])->name('invoices.invoice-print');
+
 Route::get('/export/csv', [VehicleController::class, 'downloadExcel'])->name('export.csv');
 Route::get('/product-export/csv', [ProductController::class, 'downloadExcel'])->name('product-export.csv');
+
+
+Route::get('/get-services-by-job', [InvoiceController::class, 'getServicesByJob'])->name('getServicesByJob');

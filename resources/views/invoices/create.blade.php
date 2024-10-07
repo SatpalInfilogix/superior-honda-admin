@@ -1,30 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<style>
-.modal-content {
-    width: 173%;
-    margin-left: -104px;
-}
-.autocomplete-items {
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    max-height: 150px;
-    overflow-y: auto;
-    z-index: 1000;
-    width: 96%;
-}
-
-.autocomplete-item {
-    padding: 10px;
-    cursor: pointer;
-}
-
-.autocomplete-item:hover {
-    background-color: #f0f0f0;
-}
-    </style>
 <div class="pcoded-inner-content">
     <div class="main-body">
         <div class="page-wrapper">
@@ -57,11 +33,11 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12 products-list" hidden>
+                                        <div class="col-md-12 products-list product-data" hidden>
                                             <label for="products">Products</label>
-                                            <div id="product-fields">
+                                            <div id="product-fields" class="product-data">
                                                 <!-- Initial product row -->
-                                                <div class="form-row product-row">
+                                                <div class="form-row product-row mb-2">
                                                     <div class="col-md-3">
                                                         <input name="product[]" type="text" class="form-control product-autocomplete" placeholder="Product">
                                                         <div class="autocomplete-items"></div>
@@ -73,7 +49,7 @@
                                                         <input name="discount[]" type="text" class="form-control discount" placeholder="Discount">
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <button class="btn btn-danger removeButton remove-button d-none" type="button">
+                                                        <button class="btn btn-danger btn-sm removeButton remove-button d-none" type="button">
                                                             <i class="bi bi-trash"></i> Remove
                                                         </button>
                                                     </div>
@@ -139,7 +115,7 @@
 <script>
     $(document).ready(function() {
         function generateProductRow() {
-            var html = '<div class="form-row product-row">' +
+            var html = '<div class="form-row product-row mb-2">' +
                 '<div class="col-md-3">' +
                 '<input name="product[]" type="text" class="form-control product-autocomplete" placeholder="Product">' +
                 '<div class="autocomplete-items"></div>' +
@@ -151,7 +127,7 @@
                 '<input name="discount[]" type="text" class="form-control discount" placeholder="Discount">' +
                 '</div>' +
                 '<div class="col-md-3">' +
-                '<button class="btn btn-danger removeButton remove-button" type="button">' +
+                '<button class="btn btn-danger btn-sm removeButton remove-button" type="button">' +
                 '<i class="bi bi-trash"></i> Remove' +
                 '</button>' +
                 '</div>' +
@@ -159,8 +135,56 @@
             return html;
         }
 
-        $('#job_id').on('change', function() {
+        let selectedProducts = []; // Array to track selected products
+
+        $('#job_id').change(function() {
+            var jobId = $(this).val();
             $(".products-list").removeAttr('hidden');
+            if (jobId) {
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('getServicesByJob') }}',
+                    data: { job_id: jobId },
+                    success: function(response) {
+                        $(".products-list").removeAttr('hidden');
+                        if (response.items.length > 0) {
+                            $('#product-fields').empty(); // Clear previous entries
+                            $.each(response.items, function(index, item) {
+                                const isSelected = selectedProducts.includes(item.name);
+                                if (!isSelected) {
+                                    var productRow = `<div class="form-row product-row mb-2">
+                                        <div class="col-md-3">
+                                            <input name="product[]" type="text" class="form-control product-autocomplete" placeholder="Item" value="${item.name}" readonly>
+                                            <div class="autocomplete-items"></div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input name="price[]" type="text" class="form-control cost-price" placeholder="Price" value="${item.price}" readonly>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input name="discount[]" type="text" class="form-control discount" placeholder="Discount" value="${item.discount}">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-danger btn-sm removeButton remove-button" type="button">
+                                                <i class="bi bi-trash"></i> Remove
+                                            </button>
+                                        </div>
+                                    </div>`;
+                                    $('#product-fields').append(productRow);
+                                }
+                            });
+                            calculateTotalAmount(); // Calculate total once after adding all items
+                        } else {
+                            $(".products-list").removeAttr('hidden');
+                            $('#product-fields').empty();
+                            $('#product-fields').append(generateProductRow());
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching items:', error);
+                        alert('An error occurred while fetching services. Please try again.');
+                    }
+                });
+            }
         });
 
         $('#rowAdder').click(function() {
@@ -280,11 +304,11 @@
                     return false;
                 }
 
-                if (discountInput.val().trim() === '') {
-                    isValid = false;
-                    alert('Please enter a discount.');
-                    return false;
-                }
+                // if (discountInput.val().trim() === '') {
+                //     isValid = false;
+                //     alert('Please enter a discount.');
+                //     return false;
+                // }
             });
 
             return isValid;

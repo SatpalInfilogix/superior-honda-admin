@@ -117,20 +117,20 @@
 
                                         <div class ="row">
                                             <div class="col-md-2 form-group">
-                                                <label for="service" class>Is Service</label>
+                                                <label for="is_service" class>Is Service</label>
                                                 <input type="checkbox" id="is_service" name="is_service" value="0" {{ old('is_service') ? 'checked' : '' }} onclick='serviceClick(this);'>
                                             </div>
                                             <div class="col-md-4 form-group">
-                                                <label for="popular" class>Is Popular Product</label>
+                                                <label for="is_popular" class>Is Popular Product</label>
                                                 <input type="checkbox" id="is_popular" name="is_popular" value="0"  {{ old('is_popular') ? 'checked' : '' }} onclick='popularClick(this);'>
                                             </div>
 
                                             <div class="col-md-2 form-group">
-                                                <label for="service" class>Used Part</label>
+                                                <label for="used_part" class>Used Part</label>
                                                 <input type="checkbox" id="used_part" name="used_part" value="0" {{ old('used_part') ? 'checked' : '' }} onclick='usedPart(this);'>
                                             </div>
                                             <div class="col-md-4 form-group">
-                                                <label for="popular" class>Accesseries</label>
+                                                <label for="access_series" class>Accesseries</label>
                                                 <input type="checkbox" id="access_series" name="access_series" value="0"{{ old('access_series') ? 'checked' : '' }} onclick='accessSeries(this);'>
                                             </div>
                                         </div>

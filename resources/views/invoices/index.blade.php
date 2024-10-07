@@ -76,6 +76,7 @@
                             <div class="card-header">
                                 <h5>Invoices</h5>
                                 <div class="float-right">
+                                    <button id="print-btn" class="btn btn-primary btn-md primary-btn">Print</button>
                                     <a href="{{ route('invoices.create') }}" class="btn btn-primary btn-md primary-btn">Add Invoice</a>
                                 </div>
                             </div>
@@ -87,6 +88,8 @@
                                                 <th>#</th>
                                                 <th>Invoice Number</th>
                                                 <th>Email</th>
+                                                <th>Total Product</th>
+                                                <th>Total Amount</th>
                                                 <th>Invoice View</th>
                                             </tr>
                                         </thead>
@@ -96,6 +99,8 @@
                                                     <td>{{ $key + 1 }}</td>
                                                     <td>{{ $invoice->invoice_no }}</td>
                                                     <td>{{ optional($invoice->order)->email }}</td>
+                                                    <td>{{ $invoice->totalProducts }}</td>
+                                                    <td>{{ $invoice->totalAmount }}</td>
                                                     <td>
                                                         <div class="btn-group btn-group-sm">
                                                             @if($invoice->order_id == Null)
@@ -106,6 +111,7 @@
                                                                     class="btn btn-primary primary-btn waves-effect waves-light mr-2 edit-vehicle-type">
                                                                     <i class="feather icon-edit m-0"></i>
                                                                 </a>
+                                                                <button data-endpoint="{{ route('invoices.invoice-print', $invoice->id ) }}" id="print-invoice"class="print-invoice btn btn-primary waves-effect waves-light mr-2 primary-btn"><i class="feather icon-printer m-0"></i></button>
                                                             @else
                                                                 <button type="button" class="btn btn-primary primary-btn waves-effect waves-light mr-2" data-toggle="modal" data-target="#invoiceModalOrder{{ $key }}">
                                                                     <i class="feather icon-eye m-0"></i>
@@ -165,7 +171,7 @@
                         @endif
                         <tbody>
                     </table>
-                    <div class="float-right total-amount">Total Amount: ${{ number_format($productDeatils->totalAmount,2)}}</div>
+                    <div class="float-right total-amount">Total Amount: ${{ number_format(optional($productDeatils)->totalAmount,2)}}</div>
                 </div>
                 <div class="modal-footer d-flex">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -297,6 +303,24 @@
 
 <script>
     $(function() {
+        $('#print-btn').click(function() {
+            var printUrl = '{{ route('invoices.print-invoice') }}';
+            var printWindow = window.open(printUrl, '_blank');
+
+            printWindow.onload = function() {
+                printWindow.print();
+            };
+        });
+
+        $('.print-invoice').click(function() {
+            var url = $(this).data('endpoint');
+            var printWindow = window.open(url, '_blank');
+
+            printWindow.onload = function() {
+                printWindow.print();
+            };
+        });
+
         $('#invoice-list').DataTable();
         $('.pdf-import').on('click', function(){
              var invoiceId = $(this).data('id'); // Assuming the button has a data attribute with the invoice ID

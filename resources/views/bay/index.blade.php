@@ -8,6 +8,28 @@
 
                     <div class="row">
                         <div class="col-sm-12">
+                            @if (session('success'))
+                                <x-alert message="{{ session('success') }}"></x-alert>
+                            @endif
+                            @if (session('error'))
+                                <x-alert message="{{ session('error') }}"></x-alert>
+                            @endif
+                            @if (session('import_errors'))
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach (session('import_errors') as $error)
+                                        <li>
+                                            @foreach ($error['errors'] as $field => $messages)
+                                                <strong>Row {{ $loop->parent->index + 1 }}:</strong>
+                                                @foreach ($messages as $message)
+                                                    {{ $message }}<br>
+                                                @endforeach
+                                            @endforeach
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                             <div class="card">
                                 <div class="card-header">
                                     <h5>Bays</h5>

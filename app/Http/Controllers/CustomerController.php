@@ -195,7 +195,8 @@ class CustomerController extends Controller
                 'email'             => 'required|email|unique:users,email',
                 'phone_number'      => 'required',
                 'password'          => 'required',
-                'customer_number'   => 'required'
+                'customer_number'   => 'required',
+                'dob'               => 'date_format:Y-m-d',
             ],
             [
                 'email.unique'      => 'The email '. $row['email'] .' has already been taken.',
@@ -206,6 +207,7 @@ class CustomerController extends Controller
                 continue;
             }
 
+            $dob = \Carbon\Carbon::parse($row['dob'])->format('Y-m-d');
             User::create([
                 'first_name'         => $row['first_name'],
                 'last_name'          => $row['last_name'],
@@ -213,7 +215,7 @@ class CustomerController extends Controller
                 'phone_number'       => $row['phone_number'],
                 'designation'        => $row['designation'],
                 'additional_details' => $row['additional_details'],
-                'date_of_birth'      => $row['dob'],
+                'date_of_birth'      => $dob,
                 'cus_code'           => $row['customer_number'],
                 'password'           => Hash::make($row['password']),
             ])->assignRole('Customer');

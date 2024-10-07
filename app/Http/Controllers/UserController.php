@@ -14,6 +14,7 @@ use Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use App\Models\MasterConfiguration;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -201,17 +202,17 @@ class UserController extends Controller
         $validRoles = Role::pluck('name')->toArray();
         foreach ($data as $key => $row) {
             $row = array_combine($header, $row);
-
             if (!in_array($row['role'], $validRoles)) {
                 $errors[$key][] = 'Role ' . $row['role'] . ' is not valid.';
                 continue;
             }
 
+            $dob = \Carbon\Carbon::parse($row['dob'])->format('Y-m-d');
             $validator = Validator::make($row, [
                 'first_name' => 'required',
                 'last_name'  => 'required',
                 'email'      => 'required|email|unique:users,email',
-                'dob'        => 'required',
+                'dob'        => 'required|date_format:Y-m-d',
                 'role'       => 'required',
                 'password'   => 'required'
             ],
@@ -238,7 +239,7 @@ class UserController extends Controller
                 'emp_id'             => $empId,
                 'password'           => Hash::make($row['password']),
                 'additional_details' => $row['additional_details'],
-                'date_of_birth'      => $row['dob'],
+                'date_of_birth'      => $dob,
             ])->assignRole($row['role']);
         }
 

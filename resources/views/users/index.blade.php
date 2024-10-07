@@ -11,13 +11,22 @@
                             @if (session('success'))
                                 <x-alert message="{{ session('success') }}"></x-alert>
                             @endif
+
                             @if (session('error'))
-                                @foreach (session('error') as $key => $error)
-                                    @foreach ($error as $errorKey => $value)
-                                        <x-alert type="error" message="{{ $value }}"></x-alert>
-                                    @endforeach
-                                @endforeach
-                            @endif
+                            @php
+                                $errorMessages = [];
+                        
+                                foreach (session('error') as $error) {
+                                    foreach ($error as $value) {
+                                        $errorMessages[] = $value;
+                                    }
+                                }
+                        
+                                $combinedErrors = implode('<br>', $errorMessages); 
+                            @endphp
+                        
+                            <x-alert type="error" message="{!! $combinedErrors !!}"></x-alert>
+                        @endif
 
                             <div class="card">
                                 <div class="card-header">
