@@ -9,6 +9,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Str;
+use Illuminate\Validation\Rule;
 
 class CustomerController extends Controller
 {
@@ -55,8 +56,17 @@ class CustomerController extends Controller
             'first_name'    => 'required',
             // 'last_name'     => 'required',
             // 'email'         => 'required',
-            'email'         => 'required|unique:users',
+            'email'      => [
+                'required',
+                'email',
+                Rule::unique('users')->where(function ($query) {
+                    return $query->whereNull('deleted_at');
+                })
+            ],
             'phone_number' => 'required'
+        ],
+        [
+            'email.unique'      => 'The email '. $request->email .' has already been taken.',
         ]);
 
         // $user = User::orderByDesc('cus_code')->first();
@@ -192,7 +202,13 @@ class CustomerController extends Controller
             $validator = Validator::make($row, [
                 'first_name'        => 'required',
                 'last_name'         => 'required',
-                'email'             => 'required|email|unique:users,email',
+                'email'      => [
+                    'required',
+                    'email',
+                    Rule::unique('users')->where(function ($query) {
+                        return $query->whereNull('deleted_at');
+                    })
+                ],
                 'phone_number'      => 'required',
                 'password'          => 'required',
                 'customer_number'   => 'required',

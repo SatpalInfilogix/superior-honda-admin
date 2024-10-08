@@ -70,9 +70,18 @@ class UserController extends Controller
         $request->validate([
             'first_name'    => 'required',
             'last_name'     => 'required',
-            'email'         => 'required|unique:users',
+            'email'      => [
+                'required',
+                'email',
+                Rule::unique('users')->where(function ($query) {
+                    return $query->whereNull('deleted_at');
+                })
+            ],
             'designation'   => 'required',
             'role'          => 'required'
+        ],
+        [
+            'email.unique'      => 'The email '. $request->email .' has already been taken.',
         ]);
 
         $user = User::orderByDesc('emp_id')->first();
@@ -211,7 +220,13 @@ class UserController extends Controller
             $validator = Validator::make($row, [
                 'first_name' => 'required',
                 'last_name'  => 'required',
-                'email'      => 'required|email|unique:users,email',
+                'email'      => [
+                    'required',
+                    'email',
+                    Rule::unique('users')->where(function ($query) {
+                        return $query->whereNull('deleted_at');
+                    })
+                ],
                 'dob'        => 'required|date_format:Y-m-d',
                 'role'       => 'required',
                 'password'   => 'required'

@@ -63,7 +63,7 @@ class InvoiceController extends Controller
     public function autocomplete(Request $request)
     {
         $searchTerm = $request->input('input');
-        $inspectionServices = Inspection::pluck('services')->map(function ($services) {
+        $inspectionServices = Inspection::where('id', $request->jobId)->pluck('services')->map(function ($services) {
             return explode(',', $services);
         })->flatten()->unique();
 

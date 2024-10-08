@@ -206,20 +206,34 @@
         });
 
         $('body').on('input', '.product-autocomplete', function() {
+            var jobId = $('#job_id').val();
             var input = $(this).val().trim();
             var autocompleteContainer = $(this).siblings('.autocomplete-items');
+            var selectedProductNames = [];
+            $('input[name="product[]"]').each(function() {
+                var selectedProduct = $(this).val().trim();
+                if (selectedProduct) {
+                    selectedProductNames.push(selectedProduct);
+                }
+            });
 
             $.ajax({
                 type: 'GET',
                 url: '{{ route('autocomplete') }}',
-                data: { input: input },
+                data: { input: input,
+                    jobId: jobId
+                 },
                 success: function(response) {
                     console.log(response);
                     autocompleteContainer.empty();
                     if (response.length > 0) {
                         $.each(response, function(key, value) {
-                            var autocompleteItem = '<div class="autocomplete-item" data-id="' + value.id + '">' + value.name + '</div>';
-                            autocompleteContainer.append(autocompleteItem);
+                            if (!selectedProductNames.includes(value.name)) {
+                                var autocompleteItem = '<div class="autocomplete-item" data-id="' + value.id + '">' + value.name + '</div>';
+                                autocompleteContainer.append(autocompleteItem);
+                            }
+                            // var autocompleteItem = '<div class="autocomplete-item" data-id="' + value.id + '">' + value.name + '</div>';
+                            // autocompleteContainer.append(autocompleteItem);
                         });
                         autocompleteContainer.show();
                     } else {
@@ -234,11 +248,11 @@
 
         $('body').on('click', '.autocomplete-item', function() {
             var productName = $(this).text();
-            console.log(productName);
             var productId = $(this).data('id');
             var productRow = $(this).closest('.product-row');
             var inputField = productRow.find('.product-autocomplete');
             inputField.val(productName);
+            selectedProducts.push(productName);
             $.ajax({
                 type: 'GET',
                 url: '{{ route('getProductDetails') }}',
