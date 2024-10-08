@@ -300,9 +300,13 @@ class ProductController extends Controller
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $fileName . '"');
         
-        fputcsv($handle, ['product_code', 'category_id', 'product_name', 'manufacture_name', 'supplier', 'quantity', 'vehicle_category_id', 'description', 'cost_price', 'item_number', 'image_paths', 'vehicle_brand_id', 'vehicle_model_id', 'vehicle_variant_id', 'vehicle_type_id']);
+        fputcsv($handle, ['product_code', 'category_id', 'product_name', 'manufacture_name', 'supplier', 'quantity', 'vehicle_category_id', 'description', 'cost_price', 'item_number', 'image_paths', 'vehicle_brand_id', 'vehicle_model_id', 'vehicle_variant_id', 'vehicle_type_id', 'is_oem', 'is_Service', 'service_icon', 'short_description', 'is_used_part', 'accesseries']);
         $baseImagePath = env('APP_URL');
         foreach ($products as $product) {
+            $serviceIcon = '';
+            if($product->service_icon){
+                $serviceIcon = $baseImagePath .'/'. $product->service_icon;
+            }
             $imageUrls = $product->images->pluck('images')->toArray(); // Assuming 'images' holds the file path
            
             $imageUrls = array_map(function($imagePath) use ($baseImagePath) {
@@ -318,7 +322,7 @@ class ProductController extends Controller
                 $product->manufacture_name,
                 $product->supplier,
                 $product->quantity,
-                optional($product->category)->name,
+                $product->vehicle_category_id,
                 $product->description,
                 $product->cost_price,
                 $product->item_number,
@@ -326,7 +330,13 @@ class ProductController extends Controller
                 $product->brand_id,
                 $product->model_id,
                 $product->varient_model_id,
-                $product->type_id
+                $product->type_id,
+                $product->is_oem,
+                $product->is_service,
+                $serviceIcon,
+                $product->short_description,
+                $product->used_part,
+                $product->access_series,
             ]);
         }
 

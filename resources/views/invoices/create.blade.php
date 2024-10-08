@@ -154,11 +154,11 @@
                                 if (!isSelected) {
                                     var productRow = `<div class="form-row product-row mb-2">
                                         <div class="col-md-3">
-                                            <input name="product[]" type="text" class="form-control product-autocomplete" placeholder="Item" value="${item.name}" readonly>
+                                            <input name="product[]" type="text" class="form-control product-autocomplete" placeholder="Item" value="${item.name}">
                                             <div class="autocomplete-items"></div>
                                         </div>
                                         <div class="col-md-3">
-                                            <input name="price[]" type="text" class="form-control cost-price" placeholder="Price" value="${item.price}" readonly>
+                                            <input name="price[]" type="text" class="form-control cost-price" placeholder="Price" value="${item.price}">
                                         </div>
                                         <div class="col-md-3">
                                             <input name="discount[]" type="text" class="form-control discount" placeholder="Discount" value="${item.discount}">
