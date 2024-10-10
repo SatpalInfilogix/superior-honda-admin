@@ -151,6 +151,7 @@ class ProductImport implements ToModel, WithHeadingRow
             'access_series' => $row['accesseries'],
             'short_description' => $row['short_description'],
             'service_icon' => $serviceIcon,
+            'year'         => $row['year'] ?? NULL
         ]);
 
         if (!empty($row['image_paths'])) {

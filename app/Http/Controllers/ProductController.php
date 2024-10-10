@@ -66,7 +66,10 @@ class ProductController extends Controller
         }
 
         $request->validate([
-            'product_code'      => 'required|unique:products',
+            'product_code' => [
+                'required',
+                Rule::unique('products', 'product_code')->whereNull('deleted_at')
+            ],
             'category_id'       => 'required',
             'vehicle_category_id' => 'required',
             'product_name'      => 'required',
@@ -103,7 +106,8 @@ class ProductController extends Controller
             'description'       => $request->description,
             'cost_price'        => $request->cost_price,
             'item_number'       => $request->item_number,
-            'created_by'        => Auth::id()
+            'created_by'        => Auth::id(),
+            'year'              => is_array($request->year_range) ? implode(',', $request->year_range) : NULL
         ]);
 
         $images = $request->images;
@@ -151,8 +155,9 @@ class ProductController extends Controller
         $vehicleTypes = VehicleType::all();
         $modelVariants = VehicleModelVariant::all();
         $product = Product::with('images')->where('id', $product->id)->first();
+        $selectedYears = explode(',', $product->year);
 
-        return view('products.edit', compact('product', 'categories', 'brands', 'vehicleModels', 'vehicleTypes','modelVariants', 'vehicleCategories'));
+        return view('products.edit', compact('product', 'categories', 'brands', 'vehicleModels', 'vehicleTypes','modelVariants', 'vehicleCategories', 'selectedYears'));
 
     }
 
@@ -168,7 +173,7 @@ class ProductController extends Controller
         $request->validate([
             'product_code' => [
                 'required',
-                Rule::unique('products', 'product_code')->ignore($product->id)
+                Rule::unique('products', 'product_code')->whereNull('deleted_at')->ignore($product->id)
             ],
             'category_id' => 'required',
             'vehicle_category_id' => 'required',
@@ -212,6 +217,7 @@ class ProductController extends Controller
             'description'       => $request->description,
             'cost_price'        => $request->cost_price,
             'item_number'       => $request->item_number,
+            'year'              => is_array($request->year_range) ? implode(',', $request->year_range) : NULL
         ]);
 
         if ($request->hasFile('images')) {
@@ -300,7 +306,7 @@ class ProductController extends Controller
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="' . $fileName . '"');
         
-        fputcsv($handle, ['product_code', 'category_id', 'product_name', 'manufacture_name', 'supplier', 'quantity', 'vehicle_category_id', 'description', 'cost_price', 'item_number', 'image_paths', 'vehicle_brand_id', 'vehicle_model_id', 'vehicle_variant_id', 'vehicle_type_id', 'is_oem', 'is_Service', 'service_icon', 'short_description', 'is_used_part', 'accesseries']);
+        fputcsv($handle, ['product_code', 'category_id', 'product_name', 'manufacture_name', 'supplier', 'quantity', 'vehicle_category_id', 'description', 'cost_price', 'item_number', 'image_paths', 'vehicle_brand_id', 'vehicle_model_id', 'vehicle_variant_id', 'vehicle_type_id', 'is_oem', 'is_Service', 'service_icon', 'short_description', 'is_used_part', 'accesseries','year']);
         $baseImagePath = env('APP_URL');
         foreach ($products as $product) {
             $serviceIcon = '';
@@ -337,6 +343,7 @@ class ProductController extends Controller
                 $product->short_description,
                 $product->used_part,
                 $product->access_series,
+                $product->year
             ]);
         }
 

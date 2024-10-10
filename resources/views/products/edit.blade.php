@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    span.ui-selectmenu-text {
+    display: none;
+}
+    </style>
     <div class="pcoded-inner-content">
         <div class="main-body">
             <div class="page-wrapper">
@@ -128,6 +133,18 @@
                                                 <label for="model_name" class>Quantity</label>
                                                 <input type="number" id="quantity" name="quantity" class="form-control"value="{{ old('quantity', $product->quantity) }}">
                                             </div>
+
+                                            <div class="col-md-6 form-group">
+                                                <label for="year">Year</label>
+                                                <select id="year_range" name="year_range[]" class="form-control chosen-select" multiple="multiple">
+                                                    @foreach(range(date('Y'),1950) as $year)
+                                                        <option value="{{ $year }}" 
+                                                            @if(in_array($year, old('year_range', $selectedYears))) selected @endif>
+                                                            {{ $year }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
 
                                         <div class="row">
@@ -220,6 +237,26 @@
     <x-include-plugins multipleImage></x-include-plugins>
 
     <script>
+         $(document).ready(function() {
+            var startYear = 1950;
+            var endYear = new Date().getFullYear();
+
+            var yearDropdown = $('#year_range');
+            for (var year = endYear; year >= startYear; year--) {
+                yearDropdown.append($('<option>', {
+                    value: year,
+                    text: year
+                }));
+            }
+
+            $(".chosen-select").chosen({
+                width: '100%',
+                no_results_text: "Oops, nothing found!"
+            })
+
+            $('#year_range').selectmenu();
+        });
+
          document.addEventListener('DOMContentLoaded', function () {
             ClassicEditor
                 .create(document.querySelector('#description'))
@@ -282,6 +319,7 @@
                     category_id: "required",
                     product_name: "required",
                     manufacture_name: "required",
+                    vehicle_category_id: "required",
                     short_description: {
                         required: function() {
                             return $('#is_service').is(':checked');
@@ -293,6 +331,7 @@
                     category_id: "Please enter category name",
                     product_name: "Please enter product name",
                     manufacture_name: "Please enter manufacture name",
+                    vehicle_category_id: "Please enter vehicle category",
                     short_description: "Please enter a short description",
                 },
                 errorClass: "text-danger f-12",

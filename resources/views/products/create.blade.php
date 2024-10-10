@@ -18,18 +18,20 @@
                                     </div>
                                 </div>
                                 <div class="card-block">
-                                    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+                                    <form action="{{ route('products.store') }}" method="POST"
+                                        enctype="multipart/form-data">
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="product_code" label="Product Code" value="{{ old('product_code') }}"></x-input-text>
+                                                <x-input-text name="product_code" label="Product Code"
+                                                    value="{{ old('product_code') }}"></x-input-text>
                                             </div>
 
                                             <div class="col-md-6 form-group">
                                                 <label for="category_id">Category</label>
                                                 <select name="category_id" id="category_id" class="form-control">
                                                     <option value="" selected disabled>Select Category</option>
-                                                    @foreach($categories as $category)
+                                                    @foreach ($categories as $category)
                                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                     @endforeach
                                                 </select>
@@ -38,20 +40,25 @@
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="product_name" label="Product Name" value="{{ old('product_name') }}"></x-input-text>
+                                                <x-input-text name="product_name" label="Product Name"
+                                                    value="{{ old('product_name') }}"></x-input-text>
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="manufacture_name" label="Manufacture Name" value="{{ old('manufacture_name') }}"></x-input-text>
+                                                <x-input-text name="manufacture_name" label="Manufacture Name"
+                                                    value="{{ old('manufacture_name') }}"></x-input-text>
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="vehicle_category_id">Vehicle Category</label>
-                                                <select name="vehicle_category_id" id="vehicle_category_id" class="form-control">
-                                                    <option value="" selected disabled>Select Vehicle Category</option>
-                                                    @foreach($vehicleCategories as $vehicleCategory)
-                                                        <option value="{{ $vehicleCategory->id }}">{{ $vehicleCategory->name }}</option>
+                                                <select name="vehicle_category_id" id="vehicle_category_id"
+                                                    class="form-control">
+                                                    <option value="" selected disabled>Select Vehicle Category
+                                                    </option>
+                                                    @foreach ($vehicleCategories as $vehicleCategory)
+                                                        <option value="{{ $vehicleCategory->id }}">
+                                                            {{ $vehicleCategory->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -72,8 +79,10 @@
                                             </div>
                                             <div class="col-md-6 form-group">
                                                 <label for="model_variant_name" class>Model Variant Name</label>
-                                                <select class="form-control" id="model_variant_name" name="model_variant_name">
-                                                    <option value="" selected disabled>Select Model Variant Name</option>
+                                                <select class="form-control" id="model_variant_name"
+                                                    name="model_variant_name">
+                                                    <option value="" selected disabled>Select Model Variant Name
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -86,52 +95,72 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="supplier" label="Supplier" value="{{ old('supplier') }}"></x-input-text>
+                                                <x-input-text name="supplier" label="Supplier"
+                                                    value="{{ old('supplier') }}"></x-input-text>
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="cost_price" class>Cost Price</label>
-                                                <input type="number" id="price" name="cost_price" class="form-control"value="{{ old('cost_price') }}">
+                                                <input type="number" id="price" name="cost_price"
+                                                    class="form-control"value="{{ old('cost_price') }}">
                                             </div>
                                             <div class="col-md-6 form-group">
                                                 <label for="item_number" class>Item Number</label>
-                                                <input type="number" id="item_number" name="item_number" class="form-control"value="{{ old('item_number') }}">
+                                                <input type="number" id="item_number" name="item_number"
+                                                    class="form-control"value="{{ old('item_number') }}">
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="model_name" class>Quantity</label>
-                                                <input type="number" id="quantity" name="quantity" class="form-control"value="{{ old('quantity') }}">
+                                                <input type="number" id="quantity" name="quantity"
+                                                    class="form-control"value="{{ old('quantity') }}">
+                                            </div>
+
+                                            <div class="col-md-6 form-group">
+                                                <label for="year_range">Year</label>
+                                                <select id="year_range" name="year_range[]"
+                                                    class="form-control chosen-select" multiple="multiple">
+
+                                                </select>
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-md-2 form-group">
                                                 <label for="oem" class>OEM</label>
-                                                <input type="checkbox" id="oem" name="oem" value="0" {{ old('oem') ? 'checked' : '' }} onclick='oemClick(this);'>
+                                                <input type="checkbox" id="oem" name="oem" value="0"
+                                                    {{ old('oem') ? 'checked' : '' }} onclick='oemClick(this);'>
                                             </div>
                                         </div>
 
                                         <div class ="row">
                                             <div class="col-md-2 form-group">
                                                 <label for="is_service" class>Is Service</label>
-                                                <input type="checkbox" id="is_service" name="is_service" value="0" {{ old('is_service') ? 'checked' : '' }} onclick='serviceClick(this);'>
+                                                <input type="checkbox" id="is_service" name="is_service" value="0"
+                                                    {{ old('is_service') ? 'checked' : '' }}
+                                                    onclick='serviceClick(this);'>
                                             </div>
                                             <div class="col-md-4 form-group">
                                                 <label for="is_popular" class>Is Popular Product</label>
-                                                <input type="checkbox" id="is_popular" name="is_popular" value="0"  {{ old('is_popular') ? 'checked' : '' }} onclick='popularClick(this);'>
+                                                <input type="checkbox" id="is_popular" name="is_popular" value="0"
+                                                    {{ old('is_popular') ? 'checked' : '' }}
+                                                    onclick='popularClick(this);'>
                                             </div>
 
                                             <div class="col-md-2 form-group">
                                                 <label for="used_part" class>Used Part</label>
-                                                <input type="checkbox" id="used_part" name="used_part" value="0" {{ old('used_part') ? 'checked' : '' }} onclick='usedPart(this);'>
+                                                <input type="checkbox" id="used_part" name="used_part" value="0"
+                                                    {{ old('used_part') ? 'checked' : '' }} onclick='usedPart(this);'>
                                             </div>
                                             <div class="col-md-4 form-group">
                                                 <label for="access_series" class>Accesseries</label>
-                                                <input type="checkbox" id="access_series" name="access_series" value="0"{{ old('access_series') ? 'checked' : '' }} onclick='accessSeries(this);'>
+                                                <input type="checkbox" id="access_series" name="access_series"
+                                                    value="0"{{ old('access_series') ? 'checked' : '' }}
+                                                    onclick='accessSeries(this);'>
                                             </div>
                                         </div>
 
@@ -140,9 +169,12 @@
                                                 <div class="col-md-6 form-group">
                                                     <label for="add-icon">Service Icon</label>
                                                     <div class="custom-file">
-                                                        <input type="file" name="service_icon" class="custom-file-input" id="add-icon">
-                                                        <label class="custom-file-label" for="add-icon">Choose Icon</label>
-                                                        <img src="" id="previewIcon" height="50" width="50" name="icon" hidden>
+                                                        <input type="file" name="service_icon"
+                                                            class="custom-file-input" id="add-icon">
+                                                        <label class="custom-file-label" for="add-icon">Choose
+                                                            Icon</label>
+                                                        <img src="" id="previewIcon" height="50"
+                                                            width="50" name="icon" hidden>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 form-group">
@@ -160,11 +192,14 @@
                                         <div class="row">
                                             <div class="col-md-12 form-group">
                                                 <label for="image" class>Image</label>
-                                                <input type="file" name="images[]" id="images" multiple class="form-control"  accept="image/*" required>
+                                                <input type="file" name="images[]" id="images" multiple
+                                                    class="form-control" accept="image/*" required>
                                                 <div id="image_preview_new"></div>
                                             </div>
-                                        <div>
-                                        <button type="submit" class="btn btn-primary primary-btn">Save</button>
+                                            <div class="col-md-12 form-group">
+                                                <button type="submit" class="btn btn-primary primary-btn">Save</button>
+                                            </div>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -176,13 +211,33 @@
     </div>
     <x-include-plugins multipleImage></x-include-plugins>
     <script>
-           document.addEventListener('DOMContentLoaded', function () {
-                ClassicEditor
-                    .create(document.querySelector('#description'))
-                    .catch(error => {
-                        console.error(error);
-                    });
+        $(document).ready(function() {
+            var startYear = 1950;
+            var endYear = new Date().getFullYear();
+
+            var yearDropdown = $('#year_range');
+            for (var year = endYear; year >= startYear; year--) {
+                yearDropdown.append($('<option>', {
+                    value: year,
+                    text: year
+                }));
+            }
+
+            $(".chosen-select").chosen({
+                width: '100%',
+                no_results_text: "Oops, nothing found!"
             })
+
+            $('#year_range').selectmenu();
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            ClassicEditor
+                .create(document.querySelector('#description'))
+                .catch(error => {
+                    console.error(error);
+                });
+        })
 
         function oemClick(e) {
             e.value = e.checked ? 1 : 0;
@@ -193,16 +248,18 @@
             e.value = e.checked ? 1 : 0;
             $('#serviceFields').toggle(e.checked);
             if (e.checked) {
-                $('#access_series').prop('checked', false).val(0); 
+                $('#access_series').prop('checked', false).val(0);
             }
         }
 
         function popularClick(e) {
             e.value = e.checked ? 1 : 0;
         }
+
         function usedPart(e) {
             e.value = e.checked ? 1 : 0;
         }
+
         function accessSeries(e) {
             e.value = e.checked ? 1 : 0;
             if (e.checked) {
@@ -218,7 +275,8 @@
                     category_id: "required",
                     product_name: "required",
                     manufacture_name: "required",
-                    vehicle_type: "required",
+                    vehicle_category_id: "required",
+                    // vehicle_type: "required",
                     short_description: {
                         required: function() {
                             return $('#is_service').is(':checked');
@@ -235,7 +293,8 @@
                     category_id: "Please enter category name",
                     product_name: "Please enter product name",
                     manufacture_name: "Please enter manufacture name",
-                    vehicle_type:"PLease enter vehicle type",
+                    vehicle_category_id: "Please enter vehicle category",
+                    // vehicle_type:"PLease enter vehicle type",
                     short_description: "Please enter a short description",
                     service_icon: {
                         required: "Please upload a service icon",
