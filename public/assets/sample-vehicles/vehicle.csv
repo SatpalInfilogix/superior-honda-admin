@@ -1,4 +1,7 @@
 customer_id,vehicle_category_id,vehicle_type_id,vehicle_brand_id,vehicle_model_id,vehicle_variant_id,vehicle_no,year,color,chasis_no,engine_no,additional_detail
-7,1,1,1,10,5,123456,2015,red,12,213,sdfsd ds
-7,2,14,1,3,4,435344,2020,green,23,324,sdf sdf sd
-7,1,2,1,6,3,345435,2023,blue,434,2,s fsdfsdf
+7,1,1,1,2,1,Pb011004,2015,red,12,213,sdfsd ds
+7,2,14,6,1,6,PB020001,2020,green,23,324,sdf sdf sd
+7,1,2,3,4,3,PB020003,2023,blue,434,256,s fsdfsdf
+7,1,12,4,10,4,PB140003,2024,yellow,1234,675,gjghjtyu tyuyt
+7,2,20,7,6,7,PB120001,2019,black,4321,786,t yuty uytu yt
+7,2,18,8,8,8,PB020009,2015,red,9870,765,utyuytutyutyu
