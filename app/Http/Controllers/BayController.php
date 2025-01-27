@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
 use App\Models\Branch;
+use App\Imports\BayImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Session;
 
 class BayController extends Controller
 {
@@ -21,8 +24,8 @@ class BayController extends Controller
             abort(403);
         }
 
-        $branches = Bay::latest()->get();
-        return view('bay.index', compact('branches'));
+        $bays = Bay::latest()->get();
+        return view('bay.index', compact('bays'));
     }
 
     /**
@@ -39,7 +42,7 @@ class BayController extends Controller
         $users = User::whereHas('roles', function ($query) use ($adminRole) {
             $query->where('role_id', $adminRole->id);
         })->latest()->get();
-        $branches = Branch::get();
+        $branches = Branch::where('disable_branch', 0)->get();
         return view('bay.create')->with([
         								 'users' => $users,
         								 'branchesData' => $branches
@@ -51,7 +54,7 @@ class BayController extends Controller
      */
     public function store(Request $request)
     {
-        if (! Gate::allows('create branch')) {
+        if (! Gate::allows('create bay')) {
             abort(403);
         }
 
@@ -70,7 +73,7 @@ class BayController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Branch $branch)
+    public function show(Bay $bay)
     {
         //
     }
@@ -78,41 +81,38 @@ class BayController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($branch)
+    public function edit($bay)
     {
-        if (! Gate::allows('edit branch')) {
+        if (! Gate::allows('edit bay')) {
             abort(403);
         }
-        // dd($branch);
 
         $adminRole = Role::where('name', 'Admin')->first();
-
         $users = User::whereHas('roles', function ($query) use ($adminRole) {
             $query->where('role_id', $adminRole->id);
         })->latest()->get();
 
-        $branch = Bay::where('id', $branch)->first();
-        // dd($branch->id);
-        $branchdata = Branch::get();
-        return view('bay.edit', compact('branch', 'users','branchdata'));
+        $bay = Bay::where('id', $bay)->first();
+        $branchdata = Branch::where('disable_branch', 0)->get();
+
+        return view('bay.edit', compact('bay', 'users', 'branchdata'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Bay $branch)
+    public function update(Request $request, Bay $bay)
     {
-        if (! Gate::allows('edit branch')) {
+        if (! Gate::allows('edit bay')) {
             abort(403);
         }
 
         $request->validate([
             'name'    => 'required',
-            'address' => 'required',
-            'pincode' => 'required'
+            'branch_head' => 'required',
         ]);
 
-        Bay::where('id', $branch->id)->update([
+        Bay::where('id', $bay->id)->update([
             'name'          => $request->name,
             'branch_id'     => $request->branch_head
         ]);
@@ -123,18 +123,52 @@ class BayController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Bay $branch)
+    public function destroy(Bay $bay)
     {
-        if (! Gate::allows('delete branch')) {
+        if (! Gate::allows('delete bay')) {
             abort(403);
         }
 
-        Bay::where('id', $branch->id)->delete();
+        Bay::where('id', $bay->id)->delete();
 
         return response()->json([
             'success' => true,
             'message' => 'Bay deleted successfully.'
         ]);
+    }
+
+    public function disableBay(Request $request)
+    {
+        $bay = Bay::where('id', $request->id)->first();
+        $status = 1;
+        $message = 'Bay enabled successfully.';
+        if($bay->status == 1){
+            $message = 'Bay disabled successfully.';
+            $status = 0;
+        }
+
+        $bay->update([
+          'status' => $status  
+        ]);
+
+        return response()->json([
+                'success' => true,
+                'message' => $message
+        ]);
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,xlsx',
+        ]);
+
+        $import = new BayImport;
+        Excel::import($import, $request->file('file'));
+
+        Session::flash('import_errors', $import->getErrors());
+
+        return redirect()->route('bay.index')->with('success', 'Bay imported successfully.');
     }
 }
 

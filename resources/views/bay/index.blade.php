@@ -8,11 +8,47 @@
 
                     <div class="row">
                         <div class="col-sm-12">
+                            @if (session('success'))
+                                <x-alert message="{{ session('success') }}"></x-alert>
+                            @endif
+                            @if (session('error'))
+                                <x-alert message="{{ session('error') }}"></x-alert>
+                            @endif
+                            @if (session('import_errors'))
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach (session('import_errors') as $error)
+                                        <li>
+                                            @foreach ($error['errors'] as $field => $messages)
+                                                <strong>Row {{ $loop->parent->index + 1 }}:</strong>
+                                                @foreach ($messages as $message)
+                                                    {{ $message }}<br>
+                                                @endforeach
+                                            @endforeach
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                             <div class="card">
                                 <div class="card-header">
                                     <h5>Bays</h5>
                                     <div class="float-right">
-                                        @if(Auth::user()->can('create branch'))
+                                        <a href="{{ url('download-bay-sample') }}"
+                                            class="btn btn-primary primary-btn btn-md"><i class="fa fa-download"></i>Bay Sample File
+                                        </a>
+
+                                        <div class="d-inline-block">
+                                            <form id="importForm" action="{{ route('bay.import') }}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <label for="fileInput" class="btn btn-primary primary-btn btn-md mb-0">
+                                                    Import CSV
+                                                    <input type="file" id="fileInput" name="file" accept=".csv" style="display:none;">
+                                                </label>
+                                            </form>
+                                        </div>
+
+                                        @if(Auth::user()->can('create bay'))
                                         <a href="{{ route('bay.create') }}" class="btn btn-primary primary-btn btn-md">Add Bay</a>
                                         @endif
                                     </div>
@@ -25,40 +61,46 @@
                                                     <th>#</th>
                                                     <th>Name</th>
                                                     <th>Branch</th>
-                                                    @canany(['edit branch', 'delete branch'])
+                                                    @canany(['edit bay', 'delete bay'])
                                                     <th>Actions</th>
                                                     @endcanany
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($branches as $key => $branch)
+                                                @foreach ($bays as $key => $bay)
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
-                                                        <td>{{ $branch->name }}</td>
-                                                        <td>{{ $branch->branch->name }}-{{ $branch->branch->address }}</td>
-                                                        @canany(['edit branch', 'delete branch'])
+                                                        <td>{{ ucwords($bay->name) }}</td>
+                                                        <td>{{ optional($bay->branch)->name }}-{{ optional($bay->branch)->address }}</td>
+                                                        @canany(['edit bay', 'delete bay'])
                                                         <td>
                                                             <div class="btn-group btn-group-sm">
-                                                                @if(Auth::user()->can('edit branch'))
-                                                                <a href="{{ route('bay.edit', $branch->id) }}"
+                                                                @if(Auth::user()->can('edit bay'))
+                                                                <a href="{{ route('bay.edit', $bay->id) }}"
                                                                     class="btn btn-primary primary-btn waves-effect waves-light mr-2">
                                                                     <i class="feather icon-edit m-0"></i>
                                                                 </a>
                                                                 @endif
-                                                                @if(Auth::user()->can('edit branch'))
-                                                                <button
-                                                                    class="disable-branch btn btn-primary primary-btn waves-effect waves-light mr-2" data-value="{{$branch->id}}">
-                                                                    <i class="feather icon-octagon m-0"></i>
-                                                                </button>
+                                                                @if($bay->status == 0)
+                                                                    <button
+                                                                        class="disable-bay btn btn-primary primary-btn waves-effect waves-light mr-2"
+                                                                        data-id="{{ $bay->id }}" data-value="enabled">
+                                                                        <i class="feather icon-slash m-0"></i>
+                                                                    </button>
+                                                                @else
+                                                                    <button
+                                                                        class="disable-bay btn btn-primary primary-btn waves-effect waves-light mr-2"
+                                                                        data-id="{{ $bay->id }}" data-value="disabled">
+                                                                        <i class="feather icon-check-circle m-0"></i>
+                                                                    </button>
                                                                 @endif
-                                                                @if(Auth::user()->can('delete branch'))
-                                                                <button data-source="Branch" data-endpoint="{{ route('bay.destroy', $branch->id) }}"
+                                                                @if(Auth::user()->can('delete bay'))
+                                                                <button data-source="Bay" data-endpoint="{{ route('bay.destroy', $bay->id) }}"
                                                                     class="delete-btn primary-btn btn btn-danger waves-effect waves-light">
                                                                     <i class="feather icon-trash m-0"></i>
                                                                 </button>
                                                             @endif 
-                                                            
-                                                             </div>
+                                                            </div>
                                                         </td>
                                                         @endcanany
                                                     </tr>
@@ -79,29 +121,59 @@
     <x-include-plugins dataTable></x-include-plugins>
 
     <script>
-        $(function() {
-            $('#vehicle-types-list').DataTable();
-             $('.disable-branch').on('click', function() {
-        var id = $(this).data('value');
-        
-        if (confirm('Are you sure to make the branch disabled!')) {
-            $.ajax({
-                        url: '{{ route("disable-branch") }}',
-                        method: 'post',
-                        data: {
-                            id: id,
-                            _token: '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            alert(response.message);
-                        },
-                        error: function(response) {
-                            alert('Issue while updating the branch status');
-                            console.error(response); // Log the error to the console
-                        }
-                    });
+        $(document).ready(function() {
+            $('#importButton').on('click', function() {
+                $('#fileInput').click();
+            });
+
+            $('#fileInput').on('change', function(event) {
+                var file = $(this).prop('files')[0];
+                if (file && file.type === 'text/csv') {
+                    $('#importForm').submit();
+                } else {
+                    alert('Please select a valid CSV file.');
                 }
             });
+        });
+        $(function() {
+            $('#vehicle-types-list').DataTable();
+
+            $(document).on('click', '.disable-bay', function() {
+                var id = $(this).data('id');
+                var value = $(this).data('value');
+                swal({
+                    title: "Are you sure?",
+                    text: `You really want to ${value} ?`,
+                    type: "warning",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                }, function(isConfirm) {
+                    if (isConfirm) {
+                        $.ajax({
+                            url: '{{ route("disable-bay") }}',
+                            method: 'post',
+                            data: {
+                                id: id,
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                if(response.success){
+                                    swal({
+                                        title: "Success!",
+                                        text: response.message,
+                                        type: "success",
+                                        showConfirmButton: false
+                                    }) 
+
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 2000);
+                                }
+                            }
+                        })
+                    }
+                });
+            })
         });
     </script>
 @endsection

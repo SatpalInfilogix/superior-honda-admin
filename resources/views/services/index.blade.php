@@ -14,10 +14,39 @@
                             @if (session('error'))
                                 <x-alert message="{{ session('error') }}"></x-alert>
                             @endif
+
+                            @if (session('import_errors'))
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach (session('import_errors') as $error)
+                                            <li>
+                                                @foreach ($error['errors'] as $field => $messages)
+                                                    <strong>Row {{ $loop->parent->index + 1 }}:</strong>
+                                                    @foreach ($messages as $message)
+                                                        {{ $message }}<br>
+                                                    @endforeach
+                                                @endforeach
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <div class="card">
                                 <div class="card-header">
                                     <h5>Services</h5>
                                     <div class="float-right">
+                                        <a href="{{ url('download-service-sample') }}"
+                                            class="btn btn-primary primary-btn btn-md"><i class="fa fa-download"></i>Service Sample File
+                                        </a>
+                                        <div class="d-inline-block">
+                                            <form id="importForm" action="{{ route('services.import') }}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <label for="fileInput" class="btn btn-primary primary-btn btn-md mb-0">
+                                                    Import CSV
+                                                    <input type="file" id="fileInput" name="file" accept=".csv" style="display:none;">
+                                                </label>
+                                            </form>
+                                        </div>
                                         <a href="{{ route('services.create') }}" class="btn btn-primary primary-btn btn-md">Create
                                             Services </a>
                                     </div>
@@ -42,7 +71,7 @@
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $service->name}}</td>
-                                                        <td>${{ number_format($service->price, 2)}}</td>
+                                                        <td>${{ number_format($service->price, 2) }}</td>
                                                         <!-- <td>{{ $service->model_name}}</td> -->
                                                         <!-- <td>{{ $service->start_date}}</td>
                                                         <td>{{ $service->end_date}}</td> -->
@@ -81,5 +110,20 @@
         $(function() {
             $('#servies-product-list').DataTable();
         })
+
+        $(document).ready(function() {
+            $('#importButton').on('click', function() {
+                $('#fileInput').click();
+            });
+
+            $('#fileInput').on('change', function(event) {
+                var file = $(this).prop('files')[0];
+                if (file && file.type === 'text/csv') {
+                    $('#importForm').submit();
+                } else {
+                    alert('Please select a valid CSV file.');
+                }
+            });
+        });
     </script>
 @endsection

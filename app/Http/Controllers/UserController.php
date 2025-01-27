@@ -14,6 +14,7 @@ use Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use App\Models\MasterConfiguration;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -69,9 +70,18 @@ class UserController extends Controller
         $request->validate([
             'first_name'    => 'required',
             'last_name'     => 'required',
-            'email'         => 'required',
+            'email'      => [
+                'required',
+                'email',
+                Rule::unique('users')->where(function ($query) {
+                    return $query->whereNull('deleted_at');
+                })
+            ],
             'designation'   => 'required',
             'role'          => 'required'
+        ],
+        [
+            'email.unique'      => 'The email '. $request->email .' has already been taken.',
         ]);
 
         $user = User::orderByDesc('emp_id')->first();
@@ -92,7 +102,7 @@ class UserController extends Controller
             'emp_id'             => $empId,
             'additional_details' => $request->additional_detail,
             'date_of_birth'      => $request->date_of_birth,
-            'password'           => Hash::make(Str::random(10)),
+            'password'           => Hash::make($request->password),
         ])->assignRole($request->role);
 
         return redirect()->route('users.index')->with('success', 'User created successfully.');
@@ -184,7 +194,7 @@ class UserController extends Controller
         $data = array_map('str_getcsv', file($path));
         unset($data[0]);
         $header = [
-            'first_name', 'last_name', 'email', 'designation','additional_details','dob','branch_id','role'
+            'first_name', 'last_name', 'email', 'designation', 'additional_details','dob','role', 'password'
         ];
 
         $errors = [];
@@ -197,17 +207,29 @@ class UserController extends Controller
             $nextNumericPart = str_pad($numericPart + 1, 4, '0', STR_PAD_LEFT);
             $empId = 'EMP' . $nextNumericPart;
         }
+
+        $validRoles = Role::pluck('name')->toArray();
         foreach ($data as $key => $row) {
             $row = array_combine($header, $row);
+            if (!in_array($row['role'], $validRoles)) {
+                $errors[$key][] = 'Role ' . $row['role'] . ' is not valid.';
+                continue;
+            }
 
+            $dob = \Carbon\Carbon::parse($row['dob'])->format('Y-m-d');
             $validator = Validator::make($row, [
                 'first_name' => 'required',
                 'last_name'  => 'required',
-                'email'      => 'required|email|unique:users,email',
-                'designation'=> 'required',
-                'dob'        => 'required',
-                'branch_id'  => 'required',
-                'role'       => 'required'
+                'email'      => [
+                    'required',
+                    'email',
+                    Rule::unique('users')->where(function ($query) {
+                        return $query->whereNull('deleted_at');
+                    })
+                ],
+                'dob'        => 'required|date_format:Y-m-d',
+                'role'       => 'required',
+                'password'   => 'required'
             ],
             [
                 'email.unique' => 'The email '. $row['email'] .' has already been taken.',
@@ -218,11 +240,11 @@ class UserController extends Controller
                 continue;
             }
 
-            $branch = Branch::where('id', $row['branch_id'])->first();
-            if(!$branch){
-                $branch_ids[$key][] = 'Branch id '. $row['branch_id'] .' not match.';
-                continue;
-            }
+            // $branch = Branch::where('id', $row['branch_id'])->first();
+            // if(!$branch){
+            //     $branch_ids[$key][] = 'Branch id '. $row['branch_id'] .' not match.';
+            //     continue;
+            // }
 
             User::create([
                 'first_name'         => $row['first_name'],
@@ -230,9 +252,9 @@ class UserController extends Controller
                 'email'              => $row['email'],
                 'designation'        => $row['designation'],
                 'emp_id'             => $empId,
-                'password'           => Hash::make(Str::random(10)),
+                'password'           => Hash::make($row['password']),
                 'additional_details' => $row['additional_details'],
-                'date_of_birth'      => $row['dob'],
+                'date_of_birth'      => $dob,
             ])->assignRole($row['role']);
         }
 

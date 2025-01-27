@@ -64,7 +64,7 @@
                                                 <label class="col-sm-3 col-form-label" for="year">Year:</label>
                                                 <div class="col-sm-9">
                                                     <input class="form-control m-0" id="year" name="year"
-                                                        value="{{ $inspection->vehicle }}" type="text" readonly>
+                                                        value="{{ $inspection->year }}" type="text" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -261,6 +261,67 @@
                                             @endforeach
                                         @endif
                                     </div><br><br>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label font-weight-bold">Services:</label>
+                                                <div class="col-sm-8">
+                                                    <ul>
+                                                        @foreach($services as $service)
+                                                            @if(in_array($service->id, (array) old('services', $inspection->services ?? [])))
+                                                                <li>{{ $service->name }}</li>
+                                                            @endif
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="name">Branch:</label>
+                                                <div class="col-sm-9">
+                                                    <select name="branch_id" id="branch_id" class="form-control m-0" disabled>
+                                                        <option value="Select Branch">Select Branch</option>
+                                                        @foreach($branches as $key => $branch)
+                                                            <option value="{{$branch->id}}" @selected($branch->id == $inspection->branch_id)>{{ ucwords($branch->name) }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="date">Bay:</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" id="bay_id" name="bay_id" disabled>
+                                                        <option value="" selected disabled>Select Bay</option>
+                                                        @if($bays)
+                                                            @foreach($bays as $bay)
+                                                                <option value="{{$bay->id}}" @selected($bay->id == $inspection->bay_id)>{{ $bay->name }}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group row">
+                                                <label class="col-sm-3 col-form-label" for="mileage">User:</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" id="user_id" name="user_id" disabled>
+                                                        <option value="" selected disabled>Select User</option>
+                                                        @if($users)
+                                                            @foreach($users as $user)
+                                                                <option value="{{$user->id}}" @selected($user->id == $inspection->user_id)>{{ $user->first_name.' '.$user->last_name }}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="row">
                                         <div class="col-md-12">

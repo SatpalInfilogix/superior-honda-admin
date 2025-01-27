@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
+use App\Imports\BranchImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Session;
+
 
 class BranchController extends Controller
 {
@@ -65,7 +69,13 @@ class BranchController extends Controller
             $nextNumericPart = str_pad($numericPart + 1, 4, '0', STR_PAD_LEFT);
             $uniqueCode = 'BR' . $nextNumericPart;
         }
-    
+
+        if (is_array($request->week_status)) {
+            $weekStatus = implode(',', $request->week_status);
+        } else {
+            $weekStatus = $request->week_status;
+        }
+
         Branch::create([
             'unique_code'   => $uniqueCode,
             'name'          => $request->name,
@@ -75,7 +85,7 @@ class BranchController extends Controller
             'address'       => $request->address,
             'pincode'       => $request->pincode,
             'status'        => $request->status,
-            'week_status'   =>  implode(',',$request->week_status)
+            'week_status'   => $weekStatus
         ]);
 
         return redirect()->route('branches.index')->with('success', 'Branch saved successfully'); 
@@ -125,6 +135,12 @@ class BranchController extends Controller
             'pincode' => 'required'
         ]);
 
+        if (is_array($request->week_status)) {
+            $weekStatus = implode(',', $request->week_status);
+        } else {
+            $weekStatus = $request->week_status;
+        }
+
         Branch::where('id', $branch->id)->update([
             'name'            => $request->name,
             'start_time'      => $request->start_time,
@@ -133,7 +149,7 @@ class BranchController extends Controller
             'address'         => $request->address,
             'pincode'         => $request->pincode,
             'status'          => $request->status,
-            'week_status'     => implode(',',$request->week_status)
+            'week_status'     => $weekStatus
         ]);
 
         return redirect()->route('branches.index')->with('success', 'Branch updated successfully'); 
@@ -156,23 +172,37 @@ class BranchController extends Controller
         ]);
     }
 
-    public function disableBranch(Request $request){
-        $id = $request->id;
-        $branchData = Branch::find($id)->first();
+    public function disableBranch(Request $request)
+    {
+        $branch = Branch::where('id', $request->id)->first();
+        $status = 1;
         $message = 'Branch disabled successfully.';
-        if($branchData->disable_branch == 1){
-            $branchData->disable_branch = 0;
+        if($branch->disable_branch == 1){
+            $status = 0;
             $message = 'Branch enabled successfully.';
         }
-        else
-        {
-         $branchData->disable_branch = 1;   
-        }
-        $branchData->disable_branch = 1;
-        $branchData->save();
+
+        $branch->update([
+          'disable_branch' => $status  
+        ]);
+
         return response()->json([
                 'success' => true,
                 'message' => $message
         ]);
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,xlsx',
+        ]);
+
+        $import = new BranchImport;
+        Excel::import($import, $request->file('file'));
+
+        Session::flash('import_errors', $import->getErrors());
+
+        return redirect()->route('branches.index')->with('success', 'Branches imported successfully.');
     }
 }

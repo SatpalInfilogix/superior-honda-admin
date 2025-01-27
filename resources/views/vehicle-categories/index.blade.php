@@ -39,7 +39,7 @@
                                                 @foreach ($categories as $index => $category)
                                                     <tr>
                                                         <td>{{ $index + 1 }}</td>
-                                                        <td>{{ $category->name }}</td>
+                                                        <td>{{ ucwords($category->name) }}</td>
                                                         @canany([
                                                             'edit vehicle configuration',
                                                             'delete vehicle

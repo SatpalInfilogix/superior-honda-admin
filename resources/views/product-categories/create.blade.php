@@ -26,8 +26,8 @@
                                         <div class="row">
                                             <div class="col-md-12 form-group">
                                                 <label for="image" class>Image</label>
-                                                <input type="file" name="image" id="imageInput" class="form-control" required>
-                                                <div id="image_preview"></div>
+                                                <input type="file" name="image" class="form-control" required id="add-category-image">
+                                                <img src="" id="image_preview" height="50"width="50" name="image" hidden>
                                             </div>
                                         <div>
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>

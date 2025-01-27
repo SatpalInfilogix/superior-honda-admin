@@ -38,11 +38,11 @@
                                         <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="discount_type">Start Date</label>
-                                                <input type="date" name="start_date" class="form-control" value="{{ old('start_date', $coupon->start_date) }}">
+                                                <input type="date" id="start_date" name="start_date" class="form-control" value="{{ old('start_date', $coupon->start_date) }}">
                                             </div>
                                             <div class="col-md-6 form-group">
                                                 <label for="discount_type">End Date</label>
-                                                <input type="date" name="end_date" class="form-control" value="{{ old('end_date', $coupon->end_date) }}">
+                                                <input type="date" id="end_date" name="end_date" class="form-control" value="{{ old('end_date', $coupon->end_date) }}">
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
@@ -57,6 +57,47 @@
     </div>
 
     <script>
+           document.addEventListener('DOMContentLoaded', function() {
+            const startDateInput = document.getElementById('start_date');
+            const endDateInput = document.getElementById('end_date');
+
+            function updateEndDateMin() {
+                const startDate = new Date(startDateInput.value);
+                if (!isNaN(startDate.getTime())) {
+                    // Set the min attribute for end_date to be the day after the start_date
+                    const minEndDate = new Date(startDate);
+                    minEndDate.setDate(startDate.getDate() + 1);
+                    endDateInput.setAttribute('min', minEndDate.toISOString().split('T')[0]);
+
+                    // Ensure end_date is valid
+                    const endDate = new Date(endDateInput.value);
+                    if (endDate < minEndDate) {
+                        endDateInput.value = ''; // Clear invalid end date
+                    }
+                } else {
+                    // If start_date is not set, clear the min attribute
+                    endDateInput.removeAttribute('min');
+                }
+            }
+
+            // Update end date restrictions when start date changes
+            startDateInput.addEventListener('change', updateEndDateMin);
+
+            // If end date is changed, make sure it is still valid
+            endDateInput.addEventListener('change', function() {
+                const endDate = new Date(endDateInput.value);
+                const minEndDate = new Date(startDateInput.value);
+                minEndDate.setDate(minEndDate.getDate() + 1);
+                if (endDate < minEndDate) {
+                    alert('End date must be after start date.');
+                    endDateInput.value = ''; // Clear invalid end date
+                }
+            });
+
+            // Initial check to ensure dates are valid on page load
+            updateEndDateMin();
+        });
+
         $(function() {
             $('form').validate({
                 rules: {

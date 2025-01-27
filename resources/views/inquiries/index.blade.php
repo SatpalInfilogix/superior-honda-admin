@@ -22,6 +22,7 @@
                                 <div class="card-header">
                                     <h5>Inquiries</h5>
                                     <div class="float-right">
+                                        <button id="print-btn" class="btn btn-primary btn-md primary-btn">Print</button>
 
                                         <a href="{{ route('inquiries.create') }}" class="btn btn-primary btn-md primary-btn">Add
                                             Inquiry</a>
@@ -60,6 +61,8 @@
                                                                     class="btn btn-primary waves-effect waves-light mr-2 primary-btn">
                                                                     <i class="feather icon-eye m-0"></i>
                                                                 </a>
+                                                                <button data-endpoint="{{ route('inquiry.inquiry-print', $inquiry->id ) }}" id="print-inquiry"class="print-inquiry btn btn-primary waves-effect waves-light mr-2 primary-btn"><i class="feather icon-printer m-0"></i></button>
+
                                                                 <button data-source="Inquiry"
                                                                     data-endpoint="{{ route('inquiries.destroy', $inquiry->id) }}"
                                                                     class="delete-btn btn btn-danger waves-effect waves-light primary-btn">
@@ -95,6 +98,24 @@
 
     <script>
         $(function() {
+            $('#print-btn').click(function() {
+                var printUrl = '{{ route('inquiry.print-inquiry') }}';
+                var printWindow = window.open(printUrl, '_blank'); // Open the print page in a new tab/window
+
+                printWindow.onload = function() {
+                    printWindow.print();
+                };
+            });
+
+            $('.print-inquiry').click(function() {
+                var url = $(this).data('endpoint'); // Use $(this) to reference the clicked element
+                var printWindow = window.open(url, '_blank'); // Open the print page in a new tab/window
+
+                printWindow.onload = function() {
+                    printWindow.print();
+                };
+            });
+
             $('[name="file"]').change(function() {
                 $(this).parents('form').submit();
             });
@@ -102,31 +123,48 @@
             $('#inquiries-list').DataTable();
 
             let appUrl = '{{ env("APP_URL") }}';
+            let $statusForm = $('#status-form');
+            let $currentStatusColumn = null;
+            let $originalContent = null;
 
             function clickHandler() {
                 var $this = $(this);
                 var inquiryId = $this.data('id');
                 var currentStatus = $this.text().trim();
-                var $form = $('#status-form');
-                var $originalContent = $this.html(); // Save the original content
+
+                if ($currentStatusColumn && $currentStatusColumn[0] !== $this[0]) {
+                    $statusForm.hide();
+                    $currentStatusColumn.html($originalContent);
+                    $currentStatusColumn.on('click', clickHandler);
+                }
+
+                if ($this === $currentStatusColumn) {
+                    $statusForm.hide();
+                    $this.html($originalContent);
+                    $this.on('click', clickHandler);
+                    $currentStatusColumn = null;
+                    $originalContent = null;
+                    return;
+                }
+
+                $currentStatusColumn = $this;
+                $originalContent = $this.html();
 
                 $this.off('click');
+                $this.html($statusForm.show());
+                $statusForm.find('select[name="status"]').val(currentStatus);
 
-                $this.html($form.show());
-
-                $form.find('select[name="status"]').val(currentStatus);
-
-                $(document).on('click','#cancel-btn', function() {
-                    $form.hide();
-                    console.log($originalContent);
-                    $this.html($originalContent); // Restore the original content
-                    $this.on('click', clickHandler);
+                $(document).on('click', '#cancel-btn', function() {
+                    $statusForm.hide();
+                    $currentStatusColumn.html($originalContent);
+                    $currentStatusColumn.on('click', clickHandler);
+                    $currentStatusColumn = null;
+                    $originalContent = null;
                 });
 
-                $form.on('submit', function(e) {
+                $statusForm.on('submit', function(e) {
                     e.preventDefault();
-                    var newStatus = $form.find('select[name="status"]').val();
-
+                    var newStatus = $statusForm.find('select[name="status"]').val();
                     $.ajax({
                         url: appUrl + '/inquiries/' + inquiryId + '/update-status',
                         method: 'POST',
@@ -140,9 +178,11 @@
                                 location.reload();
                             } else {
                                 alert('Error updating status');
-                                $form.hide();
-                                $this.html($originalContent); // Restore the original content
-                                $this.on('click', clickHandler);
+                                $statusForm.hide();
+                                $currentStatusColumn.html($originalContent);
+                                $currentStatusColumn.on('click', clickHandler);
+                                $currentStatusColumn = null;
+                                $originalContent = null;
                             }
                         }
                     });

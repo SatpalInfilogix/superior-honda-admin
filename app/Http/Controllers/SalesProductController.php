@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SalesProduct;
 use App\Models\Product;
+use App\Imports\SaleImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Session;
 
 class SalesProductController extends Controller
 {
@@ -45,5 +48,29 @@ class SalesProductController extends Controller
             'success' => true,
             'message' => 'Sales product deleted successfully.'
         ]);
+    }
+
+    public function productAutocomplete(Request $request)
+    {
+        $searchTerm = $request->input('input');
+
+        $products = Product::with('productCategory')->whereHas('productCategory', function ($query) {
+            $query->whereNull('deleted_at');
+        })->where('product_name', 'like', '%' . $searchTerm . '%')->get(['id', 'product_name']);
+
+        return response()->json($products);
+    }
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,xlsx',
+        ]);
+
+        $import = new SaleImport;
+        Excel::import($import, $request->file('file'));
+
+        Session::flash('import_errors', $import->getErrors());
+
+        return redirect()->route('sales-products.index')->with('success', 'Sales product imported successfully.');
     }
 }

@@ -10,11 +10,17 @@ use App\Models\VehicleModel;
 use App\Models\VehicleType;
 use App\Models\VehicleModelVariant;
 use App\Models\ProductImage;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $guarded=[];
+
+    public function productCategory()
+    {
+        return $this->belongsTo(ProductCategory::class, 'category_id');
+    }
 
     public function category()
     {

@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    span.ui-selectmenu-text {
+    display: none;
+}
+    </style>
     <div class="pcoded-inner-content">
         <div class="main-body">
             <div class="page-wrapper">
@@ -128,9 +133,17 @@
                                                 <label for="model_name" class>Quantity</label>
                                                 <input type="number" id="quantity" name="quantity" class="form-control"value="{{ old('quantity', $product->quantity) }}">
                                             </div>
+
                                             <div class="col-md-6 form-group">
-                                                <label for="branch">Description</label>
-                                                <textarea id="description" name="description" class="form-control" rows="2" cols="50">{{ $product->description }}</textarea>
+                                                <label for="year">Year</label>
+                                                <select id="year_range" name="year_range[]" class="form-control chosen-select" multiple="multiple">
+                                                    @foreach(range(date('Y'),1950) as $year)
+                                                        <option value="{{ $year }}" 
+                                                            @if(in_array($year, old('year_range', $selectedYears))) selected @endif>
+                                                            {{ $year }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
 
@@ -155,14 +168,43 @@
                                                 <input type="checkbox" id="used_part" name="used_part" value="{{ $product->used_part }}" @checked($product->used_part == 1) onclick='popularClick(this);'>
                                             </div>
                                             <div class="col-md-4 form-group">
-                                                <label for="popular" class>Access Series</label>
+                                                <label for="popular" class>Accesseries</label>
                                                 <input type="checkbox" id="access_series" name="access_series" value="{{ $product->access_series }}" @checked($product->access_series == 1)  onclick='accessSeries(this);'>
+                                            </div>
+                                        </div>
+
+                                          <div id="serviceFields" style="display: none;">
+                                            <div class="row">
+                                                <div class="col-md-6 form-group">
+                                                    <label for="add-icon">Service Icon</label>
+                                                    <div class="custom-file">
+                                                        <input type="file" name="service_icon" class="custom-file-input" id="add-icon">
+                                                        <label class="custom-file-label" for="add-icon">Choose Service Icon</label>
+                                                        <div id="iconPreview">
+                                                            @if ($product->service_icon)
+                                                                <img src="{{ asset($product->service_icon) }}" id="preview-icon" class="icon-preview" width="50" height="50">
+                                                            @else
+                                                                <img src="" id="preview-icon" height="50" width="50" name="image" hidden>
+                                                            @endif
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="short_description" class>Short Description</label>
+                                                    <textarea id="short_description" name="short_description" class="form-control" rows="2" cols="50">{{ old('short_description', $product->short_description) }}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 form-group">
+                                                <label for="branch">Description</label>
+                                                <textarea id="description" name="description" class="form-control" rows="2" cols="50">{{ old('description', $product->description) }}</textarea>
                                             </div>
                                         </div>
 
                                         <div class="position-relative form-group">
                                             <label for="inputLastname" class="">Image</label>
-                                            <input type="file" name="images[]" id="images" multiple class="form-control mb-1">
+                                            <input type="file" name="images[]" id="images" accept="image/*" multiple class="form-control mb-1">
                                         </div>
                         
                                         <div class="row">
@@ -195,6 +237,34 @@
     <x-include-plugins multipleImage></x-include-plugins>
 
     <script>
+         $(document).ready(function() {
+            var startYear = 1950;
+            var endYear = new Date().getFullYear();
+
+            var yearDropdown = $('#year_range');
+            for (var year = endYear; year >= startYear; year--) {
+                yearDropdown.append($('<option>', {
+                    value: year,
+                    text: year
+                }));
+            }
+
+            $(".chosen-select").chosen({
+                width: '100%',
+                no_results_text: "Oops, nothing found!"
+            })
+
+            $('#year_range').selectmenu();
+        });
+
+         document.addEventListener('DOMContentLoaded', function () {
+            ClassicEditor
+                .create(document.querySelector('#description'))
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+
         let deletedImageId= [];
         $('.delete-image').on('click', function() {
             var imageId = $(this).data('id');
@@ -213,7 +283,15 @@
         function serviceClick(e) {
             e.value = e.checked ? 1 : 0;
             $('#is_service').val(e.value);
+            $('#serviceFields').toggle(e.checked);
+            if (e.checked) {
+                $('#access_series').prop('checked', false).val(0); 
+            }
         }
+
+        $(document).ready(function() {
+            serviceClick(document.getElementById('is_service'));
+        });
 
         function popularClick(e) {
             e.value = e.checked ? 1 : 0;
@@ -228,20 +306,33 @@
         function accessSeries(e) {
             e.value = e.checked ? 1 : 0;
             $('#access_series').val(e.value);
+            if (e.checked) {
+                $('#is_service').prop('checked', false).val(0); // Uncheck and set value to 0
+                $('#serviceFields').hide();
+            }
         }
 
         $(function() {
             $('form').validate({
                 rules: {
+                    product_code: "required",
                     category_id: "required",
                     product_name: "required",
                     manufacture_name: "required",
+                    vehicle_category_id: "required",
+                    short_description: {
+                        required: function() {
+                            return $('#is_service').is(':checked');
+                        }
+                    },
                 },
                 messages: {
+                    product_code: "Please enter product code",
                     category_id: "Please enter category name",
                     product_name: "Please enter product name",
                     manufacture_name: "Please enter manufacture name",
-
+                    vehicle_category_id: "Please enter vehicle category",
+                    short_description: "Please enter a short description",
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",
@@ -253,6 +344,18 @@
                 },
                 submitHandler: function(form) {
                     form.submit();
+                }
+            });
+            $('#add-icon').change(function() {
+                var file = this.files[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#iconPreview').html(
+                            '<img class="preview-img" width="50px" height="50px" src="' + e.target
+                            .result + '" alt="Selected Image">');
+                    }
+                    reader.readAsDataURL(file);
                 }
             });
         })

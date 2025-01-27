@@ -24,144 +24,269 @@ class ReportsController extends Controller
 
     public function fetchData(Request $request)
     {
-        $filter = $request->filter;
-        $perPage = 2;
-        $data = '';
-        if($request->filterValue == 'Inqueries') {
-            if ($filter == 'Inqueries') {
-                $data = Inquiry::latest();
-            }
-            if($filter == 'Day') {
-                $data = Inquiry::whereDate('created_at', $request->date)->latest();
-            }
-            if($filter == 'Week') {
-                $data = Inquiry::whereBetween('created_at', [$request->startDate, $request->endDate])->latest();
-            }
-            if($filter == 'Month') {
-                $data = Inquiry::whereBetween('created_at', [$request->startDate, $request->endDate])->latest();
-            }
-            $html = '';
-            $data = $data->paginate($perPage);
-            foreach ($data as $key => $item)
-            {
-                $html .= '<tr>
-                    <td>'.(($data->currentPage() - 1) * $perPage + $key + 1).'</td>
-                    <td>'.$item['name'].'</td>
-                    <td>'.$item['date'].'</td>
-                    <td>'.$item['email'].'</td>
-                    <td>'.$item['vehicle'].'</td>
-                    <td>'.$item['licence_no'].'</td>
-                </tr>';
-            }
-        } else if($request->filterValue == 'Product_Sold_Report') {
-            $products = Product::latest()->get();
-            $products_in_order = [];
-            $unique_products = '';
-            if ($filter == 'Product_Sold_Report') {
-                $orders = Order::latest()->get();
-                foreach ($orders as $key => $order) {
+        if($request->filter)
+        {
+            $perPage = $request->length;
+            $start = $request->start; // Starting point
+            $searchValue = $request->search['value'] ?? ''; // Ensure search value is properly fetched
+
+            // Initialize query based on filter type
+            if ($request->filter == 'Product_Sold_Report') {
+                // Initialize query based on filter type
+                $ordersQuery = Order::query();
+
+                if ($request->filterValue == 'Day') {
+                    $ordersQuery->whereDate('created_at', $request->date);
+                } elseif ($request->filterValue == 'Week' || $request->filterValue == 'Month') {
+                    $ordersQuery->whereBetween('created_at', [$request->startDate, $request->endDate]);
+                }
+
+                $orders = $ordersQuery->get();
+
+                $products_in_order = [];
+                foreach ($orders as $order) {
                     $cart = json_decode($order->cart_items, true);
                     if ($cart && isset($cart['products'])) {
                         $product_ids = array_column($cart['products'], 'id');
-                        $products_for_order = $products->whereIn('id', $product_ids)->toArray();
+                        $products_for_order = Product::whereNull('deleted_at')->whereIn('id', $product_ids)->get()->toArray();
                         $products_in_order = array_merge($products_in_order, $products_for_order);
                     }
                 }
-                $unique_products = array_values(array_unique($products_in_order, SORT_REGULAR));
-            }
 
-            if($filter == 'Day') {
-                $orders = Order::whereDate('created_at', $request->date)->latest()->get();
-                foreach ($orders as $key => $order) {
-                    $cart = json_decode($order->cart_items, true);
-                    if ($cart && isset($cart['products'])) {
-                        $product_ids = array_column($cart['products'], 'id');
-                        $products_for_order = $products->whereIn('id', $product_ids)->toArray();
-                        $products_in_order = array_merge($products_in_order, $products_for_order);
+                // Remove duplicates
+                $unique_products = array_values(array_unique($products_in_order, SORT_REGULAR));
+
+                // Convert to a collection for further processing
+                $formattedData = collect($unique_products)->map(function($product) {
+                    return [
+                        'id' => $product['id'],
+                        'product_name' => $product['product_name'] ?? 'N/A',
+                        'quantity' => $product['quantity'],
+                        'cost_price' => $product['cost_price']
+                    ];
+                });
+
+                $totalRecords = count($unique_products); // Total count of unique products
+
+                // Apply search filter if necessary
+                if (!empty($searchValue)) {
+                    $formattedData = $formattedData->filter(function($item) use ($searchValue) {
+                        return stripos($item['product_name'], $searchValue) !== false ||
+                            stripos($item['quantity'], $searchValue) !== false ||
+                            stripos($item['cost_price'], $searchValue) !== false;
+                    });
+                    $totalRecords = $formattedData->count();
+                }
+
+                // Paginate the results
+                $formattedData = $formattedData->slice($start, $perPage)->values();
+
+            } else {
+                $query = Inquiry::query(); // Start with base query
+
+                if ($request->filter == 'Inquiries') {
+                    if ($request->filterValue == 'Day') {
+                        $query->whereDate('created_at', $request->date);
+                    } elseif ($request->filterValue == 'Week' || $request->filterValue == 'Month') {
+                        $query->whereBetween('created_at', [$request->startDate, $request->endDate]);
+                    }
+                } elseif ($request->filter == 'Vehicle') {
+                    if ($request->vehicleName) {
+                        $query->where('vehicle', $request->vehicleName);
+                    }
+                    if ($request->vehicleMileage) {
+                        $query->where('mileage', $request->vehicleMileage);
+                    }
+                    if ($request->dateOfBirth) {
+                        $query->where('dob', $request->dateOfBirth);
+                    }
+                    if ($request->vehicleLicenceNo) {
+                        $query->where('licence_no', $request->vehicleLicenceNo);
                     }
                 }
-                $unique_products = array_values(array_unique($products_in_order, SORT_REGULAR));
-            }
 
-            if($filter == 'Week') {
-                $orders = Order::whereBetween('created_at', [$request->startDate, $request->endDate])->latest()->get();
-                foreach ($orders as $key => $order) {
-                    $cart = json_decode($order->cart_items, true);
-                    if ($cart && isset($cart['products'])) {
-                        $product_ids = array_column($cart['products'], 'id');
-                        $products_for_order = $products->whereIn('id', $product_ids)->toArray();
-                        $products_in_order = array_merge($products_in_order, $products_for_order);
-                    }
+                if (!empty($searchValue)) {
+                    $query->where(function($q) use ($searchValue) {
+                        $q->where('name', 'like', "%$searchValue%")
+                        ->orWhere('email', 'like', "%$searchValue%")
+                        ->orWhere('vehicle', 'like', "%$searchValue%")
+                        ->orWhere('licence_no', 'like', "%$searchValue%");
+                    });
                 }
-                $unique_products = array_values(array_unique($products_in_order, SORT_REGULAR));
+
+                $totalRecords = $query->count();
+
+                $data = $query->orderBy('created_at', 'desc')
+                            ->offset($start)
+                            ->limit($perPage)
+                            ->get();
+                
+                $formattedData = $data->map(function($inquiry) {
+                    return [
+                        'id' => $inquiry->id,
+                        'name' => $inquiry->name,
+                        'created_at' => $inquiry->created_at->format('Y-m-d'),
+                        'email' => $inquiry->email,
+                        'vehicle' => $inquiry->vehicle,
+                        'licence_no' => $inquiry->licence_no
+                    ];
+                });
             }
 
-            if($filter == 'Month') {
-                $orders = Order::whereBetween('created_at', [$request->startDate, $request->endDate])->latest()->get();
-                foreach ($orders as $key => $order) {
-                    $cart = json_decode($order->cart_items, true);
-                    if ($cart && isset($cart['products'])) {
-                        $product_ids = array_column($cart['products'], 'id');
-                        $products_for_order = $products->whereIn('id', $product_ids)->toArray();
-                        $products_in_order = array_merge($products_in_order, $products_for_order);
-                    }
-                }
-                $unique_products = array_values(array_unique($products_in_order, SORT_REGULAR));
-            }
-
-            $currentPage = $request->input('page', 1);
-            $total = count($unique_products);
-            $paginator = new LengthAwarePaginator(
-                array_slice($unique_products, ($currentPage - 1) * $perPage, $perPage), $total, $perPage, $currentPage,
-                [
-                    'path' => $request->url(),
-                    'query' => $request->query(),
-                ]
-            );
-            $data = $paginator;
-            $html = '';
-            foreach ($data->items() as $key => $item) {
-                $html .= '<tr>
-                    <td>' . (($data->currentPage() - 1) * $perPage + $key + 1) . '</td>
-                    <td>' . $item['product_name'] . '</td>
-                    <td>' . $item['product_code'] . '</td>
-                    <td>' . $item['manufacture_name'] . '</td>
-                    <td>' . $item['cost_price'] . '</td>
-                </tr>';
-            }
-        } else if($request->filterValue = 'Vehicle') {
-            $data = Inquiry::where('vehicle', $request->vehicleName);
-            if ($request->vehicleMileage) {
-                $data = $data->where('mileage', $request->vehicleMileage);
-            }
-            if ($request->dob) {
-                $data = $data->where('dob', $request->dob);
-            }
-            if ($request->vehicleLicense) {
-                $data = $data->where('licence_no', $request->vehicleLicense);
-            }
-
-            $data = $data->latest()->paginate($perPage);
-            $html = '';
-            foreach ($data as $key => $item)
-            {
-                $html .= '<tr>
-                    <td>'.(($data->currentPage() - 1) * $perPage + $key + 1).'</td>
-                    <td>'.$item['name'].'</td>
-                    <td>'.$item['date'].'</td>
-                    <td>'.$item['email'].'</td>
-                    <td>'.$item['vehicle'].'</td>
-                    <td>'.$item['licence_no'].'</td>
-                </tr>';
-            }
+            return response()->json([
+                'draw'            => intval($request->draw),
+                'recordsTotal'    => $totalRecords,
+                'recordsFiltered' => $totalRecords,
+                'data'            => $formattedData
+            ]);
+        } else {
+            return response()->json([
+                'success' =>false
+            ]);
         }
-
-        return response()->json([
-            'success' => true,
-            'links'   => $data->links()->toHtml(),
-            'data'    => $html
-        ]);
     }
+
+
+    // public function fetchData(Request $request)
+    // {
+    //     $filter = $request->filter;
+    //     $perPage = 10;
+    //     $data = '';
+    //     if($request->filterValue == 'Inqueries') {
+    //         if ($filter == 'Inqueries') {
+    //             $data = Inquiry::latest();
+    //         }
+    //         if($filter == 'Day') {
+    //             $data = Inquiry::whereDate('created_at', $request->date)->latest();
+    //         }
+    //         if($filter == 'Week') {
+    //             $data = Inquiry::whereBetween('created_at', [$request->startDate, $request->endDate])->latest();
+    //         }
+    //         if($filter == 'Month') {
+    //             $data = Inquiry::whereBetween('created_at', [$request->startDate, $request->endDate])->latest();
+    //         }
+    //         $html = '';
+    //         $data = $data->paginate($perPage);
+    //         foreach ($data as $key => $item)
+    //         {
+    //             $html .= '<tr>
+    //                 <td>'.(($data->currentPage() - 1) * $perPage + $key + 1).'</td>
+    //                 <td>'.$item['name'].'</td>
+    //                 <td>'.$item['date'].'</td>
+    //                 <td>'.$item['email'].'</td>
+    //                 <td>'.$item['vehicle'].'</td>
+    //                 <td>'.$item['licence_no'].'</td>
+    //             </tr>';
+    //         }
+    //     } else if($request->filterValue == 'Product_Sold_Report') {
+    //         $products = Product::latest()->get();
+    //         $products_in_order = [];
+    //         $unique_products = '';
+    //         if ($filter == 'Product_Sold_Report') {
+    //             $orders = Order::latest()->get();
+    //             foreach ($orders as $key => $order) {
+    //                 $cart = json_decode($order->cart_items, true);
+    //                 if ($cart && isset($cart['products'])) {
+    //                     $product_ids = array_column($cart['products'], 'id');
+    //                     $products_for_order = $products->whereIn('id', $product_ids)->toArray();
+    //                     $products_in_order = array_merge($products_in_order, $products_for_order);
+    //                 }
+    //             }
+    //             $unique_products = array_values(array_unique($products_in_order, SORT_REGULAR));
+    //         }
+
+    //         if($filter == 'Day') {
+    //             $orders = Order::whereDate('created_at', $request->date)->latest()->get();
+    //             foreach ($orders as $key => $order) {
+    //                 $cart = json_decode($order->cart_items, true);
+    //                 if ($cart && isset($cart['products'])) {
+    //                     $product_ids = array_column($cart['products'], 'id');
+    //                     $products_for_order = $products->whereIn('id', $product_ids)->toArray();
+    //                     $products_in_order = array_merge($products_in_order, $products_for_order);
+    //                 }
+    //             }
+    //             $unique_products = array_values(array_unique($products_in_order, SORT_REGULAR));
+    //         }
+
+    //         if($filter == 'Week') {
+    //             $orders = Order::whereBetween('created_at', [$request->startDate, $request->endDate])->latest()->get();
+    //             foreach ($orders as $key => $order) {
+    //                 $cart = json_decode($order->cart_items, true);
+    //                 if ($cart && isset($cart['products'])) {
+    //                     $product_ids = array_column($cart['products'], 'id');
+    //                     $products_for_order = $products->whereIn('id', $product_ids)->toArray();
+    //                     $products_in_order = array_merge($products_in_order, $products_for_order);
+    //                 }
+    //             }
+    //             $unique_products = array_values(array_unique($products_in_order, SORT_REGULAR));
+    //         }
+
+    //         if($filter == 'Month') {
+    //             $orders = Order::whereBetween('created_at', [$request->startDate, $request->endDate])->latest()->get();
+    //             foreach ($orders as $key => $order) {
+    //                 $cart = json_decode($order->cart_items, true);
+    //                 if ($cart && isset($cart['products'])) {
+    //                     $product_ids = array_column($cart['products'], 'id');
+    //                     $products_for_order = $products->whereIn('id', $product_ids)->toArray();
+    //                     $products_in_order = array_merge($products_in_order, $products_for_order);
+    //                 }
+    //             }
+    //             $unique_products = array_values(array_unique($products_in_order, SORT_REGULAR));
+    //         }
+
+    //         $currentPage = $request->input('page', 1);
+    //         $total = count($unique_products);
+    //         $paginator = new LengthAwarePaginator(
+    //             array_slice($unique_products, ($currentPage - 1) * $perPage, $perPage), $total, $perPage, $currentPage,
+    //             [
+    //                 'path' => $request->url(),
+    //                 'query' => $request->query(),
+    //             ]
+    //         );
+    //         $data = $paginator;
+    //         $html = '';
+    //         foreach ($data->items() as $key => $item) {
+    //             $html .= '<tr>
+    //                 <td>' . (($data->currentPage() - 1) * $perPage + $key + 1) . '</td>
+    //                 <td>' . $item['product_name'] . '</td>
+    //                 <td>' . $item['product_code'] . '</td>
+    //                 <td>' . $item['manufacture_name'] . '</td>
+    //                 <td>' . $item['cost_price'] . '</td>
+    //             </tr>';
+    //         }
+    //     } else if($request->filterValue = 'Vehicle') {
+    //         $data = Inquiry::where('vehicle', $request->vehicleName);
+    //         if ($request->vehicleMileage) {
+    //             $data = $data->where('mileage', $request->vehicleMileage);
+    //         }
+    //         if ($request->dob) {
+    //             $data = $data->where('dob', $request->dob);
+    //         }
+    //         if ($request->vehicleLicense) {
+    //             $data = $data->where('licence_no', $request->vehicleLicense);
+    //         }
+
+    //         $data = $data->latest()->paginate($perPage);
+    //         $html = '';
+    //         foreach ($data as $key => $item)
+    //         {
+    //             $html .= '<tr>
+    //                 <td>'.(($data->currentPage() - 1) * $perPage + $key + 1).'</td>
+    //                 <td>'.$item['name'].'</td>
+    //                 <td>'.$item['date'].'</td>
+    //                 <td>'.$item['email'].'</td>
+    //                 <td>'.$item['vehicle'].'</td>
+    //                 <td>'.$item['licence_no'].'</td>
+    //             </tr>';
+    //         }
+    //     }
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'links'   => $data->links()->toHtml(),
+    //         'data'    => $html
+    //     ]);
+    // }
 
     public function getVehicleName(Request $request){
         $vehicleMileage = Inquiry::where('vehicle', $request->vehicleName)->whereNotNull('mileage')->distinct()->select('mileage')->get();

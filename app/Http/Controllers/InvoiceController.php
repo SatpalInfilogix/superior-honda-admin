@@ -6,19 +6,48 @@ use Illuminate\Http\Request;
 use App\Models\Invoice;
 use App\Models\Job;
 use App\Models\Product;
+use App\Models\Service;
+use App\Models\Inspection;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 class InvoiceController extends Controller
 {
     public function index()
     {
         $invoices = Invoice::with('order')->latest()->get();
-        foreach($invoices as $key => $invoice) {
-            if($invoice->type="order") {
+        foreach ($invoices as $key => $invoice) {
+            if ($invoice->type === "order") {  // Use '===' for comparison
                 $invoices[$key]['billingAddress'] = json_decode(optional($invoice->order)->billing_address, true);
                 $invoices[$key]['shippingAddress'] = json_decode(optional($invoice->order)->shipping_address, true);
-                $invoices[$key]['cart_items'] = json_decode(optional($invoice->order)->cart_items, true);
+                $cartItems = json_decode(optional($invoice->order)->cart_items, true);
+                $invoices[$key]['cart_items'] = $cartItems;
+    
+                $totalProducts = 0;
+                $totalAmount = 0;
+                if (is_array($cartItems) && isset($cartItems['products'])) {
+                    foreach ($cartItems['products'] as $product) {
+                        $totalProducts += $product['quantity'];
+                        $totalAmount += $product['price'] * $product['quantity'];
+                    }
+                }
+    
+                // Set totals in the invoice array
+                $invoices[$key]['totalProducts'] = $totalProducts;
+                $invoices[$key]['totalAmount'] = $totalAmount;
             } else {
-                $invoices[$key]['productDetails'] = json_decode(optional($invoice)->product_details, true);
+                $productDetails = json_decode(optional($invoice)->product_details);
+                $invoices[$key]['productDetails'] = $productDetails;
+                $totalAmount = 0;
+                $totalProducts = 0;
+        
+                if (isset($productDetails->products) && is_array($productDetails->products)) {
+                    foreach ($productDetails->products as $value) {
+                        // Assuming the product has a 'discounted_price' or 'price'
+                        $totalAmount += $value->discounted_price ?? $value->price; // Use discounted price if available
+                        $totalProducts++; // Increment product count
+                    }
+                }
+                $invoices[$key]['totalProducts'] = $totalProducts;
+                $invoices[$key]['totalAmount'] = $totalAmount;
             }
         }
         return view('invoices.index', compact('invoices'));
@@ -26,30 +55,61 @@ class InvoiceController extends Controller
 
     public function create()
     {
-        $jobs = Job::latest()->get();
-        $products = Product::latest()->get();
+        $jobs = Inspection::latest()->get();
 
-        return view('invoices.create', compact('jobs', 'products'));
+        return view('invoices.create', compact('jobs'));
     }
 
     public function autocomplete(Request $request)
     {
         $searchTerm = $request->input('input');
-        $products = Product::where('product_name', 'like', '%' . $searchTerm . '%')->get(['id', 'product_name']);
+        $inspectionServices = Inspection::where('id', $request->jobId)->pluck('services')->map(function ($services) {
+            return explode(',', $services);
+        })->flatten()->unique();
 
-        return response()->json($products);
+        $matchingServices = Service::where('name', 'like', '%' . $searchTerm . '%') // Adjust 'service_name' if needed
+                                    ->whereIn('id', $inspectionServices)->latest()->get();
+
+        $products = Product::whereNull('deleted_at')->with('productCategory')->whereHas('productCategory', function ($query) {
+                            $query->whereNull('deleted_at');
+                        })->where('product_name', 'like', '%' . $searchTerm . '%')->get(['id', 'product_name']);
+
+        $formattedServices = collect($matchingServices)->map(function ($service) {
+            return [
+                'id' => $service->id,
+                'name' => $service->name, // Adjust if needed
+                'type' => 'service',
+            ];
+        });
+
+        $formattedProducts = collect($products)->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->product_name,
+                'type' => 'product',
+            ];
+        });
+
+        $mergedResults = $formattedServices->merge($formattedProducts);
+
+        return response()->json($mergedResults);
     }
 
     public function productDetails(Request $request)
     {
-        $productId = $request->id;
+        $productName = $request->productName;
 
-        $product = Product::where('id', $productId)->first();
+        $service = Service::where('name',  $productName)->first();
+        $product = Product::where('product_name', $productName)->first();
 
+        $servicePrice = $service ? $service->price : 0;
+        $productPrice = $product ? $product->cost_price : 0;
+
+        $totalPrice = $servicePrice + $productPrice;
         return response()->json([
             'success' => true,
             'product' => [
-                'price' => $product->cost_price,
+                'price' => $totalPrice,
                 // 'discount' => $product->discount,
             ]
         ]);
@@ -103,8 +163,8 @@ class InvoiceController extends Controller
 
     public function edit(Invoice $invoice)
     {
-        $jobs = Job::latest()->get();
-        $products = Product::latest()->get();
+        $jobs = Inspection::latest()->get();
+        $products = Product::whereNull('deleted_at')->latest()->get();
 
         return view('invoices.edit', compact('invoice', 'jobs', 'products'));
     }
@@ -166,5 +226,103 @@ class InvoiceController extends Controller
             return response()->json(['message' => 'Invoice not found'], 404);
         }
     }
+
+    public function getServicesByJob(Request $request)
+    {
+        $response = [
+            'items' => [],
+            'totalAmount' => 0,
+        ];
+        
+        $jobId = $request->input('job_id');
+    
+        $invoice = Invoice::where('id', $request->invoice_id)->where('job_id', $jobId)->first();
+        if ($invoice && !empty($invoice->product_details)) {
+            $productDetails = json_decode($invoice->product_details);
+            
+            foreach ($productDetails->products as $value) {
+                $discountedPrice = $value->discounted_price ?? 0; // Use null coalescing
+                $productItem = [
+                    'name' => $value->product ?? '',
+                    'price' => $value->price ?? 0,
+                    'discount' => $value->discount ?? 0,
+                    'discounted_price' => $discountedPrice,
+                ];
+                
+                // Add product to response if it doesn't already exist
+                if (!isset($response['items'][$productItem['name']])) {
+                    $response['items'][$productItem['name']] = $productItem;
+                    $response['totalAmount'] += $discountedPrice;
+                }
+            }
+        }
+    
+        $inspection = Inspection::where('id', $jobId)->first();
+        $serviceIds = [];
+        if (!empty($inspection->services)) {
+            $serviceIds = explode(',', $inspection->services);
+        }
+        
+        $services = Service::whereIn('id', $serviceIds)
+                ->select('id', 'name', 'price')
+                ->get();
+    
+        foreach ($services as $service) {
+            $serviceItem = [
+                'name' => $service->name,
+                'price' => $service->price,
+                'discount' => 0, // Assuming no discount for services
+                'discounted_price' => 0, // Same as price if no discount
+            ];
+            
+            if (!isset($response['items'][$serviceItem['name']])) {
+                $response['items'][$serviceItem['name']] = $serviceItem;
+                $response['totalAmount'] += $service->price; // Add service price to total
+            }
+        }
+    
+        $response['items'] = array_values($response['items']);
+    
+        return response()->json($response); // Return the structured response
+    }
+
+    public function printInvoiceList()
+    {
+        $invoices = Invoice::whereNull('order_id')->latest()->get();
+    
+        // Prepare an array to hold the totals
+        $invoiceDetails = [];
+    
+        foreach ($invoices as $key => $invoice) {
+            $productDetails = json_decode($invoice->product_details);
+    
+            // Initialize totals for this invoice
+            $totalAmount = 0;
+            $totalProducts = 0;
+    
+            if (isset($productDetails->products) && is_array($productDetails->products)) {
+                foreach ($productDetails->products as $value) {
+                    $totalAmount += $value->discounted_price ?? $value->price; // Use discounted price if available
+                    $totalProducts++; // Increment product count
+                }
+            }
+    
+            $invoices[$key] = [
+                'invoice_no'  => $invoice->invoice_no,
+                'totalAmount' => $totalAmount,
+                'totalProducts' => $totalProducts,
+            ];
+        }
+    
+        return view('invoices.print.invoice-list', compact('invoices', 'invoiceDetails'));
+    }
+
+    public function printInvoice($id)
+    {
+        $invoices = Invoice::where('id', $id)->first();
+        return view('invoices.print.invoice-detail', compact('invoices'));
+    }
+
+    
 
 }

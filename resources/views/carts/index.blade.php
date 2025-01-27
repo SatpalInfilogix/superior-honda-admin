@@ -150,11 +150,13 @@
                             <tbody>
                                 @if(count($user->wishlists) > 0)
                                     @foreach ($user->wishlists as $key => $wishlist)
-                                        <tr>
-                                            <td>{{ $key + 1 }}</td>
-                                            <td>{{ $wishlist->products->product_name }}</td>
-                                            <td>{{ '$' . number_format($wishlist->products->cost_price, 2) }}</td>
-                                        </tr>
+                                        @if ($wishlist->products)
+                                            <tr>
+                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ optional($wishlist->products)->product_name }}</td>
+                                                <td>{{ '$' . number_format( optional($wishlist->products)->cost_price, 2) }}</td>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                 @else 
                                     <tr>

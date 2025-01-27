@@ -9,10 +9,11 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\Wishlist;
 use App\Models\Cart;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use HasRoles, HasFactory, Notifiable;
+    use HasRoles, HasFactory, Notifiable, SoftDeletes;
     protected $guarded=[];
    
     /**

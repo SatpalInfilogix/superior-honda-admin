@@ -4,9 +4,9 @@
 <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
 <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/>
 <style>
-ul.chosen-choices {
-    width: 477px !important;
-}
+    div#week_status_chosen {
+        width: 423px !important;
+    }
 </style>
     <div class="pcoded-inner-content">
         <div class="main-body">

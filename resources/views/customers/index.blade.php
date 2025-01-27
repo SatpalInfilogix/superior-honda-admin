@@ -22,7 +22,7 @@
                                 <div class="card-header">
                                     <h5>Customer Management</h5>
                                     <div class="float-right">
-                                        <a href="{{ asset('assets/sample-customer/customer.csv') }}"
+                                        <a href="{{ url('download-customer-sample') }}"
                                             class="btn btn-primary primary-btn btn-md"><i class="fa fa-download"></i>Customer Sample File
                                         </a>
                                         <div class="file-button btn btn-primary primary-btn">
@@ -46,10 +46,10 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
+                                                    <th>Customer No</th>
                                                     <th>Name</th>
                                                     <th>Email</th>
                                                     <th>Phone Number</th>
-                                                    <th>Address</th>
                                                     <th>Licence Number</th>
                                                     @canany(['edit customer', 'delete customer'])
                                                         <th>Actions</th>
@@ -60,10 +60,10 @@
                                                 @foreach ($customers as $key => $customer)
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
+                                                        <td>{{ $customer->cus_code }}</td>
                                                         <td>{{ $customer->first_name . $customer->last_names }}</td>
                                                         <td>{{ $customer->email }}</td>
                                                         <td>{{ $customer->phone_number }}</td>
-                                                        <td>{{ $customer->address }}</td>
                                                         <td>{{ $customer->licence_no }}</td>
                                                         @canany(['edit customer', 'delete customer'])
                                                             <td>

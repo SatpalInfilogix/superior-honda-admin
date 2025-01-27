@@ -96,7 +96,7 @@ ul.chosen-choices {
 
                 $.ajax({
                     type: 'GET',
-                    url: '{{ route('autocomplete') }}',
+                    url: '{{ route('product.autocomplete') }}',
                     data: { input: input },
                     success: function (response) {
                         autocompleteContainer.empty();

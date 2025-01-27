@@ -46,7 +46,7 @@
                                             
                                             <div class="col-md-6 form-group">
                                                 <label for="dob">Date of Birth</label>
-                                                <input type="date" name="date_of_birth" class="form-control" value="{{ old('date_of_birth', $user->date_of_birth) }}" placeholder="YYYY-MM-DD">
+                                                <input type="text" name="date_of_birth" class="form-control" id="datepicker" value="{{ old('date_of_birth', $user->date_of_birth) }}" placeholder="YYYY-MM-DD">
                                             </div>
                                         </div>
                                         <div class="row">
@@ -91,6 +91,11 @@
 
     <script>
         $(function() {
+            $('#datepicker').datepicker({
+                autoclose: true,
+                format: 'yyyy-mm-dd' 
+            });
+
             $('form').validate({
                 rules: {
                     first_name: "required",

@@ -41,6 +41,14 @@
                                                 <textarea class="form-control" name="content" id="content" rows="2" cols="50" name="body">{{$email->content}}</textarea>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label for="status" class="font-weight-bold">Description</label>
+                                                <div class="p-3 rounded bg-light">
+                                                    <span class="text-muted">{{$email->description}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
                                 </div>

@@ -9,6 +9,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Str;
+use Illuminate\Validation\Rule;
 
 class CustomerController extends Controller
 {
@@ -55,24 +56,34 @@ class CustomerController extends Controller
             'first_name'    => 'required',
             // 'last_name'     => 'required',
             // 'email'         => 'required',
+            'email'      => [
+                'required',
+                'email',
+                Rule::unique('users')->where(function ($query) {
+                    return $query->whereNull('deleted_at');
+                })
+            ],
             'phone_number' => 'required'
+        ],
+        [
+            'email.unique'      => 'The email '. $request->email .' has already been taken.',
         ]);
 
-        $user = User::orderByDesc('cus_code')->first();
+        // $user = User::orderByDesc('cus_code')->first();
 
-        if (!$user) {
-            $cusCode =  'CUS0001';
-        } else {
-            $numericPart = (int)substr($user->cus_code, 3);
-            $nextNumericPart = str_pad($numericPart + 1, 4, '0', STR_PAD_LEFT);
-            $cusCode = 'CUS' . $nextNumericPart;
-        }
+        // if (!$user) {
+        //     $cusCode =  'CUS0001';
+        // } else {
+        //     $numericPart = (int)substr($user->cus_code, 3);
+        //     $nextNumericPart = str_pad($numericPart + 1, 4, '0', STR_PAD_LEFT);
+        //     $cusCode = 'CUS' . $nextNumericPart;
+        // }
 
         user::create([
             'first_name'         => $request->first_name,
             'last_name'          => $request->last_name,
             'email'              => $request->email,
-            'cus_code'           => $cusCode,
+            'cus_code'           => $request->customer_no,
             'date_of_birth'      => $request->date_of_birth,
             'address'            => $request->address,
             'info'               => $request->info,
@@ -81,7 +92,7 @@ class CustomerController extends Controller
             'licence_no'         => $request->licence_no,
             'company_info'       => $request->company_info,
             'city'               => $request->city,
-            'password'           => Hash::make(Str::random(10)),
+            'password'           => Hash::make($request->password),
         ])->assignRole('Customer');
 
         return redirect()->route('customers.index')->with('success', 'Customer created successfully.');
@@ -136,6 +147,7 @@ class CustomerController extends Controller
             'info'               => $request->info,
             'company_info'       => $request->company_info,
             'city'               => $request->city,
+            'cus_code'           => $request->customer_no,
         ]);
 
         return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
@@ -172,29 +184,38 @@ class CustomerController extends Controller
         $data = array_map('str_getcsv', file($path));
         unset($data[0]);
         $header = [
-            'first_name', 'last_name', 'email', 'phone_number','designation', 'additional_details','dob'
+            'customer_number','first_name', 'last_name', 'email', 'phone_number','designation', 'additional_details','dob', 'password'
         ];
 
         $errors = [];
-        $user = User::orderByDesc('cus_code')->first();
-        if (!$user) {
-            $cus_code =  'CUS0001';
-        } else {
-            $numericPart = (int)substr($user->cus_code, 3);
-            $nextNumericPart = str_pad($numericPart + 1, 4, '0', STR_PAD_LEFT);
-            $cus_code = 'CUS' . $nextNumericPart;
-        }
+        // $user = User::orderByDesc('cus_code')->first();
+        // if (!$user) {
+        //     $cus_code =  'CUS0001';
+        // } else {
+        //     $numericPart = (int)substr($user->cus_code, 3);
+        //     $nextNumericPart = str_pad($numericPart + 1, 4, '0', STR_PAD_LEFT);
+        //     $cus_code = 'CUS' . $nextNumericPart;
+        // }
         foreach ($data as $key => $row) {
             $row = array_combine($header, $row);
 
             $validator = Validator::make($row, [
-                'first_name' => 'required',
-                'last_name'  => 'required',
-                'email'      => 'required|email|unique:users,email',
-                'phone_number' => 'required',
+                'first_name'        => 'required',
+                'last_name'         => 'required',
+                'email'      => [
+                    'required',
+                    'email',
+                    Rule::unique('users')->where(function ($query) {
+                        return $query->whereNull('deleted_at');
+                    })
+                ],
+                'phone_number'      => 'required',
+                'password'          => 'required',
+                'customer_number'   => 'required',
+                'dob'               => 'date_format:Y-m-d',
             ],
             [
-                'email.unique' => 'The email '. $row['email'] .' has already been taken.',
+                'email.unique'      => 'The email '. $row['email'] .' has already been taken.',
             ]);
 
             if ($validator->fails()) {
@@ -202,6 +223,7 @@ class CustomerController extends Controller
                 continue;
             }
 
+            $dob = \Carbon\Carbon::parse($row['dob'])->format('Y-m-d');
             User::create([
                 'first_name'         => $row['first_name'],
                 'last_name'          => $row['last_name'],
@@ -209,9 +231,9 @@ class CustomerController extends Controller
                 'phone_number'       => $row['phone_number'],
                 'designation'        => $row['designation'],
                 'additional_details' => $row['additional_details'],
-                'date_of_birth'      => $row['dob'],
-                'cus_code'           => $cus_code,
-                'password'           => Hash::make(Str::random(10)),
+                'date_of_birth'      => $dob,
+                'cus_code'           => $row['customer_number'],
+                'password'           => Hash::make($row['password']),
             ])->assignRole('Customer');
         }
 

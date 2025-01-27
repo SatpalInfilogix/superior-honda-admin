@@ -106,7 +106,7 @@ a.relative.inline-flex.items-center.px-4.py-2.text-sm.font-medium.text-gray-700.
 .autocomplete-items {
     position: absolute;
     background-color: #fff;
-    border: 1px solid #ddd;
+    border: 0px solid #ddd;
     max-height: 150px;
     overflow-y: auto;
     z-index: 1000;
@@ -120,4 +120,11 @@ a.relative.inline-flex.items-center.px-4.py-2.text-sm.font-medium.text-gray-700.
 
 .autocomplete-item:hover {
     background-color: #f0f0f0;
+}
+.pcoded-inner-navbar.main-menu {
+    overflow-y: scroll;
+}
+.modal-content {
+    width: 173%;
+    margin-left: -104px;
 }

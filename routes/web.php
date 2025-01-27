@@ -82,14 +82,22 @@ Route::post('get-vehicle-brand', [ VehicleModelController::class, 'getVehicleBra
 Route::post('get-vehicle-model', [ VehicleModelVariantController::class, 'getVehicleModel']); // get vechicle models according to category
 Route::post('get-vehicle-model-variant', [ProductController::class, 'getVehicleModelVariant']); //get vehicle model variant through model.
 
+/************* import csv files */
 Route::post('users/import', [UserController::class, 'import'])->name('users.import');  // import users csv file
 Route::post('products/import', [ProductController::class, 'import'])->name('products.import');  // import products csv file
 Route::post('customers/import', [CustomerController::class, 'import'])->name('customers.import');  //import customers csv file
+Route::post('services/import', [ServiceController::class, 'import'])->name('services.import'); //import Services csv file
+Route::post('branch/import', [BranchController::class, 'import'])->name('branch.import'); // import Branch csv file
+Route::post('bay/import', [BayController::class, 'import'])->name('bay.import'); // import Bay csv file
+Route::post('sales/import', [SalesProductController::class, 'import'])->name('sales.import'); // import Sale csv file
+Route::post('vehicle/import', [VehicleController::class, 'import'])->name('vehicle.import'); // import vehicle csv file
+/************* End import csv files */
 
 Route::post('general-setting',[SettingController::class, 'generalSetting'])->name('settings.general-setting');
 
 Route::post('update-status', [OrderController::class, 'statusUpdate'])->name('update-status');
 
+/************* Download Sample files */
 Route::get('download-product-sample', function () {
     $file = public_path('assets/sample-product/product.csv');
     return Response::download($file);
@@ -98,13 +106,46 @@ Route::get('download-customer-sample', function () {
     $file = public_path('assets/sample-customer/customer.csv');
     return Response::download($file);
 });
+Route::get('download-user-sample', function () {
+    $file = public_path('assets/sample-user/user.csv');
+    return Response::download($file);
+});
+
+Route::get('download-sales-sample', function() {
+    $file = public_path('assets/sample-sales/sale.csv');
+    return Response::download($file);
+});
+
+Route::get('download-service-sample', function() {
+    $file = public_path('assets/sample-services/service.csv');
+    return Response::download($file);
+});
+
+Route::get('download-branch-sample', function() {
+    $file = public_path('assets/sample-branch/branch.csv');
+    return Response::download($file);
+});
+
+Route::get('download-bay-sample', function() {
+    $file = public_path('assets/sample-bay/bay.csv');
+    return Response::download($file);
+});
+
+Route::get('download-vehicle-sample', function() {
+    $file = public_path('assets/sample-vehicles/vehicle.csv');
+    return Response::download($file);
+});
+/************* End Download Sample files */
 
 // routes/web.php
 Route::post('/save-event', [EventController::class, 'saveEvent']);
 
 Route::post('/inquery-data', [InquiryController::class, 'inqueryInfo']);
+Route::post('/inquery-licence/{id}', [InquiryController::class, 'getInquiry'])->name('inquiry.licence');
 Route::get('/fetch-data', [ReportsController::class, 'fetchData'])->name('fetch-data');
 Route::post('/disable-branch',[BranchController::class,'disableBranch'])->name('disable-branch');
+
+Route::post('/disable-bay',[BayController::class,'disableBay'])->name('disable-bay');
 
 // route for inquery status update
 Route::post('/inquiries/{id}/update-status', [InquiryController::class, 'updateStatus'])->name('inquiries.update-status');
@@ -127,6 +168,7 @@ Route::post('/jobs/{id}/update-status', [JobManagementController::class, 'update
 
 Route::post('/get-bay', [JobManagementController::Class, 'getBay']);
 Route::get('/autocomplete', [InvoiceController::class,'autocomplete'])->name('autocomplete');
+Route::get('/product/autocomplete', [SalesProductController::class,'productAutocomplete'])->name('product.autocomplete');
 Route::get('/autocomplete-model', [ServiceController::class, 'autocompleteModel'])->name('autocomplete-model');
 Route::get('/getProductDetails', [InvoiceController::class,'productDetails'])->name('getProductDetails');
 
@@ -134,3 +176,18 @@ Route::get('/getProductDetails', [InvoiceController::class,'productDetails'])->n
 //Download invoice pdf routes
 // routes/web.php
 Route::get('/download-invoice-pdf/{id}', [InvoiceController::class, 'downloadInvoicePdf'])->name('download-invoice-pdf');
+
+Route::get('print/inspection', [InspectionController::class, 'printInspectionList'])->name('inspection.print');
+Route::get('/inspection/inspection-print/{id}', [InspectionController::class, 'InspectionPrint'])->name('inspection.inspection-print');
+
+Route::get('print-inquiry', [InquiryController::class, 'printInquiryList'])->name('inquiry.print-inquiry');
+Route::get('/inquiry-print/{id}', [InquiryController::class, 'printInquery'])->name('inquiry.inquiry-print');
+
+Route::get('print-invoice', [InvoiceController::class, 'printInvoiceList'])->name('invoices.print-invoice');
+Route::get('/invoice-print/{id}', [InvoiceController::class, 'printInvoice'])->name('invoices.invoice-print');
+
+Route::get('/export/csv', [VehicleController::class, 'downloadExcel'])->name('export.csv');
+Route::get('/product-export/csv', [ProductController::class, 'downloadExcel'])->name('product-export.csv');
+
+
+Route::get('/get-services-by-job', [InvoiceController::class, 'getServicesByJob'])->name('getServicesByJob');

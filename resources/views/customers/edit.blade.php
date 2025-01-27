@@ -23,14 +23,14 @@
                                         @csrf
                                         @method('PATCH')
                                         <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="customer_no" label="Customer Number" value="{{ old('customer_no', $customer->cus_code) }}"></x-input-text>
+                                            </div>
                                             <div class="col-md-3 form-group">
                                                 <x-input-text name="first_name" label="First Name" value="{{ old('first_name', $customer->first_name) }}"></x-input-text>
                                             </div>
                                             <div class="col-md-3 form-group">
                                                 <x-input-text name="last_name" label="Last Name" value="{{ old('last_name', $customer->last_name) }}"></x-input-text>
-                                            </div>
-                                            <div class="col-md-6 form-group">
-                                                <x-input-text name="email" label="Email Address" value="{{ old('email', $customer->email) }}" readonly></x-input-text>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -38,7 +38,7 @@
                                                 <x-input-text name="address" label="Address" value="{{ old('address', $customer->address) }}" ></x-input-text>
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="info" label="Info" value="{{ old('info', $customer->info) }}" ></x-input-text>
+                                                <x-input-text name="email" label="Email Address" value="{{ old('email', $customer->email) }}" readonly></x-input-text>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -53,7 +53,7 @@
                                         <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="dob">Date of Birth</label>
-                                                <input type="text" name="date_of_birth" class="form-control" value="{{ old('date_of_birth', $customer->date_of_birth) }}" placeholder="YYYY-MM-DD">
+                                                <input type="text" name="date_of_birth" class="form-control" id="datepicker" value="{{ old('date_of_birth', $customer->date_of_birth) }}" placeholder="YYYY-MM-DD">
                                             </div>
 
                                             <div class="col-md-6 form-group">
@@ -69,7 +69,11 @@
                                                 <x-input-text name="city" label="City" value="{{ old('city', $customer->city ) }}" ></x-input-text>
                                             </div>
                                         </div>
-                                        
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="info" label="Info" value="{{ old('info', $customer->info) }}" ></x-input-text>
+                                            </div>
+                                        </div>
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
                                 </div>
@@ -93,11 +97,13 @@
                     first_name: "required",
                     phone_number: "required",
                     address: "required",
+                    customer_no: "required"
                 },
                 messages: {
                     first_name: "Please enter first name",
                     phone_number: "Please enter phone number",
-                    address: "Please enter address"
+                    address: "Please enter address",
+                    customer_no: "Please enter customer number"
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",

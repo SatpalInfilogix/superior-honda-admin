@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Picqer\Barcode\BarcodeGeneratorHTML;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use App\Imports\ProductImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Session;
 
 class ProductController extends Controller
 {
@@ -26,11 +30,14 @@ class ProductController extends Controller
         if(!Gate::allows('view product')) {
             abort(403);
         }
-        $products = Product::with('category')->latest()->get();
-        foreach($products as $key=> $product) {
-            $genertorHTML = new BarcodeGeneratorHTML();
-            $products[$key]['barcode'] = $genertorHTML->getBarcode($product->product_code. ' ' .$product->product_name, $genertorHTML::TYPE_CODE_128,2);
-        }
+        $products = Product::whereNull('deleted_at')->with('category', 'productCategory')->whereHas('productCategory', function ($query) {
+                        $query->whereNull('deleted_at');
+                    })->latest()->get();
+
+        // foreach($products as $key=> $product) {
+        //     $genertorHTML = new BarcodeGeneratorHTML();
+        //     $products[$key]['barcode'] = $genertorHTML->getBarcode($product->product_code. ' ' .$product->product_name, $genertorHTML::TYPE_CODE_128,2);
+        // }
 
         return view('products.index', compact('products'));
     }
@@ -59,12 +66,22 @@ class ProductController extends Controller
         }
 
         $request->validate([
-            'product_code'      => 'required',
+            'product_code' => [
+                'required',
+                Rule::unique('products', 'product_code')->whereNull('deleted_at')
+            ],
             'category_id'       => 'required',
             'vehicle_category_id' => 'required',
             'product_name'      => 'required',
             'manufacture_name'  => 'required'
         ]);
+
+        if ($request->hasFile('service_icon'))
+        {
+            $iconFile = $request->file('service_icon');
+            $iconFilename = time().'.'.$iconFile->getClientOriginalExtension();
+            $iconFile->move(public_path('uploads/service-icons/'), $iconFilename);
+        }
 
         $product = Product::create([
             'product_code'      => $request->product_code,
@@ -81,13 +98,16 @@ class ProductController extends Controller
             'hsn_no'            => $request->hsn_no,
             'is_oem'            => $request->oem ?? 0,
             'is_service'        => $request->is_service ?? 0,
+            'short_description' => $request->short_description,
+            'service_icon'      => isset($iconFilename) ? 'uploads/service-icons/'.$iconFilename : NULL,
             'popular'           => $request->is_popular ?? 0,
             'used_part'         => $request->used_part ?? 0,
             'access_series'     => $request->access_series ?? 0,
             'description'       => $request->description,
             'cost_price'        => $request->cost_price,
             'item_number'       => $request->item_number,
-            'created_by'        => Auth::id()
+            'created_by'        => Auth::id(),
+            'year'              => is_array($request->year_range) ? implode(',', $request->year_range) : NULL
         ]);
 
         $images = $request->images;
@@ -97,7 +117,8 @@ class ProductController extends Controller
             {
                 foreach($request->file('images') as $file)
                 {
-                    $filename = time().'.'.$file->getClientOriginalExtension();
+                    $filename = time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+                    // $filename = time().'.'.$file->getClientOriginalExtension();
                     $file->move(public_path('uploads/product-image/'), $filename);
                     ProductImage::create([
                         'product_id' => $product->id,
@@ -134,8 +155,9 @@ class ProductController extends Controller
         $vehicleTypes = VehicleType::all();
         $modelVariants = VehicleModelVariant::all();
         $product = Product::with('images')->where('id', $product->id)->first();
+        $selectedYears = explode(',', $product->year);
 
-        return view('products.edit', compact('product', 'categories', 'brands', 'vehicleModels', 'vehicleTypes','modelVariants', 'vehicleCategories'));
+        return view('products.edit', compact('product', 'categories', 'brands', 'vehicleModels', 'vehicleTypes','modelVariants', 'vehicleCategories', 'selectedYears'));
 
     }
 
@@ -144,20 +166,33 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        
         if(!Gate::allows('edit product')) {
             abort(403);
         }
 
         $request->validate([
-            'product_code'          => 'required',
-            'category_id'           => 'required',
-            'vehicle_category_id'   => 'required',
-            'product_name'          => 'required',
-            'manufacture_name'      => 'required'
+            'product_code' => [
+                'required',
+                Rule::unique('products', 'product_code')->whereNull('deleted_at')->ignore($product->id)
+            ],
+            'category_id' => 'required',
+            'vehicle_category_id' => 'required',
+            'product_name' => 'required',
+            'manufacture_name' => 'required'
         ]);
 
         $product = Product::where('id', $product->id)->first();
+        $oldServiceIcon = NULL;
+        if($product != '') {
+            $oldServiceIcon = $product->service_icon;
+        }
+
+        if ($request->hasFile('service_icon'))
+        {
+            $iconFile = $request->file('service_icon');
+            $iconFilename = time().'.'.$iconFile->getClientOriginalExtension();
+            $iconFile->move(public_path('uploads/service-icons/'), $iconFilename);
+        }
 
         $product->update([
             'product_code'      => $request->product_code,
@@ -174,18 +209,22 @@ class ProductController extends Controller
             'hsn_no'            => $request->hsn_no,
             'is_oem'            => $request->oem ?? 0,
             'is_service'        => $request->is_service ?? 0,
+            'short_description' => $request->short_description,
+            'service_icon'      => isset($iconFilename) ? 'uploads/service-icons/'.$iconFilename : $oldServiceIcon,
             'popular'           => $request->is_popular ?? 0,
             'used_part'         => $request->used_part ?? 0,
             'access_series'     => $request->access_series ?? 0,
             'description'       => $request->description,
             'cost_price'        => $request->cost_price,
             'item_number'       => $request->item_number,
+            'year'              => is_array($request->year_range) ? implode(',', $request->year_range) : NULL
         ]);
 
         if ($request->hasFile('images')) {
             if (count($request->images) > 0) {
                 foreach ($request->file('images') as $file) {
-                    $filename = time().'.'.$file->getClientOriginalExtension();
+                    $filename = time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+                    // $filename = time().'.'.$file->getClientOriginalExtension();
                     $file->move(public_path('uploads/product-image/'), $filename);
                     $file = ProductImage::create([
                         'product_id' => $product->id,
@@ -236,70 +275,80 @@ class ProductController extends Controller
 
     public function import(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'file' => 'required|mimes:csv,txt',
+        $request->validate([
+            'file' => 'required ',
         ]);
 
-        if ($validator->fails()) {
-            return back()->with('error', $validator);
-        }
+        $import = new ProductImport;
 
-        $file = $request->file('file');
-        $path = $file->getRealPath();
-        $data = array_map('str_getcsv', file($path));
-        unset($data[0]);
-        $header = [
-            'product_code', 'category_id', 'product_name', 'manufacture_name', 'supplier', 'quantity', 'vehicle_category_id', 'description', 'cost_price', 'item_number'
-        ];
+        Excel::import($import, $request->file('file'));
 
-        $errors = [];
-        foreach ($data as $key => $row) {
-            $row = array_combine($header, $row);
-            $validator = Validator::make($row, [
-                'product_code' => 'required',
-                'category_id'  => [
-                    'required',
-                    function ($attribute, $value, $fail) {
-                        if (!ProductCategory::where('id', $value)->exists()) {
-                            $fail('The selected category id '. $value .' is invalid for row.');
-                        }
-                    }
-                ],
-                'product_name'       => 'required',
-                'manufacture_name'   => 'required',
-                'vehicle_category_id'  => [
-                    'required',
-                    function ($attribute, $value, $fail) {
-                        if (!VehicleCategory::where('id', $value)->exists()) {
-                            $fail('The selected vehicle category id '. $value .' is invalid.');
-                        }
-                    }
-                ]
-            ]);
-
-            if ($validator->fails()) {
-                $errors[$key] = $validator->errors()->all();
-                continue;
-            }
-
-            Product::create([
-                'product_code'         => $row['product_code'],
-                'category_id'          => $row['category_id'],
-                'product_name'         => $row['product_name'],
-                'manufacture_name'     => $row['manufacture_name'],
-                'supplier'             => $row['supplier'],
-                'quantity'             => $row['quantity'],
-                'vehicle_category_id'  => $row['vehicle_category_id'],
-                'description'          => $row['description'],
-                'cost_price'           => $row['cost_price'],
-                'item_number'          => $row['item_number'],
-            ]);
-        }
+        $errors = $import->getErrors();
 
         if (!empty($errors)) {
-            return redirect()->route('products.index')->with('error', $errors);
+            Session::flash('import_errors', $errors);
+            return redirect()->route('products.index')->with('error', 'Some Products could not be imported. Please check the errors.');
         }
 
-        return redirect()->route('products.index')->with('success', 'CSV file imported successfully.');
+        return redirect()->route('products.index')->with('success', 'Products imported successfully.');
     }
+
+    public function downloadExcel()
+    {
+        $products = Product::whereNull('deleted_at')->with('category', 'productCategory', 'images')->whereHas('productCategory', function ($query) {
+            $query->whereNull('deleted_at');
+        })->latest()->get();
+
+        $fileName = 'export-products.csv';
+
+        $handle = fopen('php://output', 'w');
+
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+        
+        fputcsv($handle, ['product_code', 'category_id', 'product_name', 'manufacture_name', 'supplier', 'quantity', 'vehicle_category_id', 'description', 'cost_price', 'item_number', 'image_paths', 'vehicle_brand_id', 'vehicle_model_id', 'vehicle_variant_id', 'vehicle_type_id', 'is_oem', 'is_Service', 'service_icon', 'short_description', 'is_used_part', 'accesseries','year']);
+        $baseImagePath = env('APP_URL');
+        foreach ($products as $product) {
+            $serviceIcon = '';
+            if($product->service_icon){
+                $serviceIcon = $baseImagePath .'/'. $product->service_icon;
+            }
+            $imageUrls = $product->images->pluck('images')->toArray(); // Assuming 'images' holds the file path
+           
+            $imageUrls = array_map(function($imagePath) use ($baseImagePath) {
+                return $baseImagePath .'/'. $imagePath;
+            }, $imageUrls);
+
+            $imageUrls = implode('; ', $imageUrls);
+
+            fputcsv($handle, [
+                $product->product_code,
+                $product->category_id,
+                $product->product_name,
+                $product->manufacture_name,
+                $product->supplier,
+                $product->quantity,
+                $product->vehicle_category_id,
+                $product->description,
+                $product->cost_price,
+                $product->item_number,
+                $imageUrls,
+                $product->brand_id,
+                $product->model_id,
+                $product->varient_model_id,
+                $product->type_id,
+                $product->is_oem,
+                $product->is_service,
+                $serviceIcon,
+                $product->short_description,
+                $product->used_part,
+                $product->access_series,
+                $product->year
+            ]);
+        }
+
+        fclose($handle);
+        exit;
+    }
+
 }

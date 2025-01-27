@@ -258,16 +258,6 @@
                         </a>
                     </li>
                 @endcan
-                    <li  @class([
-                        'active' => Request::is('bay', 'bay/create', 'bay/*/edit'),
-                    ])>
-                        <a href="{{ route('bay.index') }}" class="waves-effect waves-dark">
-                            <span class="pcoded-micon">
-                                <i class="ti-direction"></i>
-                            </span>
-                            <span class="pcoded-mtext">Bay</span>
-                        </a>
-                    </li>
                 @can('view branch')
                     <li @class([
                         'active' => Request::is('branches', 'branches/create', 'branches/*/edit'),
@@ -277,6 +267,18 @@
                                 <i class="ti-direction"></i>
                             </span>
                             <span class="pcoded-mtext">Branch Management</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('view bay')
+                    <li  @class([
+                        'active' => Request::is('bay', 'bay/create', 'bay/*/edit'),
+                    ])>
+                        <a href="{{ route('bay.index') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="ti-direction"></i>
+                            </span>
+                            <span class="pcoded-mtext">Bay</span>
                         </a>
                     </li>
                 @endcan
@@ -300,7 +302,7 @@
                         </a>
                     </li>
                 @endcan
-                @can('view job')
+                {{-- @can('view job')
                     <li class="{{ Request::segment(1) == 'jobs' ? 'active' : '' }}">
                         <a href="{{ route('jobs.index')}}" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
@@ -309,7 +311,7 @@
                             <span class="pcoded-mtext">Job Management</span>
                         </a>
                     </li>
-                @endcan
+                @endcan --}}
 
                 <li  class="{{ Request::segment(1) == 'carts' ? 'active' : '' }}">
                     <a href="{{ route('carts.index')}}" class="waves-effect waves-dark">

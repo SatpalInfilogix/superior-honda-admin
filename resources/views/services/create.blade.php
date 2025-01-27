@@ -30,12 +30,12 @@ ul.chosen-choices {
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <label for="type">Name</label>
-                                                <input type="text" name="name" value="{{ old('name') }}" class="form-control">
+                                                <label for="type">Service Number</label>
+                                                <input type="text" name="service_no" value="{{ old('service_no') }}" class="form-control">
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <label for="product">Price</label>
-                                                <input name="price" id="price" type="text" class="form-control" value="{{ old('price') }}">
+                                                <label for="type">Name</label>
+                                                <input type="text" name="name" value="{{ old('name') }}" class="form-control">
                                             </div>
                                         </div>
                                         <!-- <div class="row">
@@ -62,6 +62,10 @@ ul.chosen-choices {
                                         </div> -->
                                         <div class="row">
                                             <div class="col-md-6 form-group">
+                                                <label for="product">Price</label>
+                                                <input name="price" id="price" type="number" class="form-control" value="{{ old('price') }}">
+                                            </div>
+                                            {{-- <div class="col-md-6 form-group">
                                                 <label for="add-icon">Service Icon</label>
                                                 <div class="custom-file">
                                                     <input type="file" name="icon" class="custom-file-input" id="add-icon">
@@ -76,10 +80,10 @@ ul.chosen-choices {
                                                     <label class="custom-file-label" for="add-image">Choose Image</label>
                                                         <img src="" id="previewImg" height="50" width="50" name="image" hidden>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                            
                                         </div>
-                                        <div class="row">
+                                        {{-- <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="branch">Short Description</label>
                                                 <textarea id="short_description" name="short_description" class="form-control" rows="2" cols="50"></textarea>
@@ -88,7 +92,7 @@ ul.chosen-choices {
                                                 <label for="branch">Long Description</label>
                                                 <textarea id="description" name="description" class="form-control" rows="2" cols="50"></textarea>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
