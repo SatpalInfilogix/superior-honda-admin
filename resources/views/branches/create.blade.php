@@ -62,13 +62,25 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
+                                                <label for="location_id">Location</label>
+                                                <select name="location_id" id="location_id" class="form-control">
+                                                    <option value="" selected disabled>Select Location</option>
+                                                    @if(!empty($locations))
+                                                        @foreach ($locations as $key => $location)
+                                                            <option value="{{$location->id}}">{{ $location->name}}</option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 form-group">
                                                 <label for="status">Status</label>
                                                 <select name="status" id="status" class="form-control">
                                                     <option value="Working">Working</option>
                                                     <option value="Not Working">Not Working</option>
                                                 </select>
                                             </div>
-
+                                        </div>
+                                        <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="status">Week Status</label>
                                                 @php $weeks = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] @endphp

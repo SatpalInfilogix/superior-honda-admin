@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('branch_head')->nullable();
             $table->string('address')->nullable();
             $table->string('pincode')->nullable();
+            $table->unsignedBigInteger('location_id')->nullable();
+            $table->foreign('location_id')->references('id')->on('locations');
             $table->enum('status',['Working', 'Not Working']);
             $table->timestamps();
         });

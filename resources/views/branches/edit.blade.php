@@ -69,13 +69,23 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
+                                                <label for="location_id">Location</label>
+                                                <select name="location_id" id="location_id" class="form-control">
+                                                    <option value="" selected disabled>Select Location</option>
+                                                    @foreach ($locations as $key => $location)
+                                                        <option value="{{$location->id}}" @selected( $branch->location_id == $location->id)>{{ $location->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 form-group">
                                                 <label for="status">Status</label>
                                                 <select name="status" id="status" class="form-control">
                                                     <option value="Working" @selected($branch->status == 'Working')>Working</option>
                                                     <option value="Not Working" @selected($branch->status == 'Not Working')>Not Working</option>
                                                 </select>
                                             </div>
-
+                                        </div>
+                                        <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="status">Week Status</label>
                                                 @php $weeks = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] @endphp
@@ -88,7 +98,6 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            
                                         </div>
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
@@ -110,12 +119,14 @@
                 rules: {
                     name: "required",
                     address: "required",
-                    pincode: "required"
+                    pincode: "required",
+                    location_id: "required",
                 },
                 messages: {
                     name: "Please enter branch name",
                     address: "Please enter address",
-                    pincode: "Please enter pincode"
+                    pincode: "Please enter pincode",
+                    location_id: "Please enter location",
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",

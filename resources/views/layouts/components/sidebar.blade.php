@@ -270,6 +270,18 @@
                         </a>
                     </li>
                 @endcan
+                @can('view location')
+                    <li @class([
+                        'active' => Request::is('locations', 'locations/create', 'locations/*/edit'),
+                    ])>
+                        <a href="{{ route('locations.index') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="ti-direction"></i>
+                            </span>
+                            <span class="pcoded-mtext">Locations Management</span>
+                        </a>
+                    </li>
+                @endcan
                 @can('view bay')
                     <li  @class([
                         'active' => Request::is('bay', 'bay/create', 'bay/*/edit'),

@@ -50,6 +50,10 @@ class ModuleSeeder extends Seeder
             'slug' => 'branch'
         ]);
         Module::create([
+            'name' => 'Location',
+            'slug' => 'location'
+        ]);
+        Module::create([
             'name' => 'Bay',
             'slug' => 'bay'
         ]);

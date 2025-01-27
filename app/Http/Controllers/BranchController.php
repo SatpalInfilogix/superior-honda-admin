@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Branch;
+use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -24,7 +25,8 @@ class BranchController extends Controller
             abort(403);
         }
 
-        $branches = Branch::latest()->get();
+        $branches = Branch::with('location')->latest()->get();
+        
         return view('branches.index', compact('branches'));
     }
 
@@ -39,11 +41,13 @@ class BranchController extends Controller
 
         $adminRole = Role::where('name', 'Admin')->first();
 
+        $locations = Location::where('deleted_at', NULL)->where('disable_location', '0')->get();
+        
         $users = User::whereHas('roles', function ($query) use ($adminRole) {
             $query->where('role_id', $adminRole->id);
         })->latest()->get();
 
-        return view('branches.create', compact('users'));
+        return view('branches.create', compact('users', 'locations'));
     }
 
     /**
@@ -58,7 +62,8 @@ class BranchController extends Controller
         $request->validate([
             'name'    => 'required',
             'address' => 'required',
-            'pincode' => 'required'
+            'pincode' => 'required',
+            'location_id' => 'required'
         ]);
 
         $branch = Branch::orderByDesc('unique_code')->first();
@@ -84,6 +89,7 @@ class BranchController extends Controller
             'branch_head'   => $request->branch_head,
             'address'       => $request->address,
             'pincode'       => $request->pincode,
+            'location_id'      => $request->location_id,
             'status'        => $request->status,
             'week_status'   => $weekStatus
         ]);
@@ -110,6 +116,8 @@ class BranchController extends Controller
 
         $adminRole = Role::where('name', 'Admin')->first();
 
+        $locations = Location::where('deleted_at', NULL)->where('disable_location', '0')->get();
+
         $users = User::whereHas('roles', function ($query) use ($adminRole) {
             $query->where('role_id', $adminRole->id);
         })->latest()->get();
@@ -117,7 +125,7 @@ class BranchController extends Controller
         $branch = Branch::where('id', $branch->id)->first();
         $branch['week_status'] = explode(',' ,$branch->week_status);
 
-        return view('branches.edit', compact('branch', 'users'));
+        return view('branches.edit', compact('branch', 'users', 'locations'));
     }
 
     /**
@@ -132,7 +140,8 @@ class BranchController extends Controller
         $request->validate([
             'name'    => 'required',
             'address' => 'required',
-            'pincode' => 'required'
+            'pincode' => 'required',
+            'location_id' => 'required'
         ]);
 
         if (is_array($request->week_status)) {
@@ -148,6 +157,7 @@ class BranchController extends Controller
             'branch_head'     => $request->branch_head,
             'address'         => $request->address,
             'pincode'         => $request->pincode,
+            'location_id'      => $request->location_id,
             'status'          => $request->status,
             'week_status'     => $weekStatus
         ]);
