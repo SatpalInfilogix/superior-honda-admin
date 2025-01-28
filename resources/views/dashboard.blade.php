@@ -134,7 +134,7 @@
                     @if($pendingInquiries)
                     <div class="row">
                         <div class="container">
-                            <h2>Pending Inquiries</h2>
+                            <h5>Pending Inquiries</h5>
                             <div class="scrollable-div">
                                 @foreach($pendingInquiries as $key => $inquery)
                                 <div class="inquiry">
@@ -168,6 +168,70 @@
                                                                 </a>
                                                             </div>
                                                         </td>
+                                        </tr>
+                                        @endforeach
+                                        <!-- Add more inquiries as needed -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                    @if($pendingCustomerInquiries)
+                    <div class="row">
+                        <div class="container">
+                            <h5>Pending Customer Inquiries</h5>
+                            <div class="scrollable-div">
+                                @foreach($pendingCustomerInquiries as $key => $inquery)
+                                <div class="inquiry">
+                                    <p><strong><b>Pending Inquiry 1</b></strong></p>
+                                </div>
+                                @endforeach
+                              <table>
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Customer Name</th>
+                                            <th>Inquiry Category</th>
+                                            <th>Inquiry Status</th>
+                                            <th>Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($pendingCustomerInquiries as $key => $inquiry)
+                                        <tr>
+                                           <td>{{ ++$key }}</td>
+                                            <td>{{ ucwords($inquiry->customer_name) }}</td>
+                                            <td>{{ ucfirst($inquiry->inquiry_category) }}</td>
+                                            @if($inquiry->inquiry_status == 'pending')
+                                            <td style="color:blue">{{ ucfirst($inquiry->inquiry_status) }}</td>
+                                            @elseif($inquiry->inquiry_status == 'in_process')
+                                            <td style="color:#ff6a00">In Process</td>
+                                            @elseif($inquiry->inquiry_status == 'closed')
+                                            <td style="color:green">{{ ucfirst($inquiry->inquiry_status) }}</td>
+                                            @elseif($inquiry->inquiry_status == 'failed')
+                                            <td style="color:red">{{ ucfirst($inquiry->inquiry_status) }}</td>
+                                            @endif
+                                            <td>{{ date('d-m-Y h:i a', strtotime($inquiry->inquiry_created_at)) }}</td>
+                                            @canany(['edit customer inquiry', 'delete customer inquiry'])
+                                            <td>
+                                                <div class="btn-group btn-group-sm">
+                                                    @if(Auth::user()->can('edit customer inquiry'))
+                                                        <a href="{{ route('customer-inquiry.edit', $inquiry->id) }}"
+                                                            class="btn btn-primary primary-btn waves-effect waves-light mr-2">
+                                                            <i class="feather icon-edit m-0"></i>
+                                                        </a>
+                                                    @endif
+                                                    @if(Auth::user()->can('delete customer inquiry'))
+                                                        <button data-source="Customer Inquiry" data-endpoint="{{ route('customer-inquiry.destroy', $inquiry->id) }}"
+                                                            class="delete-btn primary-btn btn btn-danger waves-effect waves-light">
+                                                            <i class="feather icon-trash m-0"></i>
+                                                        </button>
+                                                    @endif 
+                                                    </div>
+                                            </td>
+                                            @endcanany
                                         </tr>
                                         @endforeach
                                         <!-- Add more inquiries as needed -->

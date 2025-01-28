@@ -78,7 +78,8 @@ class UserController extends Controller
                 })
             ],
             'designation'   => 'required',
-            'role'          => 'required'
+            'role'          => 'required',
+            'category'      => 'required',
         ],
         [
             'email.unique'      => 'The email '. $request->email .' has already been taken.',
@@ -101,6 +102,7 @@ class UserController extends Controller
             'branch_id'          => $request->branch,
             'emp_id'             => $empId,
             'additional_details' => $request->additional_detail,
+            'category'           => $request->category,
             'date_of_birth'      => $request->date_of_birth,
             'password'           => Hash::make($request->password),
         ])->assignRole($request->role);
@@ -149,6 +151,7 @@ class UserController extends Controller
         $request->validate([
             'first_name'  => 'required',
             'last_name'   => 'required',
+            'category'   => 'required',
         ]);
 
         $user = User::where('id', $user->id)->first();
@@ -158,6 +161,7 @@ class UserController extends Controller
             'branch_id'          => $request->branch,
             'date_of_birth'      => $request->date_of_birth,
             'additional_details' => $request->additional_detail,
+            'category'           => $request->category,
         ]);
 
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
@@ -194,7 +198,7 @@ class UserController extends Controller
         $data = array_map('str_getcsv', file($path));
         unset($data[0]);
         $header = [
-            'first_name', 'last_name', 'email', 'designation', 'additional_details','dob','role', 'password'
+            'first_name', 'last_name', 'email', 'designation', 'additional_details','dob','role', 'category', 'password'
         ];
 
         $errors = [];
@@ -229,6 +233,7 @@ class UserController extends Controller
                 ],
                 'dob'        => 'required|date_format:Y-m-d',
                 'role'       => 'required',
+                'category'       => 'required',
                 'password'   => 'required'
             ],
             [
@@ -254,6 +259,7 @@ class UserController extends Controller
                 'emp_id'             => $empId,
                 'password'           => Hash::make($row['password']),
                 'additional_details' => $row['additional_details'],
+                'category'           => strtolower($row['category']),
                 'date_of_birth'      => $dob,
             ])->assignRole($row['role']);
         }

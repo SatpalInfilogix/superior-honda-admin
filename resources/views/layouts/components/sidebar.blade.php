@@ -282,6 +282,18 @@
                         </a>
                     </li>
                 @endcan
+                @can('view customer inquiry')
+                    <li @class([
+                        'active' => Request::is('customer_inquiry', 'customer-inquiry/create', 'customer-inquiry/*/edit'),
+                    ])>
+                        <a href="{{ route('customer-inquiry.index') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="ti-direction"></i>
+                            </span>
+                            <span class="pcoded-mtext">Customer Inquiry</span>
+                        </a>
+                    </li>
+                @endcan
                 @can('view bay')
                     <li  @class([
                         'active' => Request::is('bay', 'bay/create', 'bay/*/edit'),

@@ -31,6 +31,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\SalesProductController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\CustomerInquiryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/inquiries/status', [YourControllerName::class, 'getInquiriesByStatus'])->name('inquiries.by-status');
@@ -46,7 +47,8 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
         'vehicle-models'        => VehicleModelController::class,
         'vehicle-model-variants'=> VehicleModelVariantController::class,
         'branches'              => BranchController::class,
-        'locations'              => LocationController::class,
+        'locations'             => LocationController::class,
+        'customer-inquiry'      => CustomerInquiryController::class,
         'bay'                   => BayController::class,
         'users'                 => UserController::class,
         'customers'             => CustomerController::class,
@@ -153,6 +155,7 @@ Route::post('/inquery-licence/{id}', [InquiryController::class, 'getInquiry'])->
 Route::get('/fetch-data', [ReportsController::class, 'fetchData'])->name('fetch-data');
 Route::post('/disable-branch',[BranchController::class,'disableBranch'])->name('disable-branch');
 Route::post('/disable-location',[LocationController::class,'disableLocation'])->name('disable-location');
+Route::post('/disable-customer-inquiry',[CustomerInquiryController::class,'disableCustomerInquiry'])->name('disable-customer-inquiry');
 
 Route::post('/disable-bay',[BayController::class,'disableBay'])->name('disable-bay');
 

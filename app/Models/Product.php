@@ -11,6 +11,7 @@ use App\Models\VehicleType;
 use App\Models\VehicleModelVariant;
 use App\Models\ProductImage;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\CustomerInquiry;
 
 class Product extends Model
 {
@@ -50,5 +51,10 @@ class Product extends Model
     public function images()
     {
         return $this->hasMany(ProductImage::class);
+    }
+
+    public function customerInquiries()
+    {
+        return $this->hasMany(customerInquiry::class);
     }
 }

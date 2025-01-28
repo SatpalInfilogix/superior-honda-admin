@@ -77,5 +77,9 @@ class ModuleSeeder extends Seeder
             'name' => 'Roles & Permissions',
             'slug' => 'roles & permissions'
         ]);
+        Module::create([
+            'name' => 'Customer Inquiry',
+            'slug' => 'customer inquiry'
+        ]);
     }
 }
