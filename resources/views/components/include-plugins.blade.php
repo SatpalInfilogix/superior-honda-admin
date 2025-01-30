@@ -10,6 +10,19 @@
     @endsection
 @endisset
 
+@isset($chosenSelect)
+    @section('head')
+        <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/>
+    @endsection
+
+    @section('script')
+        <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
+        <script>
+            $(".chosen-select").chosen();
+        </script>
+    @endsection
+@endisset
+
 @isset($datePicker)
     @section('head')
         <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.css') }}">

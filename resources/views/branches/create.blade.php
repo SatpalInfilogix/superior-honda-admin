@@ -1,8 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
-<link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/>
+
 <!-- <style>
     div#week_status_chosen {
         width: 423px !important;
@@ -43,7 +42,7 @@
                                             </div>
                                             <div class="col-md-3 form-group">
                                                 <label for="location_id">Location</label>
-                                                <select name="location_id" id="location_id" class="form-control chosen-select">
+                                                <select name="location_id" class="form-control chosen-select">
                                                     <option value="" selected disabled>Select Location</option>
                                                     @if(!empty($locations))
                                                         @foreach ($locations as $key => $location)
@@ -51,6 +50,9 @@
                                                         @endforeach
                                                     @endif
                                                 </select>
+                                                @error('location_id')
+                                                    <span class="text-danger f-12">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="row">
@@ -97,22 +99,24 @@
             </div>
         </div>
     </div>
+    <x-include-plugins chosenSelect></x-include-plugins>
 
     <script>
-        $(".chosen-select").chosen({
-            no_results_text: "Oops, nothing found!"
-        })
         $(function() {
             $('form').validate({
                 rules: {
                     name: "required",
                     address: "required",
-                    pincode: "required"
+                    pincode: "required",
+                    location_id: {
+                        required: true // Ensure location_id is selected
+                    },
                 },
                 messages: {
                     name: "Please enter branch name",
                     address: "Please enter address",
-                    pincode: "Please enter pincode"
+                    pincode: "Please enter pincode",
+                    location_id: "Please select a location",
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",
