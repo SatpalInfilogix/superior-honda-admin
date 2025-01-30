@@ -32,76 +32,62 @@
                                 </div>
                             @endif
                             <div class="card">
-                                <div class="card-header">
-                                    <h5>Branches</h5>
-                                    <div class="float-right">
-                                        <a href="{{ url('download-branch-sample') }}"
-                                            class="btn btn-primary primary-btn btn-md"><i class="fa fa-download"></i>Branch Sample File
-                                        </a>
-                                        <div class="d-inline-block">
-                                            <form id="importForm" action="{{ route('branch.import') }}" method="POST" enctype="multipart/form-data">
-                                                @csrf
-                                                <label for="fileInput" class="btn btn-primary primary-btn btn-md mb-0">
-                                                    Import CSV
-                                                    <input type="file" id="fileInput" name="file" accept=".csv" style="display:none;">
-                                                </label>
-                                            </form>
-                                        </div>
-                                        @if(Auth::user()->can('create branch'))
-                                            <a href="{{ route('branches.create') }}" class="btn btn-primary primary-btn btn-md">Add Branch</a>
-                                        @endif
-                                    </div>
-                                </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
                                         <table id="vehicle-types-list" class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Location</th>
-                                                    <th>Unique Code</th>
-                                                    <th>Name</th>
-                                                    <th>Address</th>
-                                                    <th>Pincode</th>
-                                                    @canany(['edit branch', 'delete branch'])
+                                                    <th>Customer Name</th>
+                                                    <th>Inquiry Category</th>
+                                                    <th>Inquiry Status</th>
+                                                    <th>Date</th>
+                                                    @canany(['edit customer inquiry', 'delete customer inquiry'])
                                                     <th>Actions</th>
                                                     @endcanany
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($branches as $key => $branch)
+                                                @foreach ($customer_inquiries as $key => $customer_inquiry)
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
-                                                        <td>{{ $branch->location->name }}</td>
-                                                        <td>{{ $branch->unique_code }}</td>
-                                                        <td>{{ $branch->name }}</td>
-                                                        <td>{{ $branch->address }}</td>
-                                                        <td>{{ $branch->pincode }}</td>
-                                                        @canany(['edit branch', 'delete branch'])
+                                                        <td>{{ ucfirst($customer_inquiry->customer_name) }}</td>
+                                                        <td>{{ ucfirst($customer_inquiry->inquiry_category) }}</td>
+                                                        @if($customer_inquiry->inquiry_status == 'pending')
+                                                        <td style="color:blue">{{ ucfirst($customer_inquiry->inquiry_status) }}</td>
+                                                        @elseif($customer_inquiry->inquiry_status == 'in_process')
+                                                        <td style="color:#ff6a00">In Process</td>
+                                                        @elseif($customer_inquiry->inquiry_status == 'closed')
+                                                        <td style="color:green">{{ ucfirst($customer_inquiry->inquiry_status) }}</td>
+                                                        @elseif($customer_inquiry->inquiry_status == 'failed')
+                                                        <td style="color:red">{{ ucfirst($customer_inquiry->inquiry_status) }}</td>
+                                                        @endif
+                                                        <td>{{ date('d-m-Y h:i a', strtotime($customer_inquiry->inquiry_created_at)) }}</td>
+                                                        @canany(['edit customer inquiry', 'delete customer inquiry'])
                                                         <td>
                                                             <div class="btn-group btn-group-sm">
-                                                                @if(Auth::user()->can('edit branch'))
-                                                                    <a href="{{ route('branches.edit', $branch->id) }}"
+                                                                @if(Auth::user()->can('edit customer inquiry'))
+                                                                    <a href="{{ route('customer-inquiry.edit', $customer_inquiry->id) }}"
                                                                         class="btn btn-primary primary-btn waves-effect waves-light mr-2">
                                                                         <i class="feather icon-edit m-0"></i>
                                                                     </a>
                                                                 @endif
 
-                                                                @if($branch->disable_branch == 0)
+                                                                @if($customer_inquiry->status == 'active')
                                                                     <button
-                                                                        class="disable-branch btn btn-primary primary-btn waves-effect waves-light mr-2"
-                                                                        data-id="{{ $branch->id }}" data-value="disabled">
+                                                                        class="disable-customer-inquiry btn btn-primary primary-btn waves-effect waves-light mr-2"
+                                                                        data-id="{{ $customer_inquiry->id }}" data-value="enabled">
                                                                         <i class="feather icon-check-circle m-0"></i>
                                                                     </button>
                                                                 @else
                                                                     <button
-                                                                        class="disable-branch btn btn-primary primary-btn waves-effect waves-light mr-2"
-                                                                        data-id="{{ $branch->id }}" data-value="enabled">
+                                                                        class="disable-customer-inquiry btn btn-primary primary-btn waves-effect waves-light mr-2"
+                                                                        data-id="{{ $customer_inquiry->id }}" data-value="disabled">
                                                                         <i class="feather icon-slash m-0"></i>
                                                                     </button>
                                                                 @endif
-                                                                @if(Auth::user()->can('delete branch'))
-                                                                    <button data-source="Branch" data-endpoint="{{ route('branches.destroy', $branch->id) }}"
+                                                                @if(Auth::user()->can('delete customer inquiry'))
+                                                                    <button data-source="Customer Inquiry" data-endpoint="{{ route('customer-inquiry.destroy', $customer_inquiry->id) }}"
                                                                         class="delete-btn primary-btn btn btn-danger waves-effect waves-light">
                                                                         <i class="feather icon-trash m-0"></i>
                                                                     </button>
@@ -129,22 +115,23 @@
         $(function() {
             $('#vehicle-types-list').DataTable();
 
-            $(document).on('click', '.disable-branch', function() {
+            $(document).on('click', '.disable-customer-inquiry', function() {
                 var id = $(this).data('id');
                 var value = $(this).data('value');
                 swal({
                     title: "Are you sure?",
-                    text: `You really want to ${value} ?`,
+                    text: `You really want to ${value == 'enabled' ? 'disabled' : 'enabled'} ?`,
                     type: "warning",
                     showCancelButton: true,
                     closeOnConfirm: false,
                 }, function(isConfirm) {
                     if (isConfirm) {
                         $.ajax({
-                            url: '{{ route("disable-branch") }}',
+                            url: '{{ route("disable-customer-inquiry") }}',
                             method: 'post',
                             data: {
                                 id: id,
+                                disable_customer_inquiry: value,
                                 _token: '{{ csrf_token() }}'
                             },
                             success: function(response) {
@@ -165,43 +152,6 @@
                     }
                 });
             })
-
-            $(document).ready(function() {
-                $('#importButton').on('click', function() {
-                    $('#fileInput').click();
-                });
-
-                $('#fileInput').on('change', function(event) {
-                    var file = $(this).prop('files')[0];
-                    if (file && file.type === 'text/csv') {
-                        $('#importForm').submit();
-                    } else {
-                        alert('Please select a valid CSV file.');
-                    }
-                });
-            });
-
-        //      $('.disable-branch').on('click', function() {
-        // var id = $(this).data('value');
-        
-        // if (confirm('Are you sure to make the branch disabled!')) {
-        //     $.ajax({
-        //                 url: '{{ route("disable-branch") }}',
-        //                 method: 'post',
-        //                 data: {
-        //                     id: id,
-        //                     _token: '{{ csrf_token() }}'
-        //                 },
-        //                 success: function(response) {
-        //                     alert(response.message);
-        //                 },
-        //                 error: function(response) {
-        //                     alert('Issue while updating the branch status');
-        //                     console.error(response); // Log the error to the console
-        //                 }
-        //             });
-        //         }
-        //     });
         });
     </script>
 @endsection

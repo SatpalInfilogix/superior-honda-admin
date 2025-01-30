@@ -8,25 +8,21 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('branches', function (Blueprint $table) {
-            $table->boolean('disable_branch')->default(0)->after('end_time');
+            //
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('branches', function (Blueprint $table) {
-            $table->dropColumn('disable_branch');
+            //
         });
     }
 };

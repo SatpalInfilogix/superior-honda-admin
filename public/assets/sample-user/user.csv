@@ -1,4 +1,4 @@
-First Name,Last Name,Email,Designation, Additional Details,Date Of birth, Role, Password
-sda,asasdd,dasd@gmail.com,Designation 1,dsfsd sdf,2024-05-07,Accountant, 12345678
-def,ghi,assda@gmail.com,Designation 1,sdsd,2024-05-07,Customer, 1234567
-def,ghi,assw1a@gmail.com,Designation 1,sdsd,2024-05-07,Technician,123445
+First Name,Last Name,Email,Designation, Additional Details,Date Of birth, Role,Category, Password
+sda,asasdd,dasd@gmail.com,Designation 1,dsfsd sdf,07-05-2024,Accountant,Products,12345678
+def,ghi,assda@gmail.com,Designation 1,sdsd,07-05-2024,Customer,Services,1234567
+def,ghi,assw1a@gmail.com,Designation 1,sdsd,07-05-2024,Technician,Accessories,123445

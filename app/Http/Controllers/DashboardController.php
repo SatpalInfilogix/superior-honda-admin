@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Inquiry;
+use App\Models\CustomerInquiry;
 use App\Models\Order;
 use App\Models\Product;
 use Carbon\Carbon;
@@ -21,6 +22,7 @@ class DashboardController extends Controller
         $completedOrdersCount = count($order->getCompletedOrders());
         $ordersInQueueCount = count($order->getOrdersInQueue());
         $pendingInquiries = Inquiry::inProgressForThreeHoursOrMore()->get();
+        $pendingCustomerInquiries = CustomerInquiry::inProgressForTwoHoursOrMore()->get();
         $services = Product::whereNull('deleted_at')->where('is_service', 1)->with('productCategory')->whereHas('productCategory', function ($query) {
             $query->whereNull('deleted_at');
         })->count();
@@ -71,7 +73,8 @@ class DashboardController extends Controller
                                             'services'             => $services,
                                             'pendingInquiries'     => $pendingInquiries,
                                             'completedOrdersCount' => $completedOrdersCount,
-                                            'ordersInQueueCount'   => $ordersInQueueCount
+                                            'ordersInQueueCount'   => $ordersInQueueCount,
+                                            'pendingCustomerInquiries' => $pendingCustomerInquiries
                                         ]
                                     );
     }

@@ -11,6 +11,7 @@ use App\Models\VehicleBrand;
 use App\Models\VehicleType;
 use App\Models\ProductImage;
 use App\Models\VehicleModelVariant;
+use App\Models\ParentCategoriesForProducts;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Picqer\Barcode\BarcodeGeneratorHTML;
@@ -73,7 +74,8 @@ class ProductController extends Controller
             'category_id'       => 'required',
             'vehicle_category_id' => 'required',
             'product_name'      => 'required',
-            'manufacture_name'  => 'required'
+            'manufacture_name'  => 'required',
+            'parent_category_id' => 'required',
         ]);
 
         if ($request->hasFile('service_icon'))
@@ -128,6 +130,17 @@ class ProductController extends Controller
             }
         }
 
+        $parent_categories = $request->parent_category_id;
+
+        foreach($parent_categories as $parent_category)
+        {
+            $parent_category_data = [];
+            $parent_category_data['product_id'] = $product->id;
+            $parent_category_data['parent_category_name'] = $parent_category;
+            
+            ParentCategoriesForProducts::create($parent_category_data);
+        }
+
         return redirect()->route('products.index')->with('success', 'Product saved successfully');
     }
 
@@ -154,9 +167,8 @@ class ProductController extends Controller
         $vehicleModels = VehicleModel::all();
         $vehicleTypes = VehicleType::all();
         $modelVariants = VehicleModelVariant::all();
-        $product = Product::with('images')->where('id', $product->id)->first();
+        $product = Product::with('images', 'parent_categories')->where('id', $product->id)->first();
         $selectedYears = explode(',', $product->year);
-
         return view('products.edit', compact('product', 'categories', 'brands', 'vehicleModels', 'vehicleTypes','modelVariants', 'vehicleCategories', 'selectedYears'));
 
     }
@@ -178,7 +190,8 @@ class ProductController extends Controller
             'category_id' => 'required',
             'vehicle_category_id' => 'required',
             'product_name' => 'required',
-            'manufacture_name' => 'required'
+            'manufacture_name' => 'required',
+            'parent_category_id' => 'required'
         ]);
 
         $product = Product::where('id', $product->id)->first();
@@ -236,10 +249,36 @@ class ProductController extends Controller
 
         $imagesDeleteId = $request->image_id;
         if ($imagesDeleteId[0]) {
-             $imagesIds= explode(',',$imagesDeleteId[0]);
-             $imageDeleted = ProductImage::whereIn('id', $imagesIds)->delete();
+            $imagesIds= explode(',',$imagesDeleteId[0]);
+            $imageDeleted = ProductImage::whereIn('id', $imagesIds)->delete();
         }
 
+        // old parent categories
+        $old_parent_categories = ParentCategoriesForProducts::where('product_id', $product->id)->get()->pluck('parent_category_name')->toArray();
+
+        // new parent categories
+        $new_parent_categories = $request->parent_category_id;
+
+        // categories to add (new but not in old)
+        $categories_to_add = array_diff($new_parent_categories, $old_parent_categories);
+
+        // categories to delete (old but not in new)
+        $categories_to_delete = array_diff($old_parent_categories, $new_parent_categories);
+
+        // Add new categories
+        foreach ($categories_to_add as $category_to_add) {
+            ParentCategoriesForProducts::create([
+                'product_id' => $product->id,
+                'parent_category_name' => $category_to_add
+            ]);
+        }
+
+        // Delete removed categories
+        foreach ($categories_to_delete as $category_to_delete) {
+            ParentCategoriesForProducts::where('product_id', $product->id)
+                ->where('parent_category_name', $category_to_delete)
+                ->delete();
+        }
         return redirect()->route('products.index')->with('success', 'Product updated successfully');
     }
 
@@ -252,7 +291,9 @@ class ProductController extends Controller
             abort(403);
         }
 
-        $product = Product::where('id', $product->id)->delete();
+        $product_id = $product->id;
+        $product = Product::where('id', $product_id)->delete();
+        $parent_categories = ParentCategoriesForProducts::where('product_id', $product_id)->delete();
         return response()->json([
             'success' => true,
             'message' => 'Product deleted successfully.'

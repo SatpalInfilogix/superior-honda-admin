@@ -50,6 +50,10 @@ class ModuleSeeder extends Seeder
             'slug' => 'branch'
         ]);
         Module::create([
+            'name' => 'Location',
+            'slug' => 'location'
+        ]);
+        Module::create([
             'name' => 'Bay',
             'slug' => 'bay'
         ]);
@@ -72,6 +76,10 @@ class ModuleSeeder extends Seeder
         Module::create([
             'name' => 'Roles & Permissions',
             'slug' => 'roles & permissions'
+        ]);
+        Module::create([
+            'name' => 'Customer Inquiry',
+            'slug' => 'customer inquiry'
         ]);
     }
 }

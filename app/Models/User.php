@@ -10,6 +10,7 @@ use Spatie\Permission\Traits\HasRoles;
 use App\Models\Wishlist;
 use App\Models\Cart;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\CustomerInquiry;
 
 class User extends Authenticatable
 {
@@ -47,5 +48,10 @@ class User extends Authenticatable
     public function wishlist()
     {
         return $this->belongsTo(Wishlist::class, 'id', 'user_id');
+    }
+
+    public function customerInquiries()
+    {
+        return $this->hasMany(customerInquiry::class);
     }
 }

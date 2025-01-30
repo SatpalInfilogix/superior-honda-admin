@@ -23,7 +23,7 @@ class RoleAndPermissionController extends Controller
             ->where('name', '!=', 'Customer')
             ->get();
         $modules = Module::get();
-
+        
         return view('roles-and-permissions.index', compact('roles', 'modules'));
     }
 

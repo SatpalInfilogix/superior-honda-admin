@@ -14,7 +14,7 @@ class Inquiry extends Model
 
     public function scopeInProgressForThreeHoursOrMore($query)
     {
-        $threeHoursAgo = Carbon::now()->subHours(3);	
+        $threeHoursAgo = date('Y-m-d H:i:s', strtotime('-3 hours'));
         return $query->where('status', 'In Progress')
                      ->where('updated_at', '<=', $threeHoursAgo);
     }

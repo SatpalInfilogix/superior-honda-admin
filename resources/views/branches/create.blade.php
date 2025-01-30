@@ -3,11 +3,11 @@
 @section('content')
 <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
 <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/>
-<style>
+<!-- <style>
     div#week_status_chosen {
         width: 423px !important;
     }
-</style>
+</style> -->
     <div class="pcoded-inner-content">
         <div class="main-body">
             <div class="page-wrapper">
@@ -29,10 +29,10 @@
                                     <form action="{{ route('branches.store') }}" method="POST">
                                         @csrf
                                         <div class="row">
-                                            <div class="col-md-6 form-group">
+                                            <div class="col-md-4 form-group">
                                                 <x-input-text name="name" label="Name" value="{{ old('name') }}"></x-input-text>
                                             </div>
-                                            <div class="col-md-6 form-group">
+                                            <div class="col-md-4 form-group">
                                                 <label for="branch_head">Branch Head</label>
                                                 <select name="branch_head" id="branch_head" class="form-control">
                                                     <option value="" selected disabled>Select Branch</option>
@@ -41,41 +41,49 @@
                                                     @endforeach
                                                 </select>
                                             </div>
+                                            <div class="col-md-3 form-group">
+                                                <label for="location_id">Location</label>
+                                                <select name="location_id" id="location_id" class="form-control chosen-select">
+                                                    <option value="" selected disabled>Select Location</option>
+                                                    @if(!empty($locations))
+                                                        @foreach ($locations as $key => $location)
+                                                            <option value="{{$location->id}}">{{ $location->name}}</option>
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-6 form-group">
+                                            <div class="col-md-4 form-group">
                                                 <label for="timing">Start Time</label>
                                                 <input type="time" name="start_time" class="form-control" value="{{ old('start_time') }}" >
                                             </div>
-                                            <div class="col-md-6 form-group">
+                                            <div class="col-md-4 form-group">
                                                 <label for="timing">End Time</label>
                                                 <input type="time" name="end_time" class="form-control" value="{{ old('end_time') }}" >
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 form-group">
-                                                <x-input-text name="address" label="Address" value="{{ old('address') }}"></x-input-text>
-                                            </div>
-                                            <div class="col-md-6 form-group">
-                                                <x-input-text name="pincode" label="Pincode" value="{{ old('pincode') }}"></x-input-text>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 form-group">
-                                                <label for="status">Status</label>
-                                                <select name="status" id="status" class="form-control">
-                                                    <option value="Working">Working</option>
-                                                    <option value="Not Working">Not Working</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-6 form-group">
+                                            <div class="col-md-3 form-group">
                                                 <label for="status">Week Status</label>
                                                 @php $weeks = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] @endphp
                                                 <select multiple class="form-control chosen-select" name="week_status[]" id="week_status">
                                                     @foreach($weeks as $aItemKey => $week)
                                                         <option value="{{$week}}">{{$week}}</option>
                                                     @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 form-group">
+                                                <x-input-text name="address" label="Address" value="{{ old('address') }}"></x-input-text>
+                                            </div>
+                                            <div class="col-md-4 form-group">
+                                                <x-input-text name="pincode" label="Pincode" value="{{ old('pincode') }}"></x-input-text>
+                                            </div>
+                                            <div class="col-md-4 form-group">
+                                                <label for="status">Status</label>
+                                                <select name="status" id="status" class="form-control">
+                                                    <option value="Working">Working</option>
+                                                    <option value="Not Working">Not Working</option>
                                                 </select>
                                             </div>
                                         </div>

@@ -33,22 +33,22 @@
                             @endif
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Branches</h5>
+                                    <h5>Locations</h5>
                                     <div class="float-right">
-                                        <a href="{{ url('download-branch-sample') }}"
-                                            class="btn btn-primary primary-btn btn-md"><i class="fa fa-download"></i>Branch Sample File
+                                        <a href="{{ url('download-location-sample') }}"
+                                            class="btn btn-primary primary-btn btn-md"><i class="fa fa-download"></i>Location Sample File
                                         </a>
                                         <div class="d-inline-block">
-                                            <form id="importForm" action="{{ route('branch.import') }}" method="POST" enctype="multipart/form-data">
+                                            <form id="importForm" action="{{ route('locations.import') }}" method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 <label for="fileInput" class="btn btn-primary primary-btn btn-md mb-0">
                                                     Import CSV
-                                                    <input type="file" id="fileInput" name="file" accept=".csv" style="display:none;">
+                                                    <input type="file" id="fileInput" name="file" accept=".csv, .xlsx" style="display:none;">
                                                 </label>
                                             </form>
                                         </div>
-                                        @if(Auth::user()->can('create branch'))
-                                            <a href="{{ route('branches.create') }}" class="btn btn-primary primary-btn btn-md">Add Branch</a>
+                                        @if(Auth::user()->can('create location'))
+                                            <a href="{{ route('locations.create') }}" class="btn btn-primary primary-btn btn-md">Add Location</a>
                                         @endif
                                     </div>
                                 </div>
@@ -58,50 +58,42 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Location</th>
-                                                    <th>Unique Code</th>
                                                     <th>Name</th>
-                                                    <th>Address</th>
-                                                    <th>Pincode</th>
-                                                    @canany(['edit branch', 'delete branch'])
+                                                    @canany(['edit location', 'delete location'])
                                                     <th>Actions</th>
                                                     @endcanany
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($branches as $key => $branch)
+                                                @foreach ($locations as $key => $location)
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
-                                                        <td>{{ $branch->location->name }}</td>
-                                                        <td>{{ $branch->unique_code }}</td>
-                                                        <td>{{ $branch->name }}</td>
-                                                        <td>{{ $branch->address }}</td>
-                                                        <td>{{ $branch->pincode }}</td>
-                                                        @canany(['edit branch', 'delete branch'])
+                                                        <td>{{ $location->name }}</td>
+                                                        @canany(['edit location', 'delete location'])
                                                         <td>
                                                             <div class="btn-group btn-group-sm">
-                                                                @if(Auth::user()->can('edit branch'))
-                                                                    <a href="{{ route('branches.edit', $branch->id) }}"
+                                                                @if(Auth::user()->can('edit location'))
+                                                                    <a href="{{ route('locations.edit', $location->id) }}"
                                                                         class="btn btn-primary primary-btn waves-effect waves-light mr-2">
                                                                         <i class="feather icon-edit m-0"></i>
                                                                     </a>
                                                                 @endif
 
-                                                                @if($branch->disable_branch == 0)
+                                                                @if($location->disable_location == 0)
                                                                     <button
-                                                                        class="disable-branch btn btn-primary primary-btn waves-effect waves-light mr-2"
-                                                                        data-id="{{ $branch->id }}" data-value="disabled">
+                                                                        class="disable-location btn btn-primary primary-btn waves-effect waves-light mr-2"
+                                                                        data-id="{{ $location->id }}" data-value="enabled">
                                                                         <i class="feather icon-check-circle m-0"></i>
                                                                     </button>
                                                                 @else
                                                                     <button
-                                                                        class="disable-branch btn btn-primary primary-btn waves-effect waves-light mr-2"
-                                                                        data-id="{{ $branch->id }}" data-value="enabled">
+                                                                        class="disable-location btn btn-primary primary-btn waves-effect waves-light mr-2"
+                                                                        data-id="{{ $location->id }}" data-value="disabled">
                                                                         <i class="feather icon-slash m-0"></i>
                                                                     </button>
                                                                 @endif
-                                                                @if(Auth::user()->can('delete branch'))
-                                                                    <button data-source="Branch" data-endpoint="{{ route('branches.destroy', $branch->id) }}"
+                                                                @if(Auth::user()->can('delete location'))
+                                                                    <button data-source="Location" data-endpoint="{{ route('locations.destroy', $location->id) }}"
                                                                         class="delete-btn primary-btn btn btn-danger waves-effect waves-light">
                                                                         <i class="feather icon-trash m-0"></i>
                                                                     </button>
@@ -129,22 +121,23 @@
         $(function() {
             $('#vehicle-types-list').DataTable();
 
-            $(document).on('click', '.disable-branch', function() {
+            $(document).on('click', '.disable-location', function() {
                 var id = $(this).data('id');
                 var value = $(this).data('value');
                 swal({
                     title: "Are you sure?",
-                    text: `You really want to ${value} ?`,
+                    text: `You really want to ${value == 'enabled' ? 'disabled' : 'enabled'} ?`,
                     type: "warning",
                     showCancelButton: true,
                     closeOnConfirm: false,
                 }, function(isConfirm) {
                     if (isConfirm) {
                         $.ajax({
-                            url: '{{ route("disable-branch") }}',
+                            url: '{{ route("disable-location") }}',
                             method: 'post',
                             data: {
                                 id: id,
+                                disable_location: value,
                                 _token: '{{ csrf_token() }}'
                             },
                             success: function(response) {
@@ -166,27 +159,33 @@
                 });
             })
 
-            $(document).ready(function() {
-                $('#importButton').on('click', function() {
+            $(document).ready(function () {
+                $('#importButton').on('click', function () {
                     $('#fileInput').click();
                 });
 
-                $('#fileInput').on('change', function(event) {
+                $('#fileInput').on('change', function (event) {
                     var file = $(this).prop('files')[0];
-                    if (file && file.type === 'text/csv') {
-                        $('#importForm').submit();
+                    if (file) {
+                        var validTypes = ['text/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+                        if (validTypes.includes(file.type)) {
+                            $('#importForm').submit();
+                        } else {
+                            alert('Please select a valid CSV or XLSX file.');
+                            $(this).val('');
+                        }
                     } else {
-                        alert('Please select a valid CSV file.');
+                        alert('No file selected.');
                     }
                 });
             });
 
-        //      $('.disable-branch').on('click', function() {
+        //      $('.disable-location').on('click', function() {
         // var id = $(this).data('value');
         
-        // if (confirm('Are you sure to make the branch disabled!')) {
+        // if (confirm('Are you sure to make the location disabled!')) {
         //     $.ajax({
-        //                 url: '{{ route("disable-branch") }}',
+        //                 url: '{{ route("disable-location") }}',
         //                 method: 'post',
         //                 data: {
         //                     id: id,
@@ -196,7 +195,7 @@
         //                     alert(response.message);
         //                 },
         //                 error: function(response) {
-        //                     alert('Issue while updating the branch status');
+        //                     alert('Issue while updating the location status');
         //                     console.error(response); // Log the error to the console
         //                 }
         //             });

@@ -148,6 +148,7 @@ class ProductImport implements ToModel, WithHeadingRow
             'is_oem' => $row['is_oem'],
             'is_service' => $row['is_service'],
             'used_part' => $row['is_used_part'],
+            'popular' => $row['popular'],
             'access_series' => $row['accesseries'],
             'short_description' => $row['short_description'],
             'service_icon' => $serviceIcon,

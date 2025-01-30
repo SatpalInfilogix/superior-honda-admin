@@ -23,18 +23,18 @@
                                         @csrf
                                         @method('PATCH')
                                         <div class="row">
-                                            <div class="col-md-3 form-group">
+                                            <div class="col-md-4 form-group">
                                                 <x-input-text name="first_name" label="First Name" value="{{ old('first_name', $user->first_name) }}"></x-input-text>
                                             </div>
-                                            <div class="col-md-3 form-group">
+                                            <div class="col-md-4 form-group">
                                                 <x-input-text name="last_name" label="Last Name" value="{{ old('last_name', $user->last_name) }}"></x-input-text>
                                             </div>
-                                            <div class="col-md-6 form-group">
+                                            <div class="col-md-4 form-group">
                                                 <x-input-text name="email" label="Email Address" value="{{ old('email', $user->email) }}" readonly></x-input-text>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-6 form-group">
+                                            <div class="col-md-4 form-group">
                                                 <label for="designation">Designation</label>
                                                 <select name="designation" id="designation" class="form-control" disabled>
                                                     <option value="" selected disabled>Select Designation</option>
@@ -44,23 +44,11 @@
                                                 </select>
                                             </div>
                                             
-                                            <div class="col-md-6 form-group">
+                                            <div class="col-md-4 form-group">
                                                 <label for="dob">Date of Birth</label>
                                                 <input type="text" name="date_of_birth" class="form-control" id="datepicker" value="{{ old('date_of_birth', $user->date_of_birth) }}" placeholder="YYYY-MM-DD">
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 form-group">
-                                                <label for="branch">Branch</label>
-                                                <select name="branch" id="branch" class="form-control">
-                                                    <option value="" selected disabled>Select Branch</option>
-                                                    @foreach ($branches as $key => $branch)
-                                                        <option value="{{$branch->id}}" @selected($user->branch_id == $branch->id)>{{ $branch->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-6 form-group">
+                                            <div class="col-md-4 form-group">
                                                 <label for="role">Role</label>
                                                 <select name="role" id="role" class="form-control" disabled>
                                                     <option value="" selected disabled>Select Role</option>
@@ -70,9 +58,26 @@
                                                 </select>
                                             </div>
                                         </div>
-
                                         <div class="row">
-                                            <div class="col-md-6 form-group">
+                                            <div class="col-md-4 form-group">
+                                                <label for="branch">Branch</label>
+                                                <select name="branch" id="branch" class="form-control">
+                                                    <option value="" selected disabled>Select Branch</option>
+                                                    @foreach ($branches as $key => $branch)
+                                                        <option value="{{$branch->id}}" @selected($user->branch_id == $branch->id)>{{ $branch->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 form-group">
+                                                <label for="cateogry">Category</label>
+                                                <select name="cateogry" id="cateogry" class="form-control">
+                                                    <option value="" selected disabled>Select Category</option>
+                                                    <option value="products" {{$user->category == 'products' ? 'selected' : ''}}>Products</option>
+                                                    <option value="services" {{$user->category == 'services' ? 'selected' : ''}}>Services</option>
+                                                    <option value="accessories" {{$user->category == 'accessories' ? 'selected' : ''}}>Accessories</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 form-group">
                                                 <label for="branch">Additional Detail</label>
                                                 <textarea id="additional_detail" name="additional_detail" class="form-control" rows="2" cols="50">{{ $user->additional_details }}</textarea>
                                             </div>
@@ -102,12 +107,14 @@
                     last_name: "required",
                     designation: "required",
                     email: "required",
+                    category: 'required',
                 },
                 messages: {
                     first_name: "Please enter first name",
                     last_name: "Please enter last name",
                     designation: "Please enter designation",
                     email: "Please enter email",
+                    category: "Please select cateogry",
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",

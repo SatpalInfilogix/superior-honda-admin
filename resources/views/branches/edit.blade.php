@@ -3,11 +3,11 @@
 @section('content')
 <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
 <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/>
-<style>
+<!-- <style>
     div#week_status_chosen {
         width: 423px !important;
     }
-</style>
+</style> -->
     <div class="pcoded-inner-content">
         <div class="main-body">
             <div class="page-wrapper">
@@ -30,10 +30,10 @@
                                         @csrf
                                         @method('PATCH')
                                         <div class="row">
-                                            <div class="col-md-6 form-group">
+                                            <div class="col-md-4 form-group">
                                                 <x-input-text name="name" label="Name" value="{{ old('name', $branch->name) }}"></x-input-text>
                                             </div>
-                                            <div class="col-md-6 form-group">
+                                            <div class="col-md-4 form-group">
                                                 <label for="branch_head">Branch Head</label>
                                                 <select name="branch_head" id="branch_head" class="form-control">
                                                     <option value="" selected disabled>Select Branch</option>
@@ -42,41 +42,26 @@
                                                     @endforeach
                                                 </select>
                                             </div>
+                                            <div class="col-md-3 form-group">
+                                                <label for="location_id">Location</label>
+                                                <select name="location_id" id="location_id" class="form-control chosen-select">
+                                                    <option value="" selected disabled>Select Location</option>
+                                                    @foreach ($locations as $key => $location)
+                                                        <option value="{{$location->id}}" @selected( $branch->location_id == $location->id)>{{ $location->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-6 form-group">
+                                            <div class="col-md-4 form-group">
                                                 <label for="timing">Start Time</label>
                                                 <input type="time" name="start_time" class="form-control" value="{{ old('start_time', $branch->start_time) }}" >
                                             </div>
-                                            <div class="col-md-6 form-group">
+                                            <div class="col-md-4 form-group">
                                                 <label for="timing">End Time</label>
                                                 <input type="time" name="end_time" class="form-control" value="{{ old('end_time', $branch->end_time) }}" >
                                             </div>
-                                            {{-- <div class="col-md-6 form-group">
-                                                <x-input-text name="operating_hours" label="Operating Hours" value="{{ old('operating_hours', $branch->operating_hours) }}"></x-input-text>
-                                            </div>
-                                            <div class="col-md-6 form-group">
-                                                <x-input-text name="branch_head" label="Branch Head" value="{{ old('branch_head', $branch->branch_head) }}"></x-input-text>
-                                            </div> --}}
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 form-group">
-                                                <x-input-text name="address" label="Address" value="{{ old('address', $branch->address) }}"></x-input-text>
-                                            </div>
-                                            <div class="col-md-6 form-group">
-                                                <x-input-text name="pincode" label="Pincode" value="{{ old('pincode', $branch->pincode) }}"></x-input-text>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 form-group">
-                                                <label for="status">Status</label>
-                                                <select name="status" id="status" class="form-control">
-                                                    <option value="Working" @selected($branch->status == 'Working')>Working</option>
-                                                    <option value="Not Working" @selected($branch->status == 'Not Working')>Not Working</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-6 form-group">
+                                            <div class="col-md-3 form-group">
                                                 <label for="status">Week Status</label>
                                                 @php $weeks = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] @endphp
                                                 <select multiple class="form-control chosen-select" name="week_status[]" id="week_status">
@@ -88,7 +73,27 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            
+                                            {{-- <div class="col-md-6 form-group">
+                                                <x-input-text name="operating_hours" label="Operating Hours" value="{{ old('operating_hours', $branch->operating_hours) }}"></x-input-text>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="branch_head" label="Branch Head" value="{{ old('branch_head', $branch->branch_head) }}"></x-input-text>
+                                            </div> --}}
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4 form-group">
+                                                <x-input-text name="address" label="Address" value="{{ old('address', $branch->address) }}"></x-input-text>
+                                            </div>
+                                            <div class="col-md-4 form-group">
+                                                <x-input-text name="pincode" label="Pincode" value="{{ old('pincode', $branch->pincode) }}"></x-input-text>
+                                            </div>
+                                            <div class="col-md-4 form-group">
+                                                <label for="status">Status</label>
+                                                <select name="status" id="status" class="form-control">
+                                                    <option value="Working" @selected($branch->status == 'Working')>Working</option>
+                                                    <option value="Not Working" @selected($branch->status == 'Not Working')>Not Working</option>
+                                                </select>
+                                            </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
@@ -110,12 +115,14 @@
                 rules: {
                     name: "required",
                     address: "required",
-                    pincode: "required"
+                    pincode: "required",
+                    location_id: "required",
                 },
                 messages: {
                     name: "Please enter branch name",
                     address: "Please enter address",
-                    pincode: "Please enter pincode"
+                    pincode: "Please enter pincode",
+                    location_id: "Please enter location",
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",

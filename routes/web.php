@@ -11,6 +11,7 @@ use App\Http\Controllers\VehicleModelController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\RoleAndPermissionController;
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\BayController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductCategoryController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\SalesProductController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\CustomerInquiryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/inquiries/status', [YourControllerName::class, 'getInquiriesByStatus'])->name('inquiries.by-status');
@@ -45,6 +47,8 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
         'vehicle-models'        => VehicleModelController::class,
         'vehicle-model-variants'=> VehicleModelVariantController::class,
         'branches'              => BranchController::class,
+        'locations'             => LocationController::class,
+        'customer-inquiry'      => CustomerInquiryController::class,
         'bay'                   => BayController::class,
         'users'                 => UserController::class,
         'customers'             => CustomerController::class,
@@ -88,6 +92,7 @@ Route::post('products/import', [ProductController::class, 'import'])->name('prod
 Route::post('customers/import', [CustomerController::class, 'import'])->name('customers.import');  //import customers csv file
 Route::post('services/import', [ServiceController::class, 'import'])->name('services.import'); //import Services csv file
 Route::post('branch/import', [BranchController::class, 'import'])->name('branch.import'); // import Branch csv file
+Route::post('locations/import', [LocationController::class, 'import'])->name('locations.import'); // import Locations csv file
 Route::post('bay/import', [BayController::class, 'import'])->name('bay.import'); // import Bay csv file
 Route::post('sales/import', [SalesProductController::class, 'import'])->name('sales.import'); // import Sale csv file
 Route::post('vehicle/import', [VehicleController::class, 'import'])->name('vehicle.import'); // import vehicle csv file
@@ -126,6 +131,11 @@ Route::get('download-branch-sample', function() {
     return Response::download($file);
 });
 
+Route::get('download-location-sample', function() {
+    $file = public_path('assets/sample-location/location.csv');
+    return Response::download($file);
+});
+
 Route::get('download-bay-sample', function() {
     $file = public_path('assets/sample-bay/bay.csv');
     return Response::download($file);
@@ -144,6 +154,8 @@ Route::post('/inquery-data', [InquiryController::class, 'inqueryInfo']);
 Route::post('/inquery-licence/{id}', [InquiryController::class, 'getInquiry'])->name('inquiry.licence');
 Route::get('/fetch-data', [ReportsController::class, 'fetchData'])->name('fetch-data');
 Route::post('/disable-branch',[BranchController::class,'disableBranch'])->name('disable-branch');
+Route::post('/disable-location',[LocationController::class,'disableLocation'])->name('disable-location');
+Route::post('/disable-customer-inquiry',[CustomerInquiryController::class,'disableCustomerInquiry'])->name('disable-customer-inquiry');
 
 Route::post('/disable-bay',[BayController::class,'disableBay'])->name('disable-bay');
 
