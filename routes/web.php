@@ -32,6 +32,8 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\SalesProductController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CustomerInquiryController;
+use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\FaqController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/inquiries/status', [YourControllerName::class, 'getInquiriesByStatus'])->name('inquiries.by-status');
@@ -67,9 +69,11 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
         'reports'               => ReportsController::class,
         'jobs'                  => JobManagementController::class,
         'invoices'              => InvoiceController::class,
-        'banners'               => BannerController::Class,
+        'banners'               => BannerController::class,
         'sales-products'        => SalesProductController::class,
-        'services'              => ServiceController::class
+        'services'              => ServiceController::class,
+        'testimonials'          => TestimonialController::class,
+        'faqs'                  => FaqController::class,
     ]);
 });
 
