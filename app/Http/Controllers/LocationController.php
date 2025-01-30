@@ -64,8 +64,14 @@ class LocationController extends Controller
         {
             return redirect()->route('locations.index')->with('error', 'This location already exists.'); 
         }else{
+
+            $locationImageFile = $request->file('location_image');
+            $locationImageFilename = time().'.'.$locationImageFile->getClientOriginalExtension();
+            $locationImageFile->move(public_path('uploads/locations/'), $locationImageFilename);
+
             Location::create([
                 'name'          => $request->name,
+                'location_image'      => isset($locationImageFilename) ? 'uploads/locations/'.$locationImageFilename : NULL,
                 'disable_location'        => !empty($request->disable_location) ? $request->disable_location : '0',
             ]);
     
@@ -121,8 +127,21 @@ class LocationController extends Controller
         {
             return redirect()->route('locations.index')->with('error', 'This Location Already Exists.'); 
         }else{
+
+            $location_data = Location::where('id', $location)->first();
+
+            $oldLocationImage = NULL;
+            if($location_data != '') {
+                $oldLocationImage = $location_data->service_icon;
+            }
+
+            $locationImageFile = $request->file('location_image');
+            $locationImageFilename = time().'.'.$locationImageFile->getClientOriginalExtension();
+            $locationImageFile->move(public_path('uploads/locations/'), $locationImageFilename);
+
             Location::where('id', $location)->update([
                 'name'            => $request->name,
+                'location_image'      => isset($locationImageFilename) ? 'uploads/locations/'.$locationImageFilename : $oldLocationImage,
                 'disable_location'          => !empty($request->disable_location) ? $request->disable_location : '0'
             ]);
         }

@@ -26,12 +26,23 @@
                                 </div>
 
                                 <div class="card-block">
-                                    <form action="{{ route('locations.update', $location->id) }}" method="POST">
+                                    <form action="{{ route('locations.update', $location->id) }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         @method('PATCH')
                                         <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <x-input-text name="name" label="Name" value="{{ old('name', $location->name) }}"></x-input-text>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label for="image" class>Location Image</label>
+                                                <input type="file" name="location_image" id="location_image" class="form-control" accept="image/*" required>
+                                                <div id="locationImagePreview">
+                                                    @if ($location->location_image)
+                                                        <img src="{{ asset($location->location_image) }}" id="location-preview-icon" class="icon-preview" width="100" height="100">
+                                                    @else
+                                                        <img src="" id="location-preview-icon" height="100" width="100" name="image" hidden>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
@@ -67,6 +78,19 @@
                 },
                 submitHandler: function(form) {
                     form.submit();
+                }
+            });
+
+            $('#location_image').change(function() {
+                var file = this.files[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#locationImagePreview').html(
+                            '<img class="location-preview-icon" width="100px" height="100px" src="' + e.target
+                            .result + '" alt="Selected Image">');
+                    }
+                    reader.readAsDataURL(file);
                 }
             });
         })

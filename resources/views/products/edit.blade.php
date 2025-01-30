@@ -28,6 +28,26 @@
                                         @method('PATCH')
                                         <div class="row">
                                             <div class="col-md-6 form-group">
+                                                <label for="parent_category_id">Parent Category</label>
+                                                <select id="parent_category_id" name="parent_category_id[]" class="form-control chosen-select" multiple="multiple">
+                                                    @php
+                                                        $selected_categories = [];
+                                                    @endphp    
+                                                    @foreach($product->parent_categories as $parent_category)
+                                                        @php
+                                                            array_push($selected_categories, $parent_category->parent_category_name);
+                                                        @endphp
+                                                    @endforeach
+                                                        <option value="product" {{ in_array('product', $selected_categories) ? 'selected' : '' }}>Product</option>
+                                                        <option value="service" {{ in_array('service', $selected_categories) ? 'selected' : '' }}>Service</option>
+                                                        <option value="accessories" {{ in_array('accessories', $selected_categories) ? 'selected' : '' }}>Accessories</option>
+                                                </select>
+                                                <span class="form-control-danger" id="parent_category_id_error" style="display:none; color: #dc3545; font-size:12px;">Please select atleast 1 category.</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
                                                 <x-input-text name="product_code" label="Product Code" value="{{ old('product_code', $product->product_code) }}"></x-input-text>
                                             </div>
 

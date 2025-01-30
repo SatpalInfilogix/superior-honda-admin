@@ -26,11 +26,16 @@
                                 </div>
 
                                 <div class="card-block">
-                                    <form action="{{ route('locations.store') }}" method="POST">
+                                    <form action="{{ route('locations.store') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <x-input-text name="name" label="Name" value="{{ old('name') }}"></x-input-text>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label for="image" class>Location Image</label>
+                                                <input type="file" name="location_image" id="location_image" class="form-control" accept="image/*" required>
+                                                <img src="" id="previewLocationImage" height="100" width="100" name="icon" hidden>
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
@@ -43,7 +48,6 @@
             </div>
         </div>
     </div>
-
     <script>
         $(".chosen-select").chosen({
             no_results_text: "Oops, nothing found!"
@@ -66,6 +70,18 @@
                 },
                 submitHandler: function(form) {
                     form.submit();
+                }
+            });
+
+            $('#location_image').change(function() {
+                var input = this;
+                if (input.files && input.files[0]) {
+                    $('#previewLocationImage').prop('hidden', false);
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#previewLocationImage').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
                 }
             });
         })

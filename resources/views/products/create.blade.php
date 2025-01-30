@@ -23,6 +23,18 @@
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-6 form-group">
+                                                <label for="parent_category_id">Parent Category</label>
+                                                <select id="parent_category_id" name="parent_category_id[]" class="form-control chosen-select" multiple="multiple">
+                                                    <option value="product">Product</option>
+                                                    <option value="service">Service</option>
+                                                    <option value="accessories">Accessories</option>
+                                                </select>
+                                                <span class="form-control-danger" id="parent_category_id_error" style="display:none; color: #dc3545; font-size:12px;">Please select atleast 1 category.</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
                                                 <x-input-text name="product_code" label="Product Code"
                                                     value="{{ old('product_code') }}"></x-input-text>
                                             </div>
@@ -197,7 +209,7 @@
                                                 <div id="image_preview_new"></div>
                                             </div>
                                             <div class="col-md-12 form-group">
-                                                <button type="submit" class="btn btn-primary primary-btn">Save</button>
+                                                <button type="submit" class="btn btn-primary primary-btn" id="submit_btn">Save</button>
                                             </div>
                                         </div>
                                     </form>
@@ -271,6 +283,7 @@
         $(function() {
             $('form').validate({
                 rules: {
+                    "parent_category_id[]": "required",
                     product_code: "required",
                     category_id: "required",
                     product_name: "required",
@@ -289,6 +302,7 @@
                     }
                 },
                 messages: {
+                    "parent_category_id[]": "Please select atleast 1 category",
                     product_code: "Please enter product code",
                     category_id: "Please enter category name",
                     product_name: "Please enter product name",
@@ -324,6 +338,24 @@
                     }
                     reader.readAsDataURL(input.files[0]);
                 }
+            });
+
+            $(document).ready(function() {
+                $('#parent_category_id').change(function() {
+                    if ($(this).val().length === 0) {
+                        $('#parent_category_id_error').css('display', 'block');
+                    }else{
+                        $('#parent_category_id_error').css('display', 'none');
+                    }
+                });
+                
+                $('#submit_btn').on('click', function() {
+                    if ($('#parent_category_id').val().length === 0) {
+                        $('#parent_category_id_error').css('display', 'block');
+                    }else{
+                        $('#parent_category_id_error').css('display', 'none');
+                    }
+                });
             });
         })
     </script>
