@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductCategory; 
+use App\Models\ProductParentCategories;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Gate;
+use Str;
 
 class ProductCategoryController extends Controller
 {
@@ -35,7 +37,8 @@ class ProductCategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:product_categories|max:25'
+            'name' => 'required|unique:product_categories|max:25',
+            'parent_category_id' => 'required',
         ]);
 
         if($request->hasfile('image')){
@@ -47,7 +50,19 @@ class ProductCategoryController extends Controller
             $category = new ProductCategory();
             $category->name = $request->name;
             $category->category_image = 'uploads/product-categories-image/'. $filename;
+            $category->product_category_slug = Str::slug($request->name);
             $category->save();
+
+            $parent_categories = $request->parent_category_id;
+
+            foreach($parent_categories as $parent_category)
+            {
+                $parent_category_data = [];
+                $parent_category_data['product_category_id'] = $category->id;
+                $parent_category_data['parent_category_name'] = $parent_category;
+                
+                ProductParentCategories::create($parent_category_data);
+            }
         
             return redirect()->route('product-categories.index')->with('success', 'Product category saved successfully');
         }    
@@ -69,7 +84,7 @@ class ProductCategoryController extends Controller
         if(!Gate::allows('edit product')) {
             abort(403);
         }
-        $product_category = ProductCategory::find($id); 
+        $product_category = ProductCategory::with('parent_categories')->find($id); 
         return view('product-categories.edit', compact('product_category'));
     }
 
@@ -84,6 +99,7 @@ class ProductCategoryController extends Controller
                 'max:25',
                 Rule::unique('product_categories', 'name')->ignore($id)
             ],
+            'parent_category_id' => 'required'
         ]);
 
         $category = ProductCategory::find($id);
@@ -97,7 +113,35 @@ class ProductCategoryController extends Controller
         }else{
             $category->name = $request->name; 
         } 
+        $category->product_category_slug = Str::slug($request->name);
         $category->save();
+
+        // old parent categories
+        $old_parent_categories = ProductParentCategories::where('product_category_id', $id)->get()->pluck('parent_category_name')->toArray();
+
+        // new parent categories
+        $new_parent_categories = $request->parent_category_id;
+
+        // categories to add (new but not in old)
+        $categories_to_add = array_diff($new_parent_categories, $old_parent_categories);
+
+        // categories to delete (old but not in new)
+        $categories_to_delete = array_diff($old_parent_categories, $new_parent_categories);
+
+        // Add new categories
+        foreach ($categories_to_add as $category_to_add) {
+            ProductParentCategories::create([
+                'product_category_id' => $category->id,
+                'parent_category_name' => $category_to_add
+            ]);
+        }
+
+        // Delete removed categories
+        foreach ($categories_to_delete as $category_to_delete) {
+            ProductParentCategories::where('product_category_id', $product->id)
+                ->where('parent_category_name', $category_to_delete)
+                ->delete();
+        }
 
         return redirect()->route('product-categories.index')->with('success', 'Product category update successfully');
     }
@@ -111,6 +155,9 @@ class ProductCategoryController extends Controller
             abort(403);
         }
         ProductCategory::where('id', $id)->delete();
+
+        $parent_categories = ProductParentCategories::where('product_category_id', $id)->delete();
+
         return response()->json([
             'success' => true,
             'message' => 'Product category deleted successfully.'

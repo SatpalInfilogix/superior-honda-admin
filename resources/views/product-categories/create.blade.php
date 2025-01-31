@@ -20,6 +20,19 @@
                                 <div class="card-block">
                                     <form action="{{ route('product-categories.store') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
+
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label for="parent_category_id">Parent Category</label>
+                                                <select id="parent_category_id" name="parent_category_id[]" class="form-control chosen-select" multiple="multiple">
+                                                    <option value="product">Product</option>
+                                                    <option value="service">Service</option>
+                                                    <option value="accessories">Accessories</option>
+                                                </select>
+                                                <span class="form-control-danger" id="parent_category_id_error" style="display:none; color: #dc3545; font-size:12px;">Please select atleast 1 category.</span>
+                                            </div>
+                                        </div>
+
                                         <div class="form-group">
                                             <x-input-text name="name" label="Category Name" value="{{ old('name') }}"></x-input-text>
                                         </div>
@@ -30,7 +43,7 @@
                                                 <img src="" id="image_preview" height="50"width="50" name="image" hidden>
                                             </div>
                                         <div>
-                                        <button type="submit" class="btn btn-primary primary-btn">Save</button>
+                                        <button type="submit" class="btn btn-primary primary-btn" id="submit_btn">Save</button>
                                     </form>
                                 </div>
                             </div>
@@ -63,6 +76,29 @@
                     form.submit();
                 }
             });
+
+            $(document).ready(function() {
+                $('#parent_category_id').change(function() {
+                    if ($(this).val().length === 0) {
+                        $('#parent_category_id_error').css('display', 'block');
+                    }else{
+                        $('#parent_category_id_error').css('display', 'none');
+                    }
+                });
+                
+                $('#submit_btn').on('click', function() {
+                    if ($('#parent_category_id').val().length === 0) {
+                        $('#parent_category_id_error').css('display', 'block');
+                    }else{
+                        $('#parent_category_id_error').css('display', 'none');
+                    }
+                });
+            });
+
+            $(".chosen-select").chosen({
+                width: '100%',
+                no_results_text: "Oops, nothing found!"
+            })
         })
     </script>
 @endsection

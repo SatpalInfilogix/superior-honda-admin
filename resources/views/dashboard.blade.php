@@ -192,7 +192,6 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Customer Name</th>
-                                            <th>Inquiry Category</th>
                                             <th>Inquiry Status</th>
                                             <th>Date</th>
                                             <th>Actions</th>
@@ -203,7 +202,6 @@
                                         <tr>
                                            <td>{{ ++$key }}</td>
                                             <td>{{ ucwords($inquiry->customer_name) }}</td>
-                                            <td>{{ ucfirst($inquiry->inquiry_category) }}</td>
                                             @if($inquiry->inquiry_status == 'pending')
                                             <td style="color:blue">{{ ucfirst($inquiry->inquiry_status) }}</td>
                                             @elseif($inquiry->inquiry_status == 'in_process')

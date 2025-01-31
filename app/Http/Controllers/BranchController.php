@@ -25,8 +25,11 @@ class BranchController extends Controller
             abort(403);
         }
 
-        $branches = Branch::with('location')->latest()->get();
-        
+        $branches = Branch::with('locations')
+                        ->whereHas('locations', function ($query) {
+                            $query->whereNull('deleted_at');
+                        })->latest()->get();
+
         return view('branches.index', compact('branches'));
     }
 

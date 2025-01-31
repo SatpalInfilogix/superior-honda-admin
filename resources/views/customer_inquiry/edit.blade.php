@@ -30,48 +30,42 @@
                                         @csrf
                                         @method('PATCH')
                                         <div class="row">
-                                            <div class="col-md-4 form-group">
+                                            <div class="col-md-3 form-group">
                                                 <label for="Customer Name" style="font-weight: bold">Customer Name</label>
                                                 <p>{{$customer_inquiry->customer_name}}</p>
                                             </div>
-                                            <div class="col-md-4 form-group">
+                                            <div class="col-md-3 form-group">
                                                 <label for="Customer Phone" style="font-weight: bold">Customer Phone</label>
                                                 <p>{{ $customer_inquiry->customer_phone }}</p>
                                             </div>
-                                            <div class="col-md-4 form-group">
+                                            <div class="col-md-3 form-group">
                                                 <label for="Customer Email" style="font-weight: bold">Customer Email</label>
-                                                <p>{{ $customer_inquiry->customer_email }}</p>
+                                                <p>{{ !empty($customer_inquiry->customer_email) ? $customer_inquiry->customer_email : '-'; }}</p>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4 form-group">
-                                                <label for="Inquiry Category" style="font-weight: bold">Inquiry Category</label>
-                                                <p>{{ ucfirst($customer_inquiry->inquiry_category) }}</p>
-                                            </div>
-                                            <div class="col-md-4 form-group">
+                                            <div class="col-md-3 form-group">
                                                 <label for="Product Name" style="font-weight: bold">Product Name</label>
                                                 <p>{{ $customer_inquiry->product->product_name }}</p>
                                             </div>
-                                            <div class="col-md-4 form-group">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3 form-group">
                                                 <label for="Location" style="font-weight: bold">Location</label>
                                                 <p>{{ $customer_inquiry->location->name }}</p>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4 form-group">
+                                            <div class="col-md-3 form-group">
                                                 <label for="Inquiry Created At" style="font-weight: bold">Inquiry Created At</label>
                                                 <p>{{ $customer_inquiry->inquiry_created_at ? date('d-m-Y h:i a', strtotime($customer_inquiry->inquiry_created_at)) : 'N/A' }}</p>
                                             </div>
-                                            <div class="col-md-8 form-group">
+                                            <div class="col-md-3 form-group">
                                                 <label for="Inquiry Description" style="font-weight: bold">Inquiry Description</label>
                                                 <p>{{ $customer_inquiry->inquiry_description }}</p>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4 form-group">
+                                            <div class="col-md-3 form-group">
                                                 <label for="CSR Name" style="font-weight: bold">CSR Name</label>
                                                 <p>{{ !empty($customer_inquiry->inquiry_attended_by_csr_id) ? $customer_inquiry->csr->first_name . ' ' . $customer_inquiry->csr->last_name : 'N/A' }}</p>
                                             </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col-md-4 form-group">
                                                 <label for="Inquiry Status" style="font-weight: bold">Inquiry Status</label>
                                                 <select name="inquiry_status" id="inquiry_status" class="form-control">

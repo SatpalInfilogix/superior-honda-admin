@@ -20,8 +20,8 @@ class Branch extends Model
         return $this->hasMany(Bay::class);
     }
 
-    public function location()
+    public function locations()
     {
-        return $this->belongsTo(Location::class, 'location_id', 'id');
+        return $this->belongsTo(Location::class, 'location_id', 'id')->whereNull('deleted_at');
     }
 }

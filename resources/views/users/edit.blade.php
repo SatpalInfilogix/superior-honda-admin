@@ -69,11 +69,11 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-4 form-group">
-                                                <label for="cateogry">Category</label>
-                                                <select name="cateogry" id="cateogry" class="form-control">
+                                                <label for="category">Category</label>
+                                                <select name="category" id="category" class="form-control">
                                                     <option value="" selected disabled>Select Category</option>
-                                                    <option value="products" {{$user->category == 'products' ? 'selected' : ''}}>Products</option>
-                                                    <option value="services" {{$user->category == 'services' ? 'selected' : ''}}>Services</option>
+                                                    <option value="product" {{$user->category == 'product' ? 'selected' : ''}}>Products</option>
+                                                    <option value="service" {{$user->category == 'service' ? 'selected' : ''}}>Services</option>
                                                     <option value="accessories" {{$user->category == 'accessories' ? 'selected' : ''}}>Accessories</option>
                                                 </select>
                                             </div>
@@ -114,7 +114,7 @@
                     last_name: "Please enter last name",
                     designation: "Please enter designation",
                     email: "Please enter email",
-                    category: "Please select cateogry",
+                    category: "Please select category",
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",
