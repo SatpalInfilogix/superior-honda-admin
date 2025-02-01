@@ -39,7 +39,6 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Customer Name</th>
-                                                    <th>Inquiry Category</th>
                                                     <th>Inquiry Status</th>
                                                     <th>Date</th>
                                                     @canany(['edit customer inquiry', 'delete customer inquiry'])
@@ -48,55 +47,56 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($customer_inquiries as $key => $customer_inquiry)
-                                                    <tr>
-                                                        <td>{{ $key + 1 }}</td>
-                                                        <td>{{ ucfirst($customer_inquiry->customer_name) }}</td>
-                                                        <td>{{ ucfirst($customer_inquiry->inquiry_category) }}</td>
-                                                        @if($customer_inquiry->inquiry_status == 'pending')
-                                                        <td style="color:blue">{{ ucfirst($customer_inquiry->inquiry_status) }}</td>
-                                                        @elseif($customer_inquiry->inquiry_status == 'in_process')
-                                                        <td style="color:#ff6a00">In Process</td>
-                                                        @elseif($customer_inquiry->inquiry_status == 'closed')
-                                                        <td style="color:green">{{ ucfirst($customer_inquiry->inquiry_status) }}</td>
-                                                        @elseif($customer_inquiry->inquiry_status == 'failed')
-                                                        <td style="color:red">{{ ucfirst($customer_inquiry->inquiry_status) }}</td>
-                                                        @endif
-                                                        <td>{{ date('d-m-Y h:i a', strtotime($customer_inquiry->inquiry_created_at)) }}</td>
-                                                        @canany(['edit customer inquiry', 'delete customer inquiry'])
-                                                        <td>
-                                                            <div class="btn-group btn-group-sm">
-                                                                @if(Auth::user()->can('edit customer inquiry'))
-                                                                    <a href="{{ route('customer-inquiry.edit', $customer_inquiry->id) }}"
-                                                                        class="btn btn-primary primary-btn waves-effect waves-light mr-2">
-                                                                        <i class="feather icon-edit m-0"></i>
-                                                                    </a>
-                                                                @endif
+                                                @if(!empty($final_customer_enquiry_data))
+                                                    @foreach ($final_customer_enquiry_data as $key => $customer_inquiry)
+                                                        <tr>
+                                                            <td>{{ $key + 1 }}</td>
+                                                            <td>{{ ucfirst($customer_inquiry->customer_name) }}</td>
+                                                            @if($customer_inquiry->inquiry_status == 'pending')
+                                                            <td style="color:blue">{{ ucfirst($customer_inquiry->inquiry_status) }}</td>
+                                                            @elseif($customer_inquiry->inquiry_status == 'in_process')
+                                                            <td style="color:#ff6a00">In Process</td>
+                                                            @elseif($customer_inquiry->inquiry_status == 'closed')
+                                                            <td style="color:green">{{ ucfirst($customer_inquiry->inquiry_status) }}</td>
+                                                            @elseif($customer_inquiry->inquiry_status == 'failed')
+                                                            <td style="color:red">{{ ucfirst($customer_inquiry->inquiry_status) }}</td>
+                                                            @endif
+                                                            <td>{{ date('d-m-Y h:i a', strtotime($customer_inquiry->inquiry_created_at)) }}</td>
+                                                            @canany(['edit customer inquiry', 'delete customer inquiry'])
+                                                            <td>
+                                                                <div class="btn-group btn-group-sm">
+                                                                    @if(Auth::user()->can('edit customer inquiry'))
+                                                                        <a href="{{ route('customer-inquiry.edit', $customer_inquiry->id) }}"
+                                                                            class="btn btn-primary primary-btn waves-effect waves-light mr-2">
+                                                                            <i class="feather icon-edit m-0"></i>
+                                                                        </a>
+                                                                    @endif
 
-                                                                @if($customer_inquiry->status == 'active')
-                                                                    <button
-                                                                        class="disable-customer-inquiry btn btn-primary primary-btn waves-effect waves-light mr-2"
-                                                                        data-id="{{ $customer_inquiry->id }}" data-value="enabled">
-                                                                        <i class="feather icon-check-circle m-0"></i>
-                                                                    </button>
-                                                                @else
-                                                                    <button
-                                                                        class="disable-customer-inquiry btn btn-primary primary-btn waves-effect waves-light mr-2"
-                                                                        data-id="{{ $customer_inquiry->id }}" data-value="disabled">
-                                                                        <i class="feather icon-slash m-0"></i>
-                                                                    </button>
-                                                                @endif
-                                                                @if(Auth::user()->can('delete customer inquiry'))
-                                                                    <button data-source="Customer Inquiry" data-endpoint="{{ route('customer-inquiry.destroy', $customer_inquiry->id) }}"
-                                                                        class="delete-btn primary-btn btn btn-danger waves-effect waves-light">
-                                                                        <i class="feather icon-trash m-0"></i>
-                                                                    </button>
-                                                                @endif 
-                                                             </div>
-                                                        </td>
-                                                        @endcanany
-                                                    </tr>
-                                                @endforeach
+                                                                    @if($customer_inquiry->status == 'active')
+                                                                        <button
+                                                                            class="disable-customer-inquiry btn btn-primary primary-btn waves-effect waves-light mr-2"
+                                                                            data-id="{{ $customer_inquiry->id }}" data-value="enabled">
+                                                                            <i class="feather icon-check-circle m-0"></i>
+                                                                        </button>
+                                                                    @else
+                                                                        <button
+                                                                            class="disable-customer-inquiry btn btn-primary primary-btn waves-effect waves-light mr-2"
+                                                                            data-id="{{ $customer_inquiry->id }}" data-value="disabled">
+                                                                            <i class="feather icon-slash m-0"></i>
+                                                                        </button>
+                                                                    @endif
+                                                                    @if(Auth::user()->can('delete customer inquiry'))
+                                                                        <button data-source="Customer Inquiry" data-endpoint="{{ route('customer-inquiry.destroy', $customer_inquiry->id) }}"
+                                                                            class="delete-btn primary-btn btn btn-danger waves-effect waves-light">
+                                                                            <i class="feather icon-trash m-0"></i>
+                                                                        </button>
+                                                                    @endif 
+                                                                </div>
+                                                            </td>
+                                                            @endcanany
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>

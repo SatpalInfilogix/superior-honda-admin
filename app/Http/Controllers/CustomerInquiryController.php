@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CustomerInquiry;
 use App\Models\CustomerInquiryCsrCommentLog;
+use App\Models\ProductParentCategories;
 use App\Models\Branch;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
@@ -19,35 +21,60 @@ class CustomerInquiryController extends Controller
      */
     public function index()
     {
-        if (! Gate::allows('view customer inquiry')) {
+        if (!Gate::allows('view customer inquiry')) {
             abort(403);
         }
 
-        $userBranchId = Auth::user()->branch_id;
-        $userCategory = Auth::user()->category;
-        $userBranchName = Branch::where('id', $userBranchId)->select('name')->where('deleted_at', NULL)->first();
+        $user = Auth::user();
+        $userBranchId = $user->branch_id;
+        $userCategory = $user->category;
 
-        $customer_inquiries = CustomerInquiry::with('location', 'product', 'csr');
+        // Fetch the user's branch data (only 'name' and 'location_id' needed)
+        $userBranchData = Branch::where('id', $userBranchId)
+            ->whereNull('deleted_at')
+            ->select('name', 'location_id')
+            ->first();
 
-                                            if(!empty($userCategory))
-                                            {
-                                                $customer_inquiries = $customer_inquiries->where('inquiry_category', $userCategory);
-                                            }
+        // Base query for active and non-deleted customer inquiries
+        $customer_inquiries = CustomerInquiry::with(['location', 'product', 'csr'])
+            ->where('status', 'active')
+            ->whereNull('deleted_at');
 
-                                            if($userBranchName->name !== 'Kingston')
-                                            {
-                                                $customer_inquiries = $customer_inquiries->whereHas('location.branches', function ($query) use ($userBranchId) {
-                                                    $query->where('branches.id', $userBranchId);
-                                                })
-                                                ->latest()
-                                                ->get();
-                                            }else{
-                                                $customer_inquiries = $customer_inquiries->latest()
-                                                ->get();
-                                            }
+        // If the branch is not 'Kingston', filter by the location_id
+        if ($userBranchData->name !== 'Kingston') {
+            $customer_inquiries = $customer_inquiries->where('inquiry_location_id', $userBranchData->location_id);
+        }
 
-        return view('customer_inquiry.index', compact('customer_inquiries'));
+        // Get the customer inquiries
+        $customer_inquiries = $customer_inquiries->latest()->get();
+
+        $final_customer_enquiry_data = [];
+
+        // If there are customer inquiries, process them
+        if ($customer_inquiries->isNotEmpty()) {
+            // Pre-fetch product category ids in one query
+            $productCategoryIds = Product::whereIn('id', $customer_inquiries->pluck('inquiry_product_id'))
+                ->pluck('category_id', 'id');
+
+            // Fetch parent categories only once for all product categories
+            $parentCategories = ProductParentCategories::whereIn('product_category_id', $productCategoryIds->unique())
+                ->whereNull('deleted_at')
+                ->where('status', 'active')
+                ->pluck('parent_category_name', 'product_category_id');
+
+            foreach ($customer_inquiries as $customer_enquiry) {
+                // Get the category id for the current product
+                $category_id = $productCategoryIds[$customer_enquiry->inquiry_product_id] ?? null;
+
+                // If category exists and it matches the user category, add to result
+                if ($category_id && isset($parentCategories[$category_id]) && $parentCategories[$category_id] == $userCategory) {
+                    $final_customer_enquiry_data[] = $customer_enquiry;
+                }
+            }
+        }
+        return view('customer_inquiry.index', compact('final_customer_enquiry_data'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -88,8 +115,8 @@ class CustomerInquiryController extends Controller
             $query->where('role_id', $adminRole->id);
         })->latest()->get();
 
-        $customer_inquiry = CustomerInquiry::where('id', $customerInquiry)->with('product', 'location', 'csr')->first();
-
+        $customer_inquiry = CustomerInquiry::with('product', 'location', 'csr')->where('id', $customerInquiry)->first();
+        
         return view('customer_inquiry.edit', compact('customer_inquiry', 'users'));
     }
 

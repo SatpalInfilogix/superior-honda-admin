@@ -70,8 +70,8 @@
                                                 <label for="category">Category</label>
                                                 <select name="category" id="category" class="form-control">
                                                     <option value="" selected disabled>Select Category</option>
-                                                    <option value="products">Products</option>
-                                                    <option value="services">Services</option>
+                                                    <option value="product">Products</option>
+                                                    <option value="service">Services</option>
                                                     <option value="accessories">Accessories</option>
                                                 </select>
                                             </div>

@@ -15,6 +15,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use App\Models\MasterConfiguration;
 use Carbon\Carbon;
+use App\Models\Location;
 
 class UserController extends Controller
 {
@@ -52,7 +53,10 @@ class UserController extends Controller
             $designations = [];
         }
 
-        $branches = Branch::latest()->get();
+        $branches = Branch::with('locations')->whereHas('locations', function ($query) {
+            $query->whereNull('deleted_at');
+        })->get();
+
         $roles = Role::where('name', '!=', 'Customer')->latest()->get();
 
         return view('users.create', compact('branches', 'roles', 'designations'));
@@ -127,7 +131,9 @@ class UserController extends Controller
             abort(403);
         }
 
-        $branches = Branch::latest()->get();
+        $branches = Branch::with('locations')->whereHas('locations', function ($query) {
+            $query->whereNull('deleted_at');
+        })->latest()->get();
         $designationType = MasterConfiguration::where('key', 'designations')->first();
         if($designationType && $designationType->value){
             $designations = json_decode($designationType->value);
@@ -147,7 +153,6 @@ class UserController extends Controller
         if(!Gate::allows('edit user')) {
             abort(403);
         }
-
         $request->validate([
             'first_name'  => 'required',
             'last_name'   => 'required',
