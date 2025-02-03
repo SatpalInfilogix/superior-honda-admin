@@ -10,6 +10,7 @@ use Carbon\Carbon;
 class Inquiry extends Model
 {
     use HasFactory;
+    protected $table = 'inquiries';
     protected $guarded=[];
 
     public function scopeInProgressForThreeHoursOrMore($query)
