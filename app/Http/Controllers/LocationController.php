@@ -132,12 +132,15 @@ class LocationController extends Controller
 
             $oldLocationImage = NULL;
             if($location_data != '') {
-                $oldLocationImage = $location_data->service_icon;
+                $oldLocationImage = $location_data->location_image;
             }
 
-            $locationImageFile = $request->file('location_image');
-            $locationImageFilename = time().'.'.$locationImageFile->getClientOriginalExtension();
-            $locationImageFile->move(public_path('uploads/locations/'), $locationImageFilename);
+            if(!empty($request->file('location_image')))
+            {
+                $locationImageFile = $request->file('location_image');
+                $locationImageFilename = time().'.'.$locationImageFile->getClientOriginalExtension();
+                $locationImageFile->move(public_path('uploads/locations/'), $locationImageFilename);
+            }
 
             Location::where('id', $location)->update([
                 'name'            => $request->name,

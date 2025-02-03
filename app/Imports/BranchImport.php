@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Branch;
+use App\Models\Location;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -21,7 +22,15 @@ class BranchImport implements ToModel, WithHeadingRow
         $validator = Validator::make($row, [
             'name'       => 'required',
             'address'    => 'required',
-            'pincode'    => 'required'
+            'pincode'    => 'required',
+            'location_id' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if (!Location::where('id', $value)->exists()) {
+                        $fail('The selected location id ' . $value . ' is invalid for row.');
+                    }
+                }
+            ]
         ]);
 
         if ($validator->fails()) {
@@ -38,7 +47,8 @@ class BranchImport implements ToModel, WithHeadingRow
             'unique_code' => $branch_code,
             'name' => $row['name'],
             'address' => $row['address'],   
-            'pincode' => $row['pincode']
+            'pincode' => $row['pincode'],
+            'location_id' => $row['location_id'],
         ]);
 
         return null;

@@ -35,7 +35,7 @@
                                             </div>
                                             <div class="col-md-6 form-group">
                                                 <label for="image" class>Location Image</label>
-                                                <input type="file" name="location_image" id="location_image" class="form-control" accept="image/*" required>
+                                                <input type="file" name="location_image" id="location_image" class="form-control" accept="image/*">
                                                 <div id="locationImagePreview">
                                                     @if ($location->location_image)
                                                         <img src="{{ asset($location->location_image) }}" id="location-preview-icon" class="icon-preview" width="100" height="100">
