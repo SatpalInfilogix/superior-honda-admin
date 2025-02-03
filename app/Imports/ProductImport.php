@@ -130,6 +130,17 @@ class ProductImport implements ToModel, WithHeadingRow
             $serviceIcon = $this->uploadImageFromUrl($row['service_icon']);
         }
 
+        $year = $row['year'];
+
+        $year = preg_replace('/[^0-9]/', '', $year);
+
+        $years = str_split($year, 4);
+
+        $years = array_unique($years);
+        sort($years);
+
+        $formatted_years = implode(',', $years);
+
         $product = Product::create([
             'product_code' => $row['product_code'],
             'category_id' => $row['category_id'],
@@ -152,7 +163,7 @@ class ProductImport implements ToModel, WithHeadingRow
             'access_series' => $row['accesseries'],
             'short_description' => $row['short_description'],
             'service_icon' => $serviceIcon,
-            'year'         => $row['year'] ?? NULL
+            'year'         => $formatted_years ?? NULL
         ]);
 
         if (!empty($row['image_paths'])) {
