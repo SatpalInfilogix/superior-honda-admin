@@ -1,4 +1,4 @@
-name,address,pincode
-Ocho Rios Branch,134 Main Street,
-Montego Bay Branch,8 Lower Bevin avenue,987654
-Portmore Branch,Lot 56 West Trade Way,456987
+name,address,pincode,location_id
+Ocho Rios Branch,134 Main Street,,16
+Montego Bay Branch,8 Lower Bevin avenue,987654,15
+Portmore Branch,Lot 56 West Trade Way,456987,14

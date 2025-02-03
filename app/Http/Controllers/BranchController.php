@@ -190,9 +190,12 @@ class BranchController extends Controller
         $branch = Branch::where('id', $request->id)->first();
         $status = 1;
         $message = 'Branch disabled successfully.';
-        if($branch->disable_branch == 1){
-            $status = 0;
+        if($request->disable_branch == 'disabled'){
+            $status = '0';
             $message = 'Branch enabled successfully.';
+        }else{
+            $status = '1';
+            $message = 'Branch disabled successfully.';
         }
 
         $branch->update([

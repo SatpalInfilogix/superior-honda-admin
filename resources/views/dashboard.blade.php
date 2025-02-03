@@ -180,13 +180,13 @@
                     @if($pendingCustomerInquiries)
                     <div class="row">
                         <div class="container">
-                            <h5>Pending Customer Inquiries</h5>
+                            <h5>Pending Customer Inquiries ({{count($pendingCustomerInquiries)}})</h5>
                             <div class="scrollable-div">
-                                @foreach($pendingCustomerInquiries as $key => $inquery)
+                                <!-- @foreach($pendingCustomerInquiries as $key => $inquery)
                                 <div class="inquiry">
-                                    <p><strong><b>Pending Inquiry 1</b></strong></p>
+                                    <p><strong><b>Pending Inquiry {{$key + 1}}</b></strong></p>
                                 </div>
-                                @endforeach
+                                @endforeach -->
                               <table>
                                     <thead>
                                         <tr>

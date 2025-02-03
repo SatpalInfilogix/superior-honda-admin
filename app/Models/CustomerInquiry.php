@@ -35,7 +35,10 @@ class CustomerInquiry extends Model
     public function scopeInProgressForTwoHoursOrMore($query)
     {
         $twoHoursAgo = date('Y-m-d H:i:s', strtotime('-2 hours'));
-        return $query->where('inquiry_status', 'in_process')
-                     ->where('inquiry_created_at', '<=', $twoHoursAgo);
+        
+        return $query->where(function ($q) {
+                        $q->where('inquiry_status', 'in_process')
+                          ->orWhere('inquiry_status', 'pending');
+                    })->where('inquiry_created_at', '<=', $twoHoursAgo);
     }
 }

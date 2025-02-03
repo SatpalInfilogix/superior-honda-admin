@@ -90,13 +90,13 @@
                                                                 @if($branch->disable_branch == 0)
                                                                     <button
                                                                         class="disable-branch btn btn-primary primary-btn waves-effect waves-light mr-2"
-                                                                        data-id="{{ $branch->id }}" data-value="disabled">
+                                                                        data-id="{{ $branch->id }}" data-value="enabled">
                                                                         <i class="feather icon-check-circle m-0"></i>
                                                                     </button>
                                                                 @else
                                                                     <button
                                                                         class="disable-branch btn btn-primary primary-btn waves-effect waves-light mr-2"
-                                                                        data-id="{{ $branch->id }}" data-value="enabled">
+                                                                        data-id="{{ $branch->id }}" data-value="disabled">
                                                                         <i class="feather icon-slash m-0"></i>
                                                                     </button>
                                                                 @endif
@@ -134,7 +134,7 @@
                 var value = $(this).data('value');
                 swal({
                     title: "Are you sure?",
-                    text: `You really want to ${value} ?`,
+                    text: `You really want to ${value == 'enabled' ? 'disabled' : 'enabled'} ?`,
                     type: "warning",
                     showCancelButton: true,
                     closeOnConfirm: false,
@@ -145,6 +145,7 @@
                             method: 'post',
                             data: {
                                 id: id,
+                                disable_branch: value,
                                 _token: '{{ csrf_token() }}'
                             },
                             success: function(response) {
