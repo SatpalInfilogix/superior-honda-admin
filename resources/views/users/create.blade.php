@@ -62,7 +62,7 @@
                                                 <select name="branch" id="branch" class="form-control">
                                                     <option value="" selected disabled>Select Branch</option>
                                                     @foreach ($branches as $key => $branch)
-                                                        <option value="{{$branch->id}}">{{ $branch->name }}</option>
+                                                        <option value="{{$branch->id}}">{{ $branch->name }} @if (strtolower($branch->name) === 'kingston') 🚩 @endif</option>
                                                     @endforeach
                                                 </select>
                                             </div>

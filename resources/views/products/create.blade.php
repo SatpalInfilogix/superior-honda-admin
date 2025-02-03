@@ -151,10 +151,9 @@
 
                                         <div class ="row">
                                             <div class="col-md-2 form-group">
-                                                <label for="is_service" class>Is Service</label>
-                                                <input type="checkbox" id="is_service" name="is_service" value="0"
-                                                    {{ old('is_service') ? 'checked' : '' }}
-                                                    onclick='serviceClick(this);'>
+                                                <label for="out_of_stock" class>Out Of Stock</label>
+                                                <input type="checkbox" id="out_of_stock" name="out_of_stock" value="0"
+                                                    {{ old('out_of_stock') ? 'checked' : '' }} onclick='outOfStock(this);'>
                                             </div>
                                             <div class="col-md-4 form-group">
                                                 <label for="is_popular" class>Is Popular Product</label>
@@ -173,6 +172,12 @@
                                                 <input type="checkbox" id="access_series" name="access_series"
                                                     value="0"{{ old('access_series') ? 'checked' : '' }}
                                                     onclick='accessSeries(this);'>
+                                            </div>
+                                            <div class="col-md-2 form-group">
+                                                <label for="is_service" class>Is Service</label>
+                                                <input type="checkbox" id="is_service" name="is_service" value="0"
+                                                    {{ old('is_service') ? 'checked' : '' }}
+                                                    onclick='serviceClick(this);'>
                                             </div>
                                         </div>
 
@@ -269,6 +274,11 @@
         }
 
         function usedPart(e) {
+            e.value = e.checked ? 1 : 0;
+        }
+
+        function outOfStock(e)
+        {
             e.value = e.checked ? 1 : 0;
         }
 

@@ -176,21 +176,25 @@
 
                                         <div class ="row">
                                             <div class="col-md-2 form-group">
-                                                <label for="service" class>Is Service</label>
-                                                <input type="checkbox" id="is_service" name="is_service" value="{{ $product->is_service }}" @checked($product->is_service == 1) onclick='serviceClick(this);'>
-                                             </div>
+                                                <label for="out_of_stock" class>Out Of Stock</label>
+                                                <input type="checkbox" id="out_of_stock" name="out_of_stock" value="{{ $product->out_of_stock }}" @checked($product->out_of_stock == 1) onclick='outOfStock(this);'>
+                                            </div>
                                             <div class="col-md-4 form-group">
-                                                <label for="popular" class>Is Popular Product</label>
+                                                <label for="is_popular" class>Is Popular Product</label>
                                                 <input type="checkbox" id="is_popular" name="is_popular" value="{{ $product->popular }}" @checked($product->popular == 1) onclick='popularClick(this);'>
                                            </div>
                                            <div class="col-md-2 form-group">
-                                                <label for="popular" class>Used Part</label>
-                                                <input type="checkbox" id="used_part" name="used_part" value="{{ $product->used_part }}" @checked($product->used_part == 1) onclick='popularClick(this);'>
+                                                <label for="used_part" class>Used Part</label>
+                                                <input type="checkbox" id="used_part" name="used_part" value="{{ $product->used_part }}" @checked($product->used_part == 1) onclick='usedPart(this);'>
                                             </div>
                                             <div class="col-md-4 form-group">
-                                                <label for="popular" class>Accesseries</label>
+                                                <label for="access_series" class>Accesseries</label>
                                                 <input type="checkbox" id="access_series" name="access_series" value="{{ $product->access_series }}" @checked($product->access_series == 1)  onclick='accessSeries(this);'>
                                             </div>
+                                            <div class="col-md-2 form-group">
+                                                <label for="is_service" class>Is Service</label>
+                                                <input type="checkbox" id="is_service" name="is_service" value="{{ $product->is_service }}" @checked($product->is_service == 1) onclick='serviceClick(this);'>
+                                             </div>
                                         </div>
 
                                           <div id="serviceFields" style="display: none;">
@@ -316,6 +320,11 @@
         function popularClick(e) {
             e.value = e.checked ? 1 : 0;
             $('#is_popular').val(e.value);
+        }
+
+        function outOfStock(e) {
+            e.value = e.checked ? 1 : 0;
+            $('#out_of_stock').val(e.value);
         }
 
         function usedPart(e) {
