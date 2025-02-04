@@ -34,7 +34,7 @@
                             <div class="card">
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
-                                        <table id="vehicle-types-list" class="table table-striped table-bordered nowrap">
+                                        <table id="customer-inquiry" class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -113,7 +113,7 @@
 
     <script>
         $(function() {
-            $('#vehicle-types-list').DataTable();
+            $('#customer-inquiry').DataTable();
 
             $(document).on('click', '.disable-customer-inquiry', function() {
                 var id = $(this).data('id');

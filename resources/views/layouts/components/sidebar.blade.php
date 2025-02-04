@@ -208,6 +208,21 @@
                         </a>
                     </li>
                 {{-- @endcan --}}
+                @can('view promotions')
+                    <li @class([
+                        'active' => Request::is(
+                            'promotions',
+                            'promotions/create',
+                            'promotions/*/edit'),
+                    ])>
+                        <a href="{{ route('promotions.index') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon">
+                                <i class="fas fa-credit-card"></i>
+                            </span>
+                            <span class="pcoded-mtext">Promotions</span>
+                        </a>
+                    </li>
+                @endcan
             </ul>
 
             @canany([

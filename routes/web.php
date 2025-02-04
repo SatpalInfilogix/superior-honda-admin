@@ -32,6 +32,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\SalesProductController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CustomerInquiryController;
+use App\Http\Controllers\PromotionsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/inquiries/status', [YourControllerName::class, 'getInquiriesByStatus'])->name('inquiries.by-status');
@@ -59,6 +60,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
         'vehicles'              => VehicleController::class,
         'settings'              => SettingController::class,
         'coupons'               => CouponController::class,
+        'promotions'            => PromotionsController::class,
         'inquiries'             => InquiryController::class,
         'inspection'            => InspectionController::class,
         'emails'                => EmailTemplateController::class,
@@ -155,6 +157,7 @@ Route::post('/inquery-licence/{id}', [InquiryController::class, 'getInquiry'])->
 Route::get('/fetch-data', [ReportsController::class, 'fetchData'])->name('fetch-data');
 Route::post('/disable-branch',[BranchController::class,'disableBranch'])->name('disable-branch');
 Route::post('/disable-location',[LocationController::class,'disableLocation'])->name('disable-location');
+Route::post('/disable-promotion',[PromotionsController::class,'disablePromotion'])->name('disable-promotion');
 Route::post('/disable-customer-inquiry',[CustomerInquiryController::class,'disableCustomerInquiry'])->name('disable-customer-inquiry');
 
 Route::post('/disable-bay',[BayController::class,'disableBay'])->name('disable-bay');

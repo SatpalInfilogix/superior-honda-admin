@@ -33,67 +33,58 @@
                             @endif
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Locations</h5>
+                                    <h5>Promotions</h5>
                                     <div class="float-right">
-                                        <a href="{{ url('download-location-sample') }}"
-                                            class="btn btn-primary primary-btn btn-md"><i class="fa fa-download"></i>Location Sample File
-                                        </a>
-                                        <div class="d-inline-block">
-                                            <form id="importForm" action="{{ route('locations.import') }}" method="POST" enctype="multipart/form-data">
-                                                @csrf
-                                                <label for="fileInput" class="btn btn-primary primary-btn btn-md mb-0">
-                                                    Import CSV
-                                                    <input type="file" id="fileInput" name="file" accept=".csv, .xlsx" style="display:none;">
-                                                </label>
-                                            </form>
-                                        </div>
-                                        @if(Auth::user()->can('create location'))
-                                            <a href="{{ route('locations.create') }}" class="btn btn-primary primary-btn btn-md">Add Location</a>
+                                        @if(Auth::user()->can('create promotions'))
+                                            <a href="{{ route('promotions.create') }}" class="btn btn-primary primary-btn btn-md">Add Promotions</a>
                                         @endif
                                     </div>
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
-                                        <table id="locations" class="table table-striped table-bordered nowrap">
+                                        <table id="promotions" class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Name</th>
-                                                    @canany(['edit location', 'delete location'])
+                                                    <th>Image</th>
+                                                    @canany(['edit promotions', 'delete promotions'])
                                                     <th>Actions</th>
                                                     @endcanany
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($locations as $key => $location)
+                                                @foreach ($promotions as $key => $promotion)
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
-                                                        <td>{{ $location->name }}</td>
-                                                        @canany(['edit location', 'delete location'])
+                                                        <td>{{ $promotion->heading }}</td>
+                                                        <td><img src="{{ asset($promotion->main_image) }}" width="50"
+                                                                height="50"></td>
+                                                        @canany(['edit promotions', 'delete promotions'])
                                                         <td>
                                                             <div class="btn-group btn-group-sm">
-                                                                @if(Auth::user()->can('edit location'))
-                                                                    <a href="{{ route('locations.edit', $location->id) }}"
+                                                                @if(Auth::user()->can('edit promotions'))
+                                                                    <a href="{{ route('promotions.edit', $promotion->id) }}"
                                                                         class="btn btn-primary primary-btn waves-effect waves-light mr-2">
                                                                         <i class="feather icon-edit m-0"></i>
                                                                     </a>
                                                                 @endif
 
-                                                                @if($location->disable_location == 0)
+                                                                @if($promotion->status == 'active')
                                                                     <button
-                                                                        class="disable-location btn btn-primary primary-btn waves-effect waves-light mr-2"
-                                                                        data-id="{{ $location->id }}" data-value="enabled">
+                                                                        class="disable-promotion btn btn-primary primary-btn waves-effect waves-light mr-2"
+                                                                        data-id="{{ $promotion->id }}" data-value="enabled">
                                                                         <i class="feather icon-check-circle m-0"></i>
                                                                     </button>
                                                                 @else
                                                                     <button
-                                                                        class="disable-location btn btn-primary primary-btn waves-effect waves-light mr-2"
-                                                                        data-id="{{ $location->id }}" data-value="disabled">
+                                                                        class="disable-promotion btn btn-primary primary-btn waves-effect waves-light mr-2"
+                                                                        data-id="{{ $promotion->id }}" data-value="disabled">
                                                                         <i class="feather icon-slash m-0"></i>
                                                                     </button>
                                                                 @endif
-                                                                @if(Auth::user()->can('delete location'))
-                                                                    <button data-source="Location" data-endpoint="{{ route('locations.destroy', $location->id) }}"
+                                                                @if(Auth::user()->can('delete promotions'))
+                                                                    <button data-source="promotion" data-endpoint="{{ route('promotions.destroy', $promotion->id) }}"
                                                                         class="delete-btn primary-btn btn btn-danger waves-effect waves-light">
                                                                         <i class="feather icon-trash m-0"></i>
                                                                     </button>
@@ -119,9 +110,9 @@
 
     <script>
         $(function() {
-            $('#locations').DataTable();
+            $('#promotions').DataTable();
 
-            $(document).on('click', '.disable-location', function() {
+            $(document).on('click', '.disable-promotion', function() {
                 var id = $(this).data('id');
                 var value = $(this).data('value');
                 swal({
@@ -133,11 +124,11 @@
                 }, function(isConfirm) {
                     if (isConfirm) {
                         $.ajax({
-                            url: '{{ route("disable-location") }}',
+                            url: '{{ route("disable-promotion") }}',
                             method: 'post',
                             data: {
                                 id: id,
-                                disable_location: value,
+                                disable_promotion: value,
                                 _token: '{{ csrf_token() }}'
                             },
                             success: function(response) {
@@ -180,12 +171,12 @@
                 });
             });
 
-        //      $('.disable-location').on('click', function() {
+        //      $('.disable-promotion').on('click', function() {
         // var id = $(this).data('value');
         
-        // if (confirm('Are you sure to make the location disabled!')) {
+        // if (confirm('Are you sure to make the promotion disabled!')) {
         //     $.ajax({
-        //                 url: '{{ route("disable-location") }}',
+        //                 url: '{{ route("disable-promotion") }}',
         //                 method: 'post',
         //                 data: {
         //                     id: id,
@@ -195,7 +186,7 @@
         //                     alert(response.message);
         //                 },
         //                 error: function(response) {
-        //                     alert('Issue while updating the location status');
+        //                     alert('Issue while updating the promotion status');
         //                     console.error(response); // Log the error to the console
         //                 }
         //             });

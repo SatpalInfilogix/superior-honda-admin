@@ -39,7 +39,7 @@ class CustomerInquiryController extends Controller
         $location_ids = $userBranchData->branch_locations->pluck('location')->pluck('id');
 
         $customer_inquiries = CustomerInquiry::with(['location', 'product', 'csr'])
-            ->where('status', 'active')
+            ->where('status' , '!=', 'delete')
             ->whereNull('deleted_at');
 
         if ($userBranchData->name !== 'Kingston') {
