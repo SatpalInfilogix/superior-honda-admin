@@ -338,7 +338,7 @@
                     ])>
                         <a href="{{ route('bay.index') }}" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
-                                <i class="ti-direction"></i>
+                                <i class="ti-package"></i>
                             </span>
                             <span class="pcoded-mtext">Bay</span>
                         </a>
@@ -419,6 +419,14 @@
                         <span class="pcoded-mtext">Services</span>
                     </a>
                 </li>
+                <li class="{{ Request::segment(1) == 'testimonials' ? 'active' : '' }}">
+                    <a href="{{ route('testimonials.index')}}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="fas fa-quote-right"></i>
+                        </span>
+                        <span class="pcoded-mtext">Testimonials</span>
+                    </a>
+                </li>
             </ul>
             <div class="pcoded-navigation-label">Settings</div>
             <ul class="pcoded-item pcoded-left-item">
@@ -440,6 +448,14 @@
                             <i class="feather icon-settings"></i>
                         </span>
                         <span class="pcoded-mtext">Settings</span>
+                    </a>
+                </li>
+                <li class="{{ Request::segment(1) == 'faqs' ? 'active' : '' }}">
+                    <a href="{{ route('faqs.index')}}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="fas fa-question-circle"></i>
+                        </span>
+                        <span class="pcoded-mtext">Faq</span>
                     </a>
                 </li>
 

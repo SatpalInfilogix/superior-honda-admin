@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class CustomerInquiryCsrCommentLog extends Model
+class CustomerInquiryLog extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'customer_inquiry_csr_comment_log';
     protected $guarded=[];
 }

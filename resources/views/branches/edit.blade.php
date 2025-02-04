@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
-<link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet"/>
 <!-- <style>
     div#week_status_chosen {
         width: 423px !important;
@@ -55,6 +53,9 @@
                                                 </select>
                                                 <span class="form-control-danger" id="location_id_error" style="display:none; color: #dc3545; font-size:12px;">Please select atleast 1 location.</span>
                                             </div>
+                                            @error('location_id')
+                                                <span class="text-danger f-12">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                         <div class="row">
                                             <div class="col-md-4 form-group">
@@ -109,11 +110,9 @@
             </div>
         </div>
     </div>
+    <x-include-plugins chosenSelect></x-include-plugins>
 
     <script>
-        $(".chosen-select").chosen({
-            no_results_text: "Oops, nothing found!"
-        })
         $(function() {
             $('form').validate({
                 rules: {
