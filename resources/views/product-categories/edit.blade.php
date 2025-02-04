@@ -84,6 +84,22 @@
                 }
             });
 
+            $('#parent_category_id').change(function() {
+                if ($(this).val().length === 0) {
+                    $('#parent_category_id_error').css('display', 'block');
+                }else{
+                    $('#parent_category_id_error').css('display', 'none');
+                }
+            });
+            
+            $('#submit_btn').on('click', function() {
+                if ($('#parent_category_id').val().length === 0) {
+                    $('#parent_category_id_error').css('display', 'block');
+                }else{
+                    $('#parent_category_id_error').css('display', 'none');
+                }
+            });
+
             $(".chosen-select").chosen({
                 width: '100%',
                 no_results_text: "Oops, nothing found!"

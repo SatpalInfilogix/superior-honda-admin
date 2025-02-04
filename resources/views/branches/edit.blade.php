@@ -44,12 +44,16 @@
                                             </div>
                                             <div class="col-md-3 form-group">
                                                 <label for="location_id">Location</label>
-                                                <select name="location_id" id="location_id" class="form-control chosen-select">
-                                                    <option value="" selected disabled>Select Location</option>
+                                                <select name="location_id[]" id="location_id" class="form-control chosen-select" multiple="multiple">
+                                                    <option value="" disabled>Select Location</option>
+                                                    @php
+                                                        $location_ids = $branch->branch_locations->pluck('location')->pluck('id');
+                                                    @endphp
                                                     @foreach ($locations as $key => $location)
-                                                        <option value="{{$location->id}}" @selected( $branch->location_id == $location->id)>{{ $location->name}}</option>
+                                                        <option value="{{$location->id}}" @selected( in_array( $location->id, $location_ids->toArray()))>{{ $location->name}}</option>
                                                     @endforeach
                                                 </select>
+                                                <span class="form-control-danger" id="location_id_error" style="display:none; color: #dc3545; font-size:12px;">Please select atleast 1 location.</span>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -95,7 +99,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary primary-btn">Save</button>
+                                        <button type="submit" class="btn btn-primary primary-btn" id="submit_btn">Save</button>
                                     </form>
                                 </div>
                             </div>
@@ -116,13 +120,11 @@
                     name: "required",
                     address: "required",
                     pincode: "required",
-                    location_id: "required",
                 },
                 messages: {
                     name: "Please enter branch name",
                     address: "Please enter address",
                     pincode: "Please enter pincode",
-                    location_id: "Please enter location",
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",
@@ -134,6 +136,24 @@
                 },
                 submitHandler: function(form) {
                     form.submit();
+                }
+            });
+        });
+
+        $(document).ready(function(){
+            $('#location_id').change(function() {
+                if ($(this).val().length === 0) {
+                    $('#location_id_error').css('display', 'block');
+                }else{
+                    $('#location_id_error').css('display', 'none');
+                }
+            });
+            
+            $('#submit_btn').on('click', function() {
+                if ($('#location_id').val().length === 0) {
+                    $('#location_id_error').css('display', 'block');
+                }else{
+                    $('#location_id_error').css('display', 'none');
                 }
             });
         })

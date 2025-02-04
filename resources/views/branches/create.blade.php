@@ -43,14 +43,15 @@
                                             </div>
                                             <div class="col-md-3 form-group">
                                                 <label for="location_id">Location</label>
-                                                <select name="location_id" id="location_id" class="form-control chosen-select">
-                                                    <option value="" selected disabled>Select Location</option>
+                                                <select name="location_id[]" id="location_id" class="form-control chosen-select" multiple="multiple">
+                                                    <option value="" disabled>Select Location</option>
                                                     @if(!empty($locations))
                                                         @foreach ($locations as $key => $location)
                                                             <option value="{{$location->id}}">{{ $location->name}}</option>
                                                         @endforeach
                                                     @endif
                                                 </select>
+                                                <span class="form-control-danger" id="location_id_error" style="display:none; color: #dc3545; font-size:12px;">Please select atleast 1 location.</span>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -87,7 +88,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary primary-btn">Save</button>
+                                        <button type="submit" class="btn btn-primary primary-btn" id="submit_btn">Save</button>
                                     </form>
                                 </div>
                             </div>
@@ -126,6 +127,24 @@
                     form.submit();
                 }
             });
-        })
+        });
+
+        $(document).ready(function(){
+            $('#location_id').change(function() {
+                if ($(this).val().length === 0) {
+                    $('#location_id_error').css('display', 'block');
+                }else{
+                    $('#location_id_error').css('display', 'none');
+                }
+            });
+            
+            $('#submit_btn').on('click', function() {
+                if ($('#location_id').val().length === 0) {
+                    $('#location_id_error').css('display', 'block');
+                }else{
+                    $('#location_id_error').css('display', 'none');
+                }
+            });
+        });
     </script>
 @endsection

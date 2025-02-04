@@ -58,7 +58,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Location</th>
+                                                    <th width="10%">Locations</th>
                                                     <th>Unique Code</th>
                                                     <th>Name</th>
                                                     <th>Address</th>
@@ -72,7 +72,10 @@
                                                 @foreach ($branches as $key => $branch)
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
-                                                        <td>{{ !empty($branch->locations->name) ? $branch->locations->name : '' }}</td>
+                                                        @php
+                                                            $locations = $branch->branch_locations->pluck('location')->pluck('name');
+                                                        @endphp
+                                                        <td>{{ $locations->implode(', ') }}</td>
                                                         <td>{{ $branch->unique_code }}</td>
                                                         <td>{{ $branch->name }}</td>
                                                         <td>{{ $branch->address }}</td>

@@ -19,20 +19,29 @@
                                 </div>
 
                                 <div class="card-block">
-                                    <form action="{{ route('coupons.store') }}" method="POST">
+                                    <form action="{{ route('coupons.store') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
-                                        <div class="form-group">
-                                            <x-input-text name="coupon_code" label="Coupon Code" value="{{ old('coupon_code') }}"></x-input-text>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="coupon_code" label="Coupon Code" value="{{ old('coupon_code') }}"></x-input-text>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label for="coupon_image" class>Coupon Image</label>
+                                                <input type="file" name="coupon_image" id="coupon_image" class="form-control" accept="image/*" required>
+                                                <img src="" id="previewCouponImage" height="100" width="100" name="icon" hidden>
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="discount_type">Discount Type</label>
-                                            <select name="discount_type" id="discount_type" class="form-control">
-                                                <option value="Percentage ">Percentage </option>
-                                                <option value="Fixed">Fixed</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <x-input-text name="discount_amount" label="Discount Amount" value="{{ old('discount_amount') }}"></x-input-text>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label for="discount_type">Discount Type</label>
+                                                <select name="discount_type" id="discount_type" class="form-control">
+                                                    <option value="Percentage ">Percentage </option>
+                                                    <option value="Fixed">Fixed</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="discount_amount" label="Discount Amount" value="{{ old('discount_amount') }}"></x-input-text>
+                                            </div>
                                         </div>
                                         <!-- <div class="row">
                                             <div class="col-md-6 form-group">
@@ -73,31 +82,26 @@
             function updateEndDateMin() {
                 const startDate = new Date(startDateInput.value);
                 if (!isNaN(startDate.getTime())) {
-                    // Set the min attribute for end_date to be the day after the start_date
                     const minEndDate = new Date(startDate);
                     minEndDate.setDate(startDate.getDate() + 1);
                     endDateInput.setAttribute('min', minEndDate.toISOString().split('T')[0]);
                 } else {
-                    // If start_date is not set, clear the min attribute
                     endDateInput.removeAttribute('min');
                 }
             }
 
-            // Update end date restrictions when start date changes
             startDateInput.addEventListener('change', updateEndDateMin);
 
-            // If end date is changed, make sure it is still valid
             endDateInput.addEventListener('change', function() {
                 const endDate = new Date(endDateInput.value);
                 const minEndDate = new Date(startDateInput.value);
                 minEndDate.setDate(minEndDate.getDate() + 1);
                 if (endDate < minEndDate) {
                     alert('End date must be after start date.');
-                    endDateInput.value = ''; // Clear invalid end date
+                    endDateInput.value = '';
                 }
             });
 
-            // Initial check to ensure dates are valid on page load
             updateEndDateMin();
         });
 
@@ -123,6 +127,20 @@
                 },
                 submitHandler: function(form) {
                     form.submit();
+                }
+            });
+        });
+
+        $(document).ready(function(){
+            $('#coupon_image').change(function() {
+                var input = this;
+                if (input.files && input.files[0]) {
+                    $('#previewCouponImage').prop('hidden', false);
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#previewCouponImage').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
                 }
             });
         })

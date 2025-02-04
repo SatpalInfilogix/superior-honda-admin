@@ -260,26 +260,49 @@
                 @endcan
                 @can('view branch')
                     <li @class([
-                        'active' => Request::is('branches', 'branches/create', 'branches/*/edit'),
+                        'pcoded-hasmenu',
+                        'pcoded-trigger active' => Request::is(
+                            'branches',
+                            'branches/create',
+                            'branches/*/edit',
+                            'locations',
+                            'locations/create',
+                            'locations/*/edit'),
                     ])>
-                        <a href="{{ route('branches.index') }}" class="waves-effect waves-dark">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
                             <span class="pcoded-micon">
-                                <i class="ti-direction"></i>
+                                <i class="fas fa-cube"></i>
                             </span>
-                            <span class="pcoded-mtext">Branch Management</span>
+                            <span class="pcoded-mtext">Location Management</span>
                         </a>
-                    </li>
-                @endcan
-                @can('view location')
-                    <li @class([
-                        'active' => Request::is('locations', 'locations/create', 'locations/*/edit'),
-                    ])>
-                        <a href="{{ route('locations.index') }}" class="waves-effect waves-dark">
-                            <span class="pcoded-micon">
-                                <i class="ti-direction"></i>
-                            </span>
-                            <span class="pcoded-mtext">Locations Management</span>
-                        </a>
+                        <ul class="pcoded-submenu">
+                            <li @class([
+                                'active' => Request::is(
+                                    'branches',
+                                    'branches/create',
+                                    'branches/*/edit'),
+                            ])>
+                                <a href="{{ route('branches.index') }}" class="waves-effect waves-dark">
+									<span class="pcoded-micon">
+										<i class="fas fa-cube"></i>
+									</span>
+									<span class="pcoded-mtext">Branch Management</span>
+								</a>
+                            </li>
+                            <li @class([
+                                'active' => Request::is(
+                                    'locations',
+                                    'locations/create',
+                                    'locations/*/edit'),
+                            ])>
+                                <a href="{{ route('locations.index') }}" class="waves-effect waves-dark">
+									<span class="pcoded-micon">
+										<i class="fas fa-cube"></i>
+									</span>
+									<span class="pcoded-mtext">Location Management</span>
+								</a>
+                            </li>
+                        </ul>
                     </li>
                 @endcan
                 @can('view customer inquiry')

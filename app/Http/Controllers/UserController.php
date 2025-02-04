@@ -14,6 +14,7 @@ use Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use App\Models\MasterConfiguration;
+use App\Models\UserParentCategories;
 use Carbon\Carbon;
 use App\Models\Location;
 
@@ -32,8 +33,8 @@ class UserController extends Controller
 
         $users = User::whereDoesntHave('roles', function ($query) use ($customerRole) {
             $query->where('role_id', $customerRole->id);
-        })->latest()->get();
-        
+        })->with('user_parent_categories')->latest()->get();
+
         return view('users.index', compact('users'));
     }
 
@@ -53,10 +54,10 @@ class UserController extends Controller
             $designations = [];
         }
 
-        $branches = Branch::with('locations')->whereHas('locations', function ($query) {
+        $branches = Branch::with('branch_locations')->whereHas('branch_locations', function ($query) {
             $query->whereNull('deleted_at');
         })->get();
-
+        
         $roles = Role::where('name', '!=', 'Customer')->latest()->get();
 
         return view('users.create', compact('branches', 'roles', 'designations'));
@@ -83,7 +84,7 @@ class UserController extends Controller
             ],
             'designation'   => 'required',
             'role'          => 'required',
-            'category'      => 'required',
+            'parent_category_id' => 'required',
         ],
         [
             'email.unique'      => 'The email '. $request->email .' has already been taken.',
@@ -106,10 +107,20 @@ class UserController extends Controller
             'branch_id'          => $request->branch,
             'emp_id'             => $empId,
             'additional_details' => $request->additional_detail,
-            'category'           => $request->category,
             'date_of_birth'      => $request->date_of_birth,
             'password'           => Hash::make($request->password),
         ])->assignRole($request->role);
+
+        $parent_categories = $request->parent_category_id;
+
+        foreach($parent_categories as $parent_category)
+        {
+            $parent_category_data = [];
+            $parent_category_data['user_id'] = $user->id;
+            $parent_category_data['parent_category_name'] = $parent_category;
+            
+            UserParentCategories::create($parent_category_data);
+        }
 
         return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
@@ -131,7 +142,10 @@ class UserController extends Controller
             abort(403);
         }
 
-        $branches = Branch::with('locations')->whereHas('locations', function ($query) {
+        // get user parent categories
+        $user->load('user_parent_categories');
+
+        $branches = Branch::with('branch_locations')->whereHas('branch_locations', function ($query) {
             $query->whereNull('deleted_at');
         })->latest()->get();
         $designationType = MasterConfiguration::where('key', 'designations')->first();
@@ -156,7 +170,7 @@ class UserController extends Controller
         $request->validate([
             'first_name'  => 'required',
             'last_name'   => 'required',
-            'category'   => 'required',
+            'parent_category_id' => 'required'
         ]);
 
         $user = User::where('id', $user->id)->first();
@@ -166,8 +180,34 @@ class UserController extends Controller
             'branch_id'          => $request->branch,
             'date_of_birth'      => $request->date_of_birth,
             'additional_details' => $request->additional_detail,
-            'category'           => $request->category,
         ]);
+
+        // old parent categories
+        $old_parent_categories = UserParentCategories::where('user_id', $user->id)->get()->pluck('parent_category_name')->toArray();
+
+        // new parent categories
+        $new_parent_categories = $request->parent_category_id;
+
+        // categories to add (new but not in old)
+        $categories_to_add = array_diff($new_parent_categories, $old_parent_categories);
+
+        // categories to delete (old but not in new)
+        $categories_to_delete = array_diff($old_parent_categories, $new_parent_categories);
+
+        // Add new categories
+        foreach ($categories_to_add as $category_to_add) {
+            UserParentCategories::create([
+                'user_id' => $user->id,
+                'parent_category_name' => $category_to_add
+            ]);
+        }
+
+        // Delete removed categories
+        foreach ($categories_to_delete as $category_to_delete) {
+            UserParentCategories::where('user_id', $user->id)
+                ->where('parent_category_name', $category_to_delete)
+                ->delete();
+        }
 
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
@@ -182,6 +222,9 @@ class UserController extends Controller
         }
 
         $user = User::where('id', $user->id)->delete();
+
+        $parent_categories = UserParentCategories::where('user_id', $user->id)->delete();
+
         return response()->json([
             'success' => true,
             'message' => 'User deleted successfully.'

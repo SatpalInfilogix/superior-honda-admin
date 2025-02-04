@@ -67,15 +67,6 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-4 form-group">
-                                                <label for="category">Category</label>
-                                                <select name="category" id="category" class="form-control">
-                                                    <option value="" selected disabled>Select Category</option>
-                                                    <option value="product">Products</option>
-                                                    <option value="service">Services</option>
-                                                    <option value="accessories">Accessories</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4 form-group">
                                                 <label for="password">Password</label>
                                                 <div class="input-group mb-0">
                                                     <input type="password" id="password" name="password" class="form-control">
@@ -87,6 +78,16 @@
                                                 </div>
                                                 <label for="password" class="error"></label> <!-- Error message will appear here -->
                                             </div>
+                                            <div class="col-md-4 form-group">
+                                                <label for="parent_category_id">Category</label>
+                                                <select name="parent_category_id[]" id="parent_category_id" class="form-control chosen-select" multiple="multiple">
+                                                    <option value="" disabled>Select Category</option>
+                                                    <option value="product">Products</option>
+                                                    <option value="service">Services</option>
+                                                    <option value="accessories">Accessories</option>
+                                                </select>
+                                                <span class="form-control-danger" id="parent_category_id_error" style="display:none; color: #dc3545; font-size:12px;">Please select atleast 1 category.</span>
+                                            </div>
                                         </div>
                                         <div class="row">                                            
                                             <div class="col-md-12 form-group">
@@ -94,7 +95,7 @@
                                                 <textarea id="additional_detail" name="additional_detail" class="form-control" rows="2" cols="50"></textarea>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary primary-btn">Save</button>
+                                        <button type="submit" class="btn btn-primary primary-btn" id="submit_btn">Save</button>
                                     </form>
                                 </div>
                             </div>
@@ -119,7 +120,6 @@
                     designation: "required",
                     email: "required",
                     role: "required",
-                    category: "required",
                     password: "required"
                 },
                 messages: {
@@ -128,7 +128,6 @@
                     designation: "Please enter designation",
                     email: "Please enter email",
                     role: "Please enter role",
-                    category: "Please select category",
                     password: "Please enter password"
                 },
                 errorClass: "text-danger",
@@ -158,6 +157,29 @@
                 const type = passwordField.attr('type') === 'password' ? 'text' : 'password';
                 passwordField.attr('type', type);
                 $(this).toggleClass('fa-eye fa-eye-slash');
+            });
+
+            $(document).ready(function() {
+                $('#parent_category_id').change(function() {
+                    if ($(this).val().length === 0) {
+                        $('#parent_category_id_error').css('display', 'block');
+                    }else{
+                        $('#parent_category_id_error').css('display', 'none');
+                    }
+                });
+                
+                $('#submit_btn').on('click', function() {
+                    if ($('#parent_category_id').val().length === 0) {
+                        $('#parent_category_id_error').css('display', 'block');
+                    }else{
+                        $('#parent_category_id_error').css('display', 'none');
+                    }
+                });
+            });
+
+            $(".chosen-select").chosen({
+                width: '100%',
+                no_results_text: "Oops, nothing found!"
             });
         })
     </script>

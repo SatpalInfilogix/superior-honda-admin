@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Product;
 use App\Models\Location;
 use App\Models\User;
+use App\Models\CsrCommentLog;
 use Carbon\Carbon;
 
 class CustomerInquiry extends Model
@@ -30,6 +31,11 @@ class CustomerInquiry extends Model
     public function csr()
     {
         return $this->belongsTo(User::class, 'inquiry_attended_by_csr_id', 'id');
+    }
+
+    public function csr_comments()
+    {
+        return $this->hasMany(CsrCommentLog::class)->orderBy('id', 'desc');
     }
 
     public function scopeInProgressForTwoHoursOrMore($query)
