@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customer_inquiry_csr_comment_log', function (Blueprint $table) {
+        Schema::create('customer_inquiry_logs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('customer_inquiry_id')->nullable();
             $table->enum('inquiry_status', ['pending', 'in_process', 'closed', 'failed'])->default('pending');
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customer_inquiry_csr_comment_log');
+        Schema::dropIfExists('customer_inquiry_logs');
     }
 };
