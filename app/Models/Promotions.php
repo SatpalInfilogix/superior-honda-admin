@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\PromotionProducts;
 use App\Models\PromotionServices;
 use App\Models\PromotionImages;
+use App\Models\CustomerInquiry;
 
 class Promotions extends Model
 {

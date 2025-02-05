@@ -60,9 +60,39 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-4 form-group">
-                                                <label for="Product Name" style="font-weight: bold">Product Name</label>
-                                                <p>{{ $customer_inquiry->product->product_name }}</p>
+                                                <label for="Customer Inquiry Category" style="font-weight: bold">Customer Inquiry Category</label>                                                
+                                                <p>{{ ucfirst($customer_inquiry->customer_inquiry_category) }}</p>
                                             </div>
+                                            @if($customer_inquiry->customer_inquiry_category == 'promotion')
+                                                <div class="col-md-4 form-group">
+                                                    <label for="Promotion Heading" style="font-weight: bold">Promotion Heading</label>
+                                                    <p>{{ $customer_inquiry->promotion->heading }}</p>  
+                                                </div>
+                                            @endif
+                                            <div class="col-md-4 form-group">
+                                                <label for="Product Name" style="font-weight: bold">Product Name</label>
+                                                @if($customer_inquiry->customer_inquiry_category == 'product')
+                                                    <p>{{ $customer_inquiry->product->product_name }}</p>
+                                                @else
+                                                    @php
+                                                        $products_names = $customer_inquiry->promotion->promotion_products->pluck('product_details')->pluck('product_name');
+                                                    @endphp
+                                                    @foreach ($products_names as $product_name)
+                                                        <li style="font-size:14px; line-height:1.4;">{{ $product_name }}</li>
+                                                    @endforeach
+                                                @endif
+                                            </div>
+                                            @if($customer_inquiry->customer_inquiry_category == 'promotion')
+                                                <div class="col-md-4 form-group">
+                                                    <label for="Service Name" style="font-weight: bold">Service Name</label>
+                                                    @php
+                                                        $service_names = $customer_inquiry->promotion->promotion_services->pluck('service_details')->pluck('name');
+                                                    @endphp
+                                                    @foreach ($service_names as $service_name)
+                                                        <li style="font-size:14px; line-height:1.4;">{{ $service_name }}</li>
+                                                    @endforeach
+                                                </div>
+                                            @endif
                                             <div class="col-md-4 form-group">
                                                 <label for="Location" style="font-weight: bold">Location</label>
                                                 <p>{{ $customer_inquiry->location->name }}</p>

@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Location;
 use App\Models\User;
 use App\Models\CsrCommentLog;
+use App\Models\Promotions;
 use Carbon\Carbon;
 
 class CustomerInquiry extends Model
@@ -46,5 +47,10 @@ class CustomerInquiry extends Model
                         $q->where('inquiry_status', 'in_process')
                           ->orWhere('inquiry_status', 'pending');
                     })->where('inquiry_created_at', '<=', $twoHoursAgo);
+    }
+
+    public function promotion()
+    {
+        return $this->belongsTo(Promotions::class, 'inquiry_product_id', 'id');
     }
 }

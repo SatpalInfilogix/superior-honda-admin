@@ -111,7 +111,14 @@ class CustomerInquiryController extends Controller
             $query->where('role_id', $adminRole->id);
         })->latest()->get();
 
-        $customer_inquiry = CustomerInquiry::with('product', 'location', 'csr', 'csr_comments.csr_details')->where('id', $customerInquiry)->first();
+        $customer_inquiry = CustomerInquiry::with('location', 'csr', 'csr_comments.csr_details')->where('id', $customerInquiry)->first();
+        
+        if($customer_inquiry->customer_inquiry_category == 'product')
+        {
+            $customer_inquiry->load('product');
+        }else{
+            $customer_inquiry->load('promotion.promotion_products.product_details', 'promotion.promotion_services.service_details', 'promotion.promotion_images');
+        }
         
         return view('customer_inquiry.edit', compact('customer_inquiry', 'users'));
     }
