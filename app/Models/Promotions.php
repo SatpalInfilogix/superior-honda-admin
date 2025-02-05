@@ -19,16 +19,16 @@ class Promotions extends Model
 
     public function promotion_products()
     {
-        return $this->hasMany(PromotionProducts::class);
+        return $this->hasMany(PromotionProducts::class,'promotion_id');
     }
 
     public function promotion_services()
     {
-        return $this->hasMany(PromotionServices::class);
+        return $this->hasMany(PromotionServices::class,'promotion_id');
     }
 
     public function promotion_images()
     {
-        return $this->hasMany(PromotionImages::class);
+        return $this->hasMany(PromotionImages::class,'promotion_id');
     }
 }

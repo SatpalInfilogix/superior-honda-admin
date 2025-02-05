@@ -132,17 +132,145 @@ class PromotionsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $promotion)
     {
-        //
+        if (! Gate::allows('edit promotions')) {
+            abort(403);
+        }
+
+        $promotion = Promotions::where('id', $promotion)
+                                ->with('promotion_products', 'promotion_services', 'promotion_images')
+                                ->first();
+
+        $products = Product::where('status', 1)->select('id', 'product_name')->latest()->get();
+        
+        $services = Service::select('id', 'name')->latest()->get();
+
+        return view('promotions.edit', compact('promotion', 'products', 'services'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $promotion)
     {
-        //
+        if (! Gate::allows('edit promotions')) {
+            abort(403);
+        }
+
+        $request->validate([
+            'heading'    => 'required',
+            'promotion_product_id' => 'required',
+            'promotion_service_id' => 'required',
+        ]);
+
+        $promotion_exists = Promotions::where('heading', $request->heading)->where('deleted_at', NULL)->where('id', '!=', $promotion)->first();
+
+        if(!empty($promotion_exists))
+        {
+            return redirect()->route('promotions.index')->with('error', 'This Promotion Heading Already Exists.'); 
+        }else{
+
+            $promotion_data = Promotions::where('id', $promotion)->first();
+
+            $oldPromotionImage = NULL;
+            if($promotion_data != '') {
+                $oldPromotionImage = $promotion_data->main_image;
+            }
+
+            if(!empty($request->file('main_image')))
+            {
+                $promotionImageFile = $request->file('main_image');
+                $promotionImageFilename = time().'.'.$promotionImageFile->getClientOriginalExtension();
+                $promotionImageFile->move(public_path('uploads/promotions/'), $promotionImageFilename);
+            }
+
+            Promotions::where('id', $promotion)->update([
+                'heading'        => $request->heading,
+                'main_image'     => isset($promotionImageFilename) ? 'uploads/promotions/'.$promotionImageFilename : $oldPromotionImage
+            ]);
+
+            // old promotion products
+            $old_promotion_products = PromotionProducts::where('promotion_id', $promotion)->get()->pluck('product_id')->toArray();
+
+            // new promotion products
+            $new_promotion_products = $request->promotion_product_id;
+
+            // promotion products to add (new but not in old)
+            $promotion_products_to_add = array_diff($new_promotion_products, $old_promotion_products);
+
+            // promotion products to delete (old but not in new)
+            $promotion_products_to_delete = array_diff($old_promotion_products, $new_promotion_products);
+
+            // Add new promotion products
+            foreach ($promotion_products_to_add as $promotion_product_to_add) {
+                PromotionProducts::create([
+                    'promotion_id' => $promotion,
+                    'product_id' => $promotion_product_to_add
+                ]);
+            }
+
+            // Delete removed promotion product
+            foreach ($promotion_products_to_delete as $promotion_product_to_delete) {
+                PromotionProducts::where('promotion_id', $promotion)
+                    ->where('product_id', $promotion_product_to_delete)
+                    ->delete();
+            }
+
+            // old promotion services
+            $old_promotion_services = PromotionServices::where('promotion_id', $promotion)->get()->pluck('service_id')->toArray();
+
+            // new promotion services
+            $new_promotion_services = $request->promotion_service_id;
+
+            // promotion services to add (new but not in old)
+            $promotion_services_to_add = array_diff($new_promotion_services, $old_promotion_services);
+
+            // promotion services to delete (old but not in new)
+            $promotion_services_to_delete = array_diff($old_promotion_services, $new_promotion_services);
+
+            // Add new promotion services
+            foreach ($promotion_services_to_add as $promotion_service_to_add) {
+                PromotionServices::create([
+                    'promotion_id' => $promotion,
+                    'service_id' => $promotion_service_to_add
+                ]);
+            }
+
+            // Delete removed promotion product
+            foreach ($promotion_services_to_delete as $promotion_service_to_delete) {
+                PromotionServices::where('promotion_id', $promotion)
+                    ->where('service_id', $promotion_service_to_delete)
+                    ->delete();
+            }
+
+            $images = $request->images;
+
+            if ($images) {
+                $files = [];
+                if($request->hasfile('images'))
+                {
+                    foreach($request->file('images') as $file)
+                    {
+                        $filename = time() . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+                        $file->move(public_path('uploads/promotions/'), $filename);
+                        PromotionImages::create([
+                            'promotion_id' => $promotion,
+                            'image'     => 'uploads/promotions/'. $filename,
+                        ]);
+                    }
+                }
+            }
+
+            // delete images
+            if(!empty($request->image_id))
+            {
+                PromotionImages::whereIn('id', $request->image_id)->delete();
+            }
+        }
+
+        return redirect()->route('promotions.index')->with('success', 'Promotion updated successfully');
     }
 
     public function disablePromotion(Request $request)
