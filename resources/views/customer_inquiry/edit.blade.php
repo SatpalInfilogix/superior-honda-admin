@@ -120,7 +120,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-8 form-group">
-                                                <label for="CSR Comment" style="font-weight: bold">CSR Comment</label>
+                                                <label for="CSR Comment" style="font-weight: bold">CSR Comment <span style="color: red;">*</span></label>
                                                 <textarea name="inquiry_attended_by_csr_comment" id="inquiry_attended_by_csr_comment" class="form-control" row="3"></textarea>
                                             </div>
                                         </div>

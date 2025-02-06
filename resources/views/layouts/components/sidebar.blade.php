@@ -293,19 +293,6 @@
                         <ul class="pcoded-submenu">
                             <li @class([
                                 'active' => Request::is(
-                                    'branches',
-                                    'branches/create',
-                                    'branches/*/edit'),
-                            ])>
-                                <a href="{{ route('branches.index') }}" class="waves-effect waves-dark">
-									<span class="pcoded-micon">
-										<i class="fas fa-cube"></i>
-									</span>
-									<span class="pcoded-mtext">Branch Management</span>
-								</a>
-                            </li>
-                            <li @class([
-                                'active' => Request::is(
                                     'locations',
                                     'locations/create',
                                     'locations/*/edit'),
@@ -315,6 +302,19 @@
 										<i class="fas fa-cube"></i>
 									</span>
 									<span class="pcoded-mtext">Location Management</span>
+								</a>
+                            </li>
+                            <li @class([
+                                'active' => Request::is(
+                                    'branches',
+                                    'branches/create',
+                                    'branches/*/edit'),
+                            ])>
+                                <a href="{{ route('branches.index') }}" class="waves-effect waves-dark">
+									<span class="pcoded-micon">
+										<i class="fas fa-cube"></i>
+									</span>
+									<span class="pcoded-mtext">Branch Management</span>
 								</a>
                             </li>
                         </ul>

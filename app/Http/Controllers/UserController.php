@@ -212,6 +212,29 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
 
+
+    public function disableUser(Request $request)
+    {
+        $user = User::where('id', $request->id)->first();
+        $status = 'Active';
+        $message = 'User disabled successfully.';
+        if($request->disable_user == 'disabled'){
+            $status = 'Active';
+            $message = 'User enabled successfully.';
+        }else{
+            $status = 'Inactive';
+            $message = 'User disabled successfully.';
+        }
+
+        User::where('id', $request->id)->update([
+          'status' => $status  
+        ]);
+
+        return response()->json([
+                'success' => true,
+                'message' => $message
+        ]);
+    }
     /**
      * Remove the specified resource from storage.
      */

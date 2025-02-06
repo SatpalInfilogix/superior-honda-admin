@@ -23,7 +23,7 @@
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <label for="customer_id">Customer</label>
+                                                <label for="customer_id">Customer <span style="color: red;">*</span></label>
                                                 <select name="customer_id" id="customer_id" class="form-control">
                                                     <option value="" selected disabled>Select Customer</option>
                                                     @foreach($customers as $customer)
@@ -33,7 +33,7 @@
                                             </div>
 
                                             <div class="col-md-6 form-group">
-                                                <label for="category_id">Category</label>
+                                                <label for="category_id">Category <span style="color: red;">*</span></label>
                                                 <select name="category_id" id="category_id" class="form-control">
                                                     <option value="" selected disabled>Select Category</option>
                                                     @foreach($categories as $category)
@@ -68,7 +68,7 @@
                                             </div>
                                             
                                             <div class="col-md-6 form-group">
-                                                <label for="model_name" class>Vehicle Type</label>
+                                                <label for="model_name" class>Vehicle Type <span style="color: red;">*</span></label>
                                                 <select class="form-control" id="vehicle_type" name="vehicle_type">
                                                     <option value="" selected disabled>Select Vehicle Type</option>
                                                 </select>
@@ -77,11 +77,11 @@
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="vehicle_no" label="Vehicle No" value="{{ old('vehicle_no') }}"></x-input-text>
+                                                <x-input-text name="vehicle_no" label="Vehicle No" value="{{ old('vehicle_no') }}" required></x-input-text>
                                             </div>
 
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="year" label="Year" value="{{ old('year') }}"></x-input-text>
+                                                <x-input-text name="year" label="Year" value="{{ old('year') }}" required></x-input-text>
                                             </div>
                                         </div>
 

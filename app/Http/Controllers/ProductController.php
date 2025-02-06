@@ -284,6 +284,30 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', 'Product updated successfully');
     }
 
+
+    public function disableProduct(Request $request)
+    {
+        $product = Product::where('id', $request->id)->first();
+        $status = 1;
+        $message = 'Product disabled successfully.';
+        if($request->disable_product == 'disabled'){
+            $status = 1;
+            $message = 'Product enabled successfully.';
+        }else{
+            $status = 0;
+            $message = 'Product disabled successfully.';
+        }
+
+        Product::where('id', $request->id)->update([
+          'status' => $status  
+        ]);
+
+        return response()->json([
+                'success' => true,
+                'message' => $message
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

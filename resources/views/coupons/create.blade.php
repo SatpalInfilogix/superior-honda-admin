@@ -23,10 +23,10 @@
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="coupon_code" label="Coupon Code" value="{{ old('coupon_code') }}"></x-input-text>
+                                                <x-input-text name="coupon_code" label="Coupon Code" value="{{ old('coupon_code') }}" required></x-input-text>
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <label for="coupon_image" class>Coupon Image</label>
+                                                <label for="coupon_image" class>Coupon Image <span style="color: red;">*</span></label>
                                                 <input type="file" name="coupon_image" id="coupon_image" class="form-control" accept="image/*" required>
                                                 <img src="" id="previewCouponImage" height="100" width="100" name="icon" hidden>
                                             </div>
@@ -40,7 +40,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="discount_amount" label="Discount Amount" value="{{ old('discount_amount') }}"></x-input-text>
+                                                <x-input-text name="discount_amount" label="Discount Amount" value="{{ old('discount_amount') }}" required></x-input-text>
                                             </div>
                                         </div>
                                         <!-- <div class="row">

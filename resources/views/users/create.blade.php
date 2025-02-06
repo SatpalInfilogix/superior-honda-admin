@@ -23,10 +23,10 @@
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-4 form-group">
-                                                <x-input-text name="first_name" label="First Name" value="{{ old('first_name') }}"></x-input-text>
+                                                <x-input-text name="first_name" label="First Name" value="{{ old('first_name') }}" required></x-input-text>
                                             </div>
                                             <div class="col-md-4 form-group">
-                                                <x-input-text name="last_name" label="Last Name" value="{{ old('last_name') }}"></x-input-text>
+                                                <x-input-text name="last_name" label="Last Name" value="{{ old('last_name') }}" required></x-input-text>
                                             </div>
                                             <div class="col-md-4 form-group">
                                                 <x-input-text name="email" label="Email Address" value="{{ old('email') }}" ></x-input-text>
@@ -34,7 +34,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-4 form-group">
-                                                <label for="designation">Designation</label>
+                                                <label for="designation">Designation <span style="color: red;">*</span></label>
                                                 <select name="designation" id="designation" class="form-control">
                                                     <option value="" selected disabled>Select Designation</option>
                                                     @foreach($designations as $designation)
@@ -43,7 +43,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-4 form-group">
-                                                <label for="role">Role</label>
+                                                <label for="role">Role <span style="color: red;">*</span></label>
                                                 <select name="role" id="role" class="form-control">
                                                     <option value="" selected disabled>Select Role</option>
                                                     @foreach ($roles as $key => $role)
@@ -79,9 +79,9 @@
                                                 <label for="password" class="error"></label> <!-- Error message will appear here -->
                                             </div>
                                             <div class="col-md-4 form-group">
-                                                <label for="parent_category_id">Category</label>
-                                                <select name="parent_category_id[]" id="parent_category_id" class="form-control chosen-select" multiple="multiple">
-                                                    <option value="" disabled>Select Category</option>
+                                                <label for="parent_category_id">Category <span style="color: red;">*</span></label>
+                                                <select name="parent_category_id[]" id="parent_category_id" class="form-control chosen-select" multiple="multiple">                                                    
+                                                    <option value="select_all">Select All</option>
                                                     <option value="product">Products</option>
                                                     <option value="service">Services</option>
                                                     <option value="accessories">Accessories</option>
@@ -181,6 +181,7 @@
                 width: '100%',
                 no_results_text: "Oops, nothing found!"
             });
+
         })
     </script>
 @endsection

@@ -161,6 +161,8 @@ Route::post('/inquery-licence/{id}', [InquiryController::class, 'getInquiry'])->
 Route::get('/fetch-data', [ReportsController::class, 'fetchData'])->name('fetch-data');
 Route::post('/disable-branch',[BranchController::class,'disableBranch'])->name('disable-branch');
 Route::post('/disable-location',[LocationController::class,'disableLocation'])->name('disable-location');
+Route::post('/disable-user',[UserController::class,'disableUser'])->name('disable-user');
+Route::post('/disable-product',[ProductController::class,'disableProduct'])->name('disable-product');
 Route::post('/disable-promotion',[PromotionsController::class,'disablePromotion'])->name('disable-promotion');
 Route::post('/disable-customer-inquiry',[CustomerInquiryController::class,'disableCustomerInquiry'])->name('disable-customer-inquiry');
 

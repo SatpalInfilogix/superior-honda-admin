@@ -34,10 +34,10 @@
                                         @method('PATCH')
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="heading" label="Heading" value="{{ old('heading', $promotion->heading) }}"></x-input-text>
+                                                <x-input-text name="heading" label="Heading" value="{{ old('heading', $promotion->heading) }}" required></x-input-text>
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <label for="main_image" class>Main Image</label>
+                                                <label for="main_image" class>Main Image <span style="color: red;">*</span></label>
                                                 <input type="file" name="main_image" id="main_image" class="form-control" accept="image/*">
                                                 <div id="promotionImagePreview">
                                                     @if ($promotion->main_image)
@@ -50,9 +50,9 @@
                                         </div>
                                         <div class="row">                                            
                                             <div class="col-md-6 form-group">
-                                                <label for="promotion_product_id">Products</label>
+                                                <label for="promotion_product_id">Products <span style="color: red;">*</span></label>
                                                 <select name="promotion_product_id[]" id="promotion_product_id" class="form-control chosen-select" multiple="multiple">
-                                                    <option value="" disabled>Select Products</option>
+                                                <option value="select_all">Select All</option>
                                                     @php
                                                         $product_ids = $promotion->promotion_products->pluck('product_id');
                                                     @endphp
@@ -65,9 +65,9 @@
                                                 <span class="form-control-danger" id="promotion_product_id_error" style="display:none; color: #dc3545; font-size:12px;">Please select atleast 1 product.</span>
                                             </div>                           
                                             <div class="col-md-6 form-group">
-                                                <label for="promotion_service_id">Services</label>
+                                                <label for="promotion_service_id">Services <span style="color: red;">*</span></label>
                                                 <select name="promotion_service_id[]" id="promotion_service_id" class="form-control chosen-select" multiple="multiple">
-                                                    <option value="" disabled>Select Services</option>
+                                                <option value="select_all">Select All</option>
                                                     @php
                                                         $service_ids = $promotion->promotion_services->pluck('service_id');
                                                     @endphp
@@ -82,7 +82,7 @@
                                         </div>
                                         <div class="row">                          
                                             <div class="col-md-12 form-group">
-                                                <label for="image" class>Images</label>
+                                                <label for="image" class>Images <span style="color: red;">*</span></label>
                                                 <input type="file" name="images[]" id="images" multiple class="form-control" accept="image/*">
                                             </div>
                                         </div>

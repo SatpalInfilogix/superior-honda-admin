@@ -24,10 +24,10 @@
                                         @method('PATCH')
                                         <div class="row">
                                             <div class="col-md-4 form-group">
-                                                <x-input-text name="first_name" label="First Name" value="{{ old('first_name', $user->first_name) }}"></x-input-text>
+                                                <x-input-text name="first_name" label="First Name" value="{{ old('first_name', $user->first_name) }}" required></x-input-text>
                                             </div>
                                             <div class="col-md-4 form-group">
-                                                <x-input-text name="last_name" label="Last Name" value="{{ old('last_name', $user->last_name) }}"></x-input-text>
+                                                <x-input-text name="last_name" label="Last Name" value="{{ old('last_name', $user->last_name) }}" required></x-input-text>
                                             </div>
                                             <div class="col-md-4 form-group">
                                                 <x-input-text name="email" label="Email Address" value="{{ old('email', $user->email) }}" readonly></x-input-text>
@@ -35,7 +35,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-4 form-group">
-                                                <label for="designation">Designation</label>
+                                                <label for="designation">Designation <span style="color: red;">*</span></label>
                                                 <select name="designation" id="designation" class="form-control" disabled>
                                                     <option value="" selected disabled>Select Designation</option>
                                                     @foreach($designations as $designation)
@@ -45,17 +45,17 @@
                                             </div>
                                             
                                             <div class="col-md-4 form-group">
-                                                <label for="dob">Date of Birth</label>
-                                                <input type="text" name="date_of_birth" class="form-control" id="datepicker" value="{{ old('date_of_birth', $user->date_of_birth) }}" placeholder="YYYY-MM-DD">
-                                            </div>
-                                            <div class="col-md-4 form-group">
-                                                <label for="role">Role</label>
+                                                <label for="role">Role <span style="color: red;">*</span></label>
                                                 <select name="role" id="role" class="form-control" disabled>
                                                     <option value="" selected disabled>Select Role</option>
                                                     @foreach ($roles as $key => $role)
                                                         <option value="{{$role->id}}" @selected( $user->roles->pluck('name')[0] == $role->name)>{{ $role->name }}</option>
                                                     @endforeach
                                                 </select>
+                                            </div>
+                                            <div class="col-md-4 form-group">
+                                                <label for="dob">Date of Birth</label>
+                                                <input type="text" name="date_of_birth" class="form-control" id="datepicker" value="{{ old('date_of_birth', $user->date_of_birth) }}" placeholder="YYYY-MM-DD">
                                             </div>
                                         </div>
                                         <div class="row">
@@ -69,7 +69,16 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-4 form-group">
-                                                <label for="parent_category_id">Category</label>
+                                                <label for="parent_category_id">Category
+                                            <div class="col-md-4 form-group">
+                                                <label for="role">Role <span style="color: red;">*</span></label>
+                                                <select name="role" id="role" class="form-control" disabled>
+                                                    <option value="" selected disabled>Select Role</option>
+                                                    @foreach ($roles as $key => $role)
+                                                        <option value="{{$role->id}}" @selected( $user->roles->pluck('name')[0] == $role->name)>{{ $role->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div></label>
                                                 <select id="parent_category_id" name="parent_category_id[]" class="form-control chosen-select" multiple="multiple">
                                                     @php
                                                         $selected_categories = [];
@@ -79,6 +88,7 @@
                                                             array_push($selected_categories, $parent_category->parent_category_name);
                                                         @endphp
                                                     @endforeach
+                                                    <option value="select_all">Select All</option>
                                                         <option value="product" {{ in_array('product', $selected_categories) ? 'selected' : '' }}>Product</option>
                                                         <option value="service" {{ in_array('service', $selected_categories) ? 'selected' : '' }}>Service</option>
                                                         <option value="accessories" {{ in_array('accessories', $selected_categories) ? 'selected' : '' }}>Accessories</option>

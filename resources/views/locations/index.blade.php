@@ -59,6 +59,7 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Name</th>
+                                                    <th>Status</th>
                                                     @canany(['edit location', 'delete location'])
                                                     <th>Actions</th>
                                                     @endcanany
@@ -69,6 +70,7 @@
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $location->name }}</td>
+                                                        <td>{{ $location->disable_location == 0 ? 'Active' : 'Inactive' }}</td>
                                                         @canany(['edit location', 'delete location'])
                                                         <td>
                                                             <div class="btn-group btn-group-sm">

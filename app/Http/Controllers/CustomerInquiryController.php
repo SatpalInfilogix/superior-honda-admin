@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CustomerInquiry;
-use App\Models\CustomerInquiryCsrCommentLog;
+use App\Models\CsrCommentLog;
 use App\Models\ProductParentCategories;
 use App\Models\Branch;
 use App\Models\Product;
@@ -185,7 +185,7 @@ class CustomerInquiryController extends Controller
             'inquiry_attended_by_csr_comment'            => $request->inquiry_attended_by_csr_comment,
         ]);
 
-        CustomerInquiryCsrCommentLog::create([
+        CsrCommentLog::create([
             'customer_inquiry_id' => $customerInquiry,
             'inquiry_status' => $request->inquiry_status,
             'inquiry_attended_by_csr_id' => Auth::user()->id,

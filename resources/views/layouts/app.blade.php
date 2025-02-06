@@ -27,6 +27,12 @@
     <script src="{{ asset('assets/js/sweetalert.min.js') }}"></script>
 
     @yield('head')
+
+    <style>
+        .chosen-container-multi .chosen-choices li.search-field input[type=text]{
+            height: 32px !important;
+        }
+    </style>
 </head>
 <?php 
 $logo_url= DB::table('settings')->where('key','logo')->first();
@@ -189,6 +195,25 @@ else{
         @elseif(session('warning'))
             toastr.warning('{{ session('warning') }}');
         @endif
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $(".chosen-select").on("change", function() {
+                var selectedValues = $(this).val();
+                var id = $(this).attr('id');
+
+                if (selectedValues && selectedValues.includes("select_all")) {
+                    $("#" + id)
+                        .find("option:not([value='select_all'])")
+                        .prop("selected", true);
+
+                    $("#" + id).find("option[value='select_all']").prop("selected", false);
+
+                    $("#" + id).trigger("chosen:updated");
+                }
+            });
+        })
     </script>
 
 
