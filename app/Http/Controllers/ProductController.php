@@ -75,7 +75,7 @@ class ProductController extends Controller
             'vehicle_category_id' => 'required',
             'product_name'      => 'required',
             'manufacture_name'  => 'required',
-            'parent_category_id' => 'required',
+            // 'parent_category_id' => 'required',
         ]);
 
         if ($request->hasFile('service_icon'))
@@ -85,6 +85,7 @@ class ProductController extends Controller
             $iconFile->move(public_path('uploads/service-icons/'), $iconFilename);
         }
 
+        $out_of_stock = !empty($request->out_of_stock) ? $request->out_of_stock : '0';
         $product = Product::create([
             'product_code'      => $request->product_code,
             'product_name'      => $request->product_name,
@@ -104,6 +105,7 @@ class ProductController extends Controller
             'service_icon'      => isset($iconFilename) ? 'uploads/service-icons/'.$iconFilename : NULL,
             'popular'           => $request->is_popular ?? 0,
             'used_part'         => $request->used_part ?? 0,
+            'out_of_stock'         => $out_of_stock,
             'access_series'     => $request->access_series ?? 0,
             'description'       => $request->description,
             'cost_price'        => $request->cost_price,
@@ -130,16 +132,16 @@ class ProductController extends Controller
             }
         }
 
-        $parent_categories = $request->parent_category_id;
+        // $parent_categories = $request->parent_category_id;
 
-        foreach($parent_categories as $parent_category)
-        {
-            $parent_category_data = [];
-            $parent_category_data['product_id'] = $product->id;
-            $parent_category_data['parent_category_name'] = $parent_category;
+        // foreach($parent_categories as $parent_category)
+        // {
+        //     $parent_category_data = [];
+        //     $parent_category_data['product_id'] = $product->id;
+        //     $parent_category_data['parent_category_name'] = $parent_category;
             
-            ParentCategoriesForProducts::create($parent_category_data);
-        }
+        //     ParentCategoriesForProducts::create($parent_category_data);
+        // }
 
         return redirect()->route('products.index')->with('success', 'Product saved successfully');
     }
@@ -191,7 +193,7 @@ class ProductController extends Controller
             'vehicle_category_id' => 'required',
             'product_name' => 'required',
             'manufacture_name' => 'required',
-            'parent_category_id' => 'required'
+            // 'parent_category_id' => 'required'
         ]);
 
         $product = Product::where('id', $product->id)->first();
@@ -207,6 +209,7 @@ class ProductController extends Controller
             $iconFile->move(public_path('uploads/service-icons/'), $iconFilename);
         }
 
+        $out_of_stock = !empty($request->out_of_stock) ? $request->out_of_stock : '0';
         $product->update([
             'product_code'      => $request->product_code,
             'product_name'      => $request->product_name,
@@ -226,6 +229,7 @@ class ProductController extends Controller
             'service_icon'      => isset($iconFilename) ? 'uploads/service-icons/'.$iconFilename : $oldServiceIcon,
             'popular'           => $request->is_popular ?? 0,
             'used_part'         => $request->used_part ?? 0,
+            'out_of_stock'         => $out_of_stock,
             'access_series'     => $request->access_series ?? 0,
             'description'       => $request->description,
             'cost_price'        => $request->cost_price,
@@ -256,30 +260,54 @@ class ProductController extends Controller
         // old parent categories
         $old_parent_categories = ParentCategoriesForProducts::where('product_id', $product->id)->get()->pluck('parent_category_name')->toArray();
 
-        // new parent categories
-        $new_parent_categories = $request->parent_category_id;
+        // // new parent categories
+        // $new_parent_categories = $request->parent_category_id;
 
-        // categories to add (new but not in old)
-        $categories_to_add = array_diff($new_parent_categories, $old_parent_categories);
+        // // categories to add (new but not in old)
+        // $categories_to_add = array_diff($new_parent_categories, $old_parent_categories);
 
-        // categories to delete (old but not in new)
-        $categories_to_delete = array_diff($old_parent_categories, $new_parent_categories);
+        // // categories to delete (old but not in new)
+        // $categories_to_delete = array_diff($old_parent_categories, $new_parent_categories);
 
-        // Add new categories
-        foreach ($categories_to_add as $category_to_add) {
-            ParentCategoriesForProducts::create([
-                'product_id' => $product->id,
-                'parent_category_name' => $category_to_add
-            ]);
-        }
+        // // Add new categories
+        // foreach ($categories_to_add as $category_to_add) {
+        //     ParentCategoriesForProducts::create([
+        //         'product_id' => $product->id,
+        //         'parent_category_name' => $category_to_add
+        //     ]);
+        // }
 
-        // Delete removed categories
-        foreach ($categories_to_delete as $category_to_delete) {
-            ParentCategoriesForProducts::where('product_id', $product->id)
-                ->where('parent_category_name', $category_to_delete)
-                ->delete();
-        }
+        // // Delete removed categories
+        // foreach ($categories_to_delete as $category_to_delete) {
+        //     ParentCategoriesForProducts::where('product_id', $product->id)
+        //         ->where('parent_category_name', $category_to_delete)
+        //         ->delete();
+        // }
         return redirect()->route('products.index')->with('success', 'Product updated successfully');
+    }
+
+
+    public function disableProduct(Request $request)
+    {
+        $product = Product::where('id', $request->id)->first();
+        $status = 1;
+        $message = 'Product disabled successfully.';
+        if($request->disable_product == 'disabled'){
+            $status = 1;
+            $message = 'Product enabled successfully.';
+        }else{
+            $status = 0;
+            $message = 'Product disabled successfully.';
+        }
+
+        Product::where('id', $request->id)->update([
+          'status' => $status  
+        ]);
+
+        return response()->json([
+                'success' => true,
+                'message' => $message
+        ]);
     }
 
     /**

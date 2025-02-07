@@ -21,7 +21,7 @@
                                     <form action="{{ route('vehicle-models.store') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div class="form-group">
-                                            <label for="category_id">Category</label>
+                                            <label for="category_id">Category <span style="color: red;">*</span></label>
                                             <select name="category_id" id="category_id" class="form-control">
                                                 <option value="" selected disabled>Select Category</option>
                                                 @foreach($categories as $category)
@@ -38,11 +38,11 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <x-input-text name="model_name" label="Model Name" value="{{ old('model_name') }}"></x-input-text>
+                                            <x-input-text name="model_name" label="Model Name" value="{{ old('model_name') }}" required></x-input-text>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="add-car-model">Model Image</label>
+                                            <label for="add-car-model">Model Image <span style="color: red;">*</span></label>
                                             <div class="custom-file">
                                                 <input type="file" name="model_image" class="custom-file-input" id="add-model-image">
                                                 <label class="custom-file-label" for="add-car-image">Choose Car Image</label>

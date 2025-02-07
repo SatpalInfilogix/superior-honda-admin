@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
+use App\Models\BranchLocations;
 use App\Imports\BranchImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
@@ -25,11 +26,11 @@ class BranchController extends Controller
             abort(403);
         }
 
-        $branches = Branch::with('locations')
-                        ->whereHas('locations', function ($query) {
+        $branches = Branch::with('branch_locations.location')
+                        ->whereHas('branch_locations.location', function ($query) {
                             $query->whereNull('deleted_at');
                         })->latest()->get();
-
+                        
         return view('branches.index', compact('branches'));
     }
 
@@ -42,13 +43,13 @@ class BranchController extends Controller
             abort(403);
         }
 
-        $adminRole = Role::where('name', 'Admin')->first();
+        $adminRoles = Role::whereIn('name', ['Super Admin', 'Admin'])->get();
 
         $locations = Location::where('deleted_at', NULL)->where('disable_location', '0')->get();
         
-        $users = User::whereHas('roles', function ($query) use ($adminRole) {
-            $query->where('role_id', $adminRole->id);
-        })->latest()->get();
+        $users = User::whereHas('roles', function ($query) use ($adminRoles) {
+                    $query->whereIn('role_id', $adminRoles->pluck('id'));
+                })->latest()->get();
 
         return view('branches.create', compact('users', 'locations'));
     }
@@ -66,7 +67,7 @@ class BranchController extends Controller
             'name'    => 'required',
             'address' => 'required',
             'pincode' => 'required',
-            'location_id' => 'required'
+            'location_id'    => 'required',
         ]);
 
         $branch = Branch::orderByDesc('unique_code')->first();
@@ -84,7 +85,7 @@ class BranchController extends Controller
             $weekStatus = $request->week_status;
         }
 
-        Branch::create([
+        $branch = Branch::create([
             'unique_code'   => $uniqueCode,
             'name'          => $request->name,
             'start_time'    => $request->start_time,
@@ -92,10 +93,20 @@ class BranchController extends Controller
             'branch_head'   => $request->branch_head,
             'address'       => $request->address,
             'pincode'       => $request->pincode,
-            'location_id'      => $request->location_id,
             'status'        => $request->status,
             'week_status'   => $weekStatus
         ]);
+
+        $locations = $request->location_id;
+
+        foreach($locations as $location)
+        {
+            $branch_location = [];
+            $branch_location['branch_id'] = $branch->id;
+            $branch_location['location_id'] = $location;
+            
+            BranchLocations::create($branch_location);
+        }
 
         return redirect()->route('branches.index')->with('success', 'Branch saved successfully'); 
     }
@@ -125,7 +136,7 @@ class BranchController extends Controller
             $query->where('role_id', $adminRole->id);
         })->latest()->get();
 
-        $branch = Branch::where('id', $branch->id)->first();
+        $branch = Branch::with('branch_locations.location')->where('id', $branch->id)->first();
         $branch['week_status'] = explode(',' ,$branch->week_status);
 
         return view('branches.edit', compact('branch', 'users', 'locations'));
@@ -144,7 +155,7 @@ class BranchController extends Controller
             'name'    => 'required',
             'address' => 'required',
             'pincode' => 'required',
-            'location_id' => 'required'
+            'location_id'    => 'required',
         ]);
 
         if (is_array($request->week_status)) {
@@ -153,17 +164,44 @@ class BranchController extends Controller
             $weekStatus = $request->week_status;
         }
 
-        Branch::where('id', $branch->id)->update([
+        $branch = Branch::where('id', $branch->id)->first();
+        $branch->update([
             'name'            => $request->name,
             'start_time'      => $request->start_time,
             'end_time'        => $request->end_time,
             'branch_head'     => $request->branch_head,
             'address'         => $request->address,
             'pincode'         => $request->pincode,
-            'location_id'      => $request->location_id,
             'status'          => $request->status,
             'week_status'     => $weekStatus
         ]);
+        
+        // old parent branch locations
+        $old_branch_locations = BranchLocations::where('branch_id', $branch->id)->get()->pluck('location_id')->toArray();
+
+        // new parent branch locations
+        $new_branch_locations = $request->location_id;
+
+        // branch locations to add (new but not in old)
+        $branch_locations_to_add = array_diff($new_branch_locations, $old_branch_locations);
+
+        // branch locations to delete (old but not in new)
+        $branch_locations_to_delete = array_diff($old_branch_locations, $new_branch_locations);
+
+        // Add new branch locations
+        foreach ($branch_locations_to_add as $branch_location_to_add) {
+            BranchLocations::create([
+                'branch_id' => $branch->id,
+                'location_id' => $branch_location_to_add
+            ]);
+        }
+
+        // Delete removed branch locations
+        foreach ($branch_locations_to_delete as $branch_location_to_delete) {
+            BranchLocations::where('branch_id', $branch->id)
+                ->where('location_id', $branch_location_to_delete)
+                ->delete();
+        }
 
         return redirect()->route('branches.index')->with('success', 'Branch updated successfully'); 
     }
@@ -176,8 +214,13 @@ class BranchController extends Controller
         if (! Gate::allows('delete branch')) {
             abort(403);
         }
-
+        
         Branch::where('id', $branch->id)->delete();
+
+        if(BranchLocations::where('branch_id', $branch->id)->exists())
+        {
+            $branch_locations = BranchLocations::where('branch_id', $branch->id)->delete();
+        }
 
         return response()->json([
             'success' => true,

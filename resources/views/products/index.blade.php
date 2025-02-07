@@ -68,17 +68,17 @@
                                             class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
-                                                    <th>#</th>
-                                                    <th>Product Name</th>
+                                                    <th style="width:0px !important;">#</th>
+                                                    <th style="width:487.585px !important;">Product Name</th>
                                                     <!-- <th>Barcode</th> -->
-                                                    <th>Manufacture Name</th>
-                                                    <th>Vehicle Category</th>
-                                                    <th>Brand Name</th>
-                                                    <th>Model Name</th>
-                                                    <th>Variant Name</th>
-                                                    <th>Vehicle Type</th>
+                                                    <!-- <th>Manufacture Name</th>
+                                                    <th>Vehicle Category</th> -->
+                                                    <!-- <th>Brand Name</th> -->
+                                                    <th style="width:276.065px !important;">Model Name</th>
+                                                    <!-- <th>Variant Name</th>
+                                                    <th>Vehicle Type</th> -->
                                                     @canany(['edit product', 'delete product'])
-                                                        <th>Actions</th>
+                                                        <th style="width:200px !important;">Actions</th>
                                                     @endcanany
                                                 </tr>
                                             </thead>
@@ -90,12 +90,12 @@
                                                         <!-- <td>{!! $product->barcode !!}
                                                             P- {{$product->product_code. ' '.$product->product_name}}
                                                         </td> -->
-                                                        <td>{{ $product->manufacture_name }}</td>
-                                                        <td>{{  optional($product->category)->name }}</td>
-                                                        <td>{{ optional($product->brand)->brand_name }}</td>
+                                                        <!-- <td>{{ $product->manufacture_name }}</td>
+                                                        <td>{{  optional($product->category)->name }}</td> -->
+                                                        <!-- <td>{{ optional($product->brand)->brand_name }}</td> -->
                                                         <td>{{ optional($product->model)->model_name }}</td>
-                                                        <td>{{ optional($product->variant)->variant_name }}</td>
-                                                        <td>{{ optional($product->type)->vehicle_type }}</td>
+                                                        <!-- <td>{{ optional($product->variant)->variant_name }}</td>
+                                                        <td>{{ optional($product->type)->vehicle_type }}</td> -->
                                                         @canany([
                                                             'edit product',
                                                             'delete product',
@@ -108,6 +108,20 @@
                                                                             <i class="feather icon-edit m-0"></i>
                                                                         </a>
                                                                     @endcan
+
+                                                                    @if($product->status == 1)
+                                                                        <button
+                                                                            class="disable-product btn btn-primary primary-btn waves-effect waves-light mr-2"
+                                                                            data-id="{{ $product->id }}" data-value="enabled">
+                                                                            <i class="feather icon-check-circle m-0"></i>
+                                                                        </button>
+                                                                    @else
+                                                                        <button
+                                                                            class="disable-product btn btn-primary primary-btn waves-effect waves-light mr-2"
+                                                                            data-id="{{ $product->id }}" data-value="disabled">
+                                                                            <i class="feather icon-slash m-0"></i>
+                                                                        </button>
+                                                                    @endif
 
                                                                     @can('delete product')
                                                                         <button data-source="product"
@@ -142,6 +156,44 @@
             });
 
             $('#products-list').DataTable();
+
+                $(document).on('click', '.disable-product', function() {
+                    var id = $(this).data('id');
+                    var value = $(this).data('value');
+                    swal({
+                        title: "Are you sure?",
+                        text: `You really want to ${value == 'enabled' ? 'disabled' : 'enabled'} ?`,
+                        type: "warning",
+                        showCancelButton: true,
+                        closeOnConfirm: false,
+                    }, function(isConfirm) {
+                        if (isConfirm) {
+                            $.ajax({
+                                url: '{{ route("disable-product") }}',
+                                method: 'post',
+                                data: {
+                                    id: id,
+                                    disable_product: value,
+                                    _token: '{{ csrf_token() }}'
+                                },
+                                success: function(response) {
+                                    if(response.success){
+                                        swal({
+                                            title: "Success!",
+                                            text: response.message,
+                                            type: "success",
+                                            showConfirmButton: false
+                                        }) 
+
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 2000);
+                                    }
+                                }
+                            })
+                        }
+                    });
+                })
         })
     </script>
 @endsection

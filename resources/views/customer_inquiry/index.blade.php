@@ -32,9 +32,21 @@
                                 </div>
                             @endif
                             <div class="card">
+                                <div class="card-header">
+                                    <h5>Customer Inquiry</h5>
+                                    <div class="float-right">
+                                        <select class="form-control" name="branch" id="branch">
+                                            @if(!empty($branches))
+                                                @foreach($branches as $branch)
+                                                    <option value="{{$branch->id}}" {{Auth::user()->branch_id == $branch->id || $branch->id == $selected_branch_id ? 'selected' : ''}}>{{$branch->name}}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
-                                        <table id="vehicle-types-list" class="table table-striped table-bordered nowrap">
+                                        <table id="customer-inquiry" class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -113,7 +125,7 @@
 
     <script>
         $(function() {
-            $('#vehicle-types-list').DataTable();
+            $('#customer-inquiry').DataTable();
 
             $(document).on('click', '.disable-customer-inquiry', function() {
                 var id = $(this).data('id');
@@ -152,6 +164,15 @@
                     }
                 });
             })
+        });
+
+        $(document).ready(function () {
+            $("#branch").change(function () {
+                var branchId = $(this).val();
+                if (branchId) {
+                    window.location.href = "/customer-inquiry/branch/" + branchId;
+                }
+            });
         });
     </script>
 @endsection

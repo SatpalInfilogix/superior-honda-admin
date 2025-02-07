@@ -23,7 +23,7 @@
                                         @csrf
                                         @method('PATCH')
                                         <div class="form-group">
-                                            <label for="category_id">Select Category</label>
+                                            <label for="category_id">Select Category <span style="color: red;">*</span></label>
                                             <select name="category_id" id="category_id" class="form-control">
                                                 @foreach($vehicleCategories as $vehicleCategory)
                                                     <option value="{{ $vehicleCategory->id }}" @selected($vehicleBrand->category_id == $vehicleCategory->id)>{{ $vehicleCategory->name }}</option>
@@ -31,10 +31,10 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <x-input-text name="brand_name" label="Brand Name" value="{{ old('brand_name', $vehicleBrand->brand_name ) }}"></x-input-text>
+                                            <x-input-text name="brand_name" label="Brand Name" value="{{ old('brand_name', $vehicleBrand->brand_name ) }}" required></x-input-text>
                                         </div>
                                         <div class="form-group">
-                                            <label for="add-brand-logo">Brand Logo</label>
+                                            <label for="add-brand-logo">Brand Logo <span style="color: red;">*</span></label>
                                             <div class="custom-file">
                                                 <input type="file" name="brand_logo" class="custom-file-input" id="add-brand-logo">
                                                 <label class="custom-file-label" for="add-brand-logo">Choose Brand Logo</label>

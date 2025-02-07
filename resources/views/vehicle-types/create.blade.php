@@ -22,7 +22,7 @@
                                     <form action="{{ route('vehicle-types.store') }}" method="POST">
                                         @csrf
                                         <div class="form-group">
-                                            <label for="category_id">Select Category</label>
+                                            <label for="category_id">Select Category <span style="color: red;">*</span></label>
                                             <select name="category_id" id="category_id" class="form-control">
                                                 @foreach($categories as $category)
                                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -30,7 +30,7 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <x-input-text name="vehicle_type" label="Vehicle Type" value="{{ old('vehicle_type') }}"></x-input-text>
+                                            <x-input-text name="vehicle_type" label="Vehicle Type" value="{{ old('vehicle_type') }}" required></x-input-text>
                                         </div>
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>

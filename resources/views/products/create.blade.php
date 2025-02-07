@@ -21,26 +21,28 @@
                                     <form action="{{ route('products.store') }}" method="POST"
                                         enctype="multipart/form-data">
                                         @csrf
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <label for="parent_category_id">Parent Category</label>
+                                                <label for="parent_category_id">Parent Category <span style="color: red;">*</span></label>
                                                 <select id="parent_category_id" name="parent_category_id[]" class="form-control chosen-select" multiple="multiple">
+                                                    <option value="select_all">Select All</option>
                                                     <option value="product">Product</option>
                                                     <option value="service">Service</option>
                                                     <option value="accessories">Accessories</option>
                                                 </select>
                                                 <span class="form-control-danger" id="parent_category_id_error" style="display:none; color: #dc3545; font-size:12px;">Please select atleast 1 category.</span>
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="product_code" label="Product Code"
-                                                    value="{{ old('product_code') }}"></x-input-text>
+                                                <label for="product_code">Product Code <span style="color: red;">*</span></label>
+                                                <input class="form-control" id="product_code" name="product_code" label="Product Code"
+                                                    value="{{ old('product_code') }}"/>
                                             </div>
 
                                             <div class="col-md-6 form-group">
-                                                <label for="category_id">Category</label>
+                                                <label for="category_id">Category <span style="color: red;">*</span></label>
                                                 <select name="category_id" id="category_id" class="form-control">
                                                     <option value="" selected disabled>Select Category</option>
                                                     @foreach ($categories as $category)
@@ -52,18 +54,20 @@
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="product_name" label="Product Name"
-                                                    value="{{ old('product_name') }}"></x-input-text>
+                                                <label for="product_name">Product Name <span style="color: red;">*</span></label>
+                                                <input class="form-control" id="product_name" name="product_name" label="Product Name"
+                                                    value="{{ old('product_name') }}"/>
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="manufacture_name" label="Manufacture Name"
-                                                    value="{{ old('manufacture_name') }}"></x-input-text>
+                                                <label for="manufacture_name">Manufacture Name <span style="color: red;">*</span></label>
+                                                <input class="form-control" id="manufacture_name" name="manufacture_name" label="Product Name"
+                                                    value="{{ old('manufacture_name') }}"/>
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <label for="vehicle_category_id">Vehicle Category</label>
+                                                <label for="vehicle_category_id">Vehicle Category <span style="color: red;">*</span></label>
                                                 <select name="vehicle_category_id" id="vehicle_category_id"
                                                     class="form-control">
                                                     <option value="" selected disabled>Select Vehicle Category
@@ -114,7 +118,7 @@
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <label for="cost_price" class>Cost Price</label>
+                                                <label for="cost_price" class>Product Price</label>
                                                 <input type="number" id="price" name="cost_price"
                                                     class="form-control"value="{{ old('cost_price') }}">
                                             </div>
@@ -136,43 +140,49 @@
                                                 <label for="year_range">Year</label>
                                                 <select id="year_range" name="year_range[]"
                                                     class="form-control chosen-select" multiple="multiple">
+                                                    <option value="select_all">Select All</option>
 
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-2 form-group">
-                                                <label for="oem" class>OEM</label>
+                                            <div class="col-md-3 form-group">
                                                 <input type="checkbox" id="oem" name="oem" value="0"
-                                                    {{ old('oem') ? 'checked' : '' }} onclick='oemClick(this);'>
+                                                {{ old('oem') ? 'checked' : '' }} onclick='oemClick(this);'>
+                                                <label for="oem" class>OEM</label>
+                                            </div>
+                                            <div class="col-md-3 form-group">
+                                                <input type="checkbox" id="out_of_stock" name="out_of_stock" value="0"
+                                                {{ old('out_of_stock') ? 'checked' : '' }} onclick='outOfStock(this);'>
+                                                <label for="out_of_stock" class>Out Of Stock</label>
+                                            </div>
+                                            <div class="col-md-3 form-group">
+                                                <input type="checkbox" id="is_popular" name="is_popular" value="0"
+                                                {{ old('is_popular') ? 'checked' : '' }}
+                                                onclick='popularClick(this);'>
+                                                <label for="is_popular" class>Is Popular Product</label>
+                                            </div>
+    
+                                            <div class="col-md-3 form-group">
+                                                <input type="checkbox" id="used_part" name="used_part" value="0"
+                                                {{ old('used_part') ? 'checked' : '' }} onclick='usedPart(this);'>
+                                                <label for="used_part" class>Used Part</label>
                                             </div>
                                         </div>
 
                                         <div class ="row">
-                                            <div class="col-md-2 form-group">
-                                                <label for="is_service" class>Is Service</label>
-                                                <input type="checkbox" id="is_service" name="is_service" value="0"
-                                                    {{ old('is_service') ? 'checked' : '' }}
-                                                    onclick='serviceClick(this);'>
-                                            </div>
-                                            <div class="col-md-4 form-group">
-                                                <label for="is_popular" class>Is Popular Product</label>
-                                                <input type="checkbox" id="is_popular" name="is_popular" value="0"
-                                                    {{ old('is_popular') ? 'checked' : '' }}
-                                                    onclick='popularClick(this);'>
-                                            </div>
-
-                                            <div class="col-md-2 form-group">
-                                                <label for="used_part" class>Used Part</label>
-                                                <input type="checkbox" id="used_part" name="used_part" value="0"
-                                                    {{ old('used_part') ? 'checked' : '' }} onclick='usedPart(this);'>
-                                            </div>
-                                            <div class="col-md-4 form-group">
-                                                <label for="access_series" class>Accesseries</label>
+                                            <div class="col-md-3 form-group">
                                                 <input type="checkbox" id="access_series" name="access_series"
-                                                    value="0"{{ old('access_series') ? 'checked' : '' }}
-                                                    onclick='accessSeries(this);'>
+                                                value="0"{{ old('access_series') ? 'checked' : '' }}
+                                                onclick='accessSeries(this);'>
+                                                <label for="access_series" class>Accesseries</label>
+                                            </div>
+                                            <div class="col-md-3 form-group">
+                                                <input type="checkbox" id="is_service" name="is_service" value="0"
+                                                {{ old('is_service') ? 'checked' : '' }}
+                                                onclick='serviceClick(this);'>
+                                                <label for="is_service" class>Is Service</label>
                                             </div>
                                         </div>
 
@@ -203,7 +213,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12 form-group">
-                                                <label for="image" class>Image</label>
+                                                <label for="image" class>Image <span style="color: red;">*</span></label>
                                                 <input type="file" name="images[]" id="images" multiple
                                                     class="form-control" accept="image/*" required>
                                                 <div id="image_preview_new"></div>
@@ -272,6 +282,11 @@
             e.value = e.checked ? 1 : 0;
         }
 
+        function outOfStock(e)
+        {
+            e.value = e.checked ? 1 : 0;
+        }
+
         function accessSeries(e) {
             e.value = e.checked ? 1 : 0;
             if (e.checked) {
@@ -283,7 +298,7 @@
         $(function() {
             $('form').validate({
                 rules: {
-                    "parent_category_id[]": "required",
+                    // "parent_category_id[]": "required",
                     product_code: "required",
                     category_id: "required",
                     product_name: "required",
@@ -302,7 +317,7 @@
                     }
                 },
                 messages: {
-                    "parent_category_id[]": "Please select atleast 1 category",
+                    // "parent_category_id[]": "Please select atleast 1 category",
                     product_code: "Please enter product code",
                     category_id: "Please enter category name",
                     product_name: "Please enter product name",
@@ -340,23 +355,23 @@
                 }
             });
 
-            $(document).ready(function() {
-                $('#parent_category_id').change(function() {
-                    if ($(this).val().length === 0) {
-                        $('#parent_category_id_error').css('display', 'block');
-                    }else{
-                        $('#parent_category_id_error').css('display', 'none');
-                    }
-                });
+            // $(document).ready(function() {
+            //     $('#parent_category_id').change(function() {
+            //         if ($(this).val().length === 0) {
+            //             $('#parent_category_id_error').css('display', 'block');
+            //         }else{
+            //             $('#parent_category_id_error').css('display', 'none');
+            //         }
+            //     });
                 
-                $('#submit_btn').on('click', function() {
-                    if ($('#parent_category_id').val().length === 0) {
-                        $('#parent_category_id_error').css('display', 'block');
-                    }else{
-                        $('#parent_category_id_error').css('display', 'none');
-                    }
-                });
-            });
+            //     $('#submit_btn').on('click', function() {
+            //         if ($('#parent_category_id').val().length === 0) {
+            //             $('#parent_category_id_error').css('display', 'block');
+            //         }else{
+            //             $('#parent_category_id_error').css('display', 'none');
+            //         }
+            //     });
+            // });
         })
     </script>
 @endsection

@@ -36,12 +36,17 @@ class CouponController extends Controller
             'discount_amount'  => 'required'
         ]);
 
+        $couponImageFile = $request->file('coupon_image');
+        $couponImageFilename = time().'.'.$couponImageFile->getClientOriginalExtension();
+        $couponImageFile->move(public_path('uploads/coupons/'), $couponImageFilename);
+
         Coupon::create([
             'coupon_code'     => $request->coupon_code,
             'discount_type'   => $request->discount_type,
             'discount_amount' => $request->discount_amount,
             'start_date'      => $request->start_date,
             'end_date'        => $request->end_date,
+            'coupon_image'      => isset($couponImageFilename) ? 'uploads/coupons/'.$couponImageFilename : NULL,
         ]);
 
         return redirect()->route('coupons.index')->with('success', 'Coupon created successfully');
@@ -76,12 +81,25 @@ class CouponController extends Controller
 
         $coupon = Coupon::where('id', $coupon->id)->first();
 
+        $oldCouponImage = NULL;
+        if($coupon != '') {
+            $oldCouponImage = $coupon->coupon_image;
+        }
+
+        if(!empty($request->file('coupon_image')))
+        {
+            $couponImageFile = $request->file('coupon_image');
+            $couponImageFilename = time().'.'.$couponImageFile->getClientOriginalExtension();
+            $couponImageFile->move(public_path('uploads/coupons/'), $couponImageFilename);
+        }
+
         $coupon->update([
             'coupon_code'    => $request->coupon_code,
             'discount_type'   => $request->discount_type,
             'discount_amount' => $request->discount_amount,
             'start_date'      => $request->start_date,
             'end_date'        => $request->end_date,
+            'coupon_image'      => isset($couponImageFilename) ? 'uploads/coupons/'.$couponImageFilename : $oldCouponImage,
         ]);
 
         return redirect()->route('coupons.index')->with('success', 'Coupon updated successfully.');            

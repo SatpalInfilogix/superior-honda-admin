@@ -19,21 +19,36 @@
                                 </div>
 
                                 <div class="card-block">
-                                    <form action="{{ route('coupons.update', $coupon->id) }}" method="POST">
+                                    <form action="{{ route('coupons.update', $coupon->id) }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         @method('patch')
-                                        <div class="form-group">
-                                            <x-input-text name="coupon_code" label="Coupon Code" value="{{ old('coupon_code', $coupon->coupon_code) }}"></x-input-text>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="coupon_code" label="Coupon Code" value="{{ old('coupon_code', $coupon->coupon_code) }}"></x-input-text>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label for="coupon_image" class>Coupon Image</label>
+                                                <input type="file" name="coupon_image" id="coupon_image" class="form-control" accept="image/*">
+                                                <div id="couponImagePreview">
+                                                    @if ($coupon->coupon_image)
+                                                        <img src="{{ asset($coupon->coupon_image) }}" id="coupon-preview-icon" class="icon-preview" width="100" height="100">
+                                                    @else
+                                                        <img src="" id="coupon-preview-icon" height="100" width="100" name="image" hidden>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="discount_type">Discount Type</label>
-                                            <select name="discount_type" id="discount_type" class="form-control">
-                                                <option value="Percentage" @selected($coupon->discount_type == 'Percentage')>Percentage </option>
-                                                <option value="Fixed"  @selected($coupon->discount_type == 'Fixed')>Fixed</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <x-input-text name="discount_amount" label="Discount Amount" value="{{ old('discount_amount', $coupon->discount_amount) }}"></x-input-text>
+                                        <div class="row">
+                                            <div class="col-md-6 form-group">
+                                                <label for="discount_type">Discount Type</label>
+                                                <select name="discount_type" id="discount_type" class="form-control">
+                                                    <option value="Percentage" @selected($coupon->discount_type == 'Percentage')>Percentage </option>
+                                                    <option value="Fixed"  @selected($coupon->discount_type == 'Fixed')>Fixed</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <x-input-text name="discount_amount" label="Discount Amount" value="{{ old('discount_amount', $coupon->discount_amount) }}"></x-input-text>
+                                            </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
@@ -57,7 +72,7 @@
     </div>
 
     <script>
-           document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
             const startDateInput = document.getElementById('start_date');
             const endDateInput = document.getElementById('end_date');
 
@@ -120,6 +135,21 @@
                 },
                 submitHandler: function(form) {
                     form.submit();
+                }
+            });
+        });
+
+        $(document).ready(function(){
+            $('#coupon_image').change(function() {
+                var file = this.files[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#couponImagePreview').html(
+                            '<img class="coupon-preview-icon" width="100px" height="100px" src="' + e.target
+                            .result + '" alt="Selected Image">');
+                    }
+                    reader.readAsDataURL(file);
                 }
             });
         })

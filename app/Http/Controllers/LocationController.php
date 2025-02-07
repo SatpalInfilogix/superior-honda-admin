@@ -36,13 +36,7 @@ class LocationController extends Controller
             abort(403);
         }
 
-        $adminRole = Role::where('name', 'Admin')->first();
-
-        $users = User::whereHas('roles', function ($query) use ($adminRole) {
-            $query->where('role_id', $adminRole->id);
-        })->latest()->get();
-
-        return view('locations.create', compact('users'));
+        return view('locations.create');
     }
 
     /**
@@ -96,15 +90,9 @@ class LocationController extends Controller
             abort(403);
         }
 
-        $adminRole = Role::where('name', 'Admin')->first();
-
-        $users = User::whereHas('roles', function ($query) use ($adminRole) {
-            $query->where('role_id', $adminRole->id);
-        })->latest()->get();
-
         $location = Location::where('id', $location)->first();
 
-        return view('locations.edit', compact('location', 'users'));
+        return view('locations.edit', compact('location'));
     }
 
     /**

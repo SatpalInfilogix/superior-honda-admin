@@ -21,7 +21,7 @@
                                     <form action="{{ route('vehicle-categories.store') }}" method="POST">
                                         @csrf
                                         <div class="form-group">
-                                            <x-input-text name="name" label="Category Name" value="{{ old('name') }}"></x-input-text>
+                                            <x-input-text name="name" label="Category Name" value="{{ old('name') }}" required></x-input-text>
                                         </div>
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>

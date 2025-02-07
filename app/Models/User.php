@@ -11,6 +11,8 @@ use App\Models\Wishlist;
 use App\Models\Cart;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\CustomerInquiry;
+use App\Models\UserParentCategories;
+use App\Models\CsrCommentLog;
 
 class User extends Authenticatable
 {
@@ -53,5 +55,15 @@ class User extends Authenticatable
     public function customerInquiries()
     {
         return $this->hasMany(customerInquiry::class);
+    }
+
+    public function user_parent_categories()
+    {
+        return $this->hasMany(UserParentCategories::class);
+    }
+
+    public function customer_inquiry_comment()
+    {
+        return $this->hasMany(CsrCommentLog::class);
     }
 }

@@ -1,7 +1,10 @@
 @isset($attributes['label'])
-<label for="{{ $attributes['name'] }}">{{ $attributes['label'] }}</label>
+<label for="{{ $attributes['name'] }}">{{ $attributes['label'] }}
 @endisset
-
+@isset($attributes['required'])
+ <span style="color: red;">*</span>
+@endisset
+</label>
 @unset($attributes['label'])
 
 @php

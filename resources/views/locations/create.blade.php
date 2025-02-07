@@ -30,10 +30,10 @@
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="name" label="Name" value="{{ old('name') }}"></x-input-text>
+                                                <x-input-text name="name" label="Name" value="{{ old('name') }}" required></x-input-text>
                                             </div>
                                             <div class="col-md-6 form-group">
-                                                <label for="image" class>Location Image</label>
+                                                <label for="image" class>Location Image <span style="color: red;">*</span></label>
                                                 <input type="file" name="location_image" id="location_image" class="form-control" accept="image/*" required>
                                                 <img src="" id="previewLocationImage" height="100" width="100" name="icon" hidden>
                                             </div>
