@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Promotions;
-use App\Models\Service;
+use App\Models\Product;
 
 class PromotionServices extends Model
 {
@@ -23,6 +23,6 @@ class PromotionServices extends Model
 
     public function service_details()
     {
-        return $this->belongsTo(Service::class, 'service_id', 'id');
+        return $this->belongsTo(Product::class, 'service_id', 'id');
     }
 }

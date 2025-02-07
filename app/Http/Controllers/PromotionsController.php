@@ -38,9 +38,27 @@ class PromotionsController extends Controller
             abort(403);
         }
 
-        $products = Product::where('status', 1)->select('id', 'product_name')->latest()->get();
+        $all_products = Product::with('productCategory.parent_categories')->where('status', 1)->select('id', 'product_name','category_id', 'cost_price')->latest()->get();
         
-        $services = Service::select('id', 'name')->latest()->get();
+        if(!empty($all_products))
+        {
+            $products = $all_products->filter(function ($product) {
+                return $product->productCategory && 
+                       $product->productCategory->parent_categories && 
+                       $product->productCategory->parent_categories->contains('parent_category_name', 'product');
+            })->values();
+
+            $services = $all_products->filter(function ($product) {
+                return $product->productCategory && 
+                       $product->productCategory->parent_categories && 
+                       $product->productCategory->parent_categories->contains('parent_category_name', 'service');
+            })->values();
+        }else{
+            $products = [];
+
+            $services = [];
+        }
+        // $services = Service::select('id', 'name')->latest()->get();
         
         return view('promotions.create', compact('products', 'services'));
     }
@@ -58,25 +76,40 @@ class PromotionsController extends Controller
             'heading'    => 'required',
             'promotion_product_id' => 'required',
             'promotion_service_id' => 'required',
+            'discount' => 'required'
         ]);
-
+        
         $promotion_exists = Promotions::where('heading', $request->heading)->where('deleted_at', NULL)->first();
-
+        
         if(!empty($promotion_exists))
         {
             return redirect()->route('promotions.index')->with('error', 'This promotion heading already exists.'); 
         }else{
+            $total_price = 0;
+            $discount = $request->discount;
+            $final_bucket_cost = 0;
+    
+            $promotion_products = $request->promotion_product_id;
+
+            $promotion_services = $request->promotion_service_id;
+
+            $total_price_of_products = Product::whereIn('id', $promotion_products)->sum('cost_price');
+            $total_price_of_services = Product::whereIn('id', $promotion_services)->sum('cost_price');
+            
+            $total_price = $total_price_of_products + $total_price_of_services;
+            $final_bucket_cost = $total_price - $discount;
 
             $promotionMainImageFile = $request->file('main_image');
             $promotionMainImageFilename = time().'.'.$promotionMainImageFile->getClientOriginalExtension();
             $promotionMainImageFile->move(public_path('uploads/promotions/'), $promotionMainImageFilename);
 
             $promotion = Promotions::create([
-                'heading'          => $request->heading,
-                'main_image'      => isset($promotionMainImageFilename) ? 'uploads/promotions/'.$promotionMainImageFilename : NULL
+                'heading'             => $request->heading,
+                'main_image'          => isset($promotionMainImageFilename) ? 'uploads/promotions/'.$promotionMainImageFilename : NULL,
+                'total_price'         => $total_price,
+                'discount'            => $discount,
+                'final_bucket_cost'  => $final_bucket_cost
             ]);
-
-            $promotion_products = $request->promotion_product_id;
 
             foreach($promotion_products as $promotion_product)
             {
@@ -86,8 +119,6 @@ class PromotionsController extends Controller
                 
                 PromotionProducts::create($promotion_products_data);
             }
-
-            $promotion_services = $request->promotion_service_id;
 
             foreach($promotion_services as $promotion_service)
             {
@@ -142,9 +173,26 @@ class PromotionsController extends Controller
                                 ->with('promotion_products', 'promotion_services', 'promotion_images')
                                 ->first();
 
-        $products = Product::where('status', 1)->select('id', 'product_name')->latest()->get();
-        
-        $services = Service::select('id', 'name')->latest()->get();
+        $all_products = Product::with('productCategory.parent_categories')->where('status', 1)->select('id', 'product_name','category_id', 'cost_price')->latest()->get();
+
+        if(!empty($all_products))
+        {
+            $products = $all_products->filter(function ($product) {
+                return $product->productCategory && 
+                       $product->productCategory->parent_categories && 
+                       $product->productCategory->parent_categories->contains('parent_category_name', 'product');
+            })->values();
+
+            $services = $all_products->filter(function ($product) {
+                return $product->productCategory && 
+                       $product->productCategory->parent_categories && 
+                       $product->productCategory->parent_categories->contains('parent_category_name', 'service');
+            })->values();
+        }else{
+            $products = [];
+
+            $services = [];
+        }
 
         return view('promotions.edit', compact('promotion', 'products', 'services'));
     }
@@ -162,6 +210,7 @@ class PromotionsController extends Controller
             'heading'    => 'required',
             'promotion_product_id' => 'required',
             'promotion_service_id' => 'required',
+            'discount' => 'required'
         ]);
 
         $promotion_exists = Promotions::where('heading', $request->heading)->where('deleted_at', NULL)->where('id', '!=', $promotion)->first();
@@ -170,7 +219,6 @@ class PromotionsController extends Controller
         {
             return redirect()->route('promotions.index')->with('error', 'This Promotion Heading Already Exists.'); 
         }else{
-
             $promotion_data = Promotions::where('id', $promotion)->first();
 
             $oldPromotionImage = NULL;
@@ -184,11 +232,6 @@ class PromotionsController extends Controller
                 $promotionImageFilename = time().'.'.$promotionImageFile->getClientOriginalExtension();
                 $promotionImageFile->move(public_path('uploads/promotions/'), $promotionImageFilename);
             }
-
-            Promotions::where('id', $promotion)->update([
-                'heading'        => $request->heading,
-                'main_image'     => isset($promotionImageFilename) ? 'uploads/promotions/'.$promotionImageFilename : $oldPromotionImage
-            ]);
 
             // old promotion products
             $old_promotion_products = PromotionProducts::where('promotion_id', $promotion)->get()->pluck('product_id')->toArray();
@@ -244,6 +287,27 @@ class PromotionsController extends Controller
                     ->delete();
             }
 
+            $total_price = 0;
+            $discount = $request->discount;
+            $final_bucket_cost = 0;
+
+            $price_to_add_in_products = Product::whereIn('id', $promotion_products_to_add)->sum('cost_price');
+            $price_to_delete_from_products = Product::whereIn('id', $promotion_products_to_delete)->sum('cost_price');
+
+            $price_to_add_in_services = Product::whereIn('id', $promotion_services_to_add)->sum('cost_price');
+            $price_to_delete_from_services = Product::whereIn('id', $promotion_services_to_delete)->sum('cost_price');
+            
+            $total_price = $promotion_data->total_price + $price_to_add_in_products - $price_to_delete_from_products + $price_to_add_in_services - $price_to_delete_from_services;
+            $final_bucket_cost = $total_price - $discount;
+
+            Promotions::where('id', $promotion)->update([
+                'heading'        => $request->heading,
+                'main_image'     => isset($promotionImageFilename) ? 'uploads/promotions/'.$promotionImageFilename : $oldPromotionImage,
+                'total_price'         => $total_price,
+                'discount'            => $discount,
+                'final_bucket_cost'  => $final_bucket_cost
+            ]);
+            
             $images = $request->images;
 
             if ($images) {
@@ -264,9 +328,9 @@ class PromotionsController extends Controller
             }
 
             // delete images
-            if(!empty($request->image_id))
-            {
-                PromotionImages::whereIn('id', $request->image_id)->delete();
+            if (!empty($request->image_id)) {
+                $imageIds = explode(',', $request->image_id[0]); 
+                PromotionImages::whereIn('id', $imageIds)->delete();
             }
         }
 

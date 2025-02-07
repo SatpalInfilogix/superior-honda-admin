@@ -68,7 +68,23 @@
                                                     <label for="Promotion Heading" style="font-weight: bold">Promotion Heading</label>
                                                     <p>{{ $customer_inquiry->promotion->heading }}</p>  
                                                 </div>
+                                                <div class="col-md-4 form-group">
+                                                    <label for="Total Price" style="font-weight: bold">Promotion Total Price</label>
+                                                    <p>{{ $customer_inquiry->promotion->total_price }}/-</p>
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    <label for="Discount" style="font-weight: bold">Promotion Discount</label>
+                                                    <p>{{ $customer_inquiry->promotion->discount }}/-</p>
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    <label for="Final Bucket Cost" style="font-weight: bold">Promotion Bucket Cost</label>
+                                                    <p style="color: red;">{{ $customer_inquiry->promotion->final_bucket_cost }}/-</p>
+                                                </div>
                                             @endif
+                                            <div class="col-md-4 form-group">
+                                                <label for="Location" style="font-weight: bold">Location</label>
+                                                <p>{{ $customer_inquiry->location->name }}</p>
+                                            </div>
                                             <div class="col-md-4 form-group">
                                                 <label for="Product Name" style="font-weight: bold">Product Name</label>
                                                 @if($customer_inquiry->customer_inquiry_category == 'product')
@@ -86,17 +102,13 @@
                                                 <div class="col-md-4 form-group">
                                                     <label for="Service Name" style="font-weight: bold">Service Name</label>
                                                     @php
-                                                        $service_names = $customer_inquiry->promotion->promotion_services->pluck('service_details')->pluck('name');
+                                                        $service_names = $customer_inquiry->promotion->promotion_services->pluck('service_details')->pluck('product_name');
                                                     @endphp
                                                     @foreach ($service_names as $service_name)
                                                         <li style="font-size:14px; line-height:1.4;">{{ $service_name }}</li>
                                                     @endforeach
                                                 </div>
                                             @endif
-                                            <div class="col-md-4 form-group">
-                                                <label for="Location" style="font-weight: bold">Location</label>
-                                                <p>{{ $customer_inquiry->location->name }}</p>
-                                            </div>
                                             <div class="col-md-4 form-group">
                                                 <label for="Inquiry Created At" style="font-weight: bold">Inquiry Created At</label>
                                                 <p>{{ $customer_inquiry->inquiry_created_at ? date('d-m-Y h:i a', strtotime($customer_inquiry->inquiry_created_at)) : 'N/A' }}</p>
@@ -137,8 +149,8 @@
                                     <h5>Comment Log</h5>
                                 </div>
                                 <div class="card-block">
-                                    <div class="comment-log">
-                                        @if(!empty($customer_inquiry->csr_comments))
+                                    @if(!empty($customer_inquiry->csr_comments) && count($customer_inquiry->csr_comments))
+                                        <div class="comment-log">
                                             @foreach($customer_inquiry->csr_comments as $comment)
                                                 <div class="comment-item">
                                                     <strong style="font-weight:bold;">{{$comment->csr_details->first_name . ' ' . $comment->csr_details->last_name}}</strong> 
@@ -150,10 +162,10 @@
                                                     <strong style="font-weight:bold;">Comment:</strong> {{ $comment->inquiry_attended_by_csr_comment }}
                                                 </div>
                                             @endforeach
-                                        @else
-                                            <p>No comments found.</p>
-                                        @endif
-                                    </div>
+                                        </div>
+                                    @else
+                                        <p>No comments found.</p>
+                                    @endif
                                 </div>
                             </div>
                         </div>

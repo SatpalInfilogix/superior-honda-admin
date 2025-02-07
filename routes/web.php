@@ -165,6 +165,7 @@ Route::post('/disable-user',[UserController::class,'disableUser'])->name('disabl
 Route::post('/disable-product',[ProductController::class,'disableProduct'])->name('disable-product');
 Route::post('/disable-promotion',[PromotionsController::class,'disablePromotion'])->name('disable-promotion');
 Route::post('/disable-customer-inquiry',[CustomerInquiryController::class,'disableCustomerInquiry'])->name('disable-customer-inquiry');
+Route::get('/customer-inquiry/branch/{id}', [CustomerInquiryController::class, 'customerInquiryShowByBranch'])->name('customer-inquiry.branch');
 
 Route::post('/disable-bay',[BayController::class,'disableBay'])->name('disable-bay');
 
