@@ -26,7 +26,7 @@
                                     <form action="{{ route('products.update',$product->id) }}" method="POST"  enctype="multipart/form-data">
                                         @csrf
                                         @method('PATCH')
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="parent_category_id">Parent Category <span style="color: red;">*</span></label>
                                                 <select id="parent_category_id" name="parent_category_id[]" class="form-control chosen-select" multiple="multiple">
@@ -45,7 +45,7 @@
                                                 </select>
                                                 <span class="form-control-danger" id="parent_category_id_error" style="display:none; color: #dc3545; font-size:12px;">Please select atleast 1 category.</span>
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">

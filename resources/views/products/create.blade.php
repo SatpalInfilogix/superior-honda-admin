@@ -21,7 +21,7 @@
                                     <form action="{{ route('products.store') }}" method="POST"
                                         enctype="multipart/form-data">
                                         @csrf
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col-md-6 form-group">
                                                 <label for="parent_category_id">Parent Category <span style="color: red;">*</span></label>
                                                 <select id="parent_category_id" name="parent_category_id[]" class="form-control chosen-select" multiple="multiple">
@@ -32,7 +32,7 @@
                                                 </select>
                                                 <span class="form-control-danger" id="parent_category_id_error" style="display:none; color: #dc3545; font-size:12px;">Please select atleast 1 category.</span>
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
@@ -298,7 +298,7 @@
         $(function() {
             $('form').validate({
                 rules: {
-                    "parent_category_id[]": "required",
+                    // "parent_category_id[]": "required",
                     product_code: "required",
                     category_id: "required",
                     product_name: "required",
@@ -317,7 +317,7 @@
                     }
                 },
                 messages: {
-                    "parent_category_id[]": "Please select atleast 1 category",
+                    // "parent_category_id[]": "Please select atleast 1 category",
                     product_code: "Please enter product code",
                     category_id: "Please enter category name",
                     product_name: "Please enter product name",
@@ -355,23 +355,23 @@
                 }
             });
 
-            $(document).ready(function() {
-                $('#parent_category_id').change(function() {
-                    if ($(this).val().length === 0) {
-                        $('#parent_category_id_error').css('display', 'block');
-                    }else{
-                        $('#parent_category_id_error').css('display', 'none');
-                    }
-                });
+            // $(document).ready(function() {
+            //     $('#parent_category_id').change(function() {
+            //         if ($(this).val().length === 0) {
+            //             $('#parent_category_id_error').css('display', 'block');
+            //         }else{
+            //             $('#parent_category_id_error').css('display', 'none');
+            //         }
+            //     });
                 
-                $('#submit_btn').on('click', function() {
-                    if ($('#parent_category_id').val().length === 0) {
-                        $('#parent_category_id_error').css('display', 'block');
-                    }else{
-                        $('#parent_category_id_error').css('display', 'none');
-                    }
-                });
-            });
+            //     $('#submit_btn').on('click', function() {
+            //         if ($('#parent_category_id').val().length === 0) {
+            //             $('#parent_category_id_error').css('display', 'block');
+            //         }else{
+            //             $('#parent_category_id_error').css('display', 'none');
+            //         }
+            //     });
+            // });
         })
     </script>
 @endsection
