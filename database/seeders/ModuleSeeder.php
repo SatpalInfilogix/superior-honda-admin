@@ -85,5 +85,41 @@ class ModuleSeeder extends Seeder
             'name' => 'Promotions',
             'slug' => 'promotions'
         ]);
+        Module::updateOrCreate([
+            'name' => 'Coupons',
+            'slug' => 'coupons'
+        ]);
+        Module::updateOrCreate([
+            'name' => 'Reports',
+            'slug' => 'reports'
+        ]);
+        Module::updateOrCreate([
+            'name' => 'Cart',
+            'slug' => 'cart'
+        ]);
+        Module::updateOrCreate([
+            'name' => 'Banners',
+            'slug' => 'banners'
+        ]);
+        Module::updateOrCreate([
+            'name' => 'Sales Products',
+            'slug' => 'sales-products'
+        ]);
+        Module::updateOrCreate([
+            'name' => 'Services',
+            'slug' => 'services'
+        ]);
+        Module::updateOrCreate([
+            'name' => 'Testimonials',
+            'slug' => 'testimonials'
+        ]);
+        Module::updateOrCreate([
+            'name' => 'Settings',
+            'slug' => 'settings'
+        ]);
+        Module::updateOrCreate([
+            'name' => 'FAQs',
+            'slug' => 'faqs'
+        ]);
     }
 }

@@ -400,7 +400,13 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">                                            
+                                            <label class="col-sm-4 col-form-label">Status</label>
+                                            <select name="status" id="status" class="form-control">
+                                                <option value="pending" {{ $inquiry->status == 'pending' ? 'selected' : ''; }}>Pending</option>
+                                                <option value="in progress" {{ $inquiry->status == 'in progress' ? 'selected' : ''; }}>In Progress</option>
+                                                <option value="completed" {{ $inquiry->status == 'completed' ? 'selected' : ''; }}>Completed</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <br />

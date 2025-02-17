@@ -329,7 +329,7 @@ class CustomerInquiryController extends Controller
 
         $branches = Branch::whereNull('deleted_at')->get();
         $selected_branch_id = $id;
-
+        
         return view('customer_inquiry.index', compact('final_customer_enquiry_data', 'branches', 'selected_branch_id'));
     }
 }

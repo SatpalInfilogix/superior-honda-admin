@@ -193,7 +193,7 @@
                         </a>
                     </li>
                 @endcan
-                {{-- @can('view vehicle') --}}
+                @can('view coupons')
                     <li @class([
                         'active' => Request::is(
                             'coupons',
@@ -207,7 +207,7 @@
                             <span class="pcoded-mtext">Coupon/Offers</span>
                         </a>
                     </li>
-                {{-- @endcan --}}
+                @endcan
                 @can('view promotions')
                     <li @class([
                         'active' => Request::is(
@@ -239,16 +239,18 @@
                 <div class="pcoded-navigation-label">Administrator</div>
             @endcanany
             <ul class="pcoded-item pcoded-left-item">
+                @can('view reports')
                 <li @class([
-                        'active' => Request::is('reports'),
-                    ])>
-                        <a href="{{ route('reports.index') }}" class="waves-effect waves-dark">
-                            <span class="pcoded-micon">
-                                <i class="feather icon-user"></i>
-                            </span>
-                            <span class="pcoded-mtext">Reports</span>
-                        </a>
-                    </li>
+                    'active' => Request::is('reports'),
+                ])>
+                    <a href="{{ route('reports.index') }}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon">
+                            <i class="feather icon-user"></i>
+                        </span>
+                        <span class="pcoded-mtext">Reports</span>
+                    </a>
+                </li>
+                @endcan
                 @can('view user')
                     <li @class([
                         'active' => Request::is('users', 'users/create', 'users/*/edit'),
@@ -374,7 +376,7 @@
                         </a>
                     </li>
                 @endcan --}}
-
+                @can('view cart')
                 <li  class="{{ Request::segment(1) == 'carts' ? 'active' : '' }}">
                     <a href="{{ route('carts.index')}}" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
@@ -383,7 +385,9 @@
                         <span class="pcoded-mtext">Cart/Wishlist</span>
                     </a>
                 </li>
+                @endcan
 
+                @can('view Order')
                 <li  class="{{ Request::segment(1) == 'orders' ? 'active' : '' }}">
                     <a href="{{ route('orders.index')}}" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
@@ -392,7 +396,8 @@
                         <span class="pcoded-mtext">Orders</span>
                     </a>
                 </li>
-
+                @endcan
+                @can('view banners')
                 <li class="{{ Request::segment(1) == 'banners' ? 'active' : '' }}">
                     <a href="{{ route('banners.index')}}" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
@@ -401,7 +406,8 @@
                         <span class="pcoded-mtext">Banners</span>
                     </a>
                 </li>
-
+                @endcan
+                @can('view sales-products')
                 <li class="{{ Request::segment(1) == 'sales-products' ? 'active' : '' }}">
                     <a href="{{ route('sales-products.index')}}" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
@@ -410,7 +416,9 @@
                         <span class="pcoded-mtext">Sales Product</span>
                     </a>
                 </li>
+                @endcan
 
+                @can('view services')
                 <li class="{{ Request::segment(1) == 'services' ? 'active' : '' }}">
                     <a href="{{ route('services.index')}}" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
@@ -419,6 +427,8 @@
                         <span class="pcoded-mtext">Services</span>
                     </a>
                 </li>
+                @endcan
+                @can('view testimonials')
                 <li class="{{ Request::segment(1) == 'testimonials' ? 'active' : '' }}">
                     <a href="{{ route('testimonials.index')}}" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
@@ -427,6 +437,7 @@
                         <span class="pcoded-mtext">Testimonials</span>
                     </a>
                 </li>
+                @endcan
             </ul>
             <div class="pcoded-navigation-label">Settings</div>
             <ul class="pcoded-item pcoded-left-item">
@@ -440,6 +451,7 @@
                         </a>
                     </li>
                 @endcan
+                @can('view settings')
                 <li @class([
                     'active' => Request::is('settings', 'settings/general-setting'),
                 ])>
@@ -450,6 +462,8 @@
                         <span class="pcoded-mtext">Settings</span>
                     </a>
                 </li>
+                @endcan
+                @can('view faqs')
                 <li class="{{ Request::segment(1) == 'faqs' ? 'active' : '' }}">
                     <a href="{{ route('faqs.index')}}" class="waves-effect waves-dark">
                         <span class="pcoded-micon">
@@ -458,6 +472,7 @@
                         <span class="pcoded-mtext">Faq</span>
                     </a>
                 </li>
+                @endcan
 
                 @can('view roles & permissions')
                     <li @class([

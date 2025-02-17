@@ -69,8 +69,6 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-4 form-group">
-                                                <label for="parent_category_id">Category
-                                            <div class="col-md-4 form-group">
                                                 <label for="role">Role <span style="color: red;">*</span></label>
                                                 <select name="role" id="role" class="form-control" disabled>
                                                     <option value="" selected disabled>Select Role</option>
@@ -78,7 +76,9 @@
                                                         <option value="{{$role->id}}" @selected( $user->roles->pluck('name')[0] == $role->name)>{{ $role->name }}</option>
                                                     @endforeach
                                                 </select>
-                                            </div></label>
+                                            </div>
+                                            <div class="col-md-4 form-group">
+                                                <label for="parent_category_id">Category</label>
                                                 <select id="parent_category_id" name="parent_category_id[]" class="form-control chosen-select" multiple="multiple">
                                                     @php
                                                         $selected_categories = [];

@@ -37,8 +37,11 @@
                                     <div class="float-right">
                                         <select class="form-control" name="branch" id="branch">
                                             @if(!empty($branches))
+                                                @php
+                                                    $branch_selected = !empty($selected_branch_id) ? $selected_branch_id : Auth::user()->branch_id;
+                                                @endphp
                                                 @foreach($branches as $branch)
-                                                    <option value="{{$branch->id}}" {{Auth::user()->branch_id == $branch->id || $branch->id == $selected_branch_id ? 'selected' : ''}}>{{$branch->name}}</option>
+                                                    <option value="{{$branch->id}}" {{ $branch->id == $branch_selected ? 'selected' : ''}}>{{$branch->name}}</option>
                                                 @endforeach
                                             @endif
                                         </select>

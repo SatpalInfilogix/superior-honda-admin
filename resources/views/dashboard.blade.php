@@ -101,8 +101,8 @@
                                 <div class="card-body">
                                     <div class="row align-items-center m-b-30">
                                         <div class="col">
-                                            <h6 class="m-b-5 text-white">Total Orders Processed</h6>
-                                            <h3 class="m-b-0 f-w-700 text-white">{{$completedOrdersCount}}</h3>
+                                            <h6 class="m-b-5 text-white">Total Customer Inquiry</h6>
+                                            <h3 class="m-b-0 f-w-700 text-white">{{$totalCustomerInquiriesCount}}</h3>
                                         </div>
                                         <div class="col-auto">
                                             <i class="far fa-calendar-check text-c-green f-18"></i>
@@ -118,8 +118,8 @@
                                 <div class="card-body">
                                     <div class="row align-items-center m-b-30">
                                         <div class="col">
-                                            <h6 class="m-b-5 text-white">Total Orders in Queue</h6>
-                                            <h3 class="m-b-0 f-w-700 text-white">{{$ordersInQueueCount}}</h3>
+                                            <h6 class="m-b-5 text-white">Pending Custom Inquiry</h6>
+                                            <h3 class="m-b-0 f-w-700 text-white">{{count($pendingCustomerInquiries)}}</h3>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-tags text-c-yellow f-18"></i>
