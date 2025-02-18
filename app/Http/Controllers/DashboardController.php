@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\Product;
 use Carbon\Carbon;
 use App\Models\Invoice;
+use Auth;
 
 class DashboardController extends Controller
 {
@@ -23,6 +24,7 @@ class DashboardController extends Controller
         $ordersInQueueCount = count($order->getOrdersInQueue());
         $pendingInquiries = Inquiry::inProgressForThreeHoursOrMore()->get();
         $pendingCustomerInquiries = CustomerInquiry::inProgressForTwoHoursOrMore()->get();
+        $totalCustomerInquiriesCount = CustomerInquiry::where('deleted_at', NULL)->where('status', '!=', 'delete')->count();
         $services = Product::whereNull('deleted_at')->where('is_service', 1)->with('productCategory')->whereHas('productCategory', function ($query) {
             $query->whereNull('deleted_at');
         })->count();
@@ -74,7 +76,8 @@ class DashboardController extends Controller
                                             'pendingInquiries'     => $pendingInquiries,
                                             'completedOrdersCount' => $completedOrdersCount,
                                             'ordersInQueueCount'   => $ordersInQueueCount,
-                                            'pendingCustomerInquiries' => $pendingCustomerInquiries
+                                            'pendingCustomerInquiries' => $pendingCustomerInquiries,
+                                            'totalCustomerInquiriesCount' => $totalCustomerInquiriesCount
                                         ]
                                     );
     }

@@ -23,10 +23,10 @@
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-4 form-group">
-                                                <x-input-text name="first_name" label="First Name" value="{{ old('first_name') }}"></x-input-text>
+                                                <x-input-text name="first_name" label="First Name" value="{{ old('first_name') }}" required></x-input-text>
                                             </div>
                                             <div class="col-md-4 form-group">
-                                                <x-input-text name="last_name" label="Last Name" value="{{ old('last_name') }}"></x-input-text>
+                                                <x-input-text name="last_name" label="Last Name" value="{{ old('last_name') }}" required></x-input-text>
                                             </div>
                                             <div class="col-md-4 form-group">
                                                 <x-input-text name="email" label="Email Address" value="{{ old('email') }}" ></x-input-text>
@@ -34,7 +34,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-4 form-group">
-                                                <label for="designation">Designation</label>
+                                                <label for="designation">Designation <span style="color: red;">*</span></label>
                                                 <select name="designation" id="designation" class="form-control">
                                                     <option value="" selected disabled>Select Designation</option>
                                                     @foreach($designations as $designation)
@@ -43,7 +43,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-4 form-group">
-                                                <label for="role">Role</label>
+                                                <label for="role">Role <span style="color: red;">*</span></label>
                                                 <select name="role" id="role" class="form-control">
                                                     <option value="" selected disabled>Select Role</option>
                                                     @foreach ($roles as $key => $role)
@@ -62,17 +62,8 @@
                                                 <select name="branch" id="branch" class="form-control">
                                                     <option value="" selected disabled>Select Branch</option>
                                                     @foreach ($branches as $key => $branch)
-                                                        <option value="{{$branch->id}}">{{ $branch->name }}</option>
+                                                        <option value="{{$branch->id}}">{{ $branch->name }} @if (strtolower($branch->name) === 'kingston') 🚩 @endif</option>
                                                     @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4 form-group">
-                                                <label for="category">Category</label>
-                                                <select name="category" id="category" class="form-control">
-                                                    <option value="" selected disabled>Select Category</option>
-                                                    <option value="product">Products</option>
-                                                    <option value="service">Services</option>
-                                                    <option value="accessories">Accessories</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-4 form-group">
@@ -87,6 +78,16 @@
                                                 </div>
                                                 <label for="password" class="error"></label> <!-- Error message will appear here -->
                                             </div>
+                                            <div class="col-md-4 form-group">
+                                                <label for="parent_category_id">Category <span style="color: red;">*</span></label>
+                                                <select name="parent_category_id[]" id="parent_category_id" class="form-control chosen-select" multiple="multiple">                                                    
+                                                    <option value="select_all">Select All</option>
+                                                    <option value="product">Products</option>
+                                                    <option value="service">Services</option>
+                                                    <option value="accessories">Accessories</option>
+                                                </select>
+                                                <span class="form-control-danger" id="parent_category_id_error" style="display:none; color: #dc3545; font-size:12px;">Please select atleast 1 category.</span>
+                                            </div>
                                         </div>
                                         <div class="row">                                            
                                             <div class="col-md-12 form-group">
@@ -94,7 +95,7 @@
                                                 <textarea id="additional_detail" name="additional_detail" class="form-control" rows="2" cols="50"></textarea>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary primary-btn">Save</button>
+                                        <button type="submit" class="btn btn-primary primary-btn" id="submit_btn">Save</button>
                                     </form>
                                 </div>
                             </div>
@@ -119,7 +120,6 @@
                     designation: "required",
                     email: "required",
                     role: "required",
-                    category: "required",
                     password: "required"
                 },
                 messages: {
@@ -128,7 +128,6 @@
                     designation: "Please enter designation",
                     email: "Please enter email",
                     role: "Please enter role",
-                    category: "Please select category",
                     password: "Please enter password"
                 },
                 errorClass: "text-danger",
@@ -159,6 +158,30 @@
                 passwordField.attr('type', type);
                 $(this).toggleClass('fa-eye fa-eye-slash');
             });
+
+            $(document).ready(function() {
+                $('#parent_category_id').change(function() {
+                    if ($(this).val().length === 0) {
+                        $('#parent_category_id_error').css('display', 'block');
+                    }else{
+                        $('#parent_category_id_error').css('display', 'none');
+                    }
+                });
+                
+                $('#submit_btn').on('click', function() {
+                    if ($('#parent_category_id').val().length === 0) {
+                        $('#parent_category_id_error').css('display', 'block');
+                    }else{
+                        $('#parent_category_id_error').css('display', 'none');
+                    }
+                });
+            });
+
+            $(".chosen-select").chosen({
+                width: '100%',
+                no_results_text: "Oops, nothing found!"
+            });
+
         })
     </script>
 @endsection

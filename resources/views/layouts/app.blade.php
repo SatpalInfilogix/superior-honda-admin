@@ -20,12 +20,20 @@
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/themify-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker.min.css') }}">
-    <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}">
+    <!-- <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="{{ asset('assets/css/toastr.min.css') }}"/>
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/sweetalert.min.js') }}"></script>
 
     @yield('head')
+
+    <style>
+        .chosen-container-multi .chosen-choices li.search-field input[type=text]{
+            height: 32px !important;
+        }
+    </style>
 </head>
 <?php 
 $logo_url= DB::table('settings')->where('key','logo')->first();
@@ -124,8 +132,11 @@ else{
     <script src="{{ asset('assets/js/vertical-layout.min.js') }}"></script>
     <script src="{{ asset('assets/js/script.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/27.1.0/classic/ckeditor.js"></script>
-    <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
+    <script src="{{ asset('assets/js/toastr.min.js') }}"></script>
+    <script src="{{ asset('assets/js/ckeditor.js') }}"></script>
+    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/27.1.0/classic/ckeditor.js"></script> -->
+    <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
+    <!-- <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script> -->
     
     @yield('script')
 
@@ -167,6 +178,44 @@ else{
                     }
                 });
             })
+        })
+    </script>
+
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-bottom-right",
+            "timeOut": "3000",
+        };
+
+        @if(session('success'))
+            toastr.success('{{ session('success') }}');
+        @elseif(session('error'))
+            toastr.error('{{ session('error') }}');
+        @elseif(session('info'))
+            toastr.info('{{ session('info') }}');
+        @elseif(session('warning'))
+            toastr.warning('{{ session('warning') }}');
+        @endif
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $(".chosen-select").on("change", function() {
+                var selectedValues = $(this).val();
+                var id = $(this).attr('id');
+
+                if (selectedValues && selectedValues.includes("select_all")) {
+                    $("#" + id)
+                        .find("option:not([value='select_all'])")
+                        .prop("selected", true);
+
+                    $("#" + id).find("option[value='select_all']").prop("selected", false);
+
+                    $("#" + id).trigger("chosen:updated");
+                }
+            });
         })
     </script>
 

@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Product;
 use App\Models\Location;
 use App\Models\User;
+use App\Models\CsrCommentLog;
+use App\Models\Promotions;
 use Carbon\Carbon;
 
 class CustomerInquiry extends Model
@@ -32,6 +34,11 @@ class CustomerInquiry extends Model
         return $this->belongsTo(User::class, 'inquiry_attended_by_csr_id', 'id');
     }
 
+    public function csr_comments()
+    {
+        return $this->hasMany(CsrCommentLog::class)->orderBy('id', 'desc');
+    }
+
     public function scopeInProgressForTwoHoursOrMore($query)
     {
         $twoHoursAgo = date('Y-m-d H:i:s', strtotime('-2 hours'));
@@ -40,5 +47,10 @@ class CustomerInquiry extends Model
                         $q->where('inquiry_status', 'in_process')
                           ->orWhere('inquiry_status', 'pending');
                     })->where('inquiry_created_at', '<=', $twoHoursAgo);
+    }
+
+    public function promotion()
+    {
+        return $this->belongsTo(Promotions::class, 'inquiry_product_id', 'id');
     }
 }

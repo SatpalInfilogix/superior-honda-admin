@@ -13,73 +13,113 @@ class ModuleSeeder extends Seeder
      */
     public function run(): void
     {
-        Module::create([
+        Module::updateOrCreate([
             'name' => 'Invoice',
             'slug' => 'invoice'
         ]);
-        Module::create([
+        Module::updateOrCreate([
             'name' => 'Product',
             'slug' => 'product'
         ]);
-        Module::create([
+        Module::updateOrCreate([
             'name' => 'Order',
             'slug' => 'Order'
         ]);
-        Module::create([
+        Module::updateOrCreate([
             'name' => 'User',
             'slug' => 'user'
         ]);
-        Module::create([
+        Module::updateOrCreate([
             'name' => 'Customer',
             'slug' => 'customer'
         ]);
-        Module::create([
+        Module::updateOrCreate([
             'name' => 'Product',
             'slug' => 'product'
         ]);
-        Module::create([
+        Module::updateOrCreate([
             'name' => 'Vehicle',
             'slug' => 'vehicle'
         ]);
-        Module::create([
+        Module::updateOrCreate([
             'name' => 'Vehicle Configuration',
             'slug' => 'vehicle configuration'
         ]);
-        Module::create([
+        Module::updateOrCreate([
             'name' => 'Branch',
             'slug' => 'branch'
         ]);
-        Module::create([
+        Module::updateOrCreate([
             'name' => 'Location',
             'slug' => 'location'
         ]);
-        Module::create([
+        Module::updateOrCreate([
             'name' => 'Bay',
             'slug' => 'bay'
         ]);
-        Module::create([
+        Module::updateOrCreate([
             'name' => 'Inquiry',
             'slug' => 'inquiry'
         ]);
-        Module::create([
+        Module::updateOrCreate([
             'name' => 'Inspection',
             'slug' => 'inspection'
         ]);
-        Module::create([
+        Module::updateOrCreate([
             'name' => 'Job',
             'slug' => 'job'
         ]);
-        Module::create([
+        Module::updateOrCreate([
             'name' => 'Email Template',
             'slug' => 'email template'
         ]);
-        Module::create([
+        Module::updateOrCreate([
             'name' => 'Roles & Permissions',
             'slug' => 'roles & permissions'
         ]);
-        Module::create([
+        Module::updateOrCreate([
             'name' => 'Customer Inquiry',
             'slug' => 'customer inquiry'
+        ]);
+        Module::updateOrCreate([
+            'name' => 'Promotions',
+            'slug' => 'promotions'
+        ]);
+        Module::updateOrCreate([
+            'name' => 'Coupons',
+            'slug' => 'coupons'
+        ]);
+        Module::updateOrCreate([
+            'name' => 'Reports',
+            'slug' => 'reports'
+        ]);
+        Module::updateOrCreate([
+            'name' => 'Cart',
+            'slug' => 'cart'
+        ]);
+        Module::updateOrCreate([
+            'name' => 'Banners',
+            'slug' => 'banners'
+        ]);
+        Module::updateOrCreate([
+            'name' => 'Sales Products',
+            'slug' => 'sales-products'
+        ]);
+        Module::updateOrCreate([
+            'name' => 'Services',
+            'slug' => 'services'
+        ]);
+        Module::updateOrCreate([
+            'name' => 'Testimonials',
+            'slug' => 'testimonials'
+        ]);
+        Module::updateOrCreate([
+            'name' => 'Settings',
+            'slug' => 'settings'
+        ]);
+        Module::updateOrCreate([
+            'name' => 'FAQs',
+            'slug' => 'faqs'
         ]);
     }
 }

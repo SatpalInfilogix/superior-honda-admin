@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\Branch;
 use App\Models\Location;
+use App\Models\BranchLocations;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -23,14 +24,6 @@ class BranchImport implements ToModel, WithHeadingRow
             'name'       => 'required',
             'address'    => 'required',
             'pincode'    => 'required',
-            'location_id' => [
-                'required',
-                function ($attribute, $value, $fail) {
-                    if (!Location::where('id', $value)->exists()) {
-                        $fail('The selected location id ' . $value . ' is invalid for row.');
-                    }
-                }
-            ]
         ]);
 
         if ($validator->fails()) {
@@ -43,13 +36,31 @@ class BranchImport implements ToModel, WithHeadingRow
 
         $branch_code = $this->generateBranchCode();
 
-        Branch::create([
+        $branch_created = Branch::create([
             'unique_code' => $branch_code,
             'name' => $row['name'],
             'address' => $row['address'],   
             'pincode' => $row['pincode'],
-            'location_id' => $row['location_id'],
         ]);
+
+        if(!empty($row['location_id']))
+        {
+            $locations = explode(',', $row['location_id']);
+    
+            foreach($locations as $location)
+            {
+                $location = trim($location);
+    
+                if (Location::where('id', $location)->exists()) {
+    
+                    $branch_location = [];
+                    $branch_location['branch_id'] = $branch_created->id;
+                    $branch_location['location_id'] = $location;
+                    
+                    BranchLocations::create($branch_location);
+                }
+            }
+        }
 
         return null;
     }

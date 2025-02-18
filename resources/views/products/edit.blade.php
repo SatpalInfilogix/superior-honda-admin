@@ -26,9 +26,9 @@
                                     <form action="{{ route('products.update',$product->id) }}" method="POST"  enctype="multipart/form-data">
                                         @csrf
                                         @method('PATCH')
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <label for="parent_category_id">Parent Category</label>
+                                                <label for="parent_category_id">Parent Category <span style="color: red;">*</span></label>
                                                 <select id="parent_category_id" name="parent_category_id[]" class="form-control chosen-select" multiple="multiple">
                                                     @php
                                                         $selected_categories = [];
@@ -38,21 +38,24 @@
                                                             array_push($selected_categories, $parent_category->parent_category_name);
                                                         @endphp
                                                     @endforeach
+                                                        <option value="select_all">Select All</option>
                                                         <option value="product" {{ in_array('product', $selected_categories) ? 'selected' : '' }}>Product</option>
                                                         <option value="service" {{ in_array('service', $selected_categories) ? 'selected' : '' }}>Service</option>
                                                         <option value="accessories" {{ in_array('accessories', $selected_categories) ? 'selected' : '' }}>Accessories</option>
                                                 </select>
                                                 <span class="form-control-danger" id="parent_category_id_error" style="display:none; color: #dc3545; font-size:12px;">Please select atleast 1 category.</span>
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="product_code" label="Product Code" value="{{ old('product_code', $product->product_code) }}"></x-input-text>
+                                                <label for="product_code">Product Code <span style="color: red;">*</span></label>
+                                                <input class="form-control" id="product_code" name="product_code" label="Product Code"
+                                                    value="{{ old('product_code', $product->product_code) }}"/>
                                             </div>
 
                                             <div class="col-md-6 form-group">
-                                                <label for="category_id">Category</label>
+                                                <label for="category_id">Category <span style="color: red;">*</span></label>
                                                 <select name="category_id" id="category_id" class="form-control">
                                                     <option value="" selected disabled>Select Category</option>
                                                     @foreach($categories as $category)
@@ -63,11 +66,11 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="product_name" label="Product Name" value="{{ old('product_name', $product->product_name) }}"></x-input-text>
+                                                <x-input-text name="product_name" label="Product Name" value="{{ old('product_name', $product->product_name) }}" required="true"></x-input-text>
                                             </div>
 
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="manufacture_name" label="Manufacture Name" value="{{ old('manufacture_name', $product->manufacture_name) }}"></x-input-text>
+                                                <x-input-text name="manufacture_name" label="Manufacture Name" value="{{ old('manufacture_name', $product->manufacture_name) }}" required="true"></x-input-text>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -157,6 +160,7 @@
                                             <div class="col-md-6 form-group">
                                                 <label for="year">Year</label>
                                                 <select id="year_range" name="year_range[]" class="form-control chosen-select" multiple="multiple">
+                                                    <option value="select_all">Select All</option>
                                                     @foreach(range(date('Y'),1950) as $year)
                                                         <option value="{{ $year }}" 
                                                             @if(in_array($year, old('year_range', $selectedYears))) selected @endif>
@@ -168,29 +172,33 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-2 form-group">
-                                                <label for="oem" class>OEM</label>
+                                            <div class="col-md-3 form-group">
                                                 <input type="checkbox" id="oem" name="oem" value="{{ $product->is_oem }}" @checked($product->is_oem == 1) onclick='oemClick(this);'>
+                                                <label for="oem" class>OEM</label>
+                                            </div>
+                                            <div class="col-md-3 form-group">
+                                                <input type="checkbox" id="out_of_stock" name="out_of_stock" value="{{ $product->out_of_stock }}" @checked($product->out_of_stock == 1) onclick='outOfStock(this);'>
+                                                <label for="out_of_stock" class>Out Of Stock</label>
+                                            </div>
+                                            <div class="col-md-3 form-group">
+                                                <input type="checkbox" id="is_popular" name="is_popular" value="{{ $product->popular }}" @checked($product->popular == 1) onclick='popularClick(this);'>
+                                                <label for="is_popular" class>Is Popular Product</label>
+                                           </div>
+                                           <div class="col-md-3 form-group">
+                                               <input type="checkbox" id="used_part" name="used_part" value="{{ $product->used_part }}" @checked($product->used_part == 1) onclick='usedPart(this);'>
+                                                <label for="used_part" class>Used Part</label>
                                             </div>
                                         </div>
 
                                         <div class ="row">
-                                            <div class="col-md-2 form-group">
-                                                <label for="service" class>Is Service</label>
-                                                <input type="checkbox" id="is_service" name="is_service" value="{{ $product->is_service }}" @checked($product->is_service == 1) onclick='serviceClick(this);'>
-                                             </div>
-                                            <div class="col-md-4 form-group">
-                                                <label for="popular" class>Is Popular Product</label>
-                                                <input type="checkbox" id="is_popular" name="is_popular" value="{{ $product->popular }}" @checked($product->popular == 1) onclick='popularClick(this);'>
-                                           </div>
-                                           <div class="col-md-2 form-group">
-                                                <label for="popular" class>Used Part</label>
-                                                <input type="checkbox" id="used_part" name="used_part" value="{{ $product->used_part }}" @checked($product->used_part == 1) onclick='popularClick(this);'>
-                                            </div>
-                                            <div class="col-md-4 form-group">
-                                                <label for="popular" class>Accesseries</label>
+                                            <div class="col-md-3 form-group">
                                                 <input type="checkbox" id="access_series" name="access_series" value="{{ $product->access_series }}" @checked($product->access_series == 1)  onclick='accessSeries(this);'>
+                                                <label for="access_series" class>Accesseries</label>
                                             </div>
+                                            <div class="col-md-3 form-group">
+                                                <input type="checkbox" id="is_service" name="is_service" value="{{ $product->is_service }}" @checked($product->is_service == 1) onclick='serviceClick(this);'>
+                                                <label for="is_service" class>Is Service</label>
+                                             </div>
                                         </div>
 
                                           <div id="serviceFields" style="display: none;">
@@ -223,7 +231,7 @@
                                         </div>
 
                                         <div class="position-relative form-group">
-                                            <label for="inputLastname" class="">Image</label>
+                                            <label for="inputLastname" class="">Image <span style="color: red;">*</span></label>
                                             <input type="file" name="images[]" id="images" accept="image/*" multiple class="form-control mb-1">
                                         </div>
                         
@@ -316,6 +324,11 @@
         function popularClick(e) {
             e.value = e.checked ? 1 : 0;
             $('#is_popular').val(e.value);
+        }
+
+        function outOfStock(e) {
+            e.value = e.checked ? 1 : 0;
+            $('#out_of_stock').val(e.value);
         }
 
         function usedPart(e) {

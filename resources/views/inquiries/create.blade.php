@@ -35,7 +35,7 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label" for="name">Name:</label>
+                                                    <label class="col-sm-3 col-form-label" for="name">Name: <span style="color: red;">*</span></label>
                                                     <div class="col-sm-9">
                                                         <input class="form-control m-0" id="name" name="name"
                                                             type="text">
@@ -53,8 +53,8 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label" for="mileage">Mileage:</label>
-                                                    <div class="col-sm-9">
+                                                    <label class="col-sm-4 col-form-label" for="mileage">Mileage:<span style="color: red;">*</span></label>
+                                                    <div class="col-sm-8">
                                                         <input class="form-control m-0" id="mileage" name="mileage"
                                                             type="text">
                                                     </div>
@@ -84,7 +84,7 @@
 
                                             <div class="col-md-4">
                                                 <div class="form-group row">
-                                                    <label class="col-sm-3 col-form-label" for="licence_no">Licence No:</label>
+                                                    <label class="col-sm-3 col-form-label" for="licence_no">Licence No: <span style="color: red;">*</span></label>
                                                     <div class="col-sm-9">
                                                         <div class="input-grou">
                                                             <input type="text" class="form-control" id="licence_no" name="licence_no">
@@ -140,7 +140,7 @@
                                             <div class="col-md-5">
                                                 <div class="form-group row">
                                                     <label class="col-sm-4 col-form-label" for="tel_digicel">TEL
-                                                        Digicel:</label>
+                                                        Digicel: <span style="color: red;">*</span></label>
                                                     <div class="col-sm-8">
                                                         <input class="form-control m-0 phone-group" id="tel_digicel"
                                                             name="tel_digicel" type="text">
@@ -162,7 +162,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label" for="tel_lime">TEL
-                                                        Lime:</label>
+                                                        Lime: <span style="color: red;">*</span></label>
                                                     <div class="col-sm-9">
                                                         <input class="form-control m-0 phone-group" id="tel_lime" name="tel_lime"
                                                             type="text">
@@ -175,7 +175,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group row">
                                                     <label class="col-sm-3 col-form-label" for="dob">Date of
-                                                        Birth:</label>
+                                                        Birth: <span style="color: red;">*</span></label>
                                                     <div class="col-sm-9">
                                                         <input type="text" class="form-control m-0" id="datepicker2"
                                                             name="dob">

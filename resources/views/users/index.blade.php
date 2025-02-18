@@ -58,7 +58,6 @@
                                                     <th>#</th>
                                                     <th>Name</th>
                                                     <th>Designation </th>
-                                                    <th>Email</th>
                                                     <th>Role</th>
                                                     @canany(['edit user', 'delete user'])
                                                         <th>Actions</th>
@@ -71,7 +70,6 @@
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $user->first_name . $user->last_names }}</td>
                                                         <td>{{ $user->designation }}</td>
-                                                        <td>{{ $user->email }}</td>
                                                         <td> 
                                                             @if ($user->roles->isNotEmpty())
                                                             {{ $user->roles->pluck('name')[0] }}
@@ -86,6 +84,20 @@
                                                                             <i class="feather icon-edit m-0"></i>
                                                                         </a>
                                                                     @endcan
+
+                                                                    @if($user->status == 'Active')
+                                                                        <button
+                                                                            class="disable-user btn btn-primary primary-btn waves-effect waves-light mr-2"
+                                                                            data-id="{{ $user->id }}" data-value="enabled">
+                                                                            <i class="feather icon-check-circle m-0"></i>
+                                                                        </button>
+                                                                    @else
+                                                                        <button
+                                                                            class="disable-user btn btn-primary primary-btn waves-effect waves-light mr-2"
+                                                                            data-id="{{ $user->id }}" data-value="disabled">
+                                                                            <i class="feather icon-slash m-0"></i>
+                                                                        </button>
+                                                                    @endif
                                                                     @can('delete user')
                                                                         <button data-source="User"
                                                                             data-endpoint="{{ route('users.destroy', $user->id) }}"
@@ -120,6 +132,44 @@
             });
 
             $('#users-list').DataTable();
+
+            $(document).on('click', '.disable-user', function() {
+                var id = $(this).data('id');
+                var value = $(this).data('value');
+                swal({
+                    title: "Are you sure?",
+                    text: `You really want to ${value == 'enabled' ? 'disabled' : 'enabled'} ?`,
+                    type: "warning",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                }, function(isConfirm) {
+                    if (isConfirm) {
+                        $.ajax({
+                            url: '{{ route("disable-user") }}',
+                            method: 'post',
+                            data: {
+                                id: id,
+                                disable_user: value,
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                if(response.success){
+                                    swal({
+                                        title: "Success!",
+                                        text: response.message,
+                                        type: "success",
+                                        showConfirmButton: false
+                                    }) 
+
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 2000);
+                                }
+                            }
+                        })
+                    }
+                });
+            })
         })
     </script>
 

@@ -23,8 +23,9 @@
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <label for="parent_category_id">Parent Category</label>
+                                                <label for="parent_category_id">Parent Category <span style="color: red;">*</span></label>
                                                 <select id="parent_category_id" name="parent_category_id[]" class="form-control chosen-select" multiple="multiple">
+                                                <option value="select_all">Select All</option>
                                                     <option value="product">Product</option>
                                                     <option value="service">Service</option>
                                                     <option value="accessories">Accessories</option>
@@ -34,11 +35,12 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <x-input-text name="name" label="Category Name" value="{{ old('name') }}"></x-input-text>
+                                            <label for="name">Category Name <span style="color: red;">*</span></label>
+                                            <input class="form-control" type="text" name="name" id="name" value="{{ old('name') }}"/>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12 form-group">
-                                                <label for="image" class>Image</label>
+                                                <label for="image" class>Image <span style="color: red;">*</span></label>
                                                 <input type="file" name="image" class="form-control" required id="add-category-image">
                                                 <img src="" id="image_preview" height="50"width="50" name="image" hidden>
                                             </div>

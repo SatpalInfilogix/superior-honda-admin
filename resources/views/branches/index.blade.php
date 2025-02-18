@@ -58,11 +58,9 @@
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>Location</th>
                                                     <th>Unique Code</th>
                                                     <th>Name</th>
-                                                    <th>Address</th>
-                                                    <th>Pincode</th>
+                                                    <th>Status</th>
                                                     @canany(['edit branch', 'delete branch'])
                                                     <th>Actions</th>
                                                     @endcanany
@@ -72,11 +70,9 @@
                                                 @foreach ($branches as $key => $branch)
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
-                                                        <td>{{ !empty($branch->locations->name) ? $branch->locations->name : '' }}</td>
                                                         <td>{{ $branch->unique_code }}</td>
                                                         <td>{{ $branch->name }}</td>
-                                                        <td>{{ $branch->address }}</td>
-                                                        <td>{{ $branch->pincode }}</td>
+                                                        <td>{{ $branch->disable_branch == 0 ? 'Active' : 'Inactive' }}</td>
                                                         @canany(['edit branch', 'delete branch'])
                                                         <td>
                                                             <div class="btn-group btn-group-sm">

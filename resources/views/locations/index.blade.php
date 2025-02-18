@@ -54,11 +54,12 @@
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
-                                        <table id="vehicle-types-list" class="table table-striped table-bordered nowrap">
+                                        <table id="locations" class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Name</th>
+                                                    <th>Status</th>
                                                     @canany(['edit location', 'delete location'])
                                                     <th>Actions</th>
                                                     @endcanany
@@ -69,6 +70,7 @@
                                                     <tr>
                                                         <td>{{ $key + 1 }}</td>
                                                         <td>{{ $location->name }}</td>
+                                                        <td>{{ $location->disable_location == 0 ? 'Active' : 'Inactive' }}</td>
                                                         @canany(['edit location', 'delete location'])
                                                         <td>
                                                             <div class="btn-group btn-group-sm">
@@ -119,7 +121,7 @@
 
     <script>
         $(function() {
-            $('#vehicle-types-list').DataTable();
+            $('#locations').DataTable();
 
             $(document).on('click', '.disable-location', function() {
                 var id = $(this).data('id');

@@ -119,6 +119,33 @@ class InquiryController extends Controller
         }
 
         $inquery = Inquiry::where('id', $inquiry->id)->first();
+
+        if($inquiry->status != 'completed') {
+            if($request->status == 'completed') {
+                $inspection = Inspection::create([
+                    'inquiry_id'    => $inquery->id,
+                    'name'          => $inquiry->name,
+                    'date'          => $inquiry->date,
+                    'mileage'       => $inquiry->mileage,
+                    'vehicle'       => $inquiry->vehicle,
+                    'year'          => $inquiry->year,
+                    'licence_no'    => $inquiry->licence_no,
+                    'address'       => $inquiry->address,
+                    'returning'     => $inquiry->returning,
+                    'color'         => $inquiry->color,
+                    'tel_digicel'   => $inquiry->tel_digicel,
+                    'tel_lime'      => $inquiry->tel_lime,
+                    'dob'           => $inquiry->dob,
+                    'chassis'       => $inquiry->chassis,
+                    'engine'        => $inquiry->engine,
+                    'conditions'    => $inquiry->conditions,
+                    'sign'          => $inquiry->sign,
+                    'sign_date'     => $inquiry->sign_date,
+                    'status'        => 'Pending',
+                    'notes'         => $inquiry->notes
+                ]);
+            }
+        }
         $inquery->update([
             'name'          => $request->name,
             'date'          => $request->date,
@@ -137,7 +164,8 @@ class InquiryController extends Controller
             'conditions'    => isset($productConditions) ? json_encode($productConditions) : NULL,
             'sign'          => $inquiry->sign,
             'sign_date'     => $request->sign_date,
-            'notes'         => $request->notes
+            'notes'         => $request->notes,
+            'status'        => $request->status
         ]);
 
         return redirect()->route('inquiries.index')->with('success', 'Inquiry updated successfully.');

@@ -24,7 +24,7 @@
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <label for="parent_category_id">Parent Category</label>
+                                                <label for="parent_category_id">Parent Category <span style="color: red;">*</span></label>
                                                 <select id="parent_category_id" name="parent_category_id[]" class="form-control chosen-select" multiple="multiple">
                                                     @php
                                                         $selected_categories = [];
@@ -34,6 +34,7 @@
                                                             array_push($selected_categories, $parent_category->parent_category_name);
                                                         @endphp
                                                     @endforeach
+                                                        <option value="select_all">Select All</option>
                                                         <option value="product" {{ in_array('product', $selected_categories) ? 'selected' : '' }}>Product</option>
                                                         <option value="service" {{ in_array('service', $selected_categories) ? 'selected' : '' }}>Service</option>
                                                         <option value="accessories" {{ in_array('accessories', $selected_categories) ? 'selected' : '' }}>Accessories</option>
@@ -43,11 +44,12 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <x-input-text name="name" label="Category Name" value="{{ old('name', $product_category->name) }}"></x-input-text>
+                                            <label for="name">Category Name <span style="color: red;">*</span></label>
+                                            <input class="form-control" type="text" name="name" id="name" value="{{ old('name', $product_category->name) }}"/>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12 form-group">
-                                                <label for="image" class>Image</label>
+                                                <label for="image" class>Image <span style="color: red;">*</span></label>
                                                 <input type="file" name="image" id="add-category-image" class="form-control">
                                                 <div id="imagePreview">
                                                 @if ($product_category->category_image)
@@ -81,6 +83,22 @@
                             .result + '" alt="Selected Image">');
                     }
                     reader.readAsDataURL(file);
+                }
+            });
+
+            $('#parent_category_id').change(function() {
+                if ($(this).val().length === 0) {
+                    $('#parent_category_id_error').css('display', 'block');
+                }else{
+                    $('#parent_category_id_error').css('display', 'none');
+                }
+            });
+            
+            $('#submit_btn').on('click', function() {
+                if ($('#parent_category_id').val().length === 0) {
+                    $('#parent_category_id_error').css('display', 'block');
+                }else{
+                    $('#parent_category_id_error').css('display', 'none');
                 }
             });
 

@@ -22,7 +22,7 @@
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                            <label for="category_id">Category</label>
+                                            <label for="category_id">Category <span style="color: red;">*</span></label>
                                             <select name="category_id" id="category_id" class="form-control">
                                                 <option value="" selected disabled>Select Category</option>
                                                 @foreach($categories as $category)
@@ -56,11 +56,11 @@
 
                                         <div class="row">
                                             <div class="col-md-6 form-group">
-                                                <x-input-text name="variant_name" label="Variant Name" value="{{ old('variant_name') }}"></x-input-text>
+                                                <x-input-text name="variant_name" label="Variant Name" value="{{ old('variant_name') }}" required></x-input-text>
                                             </div>
 
                                             <div class="col-md-6 form-group">
-                                                <label for="fuel_type" class>Fuel Type</label>
+                                                <label for="fuel_type" class>Fuel Type <span style="color: red;">*</span></label>
                                                 <select class="form-control" id="fuel_type" name="fuel_type">
                                                     <option value="" selected disabled>Select Fuel Type</option>
                                                     @foreach($fuelValues as $fuelValue)
@@ -71,7 +71,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="add-car-model">Model Variant Image</label>
+                                            <label for="add-car-model">Model Variant Image <span style="color: red;">*</span></label>
                                             <div class="custom-file">
                                                 <input type="file" name="model_variant_image" class="custom-file-input" id="add-model-variant-image">
                                                 <label class="custom-file-label" for="add-model-variant-image">Choose Car Image</label>
