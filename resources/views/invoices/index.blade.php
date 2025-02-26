@@ -80,8 +80,30 @@
                                     <a href="{{ route('invoices.create') }}" class="btn btn-primary btn-md primary-btn">Add Invoice</a>
                                 </div>
                             </div>
+
                             <div class="card-block">
                                 <div class="dt-responsive table-responsive">
+                                    <form id="invoiceFilterForm" method="GET" action="{{ route('invoices.index') }}" class="mb-3">
+                                        <div class="row mr-0">
+                                            <div class="col-md-2">
+                                                <input type="text" name="invoice_no" class="form-control" placeholder="Invoice Number" value="{{ request('invoice_no') }}">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input type="text" name="customer_name" class="form-control" placeholder="Customer Name" value="{{ request('customer_name') }}">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input type="text" name="mobile" class="form-control" placeholder="Mobile Number" value="{{ request('mobile') }}">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <input type="date" name="date" class="form-control" value="{{ request('date') }}">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button type="submit" class="btn btn-primary primary-btn custom">Filter</button>
+                                                <a href="{{ route('invoices.index') }}" class="btn btn-secondary custom">Reset</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    
                                     <table id="invoice-list" class="table table-striped table-bordered nowrap">
                                         <thead>
                                             <tr>
@@ -302,6 +324,21 @@
 @endforeach
 
 <script>
+    document.getElementById('invoiceFilterForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+        const form = event.target;
+        const formData = new FormData(form);
+        const queryParams = new URLSearchParams();
+    
+        formData.forEach((value, key) => {
+            if (value.trim() !== '') {
+                queryParams.append(key, value);
+            }
+        });
+    
+        window.location.href = form.action + '?' + queryParams.toString();
+    });
+    
     $(function() {
         $('#print-btn').click(function() {
             var printUrl = '{{ route('invoices.print-invoice') }}';

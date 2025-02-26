@@ -31,6 +31,7 @@
                                                 <select name="report-filter" id="report-filter" class="form-control mr-2">
                                                     <option value="" selected disabled>Select Filter</option>
                                                     <option value="Inquiries">Inquiries</option>
+                                                    <option value="Inquiry_Customer">Inquiry Customer</option>
                                                     <option value="Vehicle">Inquiry By Vehicle</option>
                                                     <option value="Product_Sold_Report">Product Sold Report</option>
                                                 </select>
@@ -84,6 +85,23 @@
                                                 <th>Product Name</th>
                                                 <th>Product Quantity</th>
                                                 <th>Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Data will be populated here by DataTables -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="dt-responsive table-responsive" id="customer-table-container" hidden>
+                                    <table id="customer-report-table" class="table table-striped table-bordered nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Customer Name</th>
+                                                <th>Customer Email</th>
+                                                <th>Inquiry Category</th>
+                                                <th>Inquiry Status</th>
+                                                <th>Inquiry Created</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -191,6 +209,50 @@
         responsive: true
     });
 
+    //Apply filter on customer inquiries
+
+    var inqueryCustomerTable = $('#customer-report-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '{{ route("fetch-data") }}',
+            type: 'GET',
+            data: function(d) {
+                d.filter = $('#report-filter').val();
+                d.date = $('#date').val();
+                d.startDate = $('#startDate').val();
+                d.endDate = $('#endDate').val();
+                d.vehicleName = $('#vehicleName').val();
+                d.vehicleMileage = $('#vehicleMileage').val();
+                d.dateOfBirth = $('#dateOfBirth').val();
+                d.vehicleLicenceNo = $('#vehicleLicenceNo').val();
+                d.filterValue = $('#modelValue').val();
+            },
+            dataSrc: function (json) {
+                console.log('Customer Inquiries Table Data:', json); // Debug: Check the data structure
+                return json.data; // Ensure this matches the format returned from the server
+            }
+        },
+        columns: [
+            {
+                data: null,
+                render: function(data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                },
+                title: '#'
+            },
+            { data: 'customer_name', name: 'customer_name' },
+            { data: 'customer_email', name: 'customer_email' },
+            { data: 'customer_inquiry_category', name: 'customer_inquiry_category' },
+            { data: 'inquiry_status', name: 'inquiry_status' },
+            { data: 'inquiry_created_at', name: 'inquiry_created_at' }
+        ],
+        paging: true,
+        pageLength: 10,
+        lengthMenu: [10, 20, 25, 50, 100],
+        responsive: true
+    });
+
     // Apply filter button click event
     $('#filter-button').on('click', function(event) {
         event.preventDefault();
@@ -213,6 +275,13 @@
                 $('.day-week-month-filter').removeAttr('hidden');
                 $('#product-report-table').show();
                 productTable.ajax.reload();
+            } else if (filterValue === 'Inquiry_Customer') { // Fix: Use filterValue instead of filterType
+                $('#table-container').attr('hidden', true);
+                $('#customer-table-container').removeAttr('hidden', true);
+                $('.day-week-month-filter').removeAttr('hidden');
+                $('#customer-report-table').show();
+                $('#product-report-table').hide();
+                inqueryCustomerTable.ajax.reload();
             } else {
                 $('#product-table-container').attr('hidden', true);
                 $('#table-container').removeAttr('hidden');
@@ -253,7 +322,9 @@
         var filterType = $('#report-filter').val();
         if (filterType === 'Product_Sold_Report') {
             productTable.ajax.reload(); // Reload product table
-        } else {
+        }else if(filterType === 'Inquiry_Customer'){
+            inqueryCustomerTable.ajax.reload();
+        }else {
             inquiriesTable.ajax.reload(); // Reload inquiries table
         }
         $('#monthModal').modal('hide');
@@ -278,7 +349,9 @@
         var filterType = $('#report-filter').val();
         if (filterType === 'Product_Sold_Report') {
             productTable.ajax.reload(); // Reload product table
-        } else {
+        }else if(filterType === 'Inquiry_Customer'){
+            inqueryCustomerTable.ajax.reload();
+        }else {
             inquiriesTable.ajax.reload(); // Reload inquiries table
         }
         $('#dayModal').modal('hide');
@@ -312,7 +385,9 @@
         var filterType = $('#report-filter').val();
         if (filterType === 'Product_Sold_Report') {
             productTable.ajax.reload(); // Reload product table
-        } else {
+        } else if(filterType === 'Inquiry_Customer'){
+            inqueryCustomerTable.ajax.reload();
+        }else {
             inquiriesTable.ajax.reload(); // Reload inquiries table
         }
         $('#weekModal').modal('hide');
@@ -324,8 +399,14 @@
         if (filterValue === 'Product_Sold_Report') {
             $('#product-table-container').show();
             $('#table-container').hide();
+            $('#customer-report-table').hide(); // Hide customer table
+        } else if (filterValue === 'Inquiry_Customer') { // Fix: Use filterValue instead of filterType
+            $('#customer-report-table').show();
+            $('#product-table-container').hide();
+            $('#table-container').hide();
         } else {
             $('#product-table-container').hide();
+            $('#customer-report-table').hide();
             $('#table-container').show();
         }
     });
@@ -388,7 +469,6 @@
         var vehicleLicense = $('#vehicle-license').val();
         var filterValue = $('#report-filter').val();
 
-        // Validate vehicle name
         if (!vehicleName) {
             $('.vechicle-name-error-message').html('Please select vehicle name.');
             return false;
@@ -396,7 +476,6 @@
             $('.vechicle-name-error-message').html('');
         }
 
-        // Set hidden input values
         $('#date').val('');
         $('#startDate').val('');
         $('#endDate').val('');
@@ -406,9 +485,12 @@
         $('#dateOfBirth').val(dob);
         $('#vehicleLicenceNo').val(vehicleLicense);
 
-        // Reload DataTable with AJAX
-        // Hide the modal
-        inquiriesTable.ajax.reload();
+        if (filterValue === 'Inquiry_Customer') {
+            inqueryCustomerTable.ajax.reload();
+        } else {
+            inquiriesTable.ajax.reload();
+        }
+
         $('#vehicleModal').modal('hide');
     });
 

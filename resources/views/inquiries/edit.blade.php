@@ -404,8 +404,8 @@
                                             <label class="col-sm-4 col-form-label">Status</label>
                                             <select name="status" id="status" class="form-control">
                                                 <option value="pending" {{ $inquiry->status == 'pending' ? 'selected' : ''; }}>Pending</option>
-                                                <option value="in progress" {{ $inquiry->status == 'in progress' ? 'selected' : ''; }}>In Progress</option>
-                                                <option value="completed" {{ $inquiry->status == 'completed' ? 'selected' : ''; }}>Completed</option>
+                                                <option value="In Progress" {{ $inquiry->status == 'In Progress' ? 'selected' : ''; }}>In Progress</option>
+                                                <option value="Completed" {{ $inquiry->status == 'Completed' ? 'selected' : ''; }}>Completed</option>
                                             </select>
                                         </div>
                                     </div>

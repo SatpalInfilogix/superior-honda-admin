@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\Inquiry;
+use App\Models\CustomerInquiry;
 use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Validator;
@@ -81,7 +82,11 @@ class ReportsController extends Controller
                 // Paginate the results
                 $formattedData = $formattedData->slice($start, $perPage)->values();
 
-            } else {
+            }else if ($request->filter == 'Inquiry_Customer') {
+                $formattedData = CustomerInquiry::all();
+                $totalRecords = CustomerInquiry::count();
+            }
+            else {
                 $query = Inquiry::query(); // Start with base query
 
                 if ($request->filter == 'Inquiries') {
@@ -400,28 +405,60 @@ class ReportsController extends Controller
         return view('reports.graphical-reports');
     }
     public function showLatestInqueries(){
-        // Query to fetch the month name and total products for each month
-       $inquiriesByMonth = Inquiry::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, DATE_FORMAT(created_at, "%b") as month_name, COUNT(*) as total_count')
-        ->groupBy('month', 'month_name')
-        ->orderBy('month', 'desc')
-        ->take(12) // Limit to the last 12 months, adjust as needed
-        ->get();
+        $inquiriesByMonth = Inquiry::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, DATE_FORMAT(created_at, "%b") as month_name, COUNT(*) as total_count')
+        ->groupBy('month', 'month_name');
+    
+        $customerInquiriesByMonth = CustomerInquiry::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, DATE_FORMAT(created_at, "%b") as month_name, COUNT(*) as total_count')
+            ->groupBy('month', 'month_name');
+        
+        $combinedData = $inquiriesByMonth
+            ->unionAll($customerInquiriesByMonth)
+            ->get()
+            ->groupBy('month')
+            ->map(function ($group) {
+                return [
+                    'month' => $group->first()->month,
+                    'month_name' => $group->first()->month_name,
+                    'total_count' => $group->sum('total_count'),
+                ];
+            })
+            ->values();
+    
 
-    return response()->json($inquiriesByMonth);
+        return response()->json($combinedData);
     }
 
     public function getInquiriesByStatus()
     {
-        // Query to fetch inquiries grouped by status
-        $pendingInquiries = Inquiry::where('status', 'pending')->get();
-        $completedInquiries = Inquiry::where('status', 'completed')->get();
-        $inProgressInquiries = Inquiry::where('status', 'in progress')->get();
+// Query to fetch inquiries grouped by status
+$allInquiriesByStatus = [
+    'pending' => Inquiry::select('id', 'status', 'created_at')
+        ->where('status', 'pending')
+        ->union(
+            CustomerInquiry::select('id', 'inquiry_status as status', 'created_at')
+                ->where('inquiry_status', 'pending')
+        )
+        ->get(),
 
-        return response()->json([
-            'pending' => $pendingInquiries,
-            'completed' => $completedInquiries,
-            'inProgress' => $inProgressInquiries,
-        ]);
+    'completed' => Inquiry::select('id', 'status', 'created_at')
+        ->where('status', 'completed')
+        ->union(
+            CustomerInquiry::select('id', 'inquiry_status as status', 'created_at')
+                ->where('inquiry_status', 'closed')
+        )
+        ->get(),
+
+    'inProgress' => Inquiry::select('id', 'status', 'created_at')
+        ->where('status', 'in progress')
+        ->union(
+            CustomerInquiry::select('id', 'inquiry_status as status', 'created_at')
+                ->where('inquiry_status', 'in_process')
+        )
+        ->get(),
+];
+
+return response()->json($allInquiriesByStatus);
+
     }
 
 
