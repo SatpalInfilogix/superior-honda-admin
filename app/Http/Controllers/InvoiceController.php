@@ -11,9 +11,26 @@ use App\Models\Inspection;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 class InvoiceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $invoices = Invoice::with('order')->latest()->get();
+        $invoices = Invoice::with('order')->latest();
+        if ($request->filled('invoice_no')) {
+            $invoices->where('invoice_no', 'like', '%' . $request->invoice_no . '%');
+        }
+        if ($request->filled('customer_name')) {
+            $invoices->whereHas('user', function ($query) use ($request) {
+                $query->where('first_name', 'like', '%' . $request->customer_name . '%');
+            });
+        }
+        if ($request->filled('mobile')) {
+            $invoices->whereHas('user', function ($query) use ($request) {
+                $query->where('phone_number', $request->mobile);
+            });
+        }
+        if ($request->filled('date')) {
+            $invoices->whereDate('created_at', $request->date);
+        }
+        $invoices = $invoices->get();
         foreach ($invoices as $key => $invoice) {
             if ($invoice->type === "order") {  // Use '===' for comparison
                 $invoices[$key]['billingAddress'] = json_decode(optional($invoice->order)->billing_address, true);

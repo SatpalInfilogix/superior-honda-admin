@@ -174,6 +174,9 @@ class UserController extends Controller
         ]);
 
         $user = User::where('id', $user->id)->first();
+        if ($request->has('password')) {
+            $user->password = Hash::make($request->password);
+        }
         $user->update([
             'first_name'         => $request->first_name,
             'last_name'          => $request->last_name,

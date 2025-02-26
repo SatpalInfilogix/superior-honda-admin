@@ -26,15 +26,24 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         if(!Gate::allows('view product')) {
             abort(403);
         }
         $products = Product::whereNull('deleted_at')->with('category', 'productCategory')->whereHas('productCategory', function ($query) {
                         $query->whereNull('deleted_at');
-                    })->latest()->get();
-
+                    })->latest();
+        if ($request->filled('product')) {
+            $products->where('product_name','like', '%' .$request->product. '%');
+        }
+        if ($request->filled('product_code')) {
+            $products->where('product_code', $request->product_code);
+        }
+        if ($request->filled('item_number')) {
+            $products->where('item_number', $request->item_number);
+        }
+        $products = $products->get();
         // foreach($products as $key=> $product) {
         //     $genertorHTML = new BarcodeGeneratorHTML();
         //     $products[$key]['barcode'] = $genertorHTML->getBarcode($product->product_code. ' ' .$product->product_name, $genertorHTML::TYPE_CODE_128,2);

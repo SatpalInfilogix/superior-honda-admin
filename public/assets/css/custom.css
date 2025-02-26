@@ -128,3 +128,11 @@ a.relative.inline-flex.items-center.px-4.py-2.text-sm.font-medium.text-gray-700.
     width: 173%;
     margin-left: -104px;
 }
+
+a.btn.btn-secondary.custom {
+    padding: 6px 40px;
+}
+
+button.btn.btn-primary.primary-btn.custom {
+    padding: 6px 46px;
+}

@@ -64,6 +64,25 @@
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
+                                        <form id="productFilterForm" method="GET" action="{{ route('products.index') }}" class="mb-3">
+                                            <div class="row mr-0">
+                                                <div class="col-md-3">
+                                                    <input name="product" id="productSearch" type="text" class="form-control product-autocomplete"
+                                                    value="{{ request('product') }}" placeholder="Enter Product Name">
+                                                    <div class="autocomplete-items"></div>                                                
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="text" name="product_code" class="form-control" placeholder="Enter Product Code" value="{{ request('product_code') }}">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="text" name="item_number" class="form-control" placeholder="Enter Item Number" value="{{ request('item_number') }}">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <button type="submit" class="btn btn-primary primary-btn custom">Filter</button>
+                                                    <a href="{{ route('products.index') }}" class="btn btn-secondary custom">Reset</a>
+                                                </div>
+                                            </div>
+                                        </form>
                                         <table id="products-list"
                                             class="table table-striped table-bordered nowrap">
                                             <thead>
@@ -150,6 +169,55 @@
 
     <x-include-plugins dataTable></x-include-plugins>
     <script>
+        document.getElementById('productFilterForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            const form = event.target;
+            const formData = new FormData(form);
+            const queryParams = new URLSearchParams();
+        
+            formData.forEach((value, key) => {
+                if (value.trim() !== '') {
+                    queryParams.append(key, value);
+                }
+            });
+        
+            window.location.href = form.action + '?' + queryParams.toString();
+        });
+        $(document).ready(function () {
+            $('body').on('input', '.product-autocomplete', function () {
+                var input = $(this).val().trim();
+                var autocompleteContainer = $(this).siblings('.autocomplete-items');
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('product.autocomplete') }}',
+                    data: { input: input },
+                    success: function (response) {
+                        autocompleteContainer.empty();
+                        if (response.length > 0) {
+                            $.each(response, function (key, value) {
+                                var autocompleteItem = '<div class="autocomplete-item" data-id="' + value.id + '">' + value.product_name + '</div>';
+                                autocompleteContainer.append(autocompleteItem);
+                            });
+                            autocompleteContainer.show();
+                        } else {
+                            autocompleteContainer.hide();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Autocomplete AJAX error:', status, error);
+                    }
+                });
+            });
+
+            $('body').on('click', '.autocomplete-item', function() {
+                var productName = $(this).text();
+                var productId = $(this).data('id');
+                $('#productSearch').val(productName);
+                $(this).closest('.autocomplete-items').empty().hide();
+            });
+        });
+
         $(function() {
             $('[name="file"]').change(function() {
                 $(this).parents('form').submit();

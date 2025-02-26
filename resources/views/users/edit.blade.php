@@ -96,6 +96,18 @@
                                                 <span class="form-control-danger" id="parent_category_id_error" style="display:none; color: #dc3545; font-size:12px;">Please select atleast 1 category.</span>
                                             </div>
                                             <div class="col-md-4 form-group">
+                                                <label for="password">Password</label>
+                                                <div class="input-group mb-0">
+                                                    <input type="password" id="password" name="password" class="form-control">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text primary-btn">
+                                                            <i id="togglePassword" class="fas fa-eye"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <label for="password" class="error"></label> <!-- Error message will appear here -->
+                                            </div>
+                                            <div class="col-md-4 form-group">
                                                 <label for="branch">Additional Detail</label>
                                                 <textarea id="additional_detail" name="additional_detail" class="form-control" rows="2" cols="50">{{ $user->additional_details }}</textarea>
                                             </div>
@@ -164,7 +176,14 @@
             $(".chosen-select").chosen({
                 width: '100%',
                 no_results_text: "Oops, nothing found!"
-            })
+            });
+
+            $('#togglePassword').on('click', function() {
+                const passwordField = $('#password');
+                const type = passwordField.attr('type') === 'password' ? 'text' : 'password';
+                passwordField.attr('type', type);
+                $(this).toggleClass('fa-eye fa-eye-slash');
+            });
         })
     </script>
 @endsection

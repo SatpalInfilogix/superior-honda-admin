@@ -12,9 +12,23 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::with('user')->latest()->get();
+        $orders = Order::with('user')->latest();
+        if ($request->filled('order_id')) {
+            $orders->where('order_id', $request->order_id);
+        }
+        if ($request->filled('mobile')) {
+            $orders->where('phone_number', $request->mobile);
+        }
+        if ($request->filled('order_status')) {
+            $orders->where('status', $request->order_status);
+        }
+        if ($request->filled('date')) {
+            $orders->whereDate('created_at', $request->date);
+        }
+        $orders = $orders->get();
+
         foreach($orders as $key => $order){
             $billingAddress = json_decode($order->billing_address);
             $shippingAddress = json_decode($order->shipping_address);

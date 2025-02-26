@@ -14,4 +14,7 @@ class Invoice extends Model
     {
         return $this->belongsTo(Order::class, 'order_id', 'id');
     }
+    public function user(){
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }
