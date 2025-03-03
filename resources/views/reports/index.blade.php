@@ -30,10 +30,10 @@
                                             <div class="d-flex">
                                                 <select name="report-filter" id="report-filter" class="form-control mr-2">
                                                     <option value="" selected disabled>Select Filter</option>
-                                                    <option value="Inquiries">Inquiries</option>
-                                                    <option value="Inquiry_Customer">Inquiry Customer</option>
+                                                    <option value="Inquiries" data-href="{{ route('export.inquiry')}}">Inquiries</option>
+                                                    <option value="Inquiry_Customer" data-href="{{ route('customer.inquiry.export')}}">Customer Inquiry</option>
                                                     <option value="Vehicle">Inquiry By Vehicle</option>
-                                                    <option value="Product_Sold_Report">Product Sold Report</option>
+                                                    <option value="Product_Sold_Report" data-href="{{ route('product.sold.export') }}">Product Sold Report</option>
                                                 </select>
                                                 <input type="hidden" name="dataFilter" value="" id="dataFilter">
                                                 <input type="hidden" name="dailyFilter" value="" id="dailyFilter">
@@ -52,6 +52,7 @@
                                     </div>
                                     <div class="col-md-6 form-group day-week-month-filter" hidden>
                                         <div>
+                                            <a href="#" style="color:white;" id="export-url" class="btn btn-primary primary-btn float-right mr-2" data-filter="export-url">Export</a>
                                             <button type="button" id="day-filter" class="btn btn-primary primary-btn float-right mr-2" data-filter="Day">Day</button>
                                             <button type="button" id="week-filter" class="btn btn-primary primary-btn float-right mr-2" data-filter="Week">Week</button>
                                             <button type="button" id="month-filter" class="btn btn-primary primary-btn float-right mr-2" data-filter="Month">Month</button>
@@ -396,6 +397,8 @@
     // Handle table visibility based on filter
     $('#report-filter').on('change', function() {
         var filterValue = $(this).val();
+        var exportUrl = $('#report-filter option:selected').attr('data-href');
+        $('#export-url').attr('href',exportUrl);
         if (filterValue === 'Product_Sold_Report') {
             $('#product-table-container').show();
             $('#table-container').hide();

@@ -81,32 +81,41 @@ class CustomerInquiryController extends Controller
                 ->pluck('parent_category_name', 'product_category_id')
                 ->toArray(); // Convert to array
 
-            foreach ($customer_inquiries as $customer_enquiry) {
+                foreach ($customer_inquiries as $customer_enquiry) {
                 if ($customer_enquiry->customer_inquiry_category == 'product') {
+                    if ($customer_enquiry->inquiry_product_id === null || $customer_enquiry->inquiry_product_id === 1) {
+                        $final_customer_enquiry_data[] = $customer_enquiry; // Add when inquiry_product_id is null or 1
+                        continue; // Skip further checks
+                    }
+                
                     $category_id = $productCategoryIds[$customer_enquiry->inquiry_product_id] ?? null;
-
-                    if ($category_id && isset($parentCategories[$category_id]) && in_array($parentCategories[$category_id], $userCategory)) {
+                
+                    // Include inquiry if product category matches or if inquiry_product_id is null
+                    if ($category_id === null || (isset($parentCategories[$category_id]) && in_array($parentCategories[$category_id], $userCategory))) {
                         $final_customer_enquiry_data[] = $customer_enquiry;
                     }
                 } else {
-                    // Handle promotions
-                    $promotion_id = $customer_enquiry->inquiry_product_id ?? null;
-
-                    if ($promotion_id) {
-                        $promotion_product_ids = PromotionProducts::where('promotion_id', $promotion_id)
-                            ->pluck('product_id')
-                            ->toArray();
-
-                        $category_ids = array_values(array_intersect_key($promotionsCategoryIds, array_flip($promotion_product_ids)));
-
-                        $category_parent_categories = array_unique(array_intersect_key($promotionParentCategories, array_flip($category_ids)));
-
-                        if (!empty($category_parent_categories) && array_intersect($category_parent_categories, $userCategory)) {
-                            $final_customer_enquiry_data[] = $customer_enquiry;
+                        // Handle promotions
+                        $promotion_id = $customer_enquiry->inquiry_product_id ?? null;
+                
+                        if ($promotion_id) {
+                            $promotion_product_ids = PromotionProducts::where('promotion_id', $promotion_id)
+                                ->pluck('product_id')
+                                ->toArray();
+                
+                            $category_ids = array_values(array_intersect_key($promotionsCategoryIds, array_flip($promotion_product_ids)));
+                
+                            $category_parent_categories = array_unique(array_intersect_key($promotionParentCategories, array_flip($category_ids)));
+                
+                            if (!empty($category_parent_categories) && array_intersect($category_parent_categories, $userCategory)) {
+                                $final_customer_enquiry_data[] = $customer_enquiry;
+                            }
+                        } elseif ($promotion_id === null) {
+                            $final_customer_enquiry_data[] = $customer_enquiry; // Add when inquiry_product_id is null for promotions
                         }
                     }
                 }
-            }
+
         }
 
         $branches = Branch::whereNull('deleted_at')->get();

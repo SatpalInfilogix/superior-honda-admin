@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\Product;
 use Carbon\Carbon;
 use App\Models\Invoice;
+use Illuminate\Support\Facades\Gate;
 use Auth;
 
 class DashboardController extends Controller
@@ -19,6 +20,9 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        if(!Gate::allows('view dashboard')) {
+            abort(403);
+        }
         $order = new Order();
         $completedOrdersCount = count($order->getCompletedOrders());
         $ordersInQueueCount = count($order->getOrdersInQueue());

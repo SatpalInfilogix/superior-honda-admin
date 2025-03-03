@@ -36,6 +36,10 @@ use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\PromotionsController;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\InquiryExport;
+use App\Exports\CustomerInquiryExport;
+use App\Exports\ProductSoldExport;
 
 Route::get('/inquiries/status', [YourControllerName::class, 'getInquiriesByStatus'])->name('inquiries.by-status');
 
@@ -77,6 +81,17 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
         'testimonials'          => TestimonialController::class,
         'faqs'                  => FaqController::class,
     ]);
+
+    //Export Routes
+    Route::get('export-inquiry', function () {
+        return Excel::download(new InquiryExport, 'inquiry.xlsx');
+    })->name('export.inquiry');
+    Route::get('customer-inquiry-export', function () {
+        return Excel::download(new CustomerInquiryExport, 'customer-inquiry.xlsx');
+    })->name('customer.inquiry.export');
+    Route::get('product-sold-export', function (Illuminate\Http\Request $request) {
+        return Excel::download(new ProductSoldExport($request), 'product-sold.xlsx');
+    })->name('product.sold.export');
 });
 
 Route::get('/', function (){
@@ -151,6 +166,8 @@ Route::get('download-vehicle-sample', function() {
     $file = public_path('assets/sample-vehicles/vehicle.csv');
     return Response::download($file);
 });
+
+
 /************* End Download Sample files */
 
 // routes/web.php
@@ -193,6 +210,8 @@ Route::get('/autocomplete', [InvoiceController::class,'autocomplete'])->name('au
 Route::get('/product/autocomplete', [SalesProductController::class,'productAutocomplete'])->name('product.autocomplete');
 Route::get('/autocomplete-model', [ServiceController::class, 'autocompleteModel'])->name('autocomplete-model');
 Route::get('/getProductDetails', [InvoiceController::class,'productDetails'])->name('getProductDetails');
+Route::get('/user/autocomplete', [InvoiceController::class,'userAutocomplete'])->name('user.autocomplete');
+
 
 
 //Download invoice pdf routes

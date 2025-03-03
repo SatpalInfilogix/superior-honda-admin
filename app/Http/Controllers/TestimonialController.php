@@ -72,6 +72,7 @@ class TestimonialController extends Controller
             $file = $request->file('image');
             $filename = time().'.'.$file->getClientOriginalExtension();
             $file->move(public_path('uploads/testimonals/'), $filename);
+            $testimonial->image = 'uploads/testimonals/'.$filename;
         }
 
         $testimonial->update([
@@ -79,7 +80,6 @@ class TestimonialController extends Controller
             'designation' => $request->designation,
             'heading' => $request->heading,
             'feedback' => $request->feedback,
-            'image' => isset($filename) ? 'uploads/testimonals/'.$filename : $oldImage
         ]);
 
         return redirect()->route('testimonials.index')->with('success', 'Testimonial updated successfully.');

@@ -136,3 +136,11 @@ a.btn.btn-secondary.custom {
 button.btn.btn-primary.primary-btn.custom {
     padding: 6px 46px;
 }
+.status-column span {
+    background: #ed1d24;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+

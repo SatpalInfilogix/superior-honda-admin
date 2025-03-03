@@ -1,7 +1,8 @@
 <nav class="pcoded-navbar">
     <div class="nav-list">
         <div class="pcoded-inner-navbar main-menu">
-            <div class="pcoded-navigation-label">Dashboard</div>
+            @canany(['view dashboard'])
+                <div class="pcoded-navigation-label">Dashboard</div>
             <ul class="pcoded-item pcoded-left-item">
                 <li @class(['active' => Request::is('dashboard')])>
                     <a href="{{ route('dashboard.index') }}" class="waves-effect waves-dark">
@@ -12,6 +13,7 @@
                     </a>
                 </li>
             </ul>
+            @endcanany
 
             @canany(['view invoice', 'view product', 'view order'])
                 <div class="pcoded-navigation-label">Sales</div>

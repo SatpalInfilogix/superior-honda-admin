@@ -147,27 +147,27 @@
                                             <th>#</th>
                                             <th>Name</th>
                                             <th>Vehicle</th>
-                                            <th>Year</th>
                                             <th>Date</th>
                                             <th>Actions</th>
+                                            <th>Notes</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($pendingInquiries as $key => $inquiry)
                                         <tr>
-                                           <td>{{ ++$key }}</td>
+                                            <td>{{ ++$key }}</td>
                                             <td>{{ ucwords($inquiry->name) }}</td>
                                             <td>{{ $inquiry->vehicle }}</td>
-                                            <td>{{ $inquiry->year }}</td>
                                             <td>{{ $inquiry->date }}</td>
                                             <td>
-                                                            <div class="btn-group btn-group-sm">
-                                                                <a href="{{ route('inquiries.show', $inquiry->id) }}"
-                                                                    class="btn btn-primary waves-effect waves-light mr-2 primary-btn">
-                                                                    <i class="feather icon-eye m-0"></i>
-                                                                </a>
-                                                            </div>
-                                                        </td>
+                                                <div class="btn-group btn-group-sm">
+                                                    <a href="{{ route('inquiries.show', $inquiry->id) }}"
+                                                        class="btn btn-primary waves-effect waves-light mr-2 primary-btn">
+                                                        <i class="feather icon-eye m-0"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td>{{ $inquiry->notes }}</td>
                                         </tr>
                                         @endforeach
                                         <!-- Add more inquiries as needed -->

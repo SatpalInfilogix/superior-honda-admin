@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Invoice;
 use App\Models\Job;
 use App\Models\Product;
+use App\Models\User;
 use App\Models\Service;
 use App\Models\Inspection;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
@@ -339,7 +340,20 @@ class InvoiceController extends Controller
         $invoices = Invoice::where('id', $id)->first();
         return view('invoices.print.invoice-detail', compact('invoices'));
     }
-
     
-
+    public function userAutocomplete(Request $request)
+    {
+        $parts = explode(' ', $request->input('input'), 2); 
+        $firstName = $parts[0]; 
+        $lastName = $parts[1] ?? ''; 
+        
+        $users = User::where('first_name', 'like', '%' . $firstName . '%')
+            ->where('last_name', 'like', '%' . $lastName . '%')
+            ->whereHas('roles', function ($query) {
+                $query->where('name', 'customer'); // Filtering users with "customer" role
+            })
+            ->get(['id', 'first_name', 'last_name']);
+        
+        return response()->json($users);
+    }
 }
