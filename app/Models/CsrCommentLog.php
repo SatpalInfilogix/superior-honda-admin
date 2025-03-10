@@ -13,7 +13,7 @@ class CsrCommentLog extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'customer_inquiry_csr_comment_log';
+    protected $table = 'customer_inquiry_logs';
     protected $guarded=[];
 
     public function customer_inquiry()

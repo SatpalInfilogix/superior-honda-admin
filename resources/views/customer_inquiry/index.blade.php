@@ -36,10 +36,12 @@
                                     <h5>Customer Inquiry</h5>
                                     <div class="float-right">
                                         <select class="form-control" name="branch" id="branch">
+                                            
                                             @if(!empty($branches))
                                                 @php
                                                     $branch_selected = !empty($selected_branch_id) ? $selected_branch_id : Auth::user()->branch_id;
                                                 @endphp
+                                                <option value="all" {{ 'all' == $branch_selected ? 'selected' : ''}}>All Branches</option>
                                                 @foreach($branches as $branch)
                                                     <option value="{{$branch->id}}" {{ $branch->id == $branch_selected ? 'selected' : ''}}>{{$branch->name}}</option>
                                                 @endforeach
@@ -49,6 +51,29 @@
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
+                                        <form id="inquiryFilterForm" method="GET" action="{{ route(request()->route()->getName(), $selected_branch_id) }}" class="mb-3">
+                                            <div class="row mr-0">
+                                                <div class="col-md-3">
+                                                    <input type="text" name="mobile" class="form-control" placeholder="Mobile Number" value="{{ request('mobile') }}">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <select name="status"  class="form-control">
+                                                        <option value="" selected>Select Status</option>
+                                                        <option value="pending" @selected(request('status') == 'pending')>Pending</option>
+                                                        <option value="in_process" @selected(request('status') == 'in_process')>Processing</option>
+                                                        <option value="closed" @selected(request('status') == 'closed')>Closed</option>
+                                                        <option value="failed" @selected(request('failed') == 'cancelled')>Cancelled</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <input type="date" name="date" class="form-control" value="{{ request('date') }}">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <button type="submit" class="btn btn-primary primary-btn custom">Filter</button>
+                                                    <a href="{{ route(request()->route()->getName(),$selected_branch_id) }}" class="btn btn-secondary custom">Reset</a>
+                                                </div>
+                                            </div>
+                                        </form>
                                         <table id="customer-inquiry" class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
@@ -66,22 +91,22 @@
                                                     @foreach ($final_customer_enquiry_data as $key => $customer_inquiry)
                                                         <tr>
                                                             <td>{{ $key + 1 }}</td>
-                                                            <td>{{ ucfirst($customer_inquiry->customer_name) }}</td>
+                                                            <td>{{ ucfirst($customer_inquiry->customer_name) ?? '' }}</td>
                                                             @if($customer_inquiry->inquiry_status == 'pending')
-                                                            <td style="color:blue">{{ ucfirst($customer_inquiry->inquiry_status) }}</td>
+                                                            <td style="color:blue">{{ ucfirst($customer_inquiry->inquiry_status) ?? ''}}</td>
                                                             @elseif($customer_inquiry->inquiry_status == 'in_process')
                                                             <td style="color:#ff6a00">In Process</td>
                                                             @elseif($customer_inquiry->inquiry_status == 'closed')
-                                                            <td style="color:green">{{ ucfirst($customer_inquiry->inquiry_status) }}</td>
+                                                            <td style="color:green">{{ ucfirst($customer_inquiry->inquiry_status ?? '') }}</td>
                                                             @elseif($customer_inquiry->inquiry_status == 'failed')
-                                                            <td style="color:red">{{ ucfirst($customer_inquiry->inquiry_status) }}</td>
+                                                            <td style="color:red">{{ ucfirst($customer_inquiry->inquiry_status) ?? ''}}</td>
                                                             @endif
-                                                            <td>{{ date('d-m-Y h:i a', strtotime($customer_inquiry->inquiry_created_at)) }}</td>
+                                                            <td>{{ date('d-m-Y h:i a', strtotime($customer_inquiry->inquiry_created_at)) ?? '' }}</td>
                                                             @canany(['edit customer inquiry', 'delete customer inquiry'])
                                                             <td>
                                                                 <div class="btn-group btn-group-sm">
                                                                     @if(Auth::user()->can('edit customer inquiry'))
-                                                                        <a href="{{ route('customer-inquiry.edit', $customer_inquiry->id) }}"
+                                                                        <a href="{{ route('customer-inquiry.edit', $customer_inquiry->id ?? '') }}"
                                                                             class="btn btn-primary primary-btn waves-effect waves-light mr-2">
                                                                             <i class="feather icon-edit m-0"></i>
                                                                         </a>
@@ -128,6 +153,22 @@
 
     <script>
         $(function() {
+            document.getElementById('inquiryFilterForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            const form = event.target;
+            const formData = new FormData(form);
+            const queryParams = new URLSearchParams();
+        
+            formData.forEach((value, key) => {
+                if (value.trim() !== '') {
+                    queryParams.append(key, value);
+                }
+            });
+        
+                window.location.href = form.action + '?' + queryParams.toString();
+            });
+
+
             $('#customer-inquiry').DataTable();
 
             $(document).on('click', '.disable-customer-inquiry', function() {
