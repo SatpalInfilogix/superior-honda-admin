@@ -247,7 +247,7 @@ class UserController extends Controller
             abort(403);
         }
 
-        $user = User::where('id', $user->id)->delete();
+        $userDeleted = User::where('id', $user->id)->delete();
 
         $parent_categories = UserParentCategories::where('user_id', $user->id)->delete();
 

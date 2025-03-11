@@ -123,24 +123,55 @@ class ProductCategoryController extends Controller
         $new_parent_categories = $request->parent_category_id;
 
         // categories to add (new but not in old)
-        $categories_to_add = array_diff($new_parent_categories, $old_parent_categories);
+        if(!empty($old_parent_categories))
+        {
+            if(!empty($new_parent_categories))
+            {
+                $categories_to_add = array_diff($new_parent_categories, $old_parent_categories);
+            }else{
+                $category_to_add = null;
+            }
 
-        // categories to delete (old but not in new)
-        $categories_to_delete = array_diff($old_parent_categories, $new_parent_categories);
-
-        // Add new categories
-        foreach ($categories_to_add as $category_to_add) {
-            ProductParentCategories::create([
-                'product_category_id' => $category->id,
-                'parent_category_name' => $category_to_add
-            ]);
+        }else{
+            if(!empty($new_parent_categories))
+            {
+                $categories_to_add = $new_parent_categories;
+            }else{
+                $category_to_add = null;
+            }
         }
 
-        // Delete removed categories
-        foreach ($categories_to_delete as $category_to_delete) {
-            ProductParentCategories::where('product_category_id', $product->id)
-                ->where('parent_category_name', $category_to_delete)
-                ->delete();
+        // categories to delete (old but not in new)
+        if(!empty($old_parent_categories))
+        {
+            if(!empty($new_parent_categories))
+            {
+                $categories_to_delete = array_diff($old_parent_categories, $new_parent_categories);
+            }else{
+                $categories_to_delete = $new_parent_categories;
+            }
+
+        }
+
+        // Add new categories
+        if(!empty($categories_to_add))
+        {
+            foreach ($categories_to_add as $category_to_add) {
+                ProductParentCategories::create([
+                    'product_category_id' => $category->id,
+                    'parent_category_name' => $category_to_add
+                ]);
+            }
+        }
+
+        if(!empty($categories_to_delete))
+        {
+            // Delete removed categories
+            foreach ($categories_to_delete as $category_to_delete) {
+                ProductParentCategories::where('product_category_id', $category->id)
+                    ->where('parent_category_name', $category_to_delete)
+                    ->delete();
+            }
         }
 
         return redirect()->route('product-categories.index')->with('success', 'Product category update successfully');
