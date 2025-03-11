@@ -47,6 +47,11 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'edit branch']);
         Permission::create(['name' => 'delete branch']);
 
+        Permission::create(['name' => 'view location']);
+        Permission::create(['name' => 'edit location']);
+        Permission::create(['name' => 'create location']);
+        Permission::create(['name' => 'delete location']);
+
         Permission::create(['name' => 'view bay']);
         Permission::create(['name' => 'create bay']);
         Permission::create(['name' => 'edit bay']);
@@ -113,8 +118,6 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'edit settings']);
         Permission::create(['name' => 'create settings']);
         Permission::create(['name' => 'delete settings']);
-
-        Permission::create(['name' => 'view inquiry']);
 
         Permission::create(['name' => 'view customer inquiry']);
         Permission::create(['name' => 'create customer inquiry']);

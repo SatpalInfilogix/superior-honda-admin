@@ -31,6 +31,7 @@
                     </a>
                 </li>
                 @endcan
+                 @canany(['view invoice','view services'])
                 <li @class([
                     'pcoded-hasmenu',
                     'pcoded-trigger active' => Request::is(
@@ -74,7 +75,8 @@
                             </li>
                         @endcan
                     </ul>
-                </li>    
+                </li>
+                @endcanany
                 @canany(['view inquiry','view inspection','view bay','view product','view promotions','view reports'])
                     <div class="pcoded-navigation-label">Operations</div>
                 @endcanany
@@ -184,7 +186,7 @@
                         </a>
                     </li>
                 @endcan
-                @canany(['view vehicle configuration','view branch'])
+                @canany(['view vehicle configuration','view branch','view location'])
                     <div class="pcoded-navigation-label">Configuration</div>
                 @endcanany
                 @can('view vehicle configuration')
@@ -265,7 +267,7 @@
                         </ul>
                     </li>
                 @endcan
-                @can('view branch')
+                @canany(['view branch','view location'])
                     <li @class([
                         'pcoded-hasmenu',
                         'pcoded-trigger active' => Request::is(
@@ -283,6 +285,7 @@
                             <span class="pcoded-mtext">Location Management</span>
                         </a>
                         <ul class="pcoded-submenu">
+                            @can('view location')
                             <li @class([
                                 'active' => Request::is(
                                     'locations',
@@ -296,6 +299,8 @@
                                     <span class="pcoded-mtext">Location Management</span>
                                 </a>
                             </li>
+                            @endcan
+                            @can('view branch')
                             <li @class([
                                 'active' => Request::is(
                                     'branches',
@@ -309,9 +314,10 @@
                                     <span class="pcoded-mtext">Branch Management</span>
                                 </a>
                             </li>
+                            @endcan
                         </ul>
                     </li>
-                @endcan
+                @endcanany
 
                 {{--@can('view order')
                     <li class="{{ Request::segment(1) == 'orders' ? 'active' : '' }}">

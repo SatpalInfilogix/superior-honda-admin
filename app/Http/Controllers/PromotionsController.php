@@ -74,8 +74,8 @@ class PromotionsController extends Controller
 
         $request->validate([
             'heading'    => 'required',
-            'promotion_product_id' => 'required',
-            'promotion_service_id' => 'required',
+            // 'promotion_product_id' => 'required',
+            // 'promotion_service_id' => 'required',
             'discount' => 'required'
         ]);
         
@@ -93,8 +93,18 @@ class PromotionsController extends Controller
 
             $promotion_services = $request->promotion_service_id;
 
-            $total_price_of_products = Product::whereIn('id', $promotion_products)->sum('cost_price');
-            $total_price_of_services = Product::whereIn('id', $promotion_services)->sum('cost_price');
+            if(!empty($promotion_products))
+            {
+                $total_price_of_products = Product::whereIn('id', $promotion_products)->sum('cost_price');
+            }else{
+                $total_price_of_products = 0;
+            }
+            if(!empty($promotion_services))
+            {
+                $total_price_of_services = Product::whereIn('id', $promotion_services)->sum('cost_price');
+            }else{
+                $total_price_of_services = 0;
+            }
             
             $total_price = $total_price_of_products + $total_price_of_services;
             $final_bucket_cost = $total_price - $discount;
@@ -111,22 +121,28 @@ class PromotionsController extends Controller
                 'final_bucket_cost'  => $final_bucket_cost
             ]);
 
-            foreach($promotion_products as $promotion_product)
+            if(!empty($promotion_products))
             {
-                $promotion_products_data = [];
-                $promotion_products_data['promotion_id'] = $promotion->id;
-                $promotion_products_data['product_id'] = $promotion_product;
-                
-                PromotionProducts::create($promotion_products_data);
+                foreach($promotion_products as $promotion_product)
+                {
+                    $promotion_products_data = [];
+                    $promotion_products_data['promotion_id'] = $promotion->id;
+                    $promotion_products_data['product_id'] = $promotion_product;
+                    
+                    PromotionProducts::create($promotion_products_data);
+                }
             }
 
-            foreach($promotion_services as $promotion_service)
+            if(!empty($promotion_services))
             {
-                $promotion_services_data = [];
-                $promotion_services_data['promotion_id'] = $promotion->id;
-                $promotion_services_data['service_id'] = $promotion_service;
-                
-                PromotionServices::create($promotion_services_data);
+                foreach($promotion_services as $promotion_service)
+                {
+                    $promotion_services_data = [];
+                    $promotion_services_data['promotion_id'] = $promotion->id;
+                    $promotion_services_data['service_id'] = $promotion_service;
+                    
+                    PromotionServices::create($promotion_services_data);
+                }
             }
 
             $images = $request->images;
@@ -208,8 +224,8 @@ class PromotionsController extends Controller
 
         $request->validate([
             'heading'    => 'required',
-            'promotion_product_id' => 'required',
-            'promotion_service_id' => 'required',
+            // 'promotion_product_id' => 'required',
+            // 'promotion_service_id' => 'required',
             'discount' => 'required'
         ]);
 
@@ -245,19 +261,25 @@ class PromotionsController extends Controller
             // promotion products to delete (old but not in new)
             $promotion_products_to_delete = array_diff($old_promotion_products, $new_promotion_products);
 
-            // Add new promotion products
-            foreach ($promotion_products_to_add as $promotion_product_to_add) {
-                PromotionProducts::create([
-                    'promotion_id' => $promotion,
-                    'product_id' => $promotion_product_to_add
-                ]);
+            if(!empty($promotion_products_to_add))
+            {
+                // Add new promotion products
+                foreach ($promotion_products_to_add as $promotion_product_to_add) {
+                    PromotionProducts::create([
+                        'promotion_id' => $promotion,
+                        'product_id' => $promotion_product_to_add
+                    ]);
+                }
             }
 
-            // Delete removed promotion product
-            foreach ($promotion_products_to_delete as $promotion_product_to_delete) {
-                PromotionProducts::where('promotion_id', $promotion)
-                    ->where('product_id', $promotion_product_to_delete)
-                    ->delete();
+            if(!empty($promotion_products_to_delete))
+            {
+                // Delete removed promotion product
+                foreach ($promotion_products_to_delete as $promotion_product_to_delete) {
+                    PromotionProducts::where('promotion_id', $promotion)
+                        ->where('product_id', $promotion_product_to_delete)
+                        ->delete();
+                }
             }
 
             // old promotion services
@@ -272,19 +294,25 @@ class PromotionsController extends Controller
             // promotion services to delete (old but not in new)
             $promotion_services_to_delete = array_diff($old_promotion_services, $new_promotion_services);
 
-            // Add new promotion services
-            foreach ($promotion_services_to_add as $promotion_service_to_add) {
-                PromotionServices::create([
-                    'promotion_id' => $promotion,
-                    'service_id' => $promotion_service_to_add
-                ]);
+            if(!empty($promotion_services_to_add))
+            {
+                // Add new promotion services
+                foreach ($promotion_services_to_add as $promotion_service_to_add) {
+                    PromotionServices::create([
+                        'promotion_id' => $promotion,
+                        'service_id' => $promotion_service_to_add
+                    ]);
+                }
             }
 
-            // Delete removed promotion product
-            foreach ($promotion_services_to_delete as $promotion_service_to_delete) {
-                PromotionServices::where('promotion_id', $promotion)
-                    ->where('service_id', $promotion_service_to_delete)
-                    ->delete();
+            if(!empty($promotion_services_to_delete))
+            {
+                // Delete removed promotion product
+                foreach ($promotion_services_to_delete as $promotion_service_to_delete) {
+                    PromotionServices::where('promotion_id', $promotion)
+                        ->where('service_id', $promotion_service_to_delete)
+                        ->delete();
+                }
             }
 
             $total_price = 0;
