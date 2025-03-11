@@ -231,7 +231,6 @@ class InquiryController extends Controller
             if($inquiry->status != 'Completed') {
                 $inquiry->status = $request->input('status');
                 $inquiry->save();
-
                 if($request->status == 'Completed') {
                     $inspection = Inspection::create([
                         'inquiry_id'    => $id,

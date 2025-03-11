@@ -50,7 +50,7 @@
                                                         <td>{{ $inquiry->vehicle }}</td>
                                                         <td>{{ $inquiry->year }}</td>
                                                         <td>{{ $inquiry->date }}</td>
-                                                        <td class="status-column" data-id="{{ $inquiry->id }}">{{ $inquiry->status }}</td>
+                                                        <td class="status-column" data-id="{{ $inquiry->id }}"><span>{{ $inquiry->status }} <i class="fas fa-chevron-down"></i></span></td>
                                                         <td>
                                                             <div class="btn-group btn-group-sm">
                                                                 <a href="{{ route('inquiries.edit', $inquiry->id) }}"

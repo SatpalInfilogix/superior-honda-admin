@@ -89,7 +89,8 @@
                                                 <input type="text" name="invoice_no" class="form-control" placeholder="Invoice Number" value="{{ request('invoice_no') }}">
                                             </div>
                                             <div class="col-md-2">
-                                                <input type="text" name="customer_name" class="form-control" placeholder="Customer Name" value="{{ request('customer_name') }}">
+                                                <input type="text" id="userSearch" name="customer_name" class="form-control user-autocomplete" placeholder="Customer Name" value="{{ request('customer_name') }}">
+                                                <div class="autocomplete-items"></div> 
                                             </div>
                                             <div class="col-md-2">
                                                 <input type="text" name="mobile" class="form-control" placeholder="Mobile Number" value="{{ request('mobile') }}">
@@ -389,6 +390,40 @@
                     alert('Failed to download invoice. Please try again.');
                 }
             });
+        });
+    });
+    $(document).ready(function () {
+        $('body').on('input', '.user-autocomplete', function () {
+            var input = $(this).val().trim();
+            var autocompleteContainer = $(this).siblings('.autocomplete-items');
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('user.autocomplete') }}',
+                data: { input: input },
+                success: function (response) {
+                    autocompleteContainer.empty();
+                    if (response.length > 0) {
+                        $.each(response, function (key, value) {
+                            var autocompleteItem = '<div class="autocomplete-item" data-id="' + value.id + '">' + value.first_name +' '+value.last_name+'</div>';
+                            autocompleteContainer.append(autocompleteItem);
+                        });
+                        autocompleteContainer.show();
+                    } else {
+                        autocompleteContainer.hide();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Autocomplete AJAX error:', status, error);
+                }
+            });
+        });
+
+        $('body').on('click', '.autocomplete-item', function() {
+            var productName = $(this).text();
+            var productId = $(this).data('id');
+            $('#userSearch').val(productName);
+            $(this).closest('.autocomplete-items').empty().hide();
         });
     });
 </script>

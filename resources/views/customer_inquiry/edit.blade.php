@@ -47,11 +47,11 @@
                                         <div class="row">
                                             <div class="col-md-4 form-group">
                                                 <label for="Customer Name" style="font-weight: bold">Customer Name</label>
-                                                <p>{{$customer_inquiry->customer_name}}</p>
+                                                <p>{{$customer_inquiry->customer_name ?? ''}}</p>
                                             </div>
                                             <div class="col-md-4 form-group">
                                                 <label for="Customer Phone" style="font-weight: bold">Customer Phone</label>
-                                                <p>{{ $customer_inquiry->customer_phone }}</p>
+                                                <p>{{ $customer_inquiry->customer_phone ?? '' }}</p>
                                             </div>
                                             <div class="col-md-4 form-group">
                                                 <label for="Customer Email" style="font-weight: bold">Customer Email</label>
@@ -61,34 +61,34 @@
                                         <div class="row">
                                             <div class="col-md-4 form-group">
                                                 <label for="Customer Inquiry Category" style="font-weight: bold">Customer Inquiry Category</label>                                                
-                                                <p>{{ ucfirst($customer_inquiry->customer_inquiry_category) }}</p>
+                                                <p>{{ ucfirst($customer_inquiry->customer_inquiry_category ?? 'Contact Us') }}</p>
                                             </div>
                                             @if($customer_inquiry->customer_inquiry_category == 'promotion')
                                                 <div class="col-md-4 form-group">
                                                     <label for="Promotion Heading" style="font-weight: bold">Promotion Heading</label>
-                                                    <p>{{ $customer_inquiry->promotion->heading }}</p>  
+                                                    <p>{{ $customer_inquiry->promotion->heading ?? '' }}</p>  
                                                 </div>
                                                 <div class="col-md-4 form-group">
                                                     <label for="Total Price" style="font-weight: bold">Promotion Total Price</label>
-                                                    <p>{{ $customer_inquiry->promotion->total_price }}/-</p>
+                                                    <p>{{ $customer_inquiry->promotion->total_price ?? '' }}/-</p>
                                                 </div>
                                                 <div class="col-md-4 form-group">
                                                     <label for="Discount" style="font-weight: bold">Promotion Discount</label>
-                                                    <p>{{ $customer_inquiry->promotion->discount }}/-</p>
+                                                    <p>{{ $customer_inquiry->promotion->discount ?? '' }}/-</p>
                                                 </div>
                                                 <div class="col-md-4 form-group">
                                                     <label for="Final Bucket Cost" style="font-weight: bold">Promotion Bucket Cost</label>
-                                                    <p style="color: red;">{{ $customer_inquiry->promotion->final_bucket_cost }}/-</p>
+                                                    <p style="color: red;">{{ $customer_inquiry->promotion->final_bucket_cost ?? '' }}/-</p>
                                                 </div>
                                             @endif
                                             <div class="col-md-4 form-group">
                                                 <label for="Location" style="font-weight: bold">Location</label>
-                                                <p>{{ $customer_inquiry->location->name }}</p>
+                                                <p>{{ $customer_inquiry->location->name ?? ''}}</p>
                                             </div>
                                             <div class="col-md-4 form-group">
                                                 <label for="Product Name" style="font-weight: bold">Product Name</label>
                                                 @if($customer_inquiry->customer_inquiry_category == 'product')
-                                                    <p>{{ $customer_inquiry->product->product_name }}</p>
+                                                    <p>{{ $customer_inquiry->product->product_name ?? ''}}</p>
                                                 @else
                                                     @php
                                                         $products_names = $customer_inquiry->promotion->promotion_products->pluck('product_details')->pluck('product_name');
@@ -117,7 +117,7 @@
                                         <div class="row">
                                             <div class="col-md-8 form-group">
                                                 <label for="Inquiry Description" style="font-weight: bold">Inquiry Description</label>
-                                                <p>{{ $customer_inquiry->inquiry_description }}</p>
+                                                <p>{{ $customer_inquiry->inquiry_description ?? ''}}</p>
                                             </div>
                                         </div>
                                         <div class="row">

@@ -49,7 +49,7 @@
                                                         <td>{{ $inspection->vehicle }}</td>
                                                         <td>{{ $inspection->year }}</td>
                                                         <td>{{ $inspection->date }}</td>
-                                                        <td class="status-column" data-id="{{ $inspection->id }}">{{ $inspection->status }}</td>
+                                                        <td class="status-column" data-id="{{ $inspection->id }}"><span>{{ $inspection->status }}  <i class="fas fa-chevron-down"></i></span></td>
                                                         <td>
                                                             <div class="btn-group btn-group-sm">
                                                                 <a href="{{ route('inspection.edit', $inspection->id) }}"

@@ -21,6 +21,12 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'edit user']);
         Permission::create(['name' => 'delete user']);
 
+        Permission::create(['name' => 'view services']);
+        Permission::create(['name' => 'edit services']);
+        Permission::create(['name' => 'create services']);
+        Permission::create(['name' => 'delete services']);
+
+
         Permission::create(['name' => 'view customer']);
         Permission::create(['name' => 'create customer']);
         Permission::create(['name' => 'edit customer']);
@@ -41,10 +47,25 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'edit branch']);
         Permission::create(['name' => 'delete branch']);
 
+        Permission::create(['name' => 'view location']);
+        Permission::create(['name' => 'edit location']);
+        Permission::create(['name' => 'create location']);
+        Permission::create(['name' => 'delete location']);
+
         Permission::create(['name' => 'view bay']);
         Permission::create(['name' => 'create bay']);
         Permission::create(['name' => 'edit bay']);
         Permission::create(['name' => 'delete bay']);
+
+        Permission::create(['name' => 'view promotions']);
+        Permission::create(['name' => 'edit promotions']);
+        Permission::create(['name' => 'create promotions']);
+        Permission::create(['name' => 'delete promotions']);
+
+        Permission::create(['name' => 'view reports']);
+        Permission::create(['name' => 'edit reports']);
+        Permission::create(['name' => 'create reports']);
+        Permission::create(['name' => 'delete reports']);
 
         Permission::create(['name' => 'view inquiry']);
         Permission::create(['name' => 'create inquiry']);
@@ -71,6 +92,16 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'edit job']);
         Permission::create(['name' => 'delete job']);
 
+        Permission::create(['name' => 'view faqs']);
+        Permission::create(['name' => 'edit faqs']);
+        Permission::create(['name' => 'create faqs']);
+        Permission::create(['name' => 'delete faqs']);
+
+        Permission::create(['name' => 'view testimonials']);
+        Permission::create(['name' => 'create testimonials']);
+        Permission::create(['name' => 'edit testimonials']);
+        Permission::create(['name' => 'delete testimonials']);
+
         Permission::create(['name' => 'view email template']);
         Permission::create(['name' => 'create email template']);
         Permission::create(['name' => 'edit email template']);
@@ -80,6 +111,18 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'create roles & permissions']);
         Permission::create(['name' => 'edit roles & permissions']);
         Permission::create(['name' => 'delete roles & permissions']);
+
+        Permission::create(['name' => 'view dashboard']);
+
+        Permission::create(['name' => 'view settings']);
+        Permission::create(['name' => 'edit settings']);
+        Permission::create(['name' => 'create settings']);
+        Permission::create(['name' => 'delete settings']);
+
+        Permission::create(['name' => 'view customer inquiry']);
+        Permission::create(['name' => 'create customer inquiry']);
+        Permission::create(['name' => 'edit customer inquiry']);
+        Permission::create(['name' => 'delete customer inquiry']);
 
         $role = Role::create(['name' => 'Super Admin']);
         $role->givePermissionTo(Permission::all());

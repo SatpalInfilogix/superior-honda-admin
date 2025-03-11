@@ -121,5 +121,9 @@ class ModuleSeeder extends Seeder
             'name' => 'FAQs',
             'slug' => 'faqs'
         ]);
+        Module::updateOrCreate([
+            'name' => 'Dashboard',
+            'slug' => 'dashboard'
+        ]);
     }
 }
