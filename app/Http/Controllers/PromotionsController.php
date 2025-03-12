@@ -256,10 +256,34 @@ class PromotionsController extends Controller
             $new_promotion_products = $request->promotion_product_id;
 
             // promotion products to add (new but not in old)
-            $promotion_products_to_add = array_diff($new_promotion_products, $old_promotion_products);
+            if(!empty($old_promotion_products))
+            {
+                if(!empty($new_promotion_products))
+                {
+                    $promotion_products_to_add = array_diff($new_promotion_products, $old_promotion_products);
+                }else{
+                    $promotion_products_to_add = null;
+                }
+            }else{
+                if(!empty($new_promotion_products))
+                {
+                    $promotion_products_to_add = $new_promotion_products;
+                }else{
+                    $promotion_products_to_add = null;
+                }
+            }
 
             // promotion products to delete (old but not in new)
-            $promotion_products_to_delete = array_diff($old_promotion_products, $new_promotion_products);
+            if(!empty($old_promotion_products))
+            {
+                if(!empty($new_promotion_products))
+                {
+                    $promotion_products_to_delete = array_diff($old_promotion_products, $new_promotion_products);
+                }else{
+                    $promotion_products_to_delete = $old_promotion_products;
+                }
+            }
+            
 
             if(!empty($promotion_products_to_add))
             {
@@ -289,10 +313,33 @@ class PromotionsController extends Controller
             $new_promotion_services = $request->promotion_service_id;
 
             // promotion services to add (new but not in old)
-            $promotion_services_to_add = array_diff($new_promotion_services, $old_promotion_services);
+            if(!empty($old_promotion_services))
+            {
+                if(!empty($new_promotion_services))
+                {
+                    $promotion_services_to_add = array_diff($new_promotion_services, $old_promotion_services);
+                }else{
+                    $promotion_services_to_add = null;
+                }
+            }else{
+                if(!empty($new_promotion_services))
+                {
+                    $promotion_services_to_add = $new_promotion_services;
+                }else{
+                    $promotion_services_to_add = null;
+                }
+            }
 
             // promotion services to delete (old but not in new)
-            $promotion_services_to_delete = array_diff($old_promotion_services, $new_promotion_services);
+            if(!empty($old_promotion_services))
+            {
+                if(!empty($new_promotion_services))
+                {
+                    $promotion_services_to_delete = array_diff($old_promotion_services, $new_promotion_services);
+                }else{
+                    $promotion_services_to_delete = $old_promotion_services;
+                }
+            }
 
             if(!empty($promotion_services_to_add))
             {
@@ -319,11 +366,11 @@ class PromotionsController extends Controller
             $discount = $request->discount;
             $final_bucket_cost = 0;
 
-            $price_to_add_in_products = Product::whereIn('id', $promotion_products_to_add)->sum('cost_price');
-            $price_to_delete_from_products = Product::whereIn('id', $promotion_products_to_delete)->sum('cost_price');
+            $price_to_add_in_products = !empty($promotion_products_to_add) ? Product::whereIn('id', $promotion_products_to_add)->sum('cost_price') : 0;
+            $price_to_delete_from_products = !empty($promotion_products_to_delete) ? Product::whereIn('id', $promotion_products_to_delete)->sum('cost_price') : 0;
 
-            $price_to_add_in_services = Product::whereIn('id', $promotion_services_to_add)->sum('cost_price');
-            $price_to_delete_from_services = Product::whereIn('id', $promotion_services_to_delete)->sum('cost_price');
+            $price_to_add_in_services = !empty($promotion_services_to_add) ? Product::whereIn('id', $promotion_services_to_add)->sum('cost_price') : 0;
+            $price_to_delete_from_services = !empty($promotion_services_to_delete) ? Product::whereIn('id', $promotion_services_to_delete)->sum('cost_price') : 0;
             
             $total_price = $promotion_data->total_price + $price_to_add_in_products - $price_to_delete_from_products + $price_to_add_in_services - $price_to_delete_from_services;
             $final_bucket_cost = $total_price - $discount;
