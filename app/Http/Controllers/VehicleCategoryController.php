@@ -82,9 +82,17 @@ class VehicleCategoryController extends Controller
             abort(403);
         }
 
-        $category = VehicleCategory::find($vehicle_category->id);
-        $category->name = $request->name;
-        $category->save();
+        // check for duplicate
+        $duplicateEntry = VehicleCategory::where('id', '!=', $vehicle_category->id)->where('name', $request->name)->first();
+
+        if(!empty($duplicateEntry))
+        {
+            return redirect()->back()->with('error', 'This name has already been assigned to another vehicle category');
+        }else{
+            $category = VehicleCategory::find($vehicle_category->id);
+            $category->name = $request->name;
+            $category->save();
+        }
 
         return redirect()->route('vehicle-categories.index')->with('success', 'Vehicle category update successfully');
     }
