@@ -54,7 +54,7 @@
                                         <form id="inquiryFilterForm" method="GET" action="{{ route(request()->route()->getName(), $selected_branch_id) }}" class="mb-3">
                                             <div class="row mr-0">
                                                 <div class="col-md-3">
-                                                    <input type="text" name="mobile" class="form-control" placeholder="Mobile Number" value="{{ request('mobile') }}">
+                                                    <input type="number" name="mobile" class="form-control" placeholder="Mobile Number" value="{{ request('mobile') }}">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <select name="status"  class="form-control">
@@ -66,7 +66,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <input type="date" name="date" class="form-control" value="{{ request('date') }}">
+                                                    <input type="text" id="datepicker" name="date" class="form-control" placeholder="Select Date (2001-01-01)" value="{{ request('date') }}">
                                                 </div>
                                                 <div class="col-md-3">
                                                     <button type="submit" class="btn btn-primary primary-btn custom">Filter</button>
@@ -153,6 +153,10 @@
 
     <script>
         $(function() {
+            $('#datepicker').datepicker({
+                autoclose: true,
+                format: 'mm-dd-yyyy' 
+            });
             document.getElementById('inquiryFilterForm').addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent default form submission
             const form = event.target;

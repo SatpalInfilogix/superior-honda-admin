@@ -35,7 +35,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-4 form-group">
-                                                <label for="designation">Designation <span style="color: red;">*</span></label>
+                                                <label for="designation">Designation</label>
                                                 <select name="designation" id="designation" class="form-control" disabled>
                                                     <option value="" selected disabled>Select Designation</option>
                                                     @foreach($designations as $designation)
@@ -65,15 +65,6 @@
                                                     <option value="" selected disabled>Select Branch</option>
                                                     @foreach ($branches as $key => $branch)
                                                         <option value="{{$branch->id}}" @selected($user->branch_id == $branch->id)>{{ $branch->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-md-4 form-group">
-                                                <label for="role">Role <span style="color: red;">*</span></label>
-                                                <select name="role" id="role" class="form-control" disabled>
-                                                    <option value="" selected disabled>Select Role</option>
-                                                    @foreach ($roles as $key => $role)
-                                                        <option value="{{$role->id}}" @selected( $user->roles->pluck('name')[0] == $role->name)>{{ $role->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -135,13 +126,13 @@
                 rules: {
                     first_name: "required",
                     last_name: "required",
-                    designation: "required",
+                    //designation: "required",
                     email: "required",
                 },
                 messages: {
                     first_name: "Please enter first name",
                     last_name: "Please enter last name",
-                    designation: "Please enter designation",
+                    //designation: "Please enter designation",
                     email: "Please enter email",
                 },
                 errorClass: "text-danger f-12",
@@ -160,6 +151,7 @@
             $('#parent_category_id').change(function() {
                 if ($(this).val().length === 0) {
                     $('#parent_category_id_error').css('display', 'block');
+                    return false;
                 }else{
                     $('#parent_category_id_error').css('display', 'none');
                 }
@@ -168,6 +160,7 @@
             $('#submit_btn').on('click', function() {
                 if ($('#parent_category_id').val().length === 0) {
                     $('#parent_category_id_error').css('display', 'block');
+                    return false;
                 }else{
                     $('#parent_category_id_error').css('display', 'none');
                 }

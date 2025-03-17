@@ -93,10 +93,10 @@
                                                 <div class="autocomplete-items"></div> 
                                             </div>
                                             <div class="col-md-2">
-                                                <input type="text" name="mobile" class="form-control" placeholder="Mobile Number" value="{{ request('mobile') }}">
+                                                <input type="number" name="mobile" class="form-control" placeholder="Mobile Number" value="{{ request('mobile') }}">
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="date" name="date" class="form-control" value="{{ request('date') }}">
+                                                <input type="text" id="datepicker" name="date" class="form-control" placeholder="Select Date (2001-01-01)"  value="{{ request('date') }}">
                                             </div>
                                             <div class="col-md-3">
                                                 <button type="submit" class="btn btn-primary primary-btn custom">Filter</button>
@@ -341,6 +341,10 @@
     });
     
     $(function() {
+        $('#datepicker').datepicker({
+            autoclose: true,
+            format: 'mm-dd-yyyy' 
+        });
         $('#print-btn').click(function() {
             var printUrl = '{{ route('invoices.print-invoice') }}';
             var printWindow = window.open(printUrl, '_blank');

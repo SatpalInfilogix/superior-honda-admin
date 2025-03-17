@@ -34,7 +34,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-4 form-group">
-                                                <label for="designation">Designation <span style="color: red;">*</span></label>
+                                                <label for="designation">Designation</label>
                                                 <select name="designation" id="designation" class="form-control">
                                                     <option value="" selected disabled>Select Designation</option>
                                                     @foreach($designations as $designation)
@@ -117,7 +117,7 @@
                 rules: {
                     first_name: "required",
                     last_name: "required",
-                    designation: "required",
+                   // designation: "required",
                     email: "required",
                     role: "required",
                     password: "required"
@@ -125,7 +125,7 @@
                 messages: {
                     first_name: "Please enter first name",
                     last_name: "Please enter last name",
-                    designation: "Please enter designation",
+                    //designation: "Please enter designation",
                     email: "Please enter email",
                     role: "Please enter role",
                     password: "Please enter password"
@@ -163,6 +163,7 @@
                 $('#parent_category_id').change(function() {
                     if ($(this).val().length === 0) {
                         $('#parent_category_id_error').css('display', 'block');
+                        return false;
                     }else{
                         $('#parent_category_id_error').css('display', 'none');
                     }
@@ -171,6 +172,7 @@
                 $('#submit_btn').on('click', function() {
                     if ($('#parent_category_id').val().length === 0) {
                         $('#parent_category_id_error').css('display', 'block');
+                        return false;
                     }else{
                         $('#parent_category_id_error').css('display', 'none');
                     }

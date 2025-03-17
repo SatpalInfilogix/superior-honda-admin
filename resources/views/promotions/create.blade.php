@@ -55,7 +55,7 @@
                                                 <span class="form-control-danger" id="promotion_product_id_error" style="display:none; color: #dc3545; font-size:12px;">Please select atleast 1 product.</span>                                                
                                             </div>                           
                                             <div class="col-md-6 form-group">
-                                                <label for="promotion_service_id">Services <span style="color: red;">*</span></label>
+                                                <label for="promotion_service_id">Services</label>
                                                 <select name="promotion_service_id[]" id="promotion_service_id" class="form-control chosen-select" multiple="multiple">
                                                     <option value="select_all">Select All</option>
                                                     @if(!empty($services))
@@ -138,7 +138,7 @@
                     heading: "required",
                     main_image: "required",
                     "promotion_product_id[]": "required",
-                    "promotion_service_id[]": "required",
+                    //"promotion_service_id[]": "required",
                     "images[]": "required",
                     discount: "required"
                 },
@@ -146,7 +146,7 @@
                     heading: "Please enter promotion heading",
                     main_image: "Please select a image",
                     "promotion_product_id[]": "Please select at least one product.",
-                    "promotion_service_id[]": "Please select at least one service.",
+                    //"promotion_service_id[]": "Please select at least one service.",
                     "images[]": "Please select images.",
                     discount: "Please add some discount."
                 },
@@ -186,13 +186,13 @@
                 }
             });
 
-            $('#promotion_service_id').change(function() {
+           /* $('#promotion_service_id').change(function() {
                 if ($(this).val().length === 0) {
                     $('#promotion_service_id_error').css('display', 'block');
                 }else{
                     $('#promotion_service_id_error').css('display', 'none');
                 }
-            });
+            });*/
             
             $('#submit_btn').on('click', function() {
                 if ($('#promotion_product_id').val().length === 0) {
@@ -201,11 +201,11 @@
                     $('#promotion_product_id_error').css('display', 'none');
                 }
 
-                if ($('#promotion_service_id').val().length === 0) {
+                /*if ($('#promotion_service_id').val().length === 0) {
                     $('#promotion_service_id_error').css('display', 'block');
                 }else{
                     $('#promotion_service_id_error').css('display', 'none');
-                }
+                }*/
             });
         });
 

@@ -23,7 +23,7 @@
                                         @method('PATCH')
                                         <div class="form-group">
                                             <label for="category-name">Category Name <span style="color: red;">*</span></label>
-                                            <input type="text" class="form-control" name="name" id="category-name" value="{{ $vehicle_category->name }}">
+                                            <input type="text" class="form-control" name="name" id="category-name" value="{{ $vehicle_category->name }}" required>
                                         </div>
                                         <button type="submit" class="btn btn-primary primary-btn">Save</button>
                                     </form>
