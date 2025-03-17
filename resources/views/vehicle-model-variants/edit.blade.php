@@ -91,6 +91,13 @@
                                             <div class="custom-file">
                                                 <input type="file" name="model_variant_image" class="custom-file-input" id="add-model-variant-image">
                                                 <label class="custom-file-label" for="add-model-variant-image">Choose Car Image</label>
+                                                <div id="imagePreview">
+                                                    @if ($vehicleModelVariant->model_variant_image)
+                                                        <img src="{{ asset($vehicleModelVariant->model_variant_image) }}" id="image_preview" class="img-preview" width="50" height="50">
+                                                    @else
+                                                        <img src="" id="image_preview" height="50" width="50" name="image" hidden>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div> 
                     
@@ -166,6 +173,17 @@
                 },
                 submitHandler: function(form) {
                     form.submit();
+                }
+            });
+            $('#add-model-variant-image').change(function() {
+                var input = this;
+                if (input.files && input.files[0]) {
+                    $('#image_preview').prop('hidden', false);
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#image_preview').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
                 }
             });
         })

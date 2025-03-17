@@ -83,6 +83,7 @@
                 $('#parent_category_id').change(function() {
                     if ($(this).val().length === 0) {
                         $('#parent_category_id_error').css('display', 'block');
+                        return false;
                     }else{
                         $('#parent_category_id_error').css('display', 'none');
                     }
@@ -91,6 +92,7 @@
                 $('#submit_btn').on('click', function() {
                     if ($('#parent_category_id').val().length === 0) {
                         $('#parent_category_id_error').css('display', 'block');
+                        return false;
                     }else{
                         $('#parent_category_id_error').css('display', 'none');
                     }

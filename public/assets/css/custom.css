@@ -130,11 +130,11 @@ a.relative.inline-flex.items-center.px-4.py-2.text-sm.font-medium.text-gray-700.
 }
 
 a.btn.btn-secondary.custom {
-    padding: 6px 40px;
+    padding: 6px 35px;
 }
 
 button.btn.btn-primary.primary-btn.custom {
-    padding: 6px 46px;
+    padding: 6px 35px;
 }
 .status-column span {
     background: #ed1d24;

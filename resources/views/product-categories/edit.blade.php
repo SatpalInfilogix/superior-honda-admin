@@ -61,7 +61,7 @@
                                                 <!-- <div id="image_preview"><img src="{{ asset($product_category->category_image) }}"></div> -->
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary primary-btn">Save</button>
+                                        <button type="submit" id="submit_btn" class="btn btn-primary primary-btn">Save</button>
                                     </form>
                                 </div>
                             </div>
@@ -89,14 +89,17 @@
             $('#parent_category_id').change(function() {
                 if ($(this).val().length === 0) {
                     $('#parent_category_id_error').css('display', 'block');
+                    return false;
                 }else{
                     $('#parent_category_id_error').css('display', 'none');
                 }
             });
             
             $('#submit_btn').on('click', function() {
+            
                 if ($('#parent_category_id').val().length === 0) {
                     $('#parent_category_id_error').css('display', 'block');
+                    return false;
                 }else{
                     $('#parent_category_id_error').css('display', 'none');
                 }

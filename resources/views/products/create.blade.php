@@ -208,7 +208,7 @@
                                         <div class="row">
                                             <div class="col-md-12 form-group">
                                                 <label for="branch">Description</label>
-                                                <textarea id="description" name="description" class="form-control" rows="2" cols="50">{{ old('description') }}</textarea>
+                                                <textarea id="editor" name="description" class="form-control" rows="2" cols="50">{{ old('description') }}</textarea>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -232,8 +232,10 @@
         </div>
     </div>
     <x-include-plugins multipleImage></x-include-plugins>
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <script>
         $(document).ready(function() {
+            CKEDITOR.replace('editor');
             var startYear = 1950;
             var endYear = new Date().getFullYear();
 
@@ -253,13 +255,7 @@
             $('#year_range').selectmenu();
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            ClassicEditor
-                .create(document.querySelector('#description'))
-                .catch(error => {
-                    console.error(error);
-                });
-        })
+            
 
         function oemClick(e) {
             e.value = e.checked ? 1 : 0;

@@ -69,10 +69,10 @@
         $(function() {
             $('form').validate({
                 rules: {
-                    template_name:"required"
+                    template:"required"
                 },
                 messages: {
-                    template_name: "Please enter template name",
+                    template: "Please enter template name",
                 },
                 errorClass: "text-danger f-12",
                 errorElement: "span",

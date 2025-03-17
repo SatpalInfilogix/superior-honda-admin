@@ -65,7 +65,7 @@
                                                 <span class="form-control-danger" id="promotion_product_id_error" style="display:none; color: #dc3545; font-size:12px;">Please select atleast 1 product.</span>
                                             </div>                           
                                             <div class="col-md-6 form-group">
-                                                <label for="promotion_service_id">Services <span style="color: red;">*</span></label>
+                                                <label for="promotion_service_id">Services</label>
                                                 <select name="promotion_service_id[]" id="promotion_service_id" class="form-control chosen-select" multiple="multiple">
                                                 <option value="select_all">Select All</option>
                                                     @php
@@ -122,7 +122,7 @@
                                         </div>
                                         <div class="row">                          
                                             <div class="col-md-12 form-group">
-                                                <label for="image" class>Images <span style="color: red;">*</span></label>
+                                                <label for="image" class>Image</label>
                                                 <input type="file" name="images[]" id="images" multiple class="form-control" accept="image/*">
                                             </div>
                                         </div>
@@ -163,13 +163,13 @@
                 rules: {
                     heading: "required",
                     "promotion_product_id[]": "required",
-                    "promotion_service_id[]": "required",
+                    //"promotion_service_id[]": "required",
                     discount: "required"
                 },
                 messages: {
                     heading: "Please enter promotion heading",
                     "promotion_product_id[]": "Please select at least one product.",
-                    "promotion_service_id[]": "Please select at least one service.",
+                    //"promotion_service_id[]": "Please select at least one service.",
                     discount: "Please add some discount."
                 },
                 errorClass: "text-danger f-12",
@@ -231,13 +231,13 @@
                 }
             });
 
-            $('#promotion_service_id').change(function() {
+            /*$('#promotion_service_id').change(function() {
                 if ($(this).val().length === 0) {
                     $('#promotion_service_id_error').css('display', 'block');
                 }else{
                     $('#promotion_service_id_error').css('display', 'none');
                 }
-            });
+            });*/
             
             $('#submit_btn').on('click', function() {
                 if ($('#promotion_product_id').val().length === 0) {
@@ -246,11 +246,11 @@
                     $('#promotion_product_id_error').css('display', 'none');
                 }
 
-                if ($('#promotion_service_id').val().length === 0) {
+                /*if ($('#promotion_service_id').val().length === 0) {
                     $('#promotion_service_id_error').css('display', 'block');
                 }else{
                     $('#promotion_service_id_error').css('display', 'none');
-                }
+                }*/
             });
         });
 
