@@ -39,10 +39,7 @@ class CustomerInquiryController extends Controller
             ->whereNull('deleted_at')
             ->first();
         if(!empty($userBranchData)){    
-            $location_ids = $userBranchData->branch_locations->pluck('location.id')->toArray();
-            if ($userBranchData->name !== 'Kingston') {
-                $customer_inquiries->whereIn('inquiry_location_id', $location_ids);
-            }
+            $location_ids = $userBranchData->branch_locations->pluck('location.id')->toArray();            
         }else{
             $location_ids = [];
         }
@@ -51,7 +48,10 @@ class CustomerInquiryController extends Controller
         $customer_inquiries = CustomerInquiry::with(['location', 'product', 'csr'])
             ->where('status', '!=', 'delete')
             ->whereNull('deleted_at');
-
+            
+        if ($userBranchData->name !== 'Kingston') {
+            $customer_inquiries->whereIn('inquiry_location_id', $location_ids);
+        }
     
         if ($request->filled('mobile')) {
             $customer_inquiries->where('customer_phone', $request->mobile);
@@ -66,7 +66,7 @@ class CustomerInquiryController extends Controller
         }
     
         $customer_inquiries = $customer_inquiries->latest()->get();
-    
+
         $final_customer_enquiry_data = [];
     
         if ($customer_inquiries->isNotEmpty()) {
@@ -95,36 +95,41 @@ class CustomerInquiryController extends Controller
                 ->where('status', 'active')
                 ->pluck('parent_category_name', 'product_category_id')
                 ->toArray();
-    
+                
             foreach ($customer_inquiries as $customer_enquiry) {
-                if ($customer_enquiry->customer_inquiry_category == 'product') {
-                    if ($customer_enquiry->inquiry_product_id === null || $customer_enquiry->inquiry_product_id === 1) {
-                        $final_customer_enquiry_data[] = $customer_enquiry;
-                        continue;
-                    }
-    
-                    $category_id = $productCategoryIds[$customer_enquiry->inquiry_product_id] ?? null;
-    
-                    if ($category_id === null || (isset($parentCategories[$category_id]) && in_array($parentCategories[$category_id], $userCategory))) {
-                        $final_customer_enquiry_data[] = $customer_enquiry;
-                    }
-                } else {
-                    $promotion_id = $customer_enquiry->inquiry_product_id ?? null;
-    
-                    if ($promotion_id) {
-                        $promotion_product_ids = PromotionProducts::where('promotion_id', $promotion_id)
-                            ->pluck('product_id')
-                            ->toArray();
-    
-                        $category_ids = array_values(array_intersect_key($promotionsCategoryIds, array_flip($promotion_product_ids)));
-    
-                        $category_parent_categories = array_unique(array_intersect_key($promotionParentCategories, array_flip($category_ids)));
-    
-                        if (!empty($category_parent_categories) && array_intersect($category_parent_categories, $userCategory)) {
+                if(in_array('Super Admin', Auth::user()->getRoleNames()->toArray()))
+                {
+                    $final_customer_enquiry_data[] = $customer_enquiry;
+                }else{
+                    if ($customer_enquiry->customer_inquiry_category == 'product') {
+                        if ($customer_enquiry->inquiry_product_id === null || $customer_enquiry->inquiry_product_id === 1) {
+                            $final_customer_enquiry_data[] = $customer_enquiry;
+                            continue;
+                        }
+        
+                        $category_id = $productCategoryIds[$customer_enquiry->inquiry_product_id] ?? null;
+        
+                        if ($category_id === null || (isset($parentCategories[$category_id]) && in_array($parentCategories[$category_id], $userCategory))) {
                             $final_customer_enquiry_data[] = $customer_enquiry;
                         }
-                    } elseif ($promotion_id === null) {
-                        $final_customer_enquiry_data[] = $customer_enquiry;
+                    } else {
+                        $promotion_id = $customer_enquiry->inquiry_product_id ?? null;
+        
+                        if ($promotion_id) {
+                            $promotion_product_ids = PromotionProducts::where('promotion_id', $promotion_id)
+                                ->pluck('product_id')
+                                ->toArray();
+        
+                            $category_ids = array_values(array_intersect_key($promotionsCategoryIds, array_flip($promotion_product_ids)));
+        
+                            $category_parent_categories = array_unique(array_intersect_key($promotionParentCategories, array_flip($category_ids)));
+        
+                            if (!empty($category_parent_categories) && array_intersect($category_parent_categories, $userCategory)) {
+                                $final_customer_enquiry_data[] = $customer_enquiry;
+                            }
+                        } elseif ($promotion_id === null) {
+                            $final_customer_enquiry_data[] = $customer_enquiry;
+                        }
                     }
                 }
             }
