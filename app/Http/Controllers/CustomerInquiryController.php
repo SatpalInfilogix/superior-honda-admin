@@ -48,9 +48,12 @@ class CustomerInquiryController extends Controller
         $customer_inquiries = CustomerInquiry::with(['location', 'product', 'csr'])
             ->where('status', '!=', 'delete')
             ->whereNull('deleted_at');
-            
-        if ($userBranchData->name !== 'Kingston') {
-            $customer_inquiries->whereIn('inquiry_location_id', $location_ids);
+
+        if(!empty($userBranchData))
+        {
+            if ($userBranchData->name !== 'Kingston' || !str_contains('Kingston', $userBranchData)) {
+                $customer_inquiries->whereIn('inquiry_location_id', $location_ids);
+            }
         }
     
         if ($request->filled('mobile')) {
